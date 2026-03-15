@@ -521,9 +521,13 @@
       textContent = await readFileAsText(file);
     }
 
+    // Decode URL-encoded filenames
+    var cleanName = file.name;
+    try { cleanName = decodeURIComponent(file.name.replace(/\+/g, ' ')); } catch(e) {}
+
     return {
       id: generateId(),
-      name: file.name,
+      name: cleanName,
       type: ext,
       size: file.size,
       content: textContent,
@@ -542,6 +546,24 @@
     if (type === 'pdf') return '\uD83D\uDCC4';
     if (type === 'txt' || type === 'md') return '\uD83D\uDCDD';
     return '\uD83D\uDCC1';
+  }
+
+  function formatFileContent(text) {
+    if (!text) return '<p style="color:var(--text-muted)">(Sin contenido de texto)</p>';
+    // Split by double newlines into paragraphs, escape HTML, wrap in <p>
+    return text.split(/\n{2,}/)
+      .map(function(block) {
+        var escaped = escapeHTML(block.trim());
+        if (!escaped) return '';
+        // Preserve single line breaks within a block
+        return '<p>' + escaped.replace(/\n/g, '<br>') + '</p>';
+      })
+      .filter(function(p) { return p; })
+      .join('');
+  }
+
+  function cleanFileName(name) {
+    try { return decodeURIComponent((name || '').replace(/\+/g, ' ')); } catch(e) { return name; }
   }
 
   function getFileIconClass(type) {
@@ -652,7 +674,7 @@
           '<div class="card">' +
             '<div class="flex-between mb-16">' +
               '<div>' +
-                '<h3>' + escapeHTML(file.name) + '</h3>' +
+                '<h3>' + escapeHTML(cleanFileName(file.name)) + '</h3>' +
                 '<span style="color:var(--text-muted);font-size:12px">' + formatFileSize(file.size) + ' &middot; ' + formatDate(file.date) + '</span>' +
               '</div>' +
               '<div class="flex gap-8">' +
@@ -660,7 +682,7 @@
                 '<button class="btn btn-secondary" onclick="window.app.useFileForQuiz(\'' + file.id + '\')">Hacer quiz</button>' +
               '</div>' +
             '</div>' +
-            '<div class="file-viewer">' + escapeHTML(file.content || '(Sin contenido de texto)') + '</div>' +
+            '<div class="file-viewer">' + formatFileContent(file.content) + '</div>' +
           '</div>';
         return;
       }
@@ -681,7 +703,7 @@
         '<div class="file-card-header">' +
           '<div class="file-icon ' + getFileIconClass(f.type) + '">' + getFileIcon(f.type) + '</div>' +
           '<div class="file-card-info">' +
-            '<div class="file-card-name">' + escapeHTML(f.name) + '</div>' +
+            '<div class="file-card-name">' + escapeHTML(cleanFileName(f.name)) + '</div>' +
             '<div class="file-card-meta">' + formatFileSize(f.size) + ' &middot; ' + formatDate(f.date) + '</div>' +
           '</div>' +
         '</div>' +
@@ -877,7 +899,7 @@
       '<div class="card mb-24">' +
         '<div class="flex-between mb-16">' +
           '<div>' +
-            '<h3>Procesando: ' + escapeHTML(file.name) + '</h3>' +
+            '<h3>Procesando: ' + escapeHTML(cleanFileName(file.name)) + '</h3>' +
             '<span style="color:var(--text-muted);font-size:12px">' + formatFileSize(file.size) + '</span>' +
           '</div>' +
         '</div>' +
