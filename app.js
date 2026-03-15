@@ -425,10 +425,11 @@
     const subjects = getSubjects();
     let subjectsHTML = '';
     if (subjects.length === 0) {
-      subjectsHTML = '<div class="card stagger" style="text-align:center;padding:40px">' +
-        '<p style="font-size:18px;margin-bottom:16px">Aun no tienes asignaturas</p>' +
-        '<p style="color:var(--text-muted);margin-bottom:20px">Crea tu primera asignatura para comenzar a estudiar</p>' +
-        '<button class="btn btn-primary" onclick="window.app.openAddSubject()">+ Nueva asignatura</button>' +
+      subjectsHTML = '<div class="card stagger" style="text-align:center;padding:56px 40px">' +
+        '<div style="font-size:48px;margin-bottom:20px;opacity:0.6">&#128218;</div>' +
+        '<p style="font-size:20px;margin-bottom:8px;font-family:var(--font-display);font-weight:600">Aun no tienes asignaturas</p>' +
+        '<p style="color:var(--text-muted);margin-bottom:28px;font-size:15px;max-width:300px;margin-left:auto;margin-right:auto">Crea tu primera asignatura para comenzar a organizar tu estudio</p>' +
+        '<button class="btn btn-primary" onclick="window.app.openAddSubject()" style="padding:12px 28px;font-size:15px">+ Nueva asignatura</button>' +
       '</div>';
     }
     subjects.forEach((s, i) => {
