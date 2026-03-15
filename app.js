@@ -574,6 +574,40 @@
       .join('');
   }
 
+  async function renderPDFPages(dataUrl) {
+    try {
+      var pdfjsLib = window['pdfjs-dist/build/pdf'] || window.pdfjsLib;
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+      // Convert data URL to typed array
+      var raw = atob(dataUrl.split(',')[1]);
+      var arr = new Uint8Array(raw.length);
+      for (var i = 0; i < raw.length; i++) arr[i] = raw.charCodeAt(i);
+
+      var pdf = await pdfjsLib.getDocument(arr).promise;
+      var container = document.getElementById('pdf-viewer-container');
+      if (!container) return;
+
+      container.innerHTML = '<p style="color:var(--text-muted);font-size:13px;margin-bottom:12px">' + pdf.numPages + ' paginas</p>';
+
+      for (var p = 1; p <= pdf.numPages; p++) {
+        var page = await pdf.getPage(p);
+        var scale = 1.5;
+        var viewport = page.getViewport({ scale: scale });
+        var canvas = document.createElement('canvas');
+        canvas.className = 'pdf-page-canvas';
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+        container.appendChild(canvas);
+
+        await page.render({ canvasContext: canvas.getContext('2d'), viewport: viewport }).promise;
+      }
+    } catch (e) {
+      var c = document.getElementById('pdf-viewer-container');
+      if (c) c.innerHTML = '<p style="color:var(--text-muted)">Error renderizando PDF: ' + e.message + '</p>';
+    }
+  }
+
   function cleanFileName(name) {
     try { return decodeURIComponent((name || '').replace(/\+/g, ' ')); } catch(e) { return name; }
   }
@@ -695,12 +729,17 @@
               '</div>' +
             '</div>' +
             (file.rawData && file.type === 'pdf'
-              ? '<div class="file-viewer-pdf"><iframe src="' + file.rawData + '" class="pdf-embed"></iframe></div>'
+              ? '<div class="file-viewer-pdf" id="pdf-viewer-container"></div>'
               : file.type === 'pdf'
                 ? '<div class="file-viewer-notice"><p>Este PDF fue subido antes de la actualizacion del visor.</p><p>Eliminalo y vuelvelo a subir para verlo en formato original.</p></div>' +
                   '<div class="file-viewer">' + formatFileContent(file.content) + '</div>'
                 : '<div class="file-viewer">' + formatFileContent(file.content) + '</div>') +
           '</div>';
+
+        // Render PDF pages with PDF.js
+        if (file.rawData && file.type === 'pdf') {
+          renderPDFPages(file.rawData);
+        }
         return;
       }
     }
