@@ -648,7 +648,8 @@
       '- Advertencia: <div class="callout important"><span class="callout-icon">&#9888;&#65039;</span><div><strong>Atencion</strong>Error comun o punto critico</div></div>\n' +
       '- Peligro: <div class="callout warning"><span class="callout-icon">&#10060;</span><div><strong>Cuidado</strong>Texto</div></div>\n\n' +
       'DIAGRAMA DE FLUJO (para procesos, ciclos, secuencias):\n' +
-      '<div class="diagram-container"><p class="diagram-title">Nombre del Proceso</p><div class="flow-diagram"><div class="flow-step"><span class="step-icon">emoji</span>Paso 1</div><span class="flow-arrow">&#8594;</span><div class="flow-step"><span class="step-icon">emoji</span>Paso 2</div><span class="flow-arrow">&#8594;</span><div class="flow-step"><span class="step-icon">emoji</span>Paso 3</div></div></div>\n\n' +
+      '<div class="diagram-container"><p class="diagram-title">Nombre del Proceso</p><div class="flow-diagram"><div class="flow-step"><span class="step-icon">1&#65039;&#8419;</span>Descripcion paso 1</div><span class="flow-arrow">&#8594;</span><div class="flow-step"><span class="step-icon">2&#65039;&#8419;</span>Descripcion paso 2</div><span class="flow-arrow">&#8594;</span><div class="flow-step"><span class="step-icon">3&#65039;&#8419;</span>Descripcion paso 3</div></div></div>\n' +
+      'IMPORTANTE para diagramas: Usa emojis numericos (1&#65039;&#8419;, 2&#65039;&#8419;, 3&#65039;&#8419;, etc.) o emojis basicos comunes (&#128293;, &#9889;, &#127759;, &#128161;, &#9999;, &#128200;, &#9881;). NO uses emojis raros o poco comunes que no se rendericen bien en navegadores.\n\n' +
       'TABLA COMPARATIVA:\n' +
       '<table class="compare-table"><thead><tr><th>Caracteristica</th><th>Elemento A</th><th>Elemento B</th></tr></thead><tbody><tr><td>Aspecto</td><td>Valor</td><td>Valor</td></tr></tbody></table>\n\n' +
       'SEPARADOR DE SECCION: <div class="section-divider"><span>NOMBRE</span></div>\n\n' +

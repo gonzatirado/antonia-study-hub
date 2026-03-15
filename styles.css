@@ -2133,7 +2133,7 @@ h3 { font-size: 18px; line-height: 1.4; }
 .summary-detail p {
   margin: 12px 0;
   line-height: 1.8;
-  color: var(--text-secondary);
+  color: var(--text-primary);
   font-size: 15px;
 }
 
@@ -2146,13 +2146,13 @@ h3 { font-size: 18px; line-height: 1.4; }
 .ai-result li, .summary-detail li {
   margin-bottom: 8px;
   line-height: 1.7;
-  color: var(--text-secondary);
+  color: var(--text-primary);
   font-size: 15px;
 }
 
 .ai-result strong, .summary-detail strong {
   color: var(--text-primary);
-  font-weight: 600;
+  font-weight: 700;
 }
 
 /* --- Concept Cards (Notion-style) --- */
@@ -2189,9 +2189,9 @@ h3 { font-size: 18px; line-height: 1.4; }
 .concept-card p {
   margin: 0;
   padding: 14px 20px 16px;
-  font-size: 14px;
+  font-size: 14.5px;
   line-height: 1.75;
-  color: var(--text-secondary);
+  color: var(--text-primary);
 }
 
 .concept-card ul, .concept-card ol {
@@ -2301,10 +2301,10 @@ h3 { font-size: 18px; line-height: 1.4; }
 
 /* --- Diagram / Flow Container --- */
 .diagram-container {
-  background: var(--bg-card);
+  background: var(--bg-tertiary);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
-  padding: 28px;
+  padding: 32px;
   margin: 24px 0;
   text-align: center;
   overflow-x: auto;
@@ -2314,19 +2314,19 @@ h3 { font-size: 18px; line-height: 1.4; }
 
 .diagram-title {
   font-family: var(--font-body);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
-  color: var(--text-muted);
+  color: var(--text-primary);
   text-transform: uppercase;
   letter-spacing: 1.5px;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .flow-diagram {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
-  gap: 10px;
+  gap: 12px;
   flex-wrap: wrap;
   padding: 12px 0;
 }
@@ -2335,32 +2335,41 @@ h3 { font-size: 18px; line-height: 1.4; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
-  padding: 16px 20px;
-  background: var(--bg-tertiary);
-  border-radius: var(--radius-md);
+  justify-content: center;
+  gap: 8px;
+  padding: 18px 22px;
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
   border: 1px solid var(--border-color);
-  font-size: 12.5px;
+  font-size: 13px;
   font-weight: 600;
-  min-width: 100px;
+  min-width: 120px;
+  max-width: 200px;
   text-align: center;
   color: var(--text-primary);
   transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  line-height: 1.5;
 }
 
 .flow-step:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
 }
 
-.flow-step .step-icon { font-size: 22px; }
+.flow-step .step-icon {
+  font-size: 28px;
+  display: block;
+  line-height: 1;
+}
 
 .flow-arrow {
   color: var(--amethyst);
-  font-size: 20px;
+  font-size: 24px;
   flex-shrink: 0;
   font-weight: 700;
-  opacity: 0.7;
+  display: flex;
+  align-items: center;
 }
 
 /* --- Comparison Table (clean, modern) --- */
