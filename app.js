@@ -696,7 +696,10 @@
             '</div>' +
             (file.rawData && file.type === 'pdf'
               ? '<div class="file-viewer-pdf"><iframe src="' + file.rawData + '" class="pdf-embed"></iframe></div>'
-              : '<div class="file-viewer">' + formatFileContent(file.content) + '</div>') +
+              : file.type === 'pdf'
+                ? '<div class="file-viewer-notice"><p>Este PDF fue subido antes de la actualizacion del visor.</p><p>Eliminalo y vuelvelo a subir para verlo en formato original.</p></div>' +
+                  '<div class="file-viewer">' + formatFileContent(file.content) + '</div>'
+                : '<div class="file-viewer">' + formatFileContent(file.content) + '</div>') +
           '</div>';
         return;
       }
