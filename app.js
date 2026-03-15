@@ -296,10 +296,12 @@
     return { totalNotes, totalSummaries, totalQuizzes, perfectQuizzes, streak, subjectsWithNotes };
   }
 
-  // --- Claude API ---
-  async function callClaude(systemPrompt, userMessage) {
-    const apiKey = Store.get('apiKey', '');
-    if (!apiKey) {
+  // --- AI API (Gemini free by default, Claude optional) ---
+  async function callAI(systemPrompt, userMessage) {
+    const geminiKey = Store.get('geminiKey', '');
+    const claudeKey = Store.get('apiKey', '');
+
+    if (!geminiKey && !claudeKey) {
       showToast('Configura tu API Key en ajustes', 'error');
       throw new Error('No API key');
     }
@@ -307,6 +309,14 @@
     const cleanMessage = sanitizeForAPI(userMessage);
     const cleanSystem = sanitizeForAPI(systemPrompt);
 
+    // Prefer Claude if both keys exist, otherwise use whichever is available
+    if (claudeKey) {
+      return await callClaude(cleanSystem, cleanMessage, claudeKey);
+    }
+    return await callGemini(cleanSystem, cleanMessage, geminiKey);
+  }
+
+  async function callClaude(systemPrompt, userMessage, apiKey) {
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
@@ -318,8 +328,8 @@
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
         max_tokens: 4096,
-        system: cleanSystem,
-        messages: [{ role: 'user', content: cleanMessage }]
+        system: systemPrompt,
+        messages: [{ role: 'user', content: userMessage }]
       })
     });
 
@@ -330,6 +340,26 @@
 
     const data = await response.json();
     return data.content[0].text;
+  }
+
+  async function callGemini(systemPrompt, userMessage, apiKey) {
+    const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + apiKey, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        system_instruction: { parts: [{ text: systemPrompt }] },
+        contents: [{ parts: [{ text: userMessage }] }],
+        generationConfig: { maxOutputTokens: 4096 }
+      })
+    });
+
+    if (!response.ok) {
+      const err = await response.text();
+      throw new Error('API Error: ' + response.status + ' ' + err);
+    }
+
+    const data = await response.json();
+    return data.candidates[0].content.parts[0].text;
   }
 
   // --- Empty State SVG ---
@@ -860,7 +890,7 @@
     // Step 1: Generate summary
     try {
       const summaryPrompt = buildSummaryPrompt(subject.name);
-      const summaryResult = await callClaude(summaryPrompt, 'Resume el siguiente contenido de estudio:\n\n' + file.content);
+      const summaryResult = await callAI(summaryPrompt, 'Resume el siguiente contenido de estudio:\n\n' + file.content);
 
       // Save summary
       const summaries = Store.get('summaries_' + currentSubject, []);
@@ -887,7 +917,7 @@
       }
 
       const quizPrompt = 'Eres un asistente academico. Genera un cuestionario en formato JSON puro (sin markdown, sin ```). El JSON debe ser un array de objetos con: "question" (string), "options" (array de 4 strings), "correct" (indice 0-3 de la respuesta correcta), "explanation" (string explicando la respuesta). Dificultad: medio. Asignatura: ' + subject.name + '. Genera exactamente 5 preguntas. Basa las preguntas en el material proporcionado.';
-      const quizResult = await callClaude(quizPrompt, 'Genera un cuestionario basado en este material:\n\n' + file.content);
+      const quizResult = await callAI(quizPrompt, 'Genera un cuestionario basado en este material:\n\n' + file.content);
 
       let questions;
       try {
@@ -1562,7 +1592,7 @@
     try {
       const subject = getSubject(currentSubject);
       const systemPrompt = buildSummaryPrompt(subject.name);
-      const result = await callClaude(systemPrompt, 'Resume el siguiente contenido de estudio:\n\n' + content);
+      const result = await callAI(systemPrompt, 'Resume el siguiente contenido de estudio:\n\n' + content);
 
       // Save summary
       const summaries = Store.get('summaries_' + currentSubject, []);
@@ -1621,7 +1651,7 @@
       const fileContext = getSelectedFilesContent();
       const systemPrompt = 'Eres un asistente academico. Genera un cuestionario en formato JSON puro (sin markdown, sin ```). El JSON debe ser un array de objetos con: "question" (string), "options" (array de 4 strings), "correct" (indice 0-3 de la respuesta correcta), "explanation" (string explicando la respuesta). Dificultad: ' + difficulty + '. Asignatura: ' + subject.name + '. Genera exactamente ' + count + ' preguntas.' + (fileContext ? ' Basa las preguntas en el material proporcionado.' : '');
       const userMsg = 'Genera un cuestionario sobre: ' + topic + (fileContext ? '\n\nMaterial de estudio:\n' + fileContext : '');
-      const result = await callClaude(systemPrompt, userMsg);
+      const result = await callAI(systemPrompt, userMsg);
 
       // Parse JSON from response
       let questions;
@@ -1743,7 +1773,7 @@
 
       const systemPrompt = 'Eres un asistente academico para ' + (getUserName() || 'el estudiante') + '. Crea un plan de estudio dia a dia hasta la fecha de la prueba. Usa formato HTML simple (h4, ul, li, p, strong). Incluye: distribucion de temas por dia, tecnicas de estudio recomendadas, dias de repaso. Se practico y motivador. Asignatura: ' + subject.name;
       const userMsg = 'Faltan ' + daysLeft + ' dias para la prueba. Fecha: ' + dateEl.value + '. Temas: ' + topicsEl.value;
-      const result = await callClaude(systemPrompt, userMsg);
+      const result = await callAI(systemPrompt, userMsg);
 
       // Generate checklist from topics
       const topics = topicsEl.value.split('\n').filter(t => t.trim());
@@ -1815,6 +1845,7 @@
   document.getElementById('settings-btn').addEventListener('click', () => {
     document.getElementById('settings-modal').classList.add('open');
     document.getElementById('api-key-input').value = Store.get('apiKey', '');
+    document.getElementById('gemini-key-input').value = Store.get('geminiKey', '');
     document.getElementById('user-name-input').value = getUserName();
   });
 
@@ -1824,6 +1855,7 @@
 
   document.getElementById('save-settings').addEventListener('click', () => {
     Store.set('apiKey', document.getElementById('api-key-input').value.trim());
+    Store.set('geminiKey', document.getElementById('gemini-key-input').value.trim());
     Store.set('userName', document.getElementById('user-name-input').value.trim());
     document.getElementById('settings-modal').classList.remove('open');
     showToast('Configuracion guardada', 'success');

@@ -107,8 +107,13 @@
           <input type="text" id="user-name-input" placeholder="Tu nombre..." class="setting-input">
         </div>
         <div class="setting-group">
-          <label for="api-key-input">Claude API Key</label>
-          <p class="setting-hint">Necesaria para resumenes, cuestionarios y planes de estudio con IA.</p>
+          <label for="gemini-key-input">Google Gemini API Key (gratis)</label>
+          <p class="setting-hint">Obtenla gratis en <a href="https://aistudio.google.com/apikey" target="_blank" style="color:var(--amethyst)">aistudio.google.com/apikey</a></p>
+          <input type="password" id="gemini-key-input" placeholder="AIza..." class="setting-input">
+        </div>
+        <div class="setting-group">
+          <label for="api-key-input">Claude API Key (opcional, mejor calidad)</label>
+          <p class="setting-hint">Si tienes una, se usara en vez de Gemini.</p>
           <input type="password" id="api-key-input" placeholder="sk-ant-..." class="setting-input">
         </div>
         <button class="btn btn-primary" id="save-settings">Guardar</button>
