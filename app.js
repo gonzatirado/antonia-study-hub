@@ -624,29 +624,28 @@
   // --- Summary prompt builder ---
   function buildSummaryPrompt(subjectName) {
     var uname = getUserName() || 'el estudiante';
-    return 'Eres un tutor universitario experto en ' + subjectName + '. Creas resumenes completos y detallados para ' + uname + '.\n\n' +
-      'INSTRUCCIONES CRITICAS:\n' +
-      '- Genera un resumen COMPLETO, EXTENSO y DETALLADO que cubra TODO el contenido proporcionado. No omitas nada importante.\n' +
+    return 'Eres un tutor universitario experto en ' + subjectName + '. Creas resumenes de estudio para ' + uname + '.\n\n' +
+      'OBJETIVO: Crear un resumen que contenga TODO lo importante del contenido. Ni mas ni menos. ' +
+      'Si el material es breve, el resumen es breve. Si es extenso y denso, cubre cada tema relevante en profundidad. ' +
+      'Adapta la extension al contenido real.\n\n' +
+      'REGLAS:\n' +
       '- Usa HTML rico (NO markdown). No uses ```html ni bloques de codigo.\n' +
-      '- Responde SOLO con HTML directo, sin explicaciones previas ni texto fuera del HTML.\n\n' +
-      'FORMATO HTML A USAR:\n' +
-      '1) <h2> para secciones principales, <h4> para subsecciones.\n' +
-      '2) Conceptos clave: <div class="concept-card green"><h5>Titulo</h5><p>Explicacion detallada</p></div> (colores: green, orange, blue, pink - alternar).\n' +
-      '3) Terminos importantes: <span class="key-term purple">termino</span> (colores: purple, green, orange, blue).\n' +
+      '- Responde SOLO con HTML directo, sin explicaciones previas.\n' +
+      '- Prioriza CLARIDAD y UTILIDAD para estudiar. Cada concepto debe quedar explicado de forma que el estudiante lo entienda sin volver al material original.\n' +
+      '- Lenguaje claro, directo y pedagogico.\n\n' +
+      'COMPONENTES VISUALES (usa los que correspondan al contenido):\n' +
+      '1) <h2> secciones principales, <h4> subsecciones.\n' +
+      '2) Conceptos: <div class="concept-card green"><h5>Titulo</h5><p>Explicacion</p></div> (colores: green, orange, blue, pink).\n' +
+      '3) Terminos: <span class="key-term purple">termino</span> (colores: purple, green, orange, blue).\n' +
       '4) Tips: <div class="callout tip"><span class="callout-icon">&#128161;</span><div>texto</div></div>.\n' +
-      '5) Formulas/datos numericos: <div class="callout formula"><span class="callout-icon">&#128300;</span><div>formula</div></div>.\n' +
+      '5) Formulas: <div class="callout formula"><span class="callout-icon">&#128300;</span><div>formula</div></div>.\n' +
       '6) Advertencias: <div class="callout important"><span class="callout-icon">&#9888;&#65039;</span><div>texto</div></div>.\n' +
-      '7) Procesos: <div class="diagram-container"><p class="diagram-title">Titulo</p><div class="flow-diagram"><div class="flow-step"><span class="step-icon">emoji</span>Paso</div><span class="flow-arrow">&#8594;</span><div class="flow-step"><span class="step-icon">emoji</span>Paso</div></div></div>.\n' +
+      '7) Procesos/ciclos: <div class="diagram-container"><p class="diagram-title">Titulo</p><div class="flow-diagram"><div class="flow-step"><span class="step-icon">emoji</span>Paso</div><span class="flow-arrow">&#8594;</span><div class="flow-step"><span class="step-icon">emoji</span>Paso</div></div></div>.\n' +
       '8) Comparaciones: <table class="compare-table"><thead><tr><th>A</th><th>B</th></tr></thead><tbody><tr><td>...</td><td>...</td></tr></tbody></table>.\n' +
       '9) Separadores: <div class="section-divider"><span>SECCION</span></div>.\n' +
-      '10) Listas con <ul><li>, enfasis con <strong>.\n\n' +
-      'ESTRUCTURA OBLIGATORIA:\n' +
-      '- Introduccion del tema\n' +
-      '- Desarrollo completo de CADA concepto con explicaciones claras\n' +
-      '- Diagramas de flujo donde haya procesos\n' +
-      '- Tablas comparativas donde haya elementos comparables\n' +
-      '- Seccion final: "Puntos clave para recordar" con los conceptos mas importantes\n\n' +
-      'Se EXTENSO y PEDAGOGICAMENTE CLARO. Explica cada concepto como si el estudiante lo viera por primera vez.';
+      '10) Listas <ul><li>, enfasis <strong>.\n\n' +
+      'ESTRUCTURA: Introduccion breve > Desarrollo de cada tema > Puntos clave para recordar (al final).\n' +
+      'Usa concept-cards para definiciones, callouts para tips/formulas, diagramas para procesos, tablas para comparaciones. Alterna colores para variedad visual.';
   }
 
   // Selected files for AI operations
