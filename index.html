@@ -59,31 +59,11 @@
 
       <div class="nav-divider"></div>
       <span class="nav-label">Asignaturas</span>
-
-      <a href="#" class="nav-item nav-subject" data-view="subject" data-subject="geoquimica">
-        <span class="nav-dot" style="background:#9B72CF"></span>
-        <span>Geoquimica</span>
-      </a>
-      <a href="#" class="nav-item nav-subject" data-view="subject" data-subject="geologia">
-        <span class="nav-dot" style="background:#2D9B6F"></span>
-        <span>Geologia General</span>
-      </a>
-      <a href="#" class="nav-item nav-subject" data-view="subject" data-subject="paleontologia">
-        <span class="nav-dot" style="background:#E8973A"></span>
-        <span>Paleontologia</span>
-      </a>
-      <a href="#" class="nav-item nav-subject" data-view="subject" data-subject="patentologia">
-        <span class="nav-dot" style="background:#3B6FA0"></span>
-        <span>Patentologia</span>
-      </a>
-      <a href="#" class="nav-item nav-subject" data-view="subject" data-subject="vida-universitaria">
-        <span class="nav-dot" style="background:#E8A0B4"></span>
-        <span>Intro Vida Univ.</span>
-      </a>
-      <a href="#" class="nav-item nav-subject" data-view="subject" data-subject="sig">
-        <span class="nav-dot" style="background:#4CAF8A"></span>
-        <span>SIG</span>
-      </a>
+      <div id="nav-subjects"></div>
+      <button class="nav-add-subject" id="add-subject-btn" title="Agregar asignatura">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        <span>Nueva asignatura</span>
+      </button>
     </div>
 
     <div class="sidebar-footer">
@@ -123,11 +103,51 @@
       </div>
       <div class="modal-body">
         <div class="setting-group">
+          <label for="user-name-input">Tu nombre</label>
+          <input type="text" id="user-name-input" placeholder="Tu nombre..." class="setting-input">
+        </div>
+        <div class="setting-group">
           <label for="api-key-input">Claude API Key</label>
           <p class="setting-hint">Necesaria para resumenes, cuestionarios y planes de estudio con IA.</p>
           <input type="password" id="api-key-input" placeholder="sk-ant-..." class="setting-input">
         </div>
         <button class="btn btn-primary" id="save-settings">Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Subject Modal -->
+  <div class="modal-overlay" id="add-subject-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Nueva asignatura</h2>
+        <button class="modal-close" id="add-subject-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="setting-group">
+          <label for="subject-name-input">Nombre completo</label>
+          <input type="text" id="subject-name-input" placeholder="Ej: Fundamentos de Geoquimica" class="setting-input">
+        </div>
+        <div class="setting-group">
+          <label for="subject-short-input">Nombre corto</label>
+          <input type="text" id="subject-short-input" placeholder="Ej: Geoquimica" class="setting-input" maxlength="20">
+        </div>
+        <div class="setting-group">
+          <label>Color</label>
+          <div class="color-picker" id="color-picker">
+            <button class="color-swatch active" data-color="#9B72CF" style="background:#9B72CF"></button>
+            <button class="color-swatch" data-color="#2D9B6F" style="background:#2D9B6F"></button>
+            <button class="color-swatch" data-color="#E8973A" style="background:#E8973A"></button>
+            <button class="color-swatch" data-color="#3B6FA0" style="background:#3B6FA0"></button>
+            <button class="color-swatch" data-color="#E8A0B4" style="background:#E8A0B4"></button>
+            <button class="color-swatch" data-color="#4CAF8A" style="background:#4CAF8A"></button>
+            <button class="color-swatch" data-color="#E74C3C" style="background:#E74C3C"></button>
+            <button class="color-swatch" data-color="#F39C12" style="background:#F39C12"></button>
+            <button class="color-swatch" data-color="#1ABC9C" style="background:#1ABC9C"></button>
+            <button class="color-swatch" data-color="#8E44AD" style="background:#8E44AD"></button>
+          </div>
+        </div>
+        <button class="btn btn-primary" id="save-subject">Crear asignatura</button>
       </div>
     </div>
   </div>

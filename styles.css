@@ -200,6 +200,167 @@ body {
   flex-shrink: 0;
 }
 
+.nav-add-subject {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  margin: 4px 10px;
+  border: 1px dashed var(--border-color);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s;
+  width: calc(100% - 20px);
+}
+
+.nav-add-subject:hover {
+  border-color: var(--amethyst);
+  color: var(--amethyst);
+  background: rgba(155, 114, 207, 0.08);
+}
+
+/* Color picker */
+.color-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.color-swatch {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.color-swatch:hover {
+  transform: scale(1.15);
+}
+
+.color-swatch.active {
+  border-color: var(--text-primary);
+  box-shadow: 0 0 0 2px var(--bg-primary), 0 0 0 4px var(--text-primary);
+}
+
+/* Schedule picker overlay */
+.schedule-picker-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.schedule-picker {
+  background: var(--bg-card);
+  padding: 28px;
+  border-radius: 16px;
+  min-width: 300px;
+  text-align: center;
+  border: 1px solid var(--border-color);
+}
+
+.schedule-picker h4 {
+  margin-bottom: 16px;
+}
+
+.schedule-pick-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.schedule-pick-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.schedule-pick-btn:hover {
+  opacity: 0.85;
+  transform: scale(1.05);
+}
+
+.schedule-cell-empty {
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.schedule-cell-empty:hover {
+  background: rgba(155, 114, 207, 0.1);
+}
+
+.schedule-add-hint {
+  font-size: 18px;
+  color: var(--text-muted);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.schedule-cell-empty:hover .schedule-add-hint {
+  opacity: 1;
+}
+
+.schedule-remove {
+  position: absolute;
+  top: 2px;
+  right: 4px;
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.6);
+  font-size: 14px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 2px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.schedule-block {
+  position: relative;
+}
+
+.schedule-block:hover .schedule-remove {
+  opacity: 1;
+}
+
+.schedule-remove:hover {
+  color: #fff;
+}
+
+/* Delete subject button */
+.btn-danger-sm {
+  padding: 6px 14px;
+  background: rgba(231, 76, 60, 0.15);
+  color: #E74C3C;
+  border: 1px solid rgba(231, 76, 60, 0.3);
+  border-radius: 8px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-danger-sm:hover {
+  background: rgba(231, 76, 60, 0.25);
+}
+
 .sidebar-footer {
   padding: 16px 20px;
   border-top: 1px solid var(--border-color);

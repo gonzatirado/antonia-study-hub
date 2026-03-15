@@ -5,49 +5,81 @@
 (function () {
   'use strict';
 
-  // --- Data Constants ---
-  const SUBJECTS = [
-    { id: 'geoquimica', name: 'Fundamentos de Geoquimica', color: '#9B72CF', icon: '\u2666', shortName: 'Geoquimica' },
-    { id: 'geologia', name: 'Geologia General', color: '#2D9B6F', icon: '\u25B2', shortName: 'Geologia' },
-    { id: 'paleontologia', name: 'Paleontologia', color: '#E8973A', icon: '\u2600', shortName: 'Paleontologia' },
-    { id: 'patentologia', name: 'Patentologia', color: '#3B6FA0', icon: '\u2690', shortName: 'Patentologia' },
-    { id: 'vida-universitaria', name: 'Introduccion Vida Universitaria', color: '#E8A0B4', icon: '\u2605', shortName: 'Intro Vida Univ.' },
-    { id: 'sig', name: 'Sistemas de Informacion Geografica', color: '#4CAF8A', icon: '\u2302', shortName: 'SIG' }
-  ];
+  // --- Data (dynamic, stored in localStorage) ---
+  const ICONS = ['\u2666', '\u25B2', '\u2600', '\u2690', '\u2605', '\u2302', '\u2618', '\u2738', '\u2756', '\u2748'];
 
-  const SCHEDULE = {
-    Lunes: [
-      { subject: 'geoquimica', start: '11:10', end: '12:20' },
-      { subject: 'geoquimica', start: '12:30', end: '13:40' }
-    ],
-    Martes: [
-      { subject: 'geoquimica', start: '12:30', end: '13:40' }
-    ],
-    Miercoles: [
-      { subject: 'geologia', start: '11:10', end: '12:20' },
-      { subject: 'geologia', start: '12:30', end: '13:40' },
-      { subject: 'vida-universitaria', start: '15:10', end: '16:20' }
-    ],
-    Jueves: [
-      { subject: 'geologia', start: '12:30', end: '13:40' },
-      { subject: 'sig', start: '15:10', end: '16:20' },
-      { subject: 'sig', start: '16:30', end: '17:40' },
-      { subject: 'sig', start: '17:50', end: '19:00' }
-    ],
-    Viernes: [
-      { subject: 'paleontologia', start: '11:10', end: '12:20' },
-      { subject: 'paleontologia', start: '12:30', end: '13:40' },
-      { subject: 'patentologia', start: '13:50', end: '15:00' }
-    ]
-  };
+  function getSubjects() {
+    return Store.get('subjects', []);
+  }
+
+  function saveSubjects(subjects) {
+    Store.set('subjects', subjects);
+  }
+
+  function addSubject(name, shortName, color) {
+    const subjects = getSubjects();
+    const id = name.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+    if (subjects.find(s => s.id === id)) {
+      showToast('Ya existe una asignatura con ese nombre', 'error');
+      return false;
+    }
+    const icon = ICONS[subjects.length % ICONS.length];
+    subjects.push({ id: id, name: name, color: color, icon: icon, shortName: shortName });
+    saveSubjects(subjects);
+    return true;
+  }
+
+  function deleteSubject(id) {
+    let subjects = getSubjects();
+    subjects = subjects.filter(s => s.id !== id);
+    saveSubjects(subjects);
+    // Clean up subject data
+    Store.set('notes_' + id, []);
+    Store.set('files_' + id, []);
+    Store.set('summaries_' + id, []);
+  }
+
+  function deleteSubjectUI(id) {
+    const subject = getSubject(id);
+    if (!subject) return;
+    if (!confirm('Eliminar "' + subject.name + '"? Se borran todos sus apuntes, archivos y resumenes.')) return;
+    deleteSubject(id);
+    // Also remove from schedule
+    const schedule = getSchedule();
+    DAYS.forEach(day => {
+      if (schedule[day]) {
+        schedule[day] = schedule[day].filter(c => c.subject !== id);
+      }
+    });
+    saveSchedule(schedule);
+    renderSidebar();
+    navigate('dashboard');
+    showToast('Asignatura eliminada', 'success');
+  }
+
+  function getUserName() {
+    return Store.get('userName', '');
+  }
+
+  function getSchedule() {
+    return Store.get('schedule', { Lunes: [], Martes: [], Miercoles: [], Jueves: [], Viernes: [] });
+  }
+
+  function saveSchedule(schedule) {
+    Store.set('schedule', schedule);
+  }
 
   const TIME_SLOTS = [
+    '08:00 - 09:10',
+    '09:20 - 10:30',
+    '10:40 - 11:50',
     '11:10 - 12:20',
     '12:30 - 13:40',
     '13:50 - 15:00',
     '15:10 - 16:20',
     '16:30 - 17:40',
-    '17:50 - 19:00'
+    '17:50 - 19:00',
+    '19:10 - 20:20'
   ];
 
   const DAYS = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes'];
@@ -72,7 +104,7 @@
     { id: 'first-summary', name: 'Cartografa', desc: 'Genera tu primer resumen', icon: '\uD83D\uDDFA\uFE0F', condition: s => s.totalSummaries >= 1 },
     { id: 'streak-3', name: 'Racha de Fuego', desc: '3 dias seguidos', icon: '\uD83D\uDD25', condition: s => s.streak >= 3 },
     { id: 'streak-7', name: 'Diamante', desc: '7 dias seguidos', icon: '\uD83D\uDC8E', condition: s => s.streak >= 7 },
-    { id: 'all-subjects', name: 'Pangea', desc: 'Apuntes en todas las materias', icon: '\uD83C\uDF0D', condition: s => s.subjectsWithNotes >= 6 },
+    { id: 'all-subjects', name: 'Pangea', desc: 'Apuntes en todas las materias', icon: '\uD83C\uDF0D', condition: s => s.subjectsWithNotes >= Math.max(1, getSubjects().length) },
     { id: 'ten-quizzes', name: 'Maestra Geologa', desc: '10 quizzes completados', icon: '\uD83C\uDFC6', condition: s => s.totalQuizzes >= 10 }
   ];
 
@@ -91,7 +123,7 @@
 
   // --- Utility Functions ---
   function getSubject(id) {
-    return SUBJECTS.find(s => s.id === id);
+    return getSubjects().find(s => s.id === id);
   }
 
   function sanitize(str) {
@@ -241,16 +273,17 @@
 
   // --- Stats computation ---
   function computeStats() {
+    const subjects = getSubjects();
     let totalNotes = 0;
     let subjectsWithNotes = 0;
-    SUBJECTS.forEach(s => {
+    subjects.forEach(s => {
       const notes = Store.get('notes_' + s.id, []);
       totalNotes += notes.length;
       if (notes.length > 0) subjectsWithNotes++;
     });
 
     let totalSummaries = 0;
-    SUBJECTS.forEach(s => {
+    subjects.forEach(s => {
       const summaries = Store.get('summaries_' + s.id, []);
       totalSummaries += summaries.length;
     });
@@ -322,7 +355,8 @@
     const main = document.getElementById('main-content');
     const streak = updateStreak();
     const today = getDayName();
-    const todayClasses = SCHEDULE[today] || [];
+    const schedule = getSchedule();
+    const todayClasses = schedule[today] || [];
     const quote = QUOTES[Math.floor(Math.random() * QUOTES.length)];
     const stats = computeStats();
 
@@ -355,8 +389,16 @@
       todayHTML += '</div>';
     }
 
+    const subjects = getSubjects();
     let subjectsHTML = '';
-    SUBJECTS.forEach((s, i) => {
+    if (subjects.length === 0) {
+      subjectsHTML = '<div class="card stagger" style="text-align:center;padding:40px">' +
+        '<p style="font-size:18px;margin-bottom:16px">Aun no tienes asignaturas</p>' +
+        '<p style="color:var(--text-muted);margin-bottom:20px">Crea tu primera asignatura para comenzar a estudiar</p>' +
+        '<button class="btn btn-primary" onclick="window.app.openAddSubject()">+ Nueva asignatura</button>' +
+      '</div>';
+    }
+    subjects.forEach((s, i) => {
       const notes = Store.get('notes_' + s.id, []);
       const files = Store.get('files_' + s.id, []);
       const quizzes = Store.get('quizHistory', []).filter(q => q.subjectId === s.id);
@@ -375,7 +417,7 @@
 
     main.innerHTML =
       '<div class="dashboard-greeting stagger">' +
-        '<h1>Hola, <span>Antonia</span></h1>' +
+        '<h1>Hola' + (getUserName() ? ', <span>' + escapeHTML(getUserName()) + '</span>' : '') + '</h1>' +
         '<p class="subtitle">Hoy es ' + today + '. ' + (streak > 1 ? 'Llevas ' + streak + ' dias de racha!' : 'Un buen dia para estudiar.') + '</p>' +
       '</div>' +
 
@@ -479,7 +521,8 @@
 
   // --- Summary prompt builder ---
   function buildSummaryPrompt(subjectName) {
-    return 'Eres un asistente academico para una estudiante de Geologia llamada Antonia. ' +
+    var uname = getUserName() || 'el estudiante';
+    return 'Eres un asistente academico para ' + uname + '. ' +
       'Genera un resumen VISUAL y estructurado del contenido. Usa HTML rico (NO markdown). ' +
       'REGLAS DE FORMATO:\n' +
       '1) Usa <h2> para secciones principales y <h4> para subsecciones.\n' +
@@ -520,7 +563,10 @@
 
     main.innerHTML =
       '<div class="subject-header stagger">' +
-        '<button class="back-btn" onclick="window.app.navigate(\'dashboard\')">&larr; Volver</button>' +
+        '<div class="flex-between">' +
+          '<button class="back-btn" onclick="window.app.navigate(\'dashboard\')">&larr; Volver</button>' +
+          '<button class="btn btn-danger-sm" onclick="window.app.deleteSubjectUI(\'' + subjectId + '\')" title="Eliminar asignatura">Eliminar</button>' +
+        '</div>' +
         '<div class="subject-color-bar" style="background:' + subject.color + '"></div>' +
         '<h1>' + escapeHTML(subject.name) + '</h1>' +
       '</div>' +
@@ -804,7 +850,7 @@
             '<span style="color:var(--text-muted);font-size:12px">' + formatFileSize(file.size) + '</span>' +
           '</div>' +
         '</div>' +
-        '<div id="ai-step-1" class="ai-loading"><div class="spinner"></div><span>Paso 1/2 - Antonia, estoy generando el resumen...</span></div>' +
+        '<div id="ai-step-1" class="ai-loading"><div class="spinner"></div><span>Paso 1/2 - Generando el resumen...</span></div>' +
         '<div id="ai-result-summary" class="hidden"></div>' +
         '<div id="ai-step-2" class="hidden"></div>' +
         '<div id="ai-result-quiz" class="hidden"></div>' +
@@ -839,7 +885,7 @@
         step2El.innerHTML = '<div class="spinner"></div><span>Paso 2/2 - Generando cuestionario de 5 preguntas...</span>';
       }
 
-      const quizPrompt = 'Eres un asistente academico para Geologia. Genera un cuestionario en formato JSON puro (sin markdown, sin ```). El JSON debe ser un array de objetos con: "question" (string), "options" (array de 4 strings), "correct" (indice 0-3 de la respuesta correcta), "explanation" (string explicando la respuesta). Dificultad: medio. Asignatura: ' + subject.name + '. Genera exactamente 5 preguntas. Basa las preguntas en el material proporcionado.';
+      const quizPrompt = 'Eres un asistente academico. Genera un cuestionario en formato JSON puro (sin markdown, sin ```). El JSON debe ser un array de objetos con: "question" (string), "options" (array de 4 strings), "correct" (indice 0-3 de la respuesta correcta), "explanation" (string explicando la respuesta). Dificultad: medio. Asignatura: ' + subject.name + '. Genera exactamente 5 preguntas. Basa las preguntas en el material proporcionado.';
       const quizResult = await callClaude(quizPrompt, 'Genera un cuestionario basado en este material:\n\n' + file.content);
 
       let questions;
@@ -860,7 +906,7 @@
         resultQuizEl.className = 'mt-24';
         resultQuizEl.innerHTML =
           '<div class="card" style="text-align:center;padding:32px">' +
-            '<h3>Todo listo, Antonia!</h3>' +
+            '<h3>Todo listo!</h3>' +
             '<p style="color:var(--text-secondary);margin:12px 0">Resumen guardado + cuestionario de ' + questions.length + ' preguntas preparado.</p>' +
             '<div class="flex gap-12" style="justify-content:center;margin-top:20px">' +
               '<button class="btn btn-primary" id="start-generated-quiz">Hacer el cuestionario ahora</button>' +
@@ -1104,7 +1150,7 @@
         '<div class="quiz-score ' + scoreClass + '">' + pct + '%</div>' +
         '<p>' + quizState.score + ' de ' + quizState.questions.length + ' correctas</p>' +
         '<p style="color:var(--text-muted);margin-top:8px">' +
-          (pct >= 80 ? 'Excelente trabajo, Antonia!' : pct >= 50 ? 'Buen intento, sigue practicando!' : 'Necesitas repasar este tema.') +
+          (pct >= 80 ? 'Excelente trabajo!' : pct >= 50 ? 'Buen intento, sigue practicando!' : 'Necesitas repasar este tema.') +
         '</p>' +
         '<div class="mt-24 flex gap-12" style="justify-content:center">' +
           '<button class="btn btn-primary" onclick="window.app.resetQuiz()">Nuevo cuestionario</button>' +
@@ -1165,6 +1211,8 @@
   // --- Schedule View ---
   function renderSchedule() {
     const main = document.getElementById('main-content');
+    const schedule = getSchedule();
+    const subjects = getSubjects();
     let gridHTML = '<div class="schedule-grid stagger">';
 
     // Header row
@@ -1176,29 +1224,93 @@
 
     // Time rows
     TIME_SLOTS.forEach(slot => {
-      const [startTime] = slot.split(' - ');
+      const [startTime, endTime] = slot.split(' - ');
       gridHTML += '<div class="schedule-time">' + slot + '</div>';
 
       DAYS.forEach(day => {
-        const classes = (SCHEDULE[day] || []).filter(c => c.start === startTime);
+        const classes = (schedule[day] || []).filter(c => c.start === startTime);
         if (classes.length > 0) {
           const c = classes[0];
           const subj = getSubject(c.subject);
-          gridHTML += '<div class="schedule-cell"><div class="schedule-block" style="background:' + subj.color + '" onclick="window.app.navigateToSubject(\'' + c.subject + '\')">' +
-            '<div class="block-name">' + escapeHTML(subj.shortName) + '</div>' +
-            '<div class="block-time">' + c.start + '-' + c.end + '</div>' +
-          '</div></div>';
+          if (subj) {
+            gridHTML += '<div class="schedule-cell"><div class="schedule-block" style="background:' + subj.color + '" onclick="window.app.navigateToSubject(\'' + c.subject + '\')">' +
+              '<div class="block-name">' + escapeHTML(subj.shortName) + '</div>' +
+              '<div class="block-time">' + c.start + '-' + c.end + '</div>' +
+              '<button class="schedule-remove" onclick="event.stopPropagation();window.app.removeScheduleBlock(\'' + day + '\',\'' + startTime + '\')" title="Quitar">&times;</button>' +
+            '</div></div>';
+          } else {
+            gridHTML += '<div class="schedule-cell"></div>';
+          }
         } else {
-          gridHTML += '<div class="schedule-cell"></div>';
+          gridHTML += '<div class="schedule-cell schedule-cell-empty" onclick="window.app.addScheduleBlock(\'' + day + '\',\'' + startTime + '\',\'' + endTime + '\')">' +
+            '<span class="schedule-add-hint">+</span>' +
+          '</div>';
         }
       });
     });
 
     gridHTML += '</div>';
 
+    let emptyMsg = '';
+    if (subjects.length === 0) {
+      emptyMsg = '<div class="card stagger" style="text-align:center;padding:24px;margin-bottom:20px">' +
+        '<p style="color:var(--text-muted)">Crea asignaturas primero para poder armar tu horario</p>' +
+      '</div>';
+    }
+
     main.innerHTML =
       '<h1 class="stagger" style="margin-bottom:28px">Horario semanal</h1>' +
+      (subjects.length > 0 ? '<p class="stagger" style="color:var(--text-muted);margin-bottom:20px">Haz clic en una celda vacia para agregar una clase</p>' : '') +
+      emptyMsg +
       gridHTML;
+  }
+
+  function addScheduleBlock(day, startTime, endTime) {
+    const subjects = getSubjects();
+    if (subjects.length === 0) {
+      showToast('Crea asignaturas primero', 'error');
+      return;
+    }
+
+    let optionsHTML = '';
+    subjects.forEach(s => {
+      optionsHTML += '<button class="schedule-pick-btn" style="background:' + s.color + ';color:#fff" onclick="window.app.confirmScheduleBlock(\'' + day + '\',\'' + startTime + '\',\'' + endTime + '\',\'' + s.id + '\')">' +
+        escapeHTML(s.shortName) + '</button>';
+    });
+
+    // Show a small picker inline
+    const main = document.getElementById('main-content');
+    const overlay = document.createElement('div');
+    overlay.className = 'schedule-picker-overlay';
+    overlay.id = 'schedule-picker';
+    overlay.innerHTML = '<div class="schedule-picker">' +
+      '<h4>Agregar clase - ' + day + ' ' + startTime + '</h4>' +
+      '<div class="schedule-pick-options">' + optionsHTML + '</div>' +
+      '<button class="btn btn-secondary" onclick="document.getElementById(\'schedule-picker\').remove()">Cancelar</button>' +
+    '</div>';
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
+    main.appendChild(overlay);
+  }
+
+  function confirmScheduleBlock(day, startTime, endTime, subjectId) {
+    const schedule = getSchedule();
+    if (!schedule[day]) schedule[day] = [];
+    schedule[day].push({ subject: subjectId, start: startTime, end: endTime });
+    saveSchedule(schedule);
+    const picker = document.getElementById('schedule-picker');
+    if (picker) picker.remove();
+    renderSchedule();
+    showToast('Clase agregada', 'success');
+  }
+
+  function removeScheduleBlock(day, startTime) {
+    const schedule = getSchedule();
+    if (schedule[day]) {
+      schedule[day] = schedule[day].filter(c => c.start !== startTime);
+      saveSchedule(schedule);
+    }
+    renderSchedule();
+    showToast('Clase eliminada', 'success');
   }
 
   // --- Stats View ---
@@ -1258,6 +1370,47 @@
       '<div class="card activity-chart stagger"><h3>Actividad (ultimos 7 dias)</h3>' + chartHTML + '</div>' +
 
       '<div class="badges-section stagger"><h2>Insignias</h2><div class="badges-grid">' + badgesHTML + '</div></div>';
+  }
+
+  // ============================================
+  // SIDEBAR RENDERING
+  // ============================================
+
+  function renderSidebar() {
+    const container = document.getElementById('nav-subjects');
+    const subjects = getSubjects();
+
+    let html = '';
+    subjects.forEach(s => {
+      html += '<a href="#" class="nav-item nav-subject" data-view="subject" data-subject="' + s.id + '">' +
+        '<span class="nav-dot" style="background:' + s.color + '"></span>' +
+        '<span>' + escapeHTML(s.shortName) + '</span>' +
+      '</a>';
+    });
+    container.innerHTML = html;
+
+    // Re-bind click events for new nav items
+    container.querySelectorAll('.nav-item').forEach(el => {
+      el.addEventListener('click', (e) => {
+        e.preventDefault();
+        navigateToSubject(el.dataset.subject);
+      });
+    });
+  }
+
+  function openAddSubject() {
+    document.getElementById('add-subject-modal').classList.add('open');
+    document.getElementById('subject-name-input').value = '';
+    document.getElementById('subject-short-input').value = '';
+    // Reset color picker
+    document.querySelectorAll('#color-picker .color-swatch').forEach((s, i) => {
+      s.classList.toggle('active', i === 0);
+    });
+  }
+
+  function getSelectedColor() {
+    const active = document.querySelector('#color-picker .color-swatch.active');
+    return active ? active.dataset.color : '#9B72CF';
   }
 
   // ============================================
@@ -1401,7 +1554,7 @@
     const btn = document.getElementById('generate-summary-btn');
 
     loadingEl.className = 'ai-loading';
-    loadingEl.innerHTML = '<div class="spinner"></div><span>Antonia, estoy analizando el contenido...</span>';
+    loadingEl.innerHTML = '<div class="spinner"></div><span>Analizando el contenido...</span>';
     resultEl.className = 'hidden';
     btn.disabled = true;
 
@@ -1460,12 +1613,12 @@
 
     const loadingEl = document.getElementById('quiz-loading');
     loadingEl.className = 'ai-loading';
-    loadingEl.innerHTML = '<div class="spinner"></div><span>Antonia, estoy analizando el contenido...</span>';
+    loadingEl.innerHTML = '<div class="spinner"></div><span>Analizando el contenido...</span>';
 
     try {
       const subject = getSubject(currentSubject);
       const fileContext = getSelectedFilesContent();
-      const systemPrompt = 'Eres un asistente academico para Geologia. Genera un cuestionario en formato JSON puro (sin markdown, sin ```). El JSON debe ser un array de objetos con: "question" (string), "options" (array de 4 strings), "correct" (indice 0-3 de la respuesta correcta), "explanation" (string explicando la respuesta). Dificultad: ' + difficulty + '. Asignatura: ' + subject.name + '. Genera exactamente ' + count + ' preguntas.' + (fileContext ? ' Basa las preguntas en el material proporcionado.' : '');
+      const systemPrompt = 'Eres un asistente academico. Genera un cuestionario en formato JSON puro (sin markdown, sin ```). El JSON debe ser un array de objetos con: "question" (string), "options" (array de 4 strings), "correct" (indice 0-3 de la respuesta correcta), "explanation" (string explicando la respuesta). Dificultad: ' + difficulty + '. Asignatura: ' + subject.name + '. Genera exactamente ' + count + ' preguntas.' + (fileContext ? ' Basa las preguntas en el material proporcionado.' : '');
       const userMsg = 'Genera un cuestionario sobre: ' + topic + (fileContext ? '\n\nMaterial de estudio:\n' + fileContext : '');
       const result = await callClaude(systemPrompt, userMsg);
 
@@ -1581,13 +1734,13 @@
 
     const loadingEl = document.getElementById('exam-loading');
     loadingEl.className = 'ai-loading';
-    loadingEl.innerHTML = '<div class="spinner"></div><span>Antonia, estoy analizando el contenido...</span>';
+    loadingEl.innerHTML = '<div class="spinner"></div><span>Analizando el contenido...</span>';
 
     try {
       const subject = getSubject(currentSubject);
       const daysLeft = Math.ceil((new Date(dateEl.value) - new Date()) / (1000 * 60 * 60 * 24));
 
-      const systemPrompt = 'Eres un asistente academico para una estudiante de Geologia llamada Antonia. Crea un plan de estudio dia a dia hasta la fecha de la prueba. Usa formato HTML simple (h4, ul, li, p, strong). Incluye: distribucion de temas por dia, tecnicas de estudio recomendadas, dias de repaso. Se practico y motivador. Asignatura: ' + subject.name;
+      const systemPrompt = 'Eres un asistente academico para ' + (getUserName() || 'el estudiante') + '. Crea un plan de estudio dia a dia hasta la fecha de la prueba. Usa formato HTML simple (h4, ul, li, p, strong). Incluye: distribucion de temas por dia, tecnicas de estudio recomendadas, dias de repaso. Se practico y motivador. Asignatura: ' + subject.name;
       const userMsg = 'Faltan ' + daysLeft + ' dias para la prueba. Fecha: ' + dateEl.value + '. Temas: ' + topicsEl.value;
       const result = await callClaude(systemPrompt, userMsg);
 
@@ -1646,23 +1799,22 @@
     document.getElementById('sidebar').classList.toggle('open');
   });
 
-  // Nav clicks
-  document.querySelectorAll('.nav-item').forEach(el => {
+  // Nav clicks (static nav items only — subject items are bound in renderSidebar)
+  document.querySelectorAll('.sidebar-nav > .nav-item').forEach(el => {
     el.addEventListener('click', (e) => {
       e.preventDefault();
-      const view = el.dataset.view;
-      if (view === 'subject') {
-        navigateToSubject(el.dataset.subject);
-      } else {
-        navigate(view);
-      }
+      navigate(el.dataset.view);
     });
   });
+
+  // Add subject button
+  document.getElementById('add-subject-btn').addEventListener('click', openAddSubject);
 
   // Settings modal
   document.getElementById('settings-btn').addEventListener('click', () => {
     document.getElementById('settings-modal').classList.add('open');
     document.getElementById('api-key-input').value = Store.get('apiKey', '');
+    document.getElementById('user-name-input').value = getUserName();
   });
 
   document.getElementById('settings-close').addEventListener('click', () => {
@@ -1671,13 +1823,46 @@
 
   document.getElementById('save-settings').addEventListener('click', () => {
     Store.set('apiKey', document.getElementById('api-key-input').value.trim());
+    Store.set('userName', document.getElementById('user-name-input').value.trim());
     document.getElementById('settings-modal').classList.remove('open');
-    showToast('API Key guardada', 'success');
+    showToast('Configuracion guardada', 'success');
+    if (currentView === 'dashboard') renderDashboard();
   });
 
   document.getElementById('settings-modal').addEventListener('click', (e) => {
     if (e.target.id === 'settings-modal') {
       document.getElementById('settings-modal').classList.remove('open');
+    }
+  });
+
+  // Add subject modal
+  document.getElementById('add-subject-close').addEventListener('click', () => {
+    document.getElementById('add-subject-modal').classList.remove('open');
+  });
+
+  document.getElementById('add-subject-modal').addEventListener('click', (e) => {
+    if (e.target.id === 'add-subject-modal') {
+      document.getElementById('add-subject-modal').classList.remove('open');
+    }
+  });
+
+  document.querySelectorAll('#color-picker .color-swatch').forEach(swatch => {
+    swatch.addEventListener('click', () => {
+      document.querySelectorAll('#color-picker .color-swatch').forEach(s => s.classList.remove('active'));
+      swatch.classList.add('active');
+    });
+  });
+
+  document.getElementById('save-subject').addEventListener('click', () => {
+    const name = document.getElementById('subject-name-input').value.trim();
+    const shortName = document.getElementById('subject-short-input').value.trim();
+    if (!name) { showToast('Escribe el nombre de la asignatura', 'error'); return; }
+    const color = getSelectedColor();
+    if (addSubject(name, shortName || name, color)) {
+      document.getElementById('add-subject-modal').classList.remove('open');
+      renderSidebar();
+      if (currentView === 'dashboard') renderDashboard();
+      showToast('Asignatura creada', 'success');
     }
   });
 
@@ -1695,6 +1880,13 @@
     navigate,
     navigateToSubject,
     switchTab,
+    // Subjects
+    openAddSubject,
+    deleteSubjectUI,
+    // Schedule
+    addScheduleBlock,
+    confirmScheduleBlock,
+    removeScheduleBlock,
     // Files
     viewFile,
     backToFiles,
@@ -1731,6 +1923,7 @@
   };
 
   // Initial render
+  renderSidebar();
   renderDashboard();
 
 })();
