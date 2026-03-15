@@ -509,14 +509,25 @@
     });
   }
 
+  function readFileAsDataURL(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = () => reject(new Error('Error leyendo archivo'));
+      reader.readAsDataURL(file);
+    });
+  }
+
   async function processUploadedFile(file) {
     const ext = file.name.split('.').pop().toLowerCase();
     let textContent = '';
+    let rawData = '';
 
     if (ext === 'txt' || ext === 'md' || ext === 'csv') {
       textContent = await readFileAsText(file);
     } else if (ext === 'pdf') {
       textContent = await extractPDFText(file);
+      try { rawData = await readFileAsDataURL(file); } catch(e) {}
     } else {
       textContent = await readFileAsText(file);
     }
@@ -531,6 +542,7 @@
       type: ext,
       size: file.size,
       content: textContent,
+      rawData: rawData,
       date: new Date().toISOString(),
       order: Date.now()
     };
@@ -682,7 +694,9 @@
                 '<button class="btn btn-secondary" onclick="window.app.useFileForQuiz(\'' + file.id + '\')">Hacer quiz</button>' +
               '</div>' +
             '</div>' +
-            '<div class="file-viewer">' + formatFileContent(file.content) + '</div>' +
+            (file.rawData && file.type === 'pdf'
+              ? '<div class="file-viewer-pdf"><iframe src="' + file.rawData + '" class="pdf-embed"></iframe></div>'
+              : '<div class="file-viewer">' + formatFileContent(file.content) + '</div>') +
           '</div>';
         return;
       }
