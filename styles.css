@@ -1820,6 +1820,13 @@ h3 { font-size: 18px; line-height: 1.4; }
 
 .file-select-chip .chip-icon { font-size: 14px; }
 .file-select-chip .chip-check { font-size: 12px; }
+.file-chip-icon { font-size: 14px; }
+
+.summary-file-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
 
 /* File content viewer modal */
 .file-viewer {

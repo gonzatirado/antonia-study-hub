@@ -1131,20 +1131,37 @@
     // Pre-fill from selected files
     const fileContent = getSelectedFilesContent();
 
-    container.innerHTML =
-      '<div class="ai-section">' +
-        '<h3>Generar resumen con IA</h3>' +
-        buildFileSelector('Selecciona archivos de materiales') +
-        '<div class="ai-input-group">' +
-          '<textarea class="ai-textarea" id="summary-input" placeholder="Pega aqui el contenido o selecciona archivos arriba...">' + escapeHTML(fileContent) + '</textarea>' +
-          '<button class="btn btn-primary" id="generate-summary-btn" onclick="window.app.generateSummary()">Generar resumen</button>' +
-        '</div>' +
-        '<div id="summary-loading" class="hidden"></div>' +
-        '<div id="summary-result" class="hidden"></div>' +
-      '</div>' +
+    // Files available for summarizing
+    const files = Store.get('files_' + currentSubject, []);
+
+    let createHTML = '<div class="card mb-24">' +
+      '<h3 style="margin-bottom:12px">Crear resumen con IA</h3>';
+
+    if (files.length > 0) {
+      createHTML += '<div class="summary-file-list">';
+      files.forEach(f => {
+        const isSelected = selectedFileIds.indexOf(f.id) >= 0;
+        createHTML += '<button class="file-select-chip ' + (isSelected ? 'selected' : '') + '" onclick="window.app.toggleFileSelection(\'' + f.id + '\');window.app.switchTab(\'summaries\')">' +
+          '<span class="file-chip-icon">' + getFileIcon(f.type) + '</span>' +
+          '<span>' + escapeHTML(cleanFileName(f.name)) + '</span>' +
+          (isSelected ? ' <span style="margin-left:4px">&#10003;</span>' : '') +
+        '</button>';
+      });
+      createHTML += '</div>' +
+        '<button class="btn btn-primary mt-16" id="generate-summary-btn" onclick="window.app.generateSummary()" ' + (selectedFileIds.length === 0 ? 'disabled' : '') + '>Generar resumen</button>';
+    } else {
+      createHTML += '<p style="color:var(--text-muted)">Sube archivos en la pestana Materiales para generar resumenes</p>';
+    }
+
+    createHTML += '<div id="summary-loading" class="hidden"></div>' +
+      '<div id="summary-result" class="hidden"></div>' +
+      '<textarea class="hidden" id="summary-input"></textarea>' +
+    '</div>';
+
+    container.innerHTML = createHTML +
       (summaries.length > 0 ?
-        '<div class="summary-list mt-24"><h3 class="mb-16">Resumenes guardados</h3>' + listHTML + '</div>' :
-        '<div class="empty-state mt-24">' + emptyStateSVG('summary') + '<h3>Sin resumenes</h3><p>Genera tu primer resumen con IA</p></div>'
+        '<h3 class="mb-16">Resumenes guardados</h3><div class="summary-list">' + listHTML + '</div>' :
+        '<div class="empty-state mt-24">' + emptyStateSVG('summary') + '<h3>Sin resumenes</h3><p>Selecciona archivos y genera tu primer resumen</p></div>'
       );
   }
 
