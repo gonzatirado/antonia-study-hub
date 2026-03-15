@@ -352,7 +352,7 @@
       body: JSON.stringify({
         system_instruction: { parts: [{ text: systemPrompt }] },
         contents: [{ parts: [{ text: userMessage }] }],
-        generationConfig: { maxOutputTokens: 4096 }
+        generationConfig: { maxOutputTokens: 16384 }
       })
     });
 
@@ -624,22 +624,29 @@
   // --- Summary prompt builder ---
   function buildSummaryPrompt(subjectName) {
     var uname = getUserName() || 'el estudiante';
-    return 'Eres un asistente academico para ' + uname + '. ' +
-      'Genera un resumen VISUAL y estructurado del contenido. Usa HTML rico (NO markdown). ' +
-      'REGLAS DE FORMATO:\n' +
-      '1) Usa <h2> para secciones principales y <h4> para subsecciones.\n' +
-      '2) Envuelve conceptos clave en: <div class="concept-card green/orange/blue/pink"><h5>Titulo</h5><p>Explicacion</p></div>. Alterna los colores.\n' +
-      '3) Para terminos importantes usa: <span class="key-term purple/green/orange/blue">termino</span>.\n' +
-      '4) Para tips o datos clave usa: <div class="callout tip"><span class="callout-icon">&#128161;</span><div>texto</div></div>.\n' +
-      '5) Para formulas o datos numericos: <div class="callout formula"><span class="callout-icon">&#128300;</span><div>formula</div></div>.\n' +
-      '6) Para advertencias: <div class="callout important"><span class="callout-icon">&#9888;&#65039;</span><div>texto</div></div>.\n' +
-      '7) Si hay procesos o ciclos, crea un diagrama de flujo: <div class="diagram-container"><p class="diagram-title">Titulo</p><div class="flow-diagram"><div class="flow-step"><span class="step-icon">emoji</span>Paso 1</div><span class="flow-arrow">&#8594;</span><div class="flow-step"><span class="step-icon">emoji</span>Paso 2</div></div></div>.\n' +
-      '8) Si hay comparaciones, usa tabla: <table class="compare-table"><thead><tr><th>A</th><th>B</th></tr></thead><tbody><tr><td>...</td><td>...</td></tr></tbody></table>.\n' +
-      '9) Usa <div class="section-divider"><span>SECCION</span></div> para separar secciones grandes.\n' +
-      '10) Usa <ul> y <li> para listas, <strong> para enfasis.\n' +
-      '11) Incluye diagramas de flujo, tablas comparativas y callouts donde sea pertinente al tema.\n' +
-      '12) Al final agrega una seccion "Puntos clave para recordar" con los 5 conceptos mas importantes.\n' +
-      'La asignatura es: ' + subjectName + '. Se visualmente atractivo y pedagogicamente claro.';
+    return 'Eres un tutor universitario experto en ' + subjectName + '. Creas resumenes completos y detallados para ' + uname + '.\n\n' +
+      'INSTRUCCIONES CRITICAS:\n' +
+      '- Genera un resumen COMPLETO, EXTENSO y DETALLADO que cubra TODO el contenido proporcionado. No omitas nada importante.\n' +
+      '- Usa HTML rico (NO markdown). No uses ```html ni bloques de codigo.\n' +
+      '- Responde SOLO con HTML directo, sin explicaciones previas ni texto fuera del HTML.\n\n' +
+      'FORMATO HTML A USAR:\n' +
+      '1) <h2> para secciones principales, <h4> para subsecciones.\n' +
+      '2) Conceptos clave: <div class="concept-card green"><h5>Titulo</h5><p>Explicacion detallada</p></div> (colores: green, orange, blue, pink - alternar).\n' +
+      '3) Terminos importantes: <span class="key-term purple">termino</span> (colores: purple, green, orange, blue).\n' +
+      '4) Tips: <div class="callout tip"><span class="callout-icon">&#128161;</span><div>texto</div></div>.\n' +
+      '5) Formulas/datos numericos: <div class="callout formula"><span class="callout-icon">&#128300;</span><div>formula</div></div>.\n' +
+      '6) Advertencias: <div class="callout important"><span class="callout-icon">&#9888;&#65039;</span><div>texto</div></div>.\n' +
+      '7) Procesos: <div class="diagram-container"><p class="diagram-title">Titulo</p><div class="flow-diagram"><div class="flow-step"><span class="step-icon">emoji</span>Paso</div><span class="flow-arrow">&#8594;</span><div class="flow-step"><span class="step-icon">emoji</span>Paso</div></div></div>.\n' +
+      '8) Comparaciones: <table class="compare-table"><thead><tr><th>A</th><th>B</th></tr></thead><tbody><tr><td>...</td><td>...</td></tr></tbody></table>.\n' +
+      '9) Separadores: <div class="section-divider"><span>SECCION</span></div>.\n' +
+      '10) Listas con <ul><li>, enfasis con <strong>.\n\n' +
+      'ESTRUCTURA OBLIGATORIA:\n' +
+      '- Introduccion del tema\n' +
+      '- Desarrollo completo de CADA concepto con explicaciones claras\n' +
+      '- Diagramas de flujo donde haya procesos\n' +
+      '- Tablas comparativas donde haya elementos comparables\n' +
+      '- Seccion final: "Puntos clave para recordar" con los conceptos mas importantes\n\n' +
+      'Se EXTENSO y PEDAGOGICAMENTE CLARO. Explica cada concepto como si el estudiante lo viera por primera vez.';
   }
 
   // Selected files for AI operations
@@ -971,7 +978,7 @@
     // Step 1: Generate summary
     try {
       const summaryPrompt = buildSummaryPrompt(subject.name);
-      const summaryResult = await callAI(summaryPrompt, 'Resume el siguiente contenido de estudio:\n\n' + file.content);
+      const summaryResult = await callAI(summaryPrompt, 'Genera un resumen completo, extenso y visualmente estructurado del siguiente contenido academico. Cubre TODOS los temas sin omitir nada:\n\n' + file.content);
 
       // Save summary
       const summaries = Store.get('summaries_' + currentSubject, []);
@@ -1690,7 +1697,7 @@
     try {
       const subject = getSubject(currentSubject);
       const systemPrompt = buildSummaryPrompt(subject.name);
-      const result = await callAI(systemPrompt, 'Resume el siguiente contenido de estudio:\n\n' + content);
+      const result = await callAI(systemPrompt, 'Genera un resumen completo, extenso y visualmente estructurado del siguiente contenido academico. Cubre TODOS los temas sin omitir nada:\n\n' + content);
 
       // Save summary
       const summaries = Store.get('summaries_' + currentSubject, []);
