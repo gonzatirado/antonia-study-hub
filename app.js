@@ -429,9 +429,10 @@
       '<div class="subjects-grid">' + subjectsHTML + '</div>' +
 
       '<div class="card progress-section stagger">' +
-        '<h3>Progreso semanal</h3>' +
+        '<h3>Tu semana</h3>' +
+        '<p style="color:var(--text-muted);font-size:13px;margin-bottom:12px">Cada dia que usas la app cuenta como dia activo</p>' +
         '<div class="progress-bar-container"><div class="progress-bar-fill" style="width:' + weekProgress + '%"></div></div>' +
-        '<div class="progress-stats"><span>' + activeDays + ' de 5 dias activos</span><span>' + weekProgress + '%</span></div>' +
+        '<div class="progress-stats"><span>' + activeDays + '/5 dias estudiaste</span><span>' + weekProgress + '%</span></div>' +
       '</div>' +
 
       '<div class="card quote-card stagger">' +
