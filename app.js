@@ -39,22 +39,82 @@
     Store.set('summaries_' + id, []);
   }
 
+  // Custom confirm dialog (styled, not browser default)
+  function showConfirm(title, message, onAccept) {
+    var modal = document.getElementById('confirm-modal');
+    document.getElementById('confirm-title').textContent = title;
+    document.getElementById('confirm-message').textContent = message;
+    modal.classList.add('open');
+
+    var acceptBtn = document.getElementById('confirm-accept');
+    var cancelBtn = document.getElementById('confirm-cancel');
+    var closeBtn = document.getElementById('confirm-close');
+
+    function cleanup() {
+      modal.classList.remove('open');
+      acceptBtn.removeEventListener('click', onConfirm);
+      cancelBtn.removeEventListener('click', onCancel);
+      closeBtn.removeEventListener('click', onCancel);
+    }
+    function onConfirm() { cleanup(); onAccept(); }
+    function onCancel() { cleanup(); }
+
+    acceptBtn.addEventListener('click', onConfirm);
+    cancelBtn.addEventListener('click', onCancel);
+    closeBtn.addEventListener('click', onCancel);
+  }
+
   function deleteSubjectUI(id) {
     const subject = getSubject(id);
     if (!subject) return;
-    if (!confirm('Eliminar "' + subject.name + '"? Se borran todos sus apuntes, archivos y resumenes.')) return;
-    deleteSubject(id);
-    // Also remove from schedule
-    const schedule = getSchedule();
-    DAYS.forEach(day => {
-      if (schedule[day]) {
-        schedule[day] = schedule[day].filter(c => c.subject !== id);
+    showConfirm(
+      'Eliminar asignatura',
+      'Eliminar "' + subject.name + '"? Se borran todos sus apuntes, archivos y resumenes. Esta accion no se puede deshacer.',
+      function() {
+        deleteSubject(id);
+        const schedule = getSchedule();
+        DAYS.forEach(day => {
+          if (schedule[day]) {
+            schedule[day] = schedule[day].filter(c => c.subject !== id);
+          }
+        });
+        saveSchedule(schedule);
+        sidebarEditMode = false;
+        renderSidebar();
+        navigate('dashboard');
+        showToast('Asignatura eliminada', 'success');
       }
-    });
-    saveSchedule(schedule);
+    );
+  }
+
+  // Sidebar edit mode
+  let sidebarEditMode = false;
+
+  function toggleSidebarEdit() {
+    sidebarEditMode = !sidebarEditMode;
     renderSidebar();
-    navigate('dashboard');
-    showToast('Asignatura eliminada', 'success');
+  }
+
+  function moveSubject(id, direction) {
+    var subjects = getSubjects();
+    var idx = subjects.findIndex(s => s.id === id);
+    if (idx < 0) return;
+    var newIdx = idx + direction;
+    if (newIdx < 0 || newIdx >= subjects.length) return;
+    var temp = subjects[idx];
+    subjects[idx] = subjects[newIdx];
+    subjects[newIdx] = temp;
+    saveSubjects(subjects);
+    renderSidebar();
+  }
+
+  // Update brand name display
+  function updateBrandName() {
+    var name = getUserName();
+    var brandEl = document.getElementById('brand-user-name');
+    var mobileEl = document.getElementById('mobile-brand-title');
+    if (brandEl) brandEl.textContent = name || 'Study';
+    if (mobileEl) mobileEl.textContent = name ? name + ' Hub' : 'Study Hub';
   }
 
   function getUserName() {
@@ -297,7 +357,7 @@
   }
 
   // --- AI API (Gemini free by default, Claude optional) ---
-  async function callAI(systemPrompt, userMessage) {
+  async function callAI(systemPrompt, userMessage, images) {
     const geminiKey = Store.get('geminiKey', '');
     const claudeKey = Store.get('apiKey', '');
 
@@ -311,12 +371,27 @@
 
     // Prefer Claude if both keys exist, otherwise use whichever is available
     if (claudeKey) {
-      return await callClaude(cleanSystem, cleanMessage, claudeKey);
+      return await callClaude(cleanSystem, cleanMessage, claudeKey, images);
     }
-    return await callGemini(cleanSystem, cleanMessage, geminiKey);
+    return await callGemini(cleanSystem, cleanMessage, geminiKey, images);
   }
 
-  async function callClaude(systemPrompt, userMessage, apiKey) {
+  async function callClaude(systemPrompt, userMessage, apiKey, images) {
+    // Build content array - text + images for multimodal
+    var content = [];
+    if (images && images.length > 0) {
+      images.forEach(function(img) {
+        var base64Data = img.dataUri ? img.dataUri.split(',')[1] : img.data;
+        if (base64Data) {
+          content.push({
+            type: 'image',
+            source: { type: 'base64', media_type: img.mimeType || 'image/jpeg', data: base64Data }
+          });
+        }
+      });
+    }
+    content.push({ type: 'text', text: userMessage });
+
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
@@ -327,9 +402,9 @@
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
-        max_tokens: 4096,
+        max_tokens: 8192,
         system: systemPrompt,
-        messages: [{ role: 'user', content: userMessage }]
+        messages: [{ role: 'user', content: content }]
       })
     });
 
@@ -342,7 +417,23 @@
     return data.content[0].text;
   }
 
-  async function callGemini(systemPrompt, userMessage, apiKey) {
+  async function callGemini(systemPrompt, userMessage, apiKey, images) {
+    // Build content parts - text first, then images if provided
+    var contentParts = [{ text: userMessage }];
+    if (images && images.length > 0) {
+      images.forEach(function(img) {
+        var base64Data = img.dataUri ? img.dataUri.split(',')[1] : img.data;
+        if (base64Data) {
+          contentParts.push({
+            inline_data: {
+              mime_type: img.mimeType || 'image/jpeg',
+              data: base64Data
+            }
+          });
+        }
+      });
+    }
+
     const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent', {
       method: 'POST',
       headers: {
@@ -351,7 +442,7 @@
       },
       body: JSON.stringify({
         system_instruction: { parts: [{ text: systemPrompt }] },
-        contents: [{ parts: [{ text: userMessage }] }],
+        contents: [{ parts: contentParts }],
         generationConfig: { maxOutputTokens: 16384 }
       })
     });
@@ -522,16 +613,93 @@
     });
   }
 
+  // Extract text and images from Word (.docx) files using Mammoth.js
+  async function extractDocxContent(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = async () => {
+        try {
+          const arrayBuffer = reader.result;
+          const images = [];
+
+          // Extract text
+          const textResult = await mammoth.extractRawText({ arrayBuffer: arrayBuffer });
+          const text = textResult.value;
+
+          // Extract HTML with embedded images
+          const htmlResult = await mammoth.convertToHtml({ arrayBuffer: arrayBuffer }, {
+            convertImage: mammoth.images.imgElement(function(image) {
+              return image.read('base64').then(function(imageBuffer) {
+                const dataUri = 'data:' + image.contentType + ';base64,' + imageBuffer;
+                images.push({ data: imageBuffer, mimeType: image.contentType, dataUri: dataUri });
+                return { src: dataUri };
+              });
+            })
+          });
+
+          resolve({ text: text, images: images });
+        } catch (e) {
+          reject(new Error('Error extrayendo contenido del Word: ' + e.message));
+        }
+      };
+      reader.onerror = () => reject(new Error('Error leyendo archivo Word'));
+      reader.readAsArrayBuffer(file);
+    });
+  }
+
+  // Extract images from PDF pages by rendering to canvas
+  async function extractPDFImages(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = async () => {
+        try {
+          const typedArray = new Uint8Array(reader.result);
+          const pdfjsLib = window['pdfjs-dist/build/pdf'] || window.pdfjsLib;
+          pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+          const pdf = await pdfjsLib.getDocument(typedArray).promise;
+          const images = [];
+          // Render up to 5 pages as images for AI context
+          const maxPages = Math.min(pdf.numPages, 5);
+          for (let i = 1; i <= maxPages; i++) {
+            const page = await pdf.getPage(i);
+            const scale = 1.0;
+            const viewport = page.getViewport({ scale: scale });
+            const canvas = document.createElement('canvas');
+            canvas.width = viewport.width;
+            canvas.height = viewport.height;
+            const ctx = canvas.getContext('2d');
+            await page.render({ canvasContext: ctx, viewport: viewport }).promise;
+            // Convert to JPEG for smaller size
+            const dataUri = canvas.toDataURL('image/jpeg', 0.7);
+            const base64 = dataUri.split(',')[1];
+            images.push({ data: base64, mimeType: 'image/jpeg', dataUri: dataUri });
+          }
+          resolve(images);
+        } catch (e) {
+          resolve([]); // Don't fail the whole process if image extraction fails
+        }
+      };
+      reader.onerror = () => resolve([]);
+      reader.readAsArrayBuffer(file);
+    });
+  }
+
   async function processUploadedFile(file) {
     const ext = file.name.split('.').pop().toLowerCase();
     let textContent = '';
     let rawData = '';
+    let images = [];
 
     if (ext === 'txt' || ext === 'md' || ext === 'csv') {
       textContent = await readFileAsText(file);
     } else if (ext === 'pdf') {
       textContent = await extractPDFText(file);
       try { rawData = await readFileAsDataURL(file); } catch(e) {}
+      try { images = await extractPDFImages(file); } catch(e) {}
+    } else if (ext === 'docx' || ext === 'doc') {
+      const docResult = await extractDocxContent(file);
+      textContent = docResult.text;
+      images = docResult.images;
     } else {
       textContent = await readFileAsText(file);
     }
@@ -540,6 +708,12 @@
     var cleanName = file.name;
     try { cleanName = decodeURIComponent(file.name.replace(/\+/g, ' ')); } catch(e) {}
 
+    // Limit stored images to avoid localStorage overflow (max 5, resize large ones)
+    var storedImages = images.slice(0, 5).map(function(img) {
+      // Only store dataUri for embedding, skip raw data to save space
+      return { dataUri: img.dataUri, mimeType: img.mimeType };
+    });
+
     return {
       id: generateId(),
       name: cleanName,
@@ -547,6 +721,7 @@
       size: file.size,
       content: textContent,
       rawData: rawData,
+      images: storedImages,
       date: new Date().toISOString(),
       order: Date.now()
     };
@@ -561,6 +736,7 @@
   function getFileIcon(type) {
     if (type === 'pdf') return '\uD83D\uDCC4';
     if (type === 'txt' || type === 'md') return '\uD83D\uDCDD';
+    if (type === 'docx' || type === 'doc') return '\uD83D\uDCDD';
     return '\uD83D\uDCC1';
   }
 
@@ -619,53 +795,49 @@
   function getFileIconClass(type) {
     if (type === 'pdf') return 'pdf';
     if (type === 'txt' || type === 'md') return 'txt';
+    if (type === 'docx' || type === 'doc') return 'docx';
     return 'other';
+  }
+
+  // --- Markdown to HTML renderer ---
+  function renderMarkdown(md) {
+    if (typeof marked !== 'undefined') {
+      // Clean markdown: remove ```markdown or ```html wrappers if AI added them
+      var clean = md.replace(/^```(?:markdown|html|md)?\s*\n?/i, '').replace(/\n?```\s*$/i, '').trim();
+      return marked.parse(clean);
+    }
+    // Fallback: return as-is (treat as HTML)
+    return md;
   }
 
   // --- Summary prompt builder ---
   function buildSummaryPrompt(subjectName) {
     var uname = getUserName() || 'el estudiante';
-    return 'Eres un tutor universitario experto en ' + subjectName + ' y disenador de contenido educativo premium. ' +
-      'Creas material de estudio visualmente impactante y academicamente riguroso para ' + uname + '.\n\n' +
-      'INSTRUCCION CRITICA: Antes de escribir, identifica TODOS los temas y subtemas del material. ' +
-      'Luego desarrolla CADA UNO en profundidad. No omitas ningun tema. Si el material tiene 8 temas, tu resumen debe tener 8 secciones completas. ' +
-      'Cada concepto debe quedar explicado de forma que el estudiante lo entienda sin volver al material original.\n\n' +
-      'FORMATO: Responde SOLO con HTML directo. NO uses markdown, NO uses ```html, NO agregues texto fuera del HTML.\n\n' +
-      'COMPONENTES VISUALES DISPONIBLES:\n\n' +
-      'TITULOS:\n' +
-      '- <h2>Seccion principal</h2> para cada tema mayor\n' +
-      '- <h3>Subtema</h3> dentro de secciones\n' +
-      '- <h4>Categoria</h4> para subgrupos\n\n' +
-      'CONCEPT CARDS (para cada concepto importante - usa diferentes colores):\n' +
-      '<div class="concept-card green">\n  <h5>Nombre del Concepto</h5>\n  <p>Explicacion detallada del concepto. Incluye definicion, importancia, y como se relaciona con otros conceptos.</p>\n</div>\n' +
-      'Colores disponibles: green, orange, blue, pink (SIN clase = morado). Alterna entre ellos.\n\n' +
-      'TERMINOS CLAVE (inline, dentro del texto):\n' +
-      '<span class="key-term purple">termino</span>\n' +
-      'Colores: purple, green, orange, blue.\n\n' +
-      'CALLOUTS:\n' +
-      '- Tip/dato clave: <div class="callout tip"><span class="callout-icon">&#128161;</span><div><strong>Dato Clave</strong>Texto explicativo</div></div>\n' +
-      '- Formula: <div class="callout formula"><span class="callout-icon">&#128300;</span><div><strong>Formula</strong>Expresion matematica o formula</div></div>\n' +
-      '- Advertencia: <div class="callout important"><span class="callout-icon">&#9888;&#65039;</span><div><strong>Atencion</strong>Error comun o punto critico</div></div>\n' +
-      '- Peligro: <div class="callout warning"><span class="callout-icon">&#10060;</span><div><strong>Cuidado</strong>Texto</div></div>\n\n' +
-      'DIAGRAMA DE FLUJO (para procesos, ciclos, secuencias):\n' +
-      '<div class="diagram-container"><p class="diagram-title">Nombre del Proceso</p><div class="flow-diagram"><div class="flow-step"><span class="step-icon">1&#65039;&#8419;</span>Descripcion paso 1</div><span class="flow-arrow">&#8594;</span><div class="flow-step"><span class="step-icon">2&#65039;&#8419;</span>Descripcion paso 2</div><span class="flow-arrow">&#8594;</span><div class="flow-step"><span class="step-icon">3&#65039;&#8419;</span>Descripcion paso 3</div></div></div>\n' +
-      'IMPORTANTE para diagramas: Usa emojis numericos (1&#65039;&#8419;, 2&#65039;&#8419;, 3&#65039;&#8419;, etc.) o emojis basicos comunes (&#128293;, &#9889;, &#127759;, &#128161;, &#9999;, &#128200;, &#9881;). NO uses emojis raros o poco comunes que no se rendericen bien en navegadores.\n\n' +
-      'TABLA COMPARATIVA:\n' +
-      '<table class="compare-table"><thead><tr><th>Caracteristica</th><th>Elemento A</th><th>Elemento B</th></tr></thead><tbody><tr><td>Aspecto</td><td>Valor</td><td>Valor</td></tr></tbody></table>\n\n' +
-      'SEPARADOR DE SECCION: <div class="section-divider"><span>NOMBRE</span></div>\n\n' +
-      'PUNTOS CLAVE (al final del resumen):\n' +
-      '<div class="key-takeaway"><div class="key-takeaway-title">&#128204; Puntos Clave para Recordar</div><ul><li>Punto 1</li><li>Punto 2</li></ul></div>\n\n' +
-      'REGLAS DE DISENO:\n' +
-      '1) Usa concept-cards para CADA concepto importante (minimo 4-5 cards por seccion)\n' +
-      '2) Alterna colores de cards (green, orange, blue, pink) para variedad visual\n' +
-      '3) Usa callouts para tips, formulas y advertencias - NO para definiciones\n' +
-      '4) Incluye al menos 1 diagrama de flujo si hay procesos en el contenido\n' +
-      '5) Incluye al menos 1 tabla si hay elementos comparables\n' +
-      '6) Usa separadores entre secciones grandes\n' +
-      '7) Termina SIEMPRE con un bloque key-takeaway\n' +
-      '8) Usa listas <ul><li> dentro de las cards cuando haya multiples puntos\n' +
-      '9) Marca terminos tecnicos con key-term la primera vez que aparecen\n' +
-      '10) Cada seccion h2 debe tener al menos 2-3 concept-cards con explicaciones completas';
+    return 'Eres un profesor universitario experto en ' + subjectName + '. ' +
+      'Generas resumenes tecnicos y rigurosos para ' + uname + '.\n\n' +
+      'TONO:\n' +
+      '- Precision tecnica y academica. Terminologia propia de la disciplina.\n' +
+      '- Directo y tecnico, como apuntes universitarios de alto nivel. NO divulgativo.\n' +
+      '- Incluye formulas, ecuaciones, valores numericos, unidades, datos concretos.\n' +
+      '- Explica los "por que", no solo el "que". Mantén la profundidad del material original.\n\n' +
+      'COBERTURA: Identifica TODOS los temas y subtemas. Desarrolla CADA UNO sin omitir nada.\n\n' +
+      'FORMATO: Responde en Markdown puro. NO uses HTML. NO uses bloques de codigo (```).\n\n' +
+      'ESTRUCTURA:\n' +
+      '- Usa ## para secciones principales, ### para subtemas, #### para categorias\n' +
+      '- Usa parrafos normales para el grueso del contenido tecnico\n' +
+      '- Usa **negrita** para terminos clave la primera vez que aparecen\n' +
+      '- Usa tablas markdown para comparaciones y clasificaciones\n' +
+      '- Usa listas (- o 1.) para enumeraciones\n' +
+      '- Usa > blockquotes para formulas, ecuaciones o datos criticos\n' +
+      '- Usa --- para separar secciones grandes\n' +
+      '- Termina con una seccion "## Puntos Clave" con los conceptos mas importantes\n\n' +
+      'REGLAS:\n' +
+      '1) El contenido debe ser denso y tecnico, no superficial\n' +
+      '2) Cada seccion debe tener suficiente profundidad para estudiar sin el material original\n' +
+      '3) Usa tablas cuando haya datos comparables o clasificaciones\n' +
+      '4) Usa blockquotes (>) para formulas y ecuaciones importantes\n' +
+      '5) Si se proporcionan imagenes, analiza su contenido y describelas tecnicamente\n' +
+      '6) NO uses emojis excepto en la seccion final de Puntos Clave';
   }
 
   // Selected files for AI operations
@@ -674,8 +846,15 @@
   function getSelectedFilesContent() {
     const files = Store.get('files_' + currentSubject, []);
     const selected = files.filter(f => selectedFileIds.includes(f.id));
-    if (selected.length === 0) return '';
-    return selected.map(f => '--- ' + f.name + ' ---\n' + f.content).join('\n\n');
+    if (selected.length === 0) return { text: '', images: [] };
+    var text = selected.map(f => '--- ' + f.name + ' ---\n' + f.content).join('\n\n');
+    var images = [];
+    selected.forEach(function(f) {
+      if (f.images && f.images.length > 0) {
+        images = images.concat(f.images);
+      }
+    });
+    return { text: text, images: images };
   }
 
   // --- Subject View ---
@@ -693,7 +872,6 @@
       '<div class="subject-header stagger">' +
         '<div class="flex-between">' +
           '<button class="back-btn" onclick="window.app.navigate(\'dashboard\')">&larr; Volver</button>' +
-          '<button class="btn btn-danger-sm" onclick="window.app.deleteSubjectUI(\'' + subjectId + '\')" title="Eliminar asignatura">Eliminar</button>' +
         '</div>' +
         '<div class="subject-color-bar" style="background:' + subject.color + '"></div>' +
         '<h1>' + escapeHTML(subject.name) + '</h1>' +
@@ -805,7 +983,7 @@
         '<input type="file" id="file-input" multiple accept=".txt,.pdf,.md,.csv,.doc,.docx">' +
         '<div class="dropzone-icon">\uD83D\uDCC2</div>' +
         '<p class="dropzone-text">Arrastra archivos aqui o <span class="dropzone-browse">busca en tu computador</span></p>' +
-        '<p class="dropzone-hint">PDF, TXT, MD, CSV</p>' +
+        '<p class="dropzone-hint">PDF, Word, TXT, MD, CSV</p>' +
       '</div>' +
       '<div id="file-processing" class="hidden"></div>' +
       (files.length > 0 ?
@@ -997,12 +1175,27 @@
     // Step 1: Generate summary
     try {
       const summaryPrompt = buildSummaryPrompt(subject.name);
-      const summaryResult = await callAI(summaryPrompt, 'Genera un resumen completo, extenso y visualmente estructurado del siguiente contenido academico. Cubre TODOS los temas sin omitir nada:\n\n' + file.content);
+      var fileImages = file.images || [];
+      var imageNote = fileImages.length > 0 ? '\n\nNOTA: Se adjuntan ' + fileImages.length + ' imagen(es) del documento. Analiza las imagenes e incorporalas en el resumen usando etiquetas <img> con los src proporcionados, o describe su contenido en detalle si son diagramas/graficos.' : '';
+      const summaryResult = await callAI(summaryPrompt, 'Genera un resumen completo, extenso y visualmente estructurado del siguiente contenido academico. Cubre TODOS los temas sin omitir nada.' + imageNote + '\n\n' + file.content, fileImages);
+
+      // Render markdown to HTML
+      var renderedHtml = renderMarkdown(summaryResult);
+
+      // Embed original images if not referenced
+      if (fileImages.length > 0 && renderedHtml.indexOf('<img') === -1) {
+        var imgHtml = '<div class="summary-images"><h4>Imagenes del documento</h4>';
+        fileImages.forEach(function(img, i) {
+          imgHtml += '<figure><img src="' + img.dataUri + '" alt="Imagen ' + (i+1) + ' del documento"><figcaption>Imagen ' + (i+1) + '</figcaption></figure>';
+        });
+        imgHtml += '</div>';
+        renderedHtml += imgHtml;
+      }
 
       // Save summary
       const summaries = Store.get('summaries_' + currentSubject, []);
       const title = file.name + ' - Resumen';
-      summaries.unshift({ id: generateId(), title: title, html: summaryResult, date: new Date().toISOString() });
+      summaries.unshift({ id: generateId(), title: title, html: renderedHtml, date: new Date().toISOString() });
       Store.set('summaries_' + currentSubject, summaries);
 
       const step1El = document.getElementById('ai-step-1');
@@ -1013,7 +1206,7 @@
       }
       if (resultSummaryEl) {
         resultSummaryEl.className = 'ai-result mb-24';
-        resultSummaryEl.innerHTML = '<h4>Resumen</h4>' + summaryResult;
+        resultSummaryEl.innerHTML = '<h4>Resumen</h4>' + renderedHtml;
       }
 
       // Step 2: Generate quiz
@@ -1200,7 +1393,7 @@
     });
 
     // Pre-fill from selected files
-    const fileContent = getSelectedFilesContent();
+    const fileContent = getSelectedFilesContent().text;
 
     // Files available for summarizing
     const files = Store.get('files_' + currentSubject, []);
@@ -1536,21 +1729,46 @@
     const subjects = getSubjects();
 
     let html = '';
-    subjects.forEach(s => {
-      html += '<a href="#" class="nav-item nav-subject" data-view="subject" data-subject="' + s.id + '">' +
-        '<span class="nav-dot" style="background:' + s.color + '"></span>' +
-        '<span>' + escapeHTML(s.shortName) + '</span>' +
-      '</a>';
+    if (subjects.length > 0 && !sidebarEditMode) {
+      html += '<button class="sidebar-edit-toggle" onclick="window.app.toggleSidebarEdit()" title="Editar asignaturas">' +
+        '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>' +
+      '</button>';
+    }
+
+    subjects.forEach(function(s, idx) {
+      if (sidebarEditMode) {
+        html += '<div class="nav-subject-edit">' +
+          '<span class="nav-dot" style="background:' + s.color + '"></span>' +
+          '<span class="nav-subject-name">' + escapeHTML(s.shortName) + '</span>' +
+          '<div class="nav-subject-actions">' +
+            (idx > 0 ? '<button class="nav-action-btn" onclick="window.app.moveSubject(\'' + s.id + '\', -1)" title="Subir"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg></button>' : '<span class="nav-action-btn" style="visibility:hidden"></span>') +
+            (idx < subjects.length - 1 ? '<button class="nav-action-btn" onclick="window.app.moveSubject(\'' + s.id + '\', 1)" title="Bajar"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>' : '<span class="nav-action-btn" style="visibility:hidden"></span>') +
+            '<button class="nav-action-btn nav-action-delete" onclick="window.app.deleteSubjectUI(\'' + s.id + '\')" title="Eliminar"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>' +
+          '</div>' +
+        '</div>';
+      } else {
+        html += '<a href="#" class="nav-item nav-subject" data-view="subject" data-subject="' + s.id + '">' +
+          '<span class="nav-dot" style="background:' + s.color + '"></span>' +
+          '<span>' + escapeHTML(s.shortName) + '</span>' +
+        '</a>';
+      }
     });
+
+    if (sidebarEditMode) {
+      html += '<button class="btn btn-secondary" style="width:100%;margin-top:8px;font-size:12px;padding:6px" onclick="window.app.toggleSidebarEdit()">Listo</button>';
+    }
+
     container.innerHTML = html;
 
-    // Re-bind click events for new nav items
-    container.querySelectorAll('.nav-item').forEach(el => {
-      el.addEventListener('click', (e) => {
-        e.preventDefault();
-        navigateToSubject(el.dataset.subject);
+    // Re-bind click events for nav items (only when not in edit mode)
+    if (!sidebarEditMode) {
+      container.querySelectorAll('.nav-item').forEach(el => {
+        el.addEventListener('click', (e) => {
+          e.preventDefault();
+          navigateToSubject(el.dataset.subject);
+        });
       });
-    });
+    }
   }
 
   function openAddSubject() {
@@ -1696,8 +1914,15 @@
     const input = document.getElementById('summary-input');
     // If textarea is empty but files are selected, use file content
     let content = input ? input.value.trim() : '';
+    let images = [];
     if (!content && selectedFileIds.length > 0) {
-      content = getSelectedFilesContent();
+      var filesData = getSelectedFilesContent();
+      content = filesData.text;
+      images = filesData.images;
+    } else if (selectedFileIds.length > 0) {
+      // Even if user typed text, grab images from selected files
+      var filesData2 = getSelectedFilesContent();
+      images = filesData2.images;
     }
     if (!content) {
       showToast('Selecciona archivos o pega contenido para resumir', 'error');
@@ -1716,17 +1941,31 @@
     try {
       const subject = getSubject(currentSubject);
       const systemPrompt = buildSummaryPrompt(subject.name);
-      const result = await callAI(systemPrompt, 'Genera un resumen completo, extenso y visualmente estructurado del siguiente contenido academico. Cubre TODOS los temas sin omitir nada:\n\n' + content);
+      var imageNote = images.length > 0 ? '\n\nNOTA: Se adjuntan ' + images.length + ' imagen(es) del documento. Analiza las imagenes e incorporalas en el resumen usando etiquetas <img> con los src proporcionados, o describe su contenido en detalle si son diagramas/graficos.' : '';
+      const result = await callAI(systemPrompt, 'Genera un resumen completo y tecnico del siguiente contenido academico. Cubre TODOS los temas sin omitir nada.' + imageNote + '\n\n' + content, images);
+
+      // Render markdown to HTML
+      var renderedResult = renderMarkdown(result);
+
+      // Embed original images if not referenced
+      if (images.length > 0 && renderedResult.indexOf('<img') === -1) {
+        var imgHtml = '<div class="summary-images"><h4>Imagenes del documento</h4>';
+        images.forEach(function(img, i) {
+          imgHtml += '<figure><img src="' + img.dataUri + '" alt="Imagen ' + (i+1) + ' del documento"><figcaption>Imagen ' + (i+1) + '</figcaption></figure>';
+        });
+        imgHtml += '</div>';
+        renderedResult += imgHtml;
+      }
 
       // Save summary
       const summaries = Store.get('summaries_' + currentSubject, []);
       const title = content.substring(0, 60).replace(/\n/g, ' ').trim() + '...';
-      summaries.unshift({ id: generateId(), title: title, html: result, date: new Date().toISOString() });
+      summaries.unshift({ id: generateId(), title: title, html: renderedResult, date: new Date().toISOString() });
       Store.set('summaries_' + currentSubject, summaries);
 
       loadingEl.className = 'hidden';
       resultEl.className = 'ai-result';
-      resultEl.innerHTML = '<h4>Resumen generado</h4>' + result;
+      resultEl.innerHTML = '<h4>Resumen generado</h4>' + renderedResult;
 
       showToast('Resumen guardado', 'success');
       logActivity();
@@ -1772,7 +2011,7 @@
 
     try {
       const subject = getSubject(currentSubject);
-      const fileContext = getSelectedFilesContent();
+      const fileContext = getSelectedFilesContent().text;
       const systemPrompt = 'Eres un asistente academico. Genera un cuestionario en formato JSON puro (sin markdown, sin ```). El JSON debe ser un array de objetos con: "question" (string), "options" (array de 4 strings), "correct" (indice 0-3 de la respuesta correcta), "explanation" (string explicando la respuesta). Dificultad: ' + difficulty + '. Asignatura: ' + subject.name + '. Genera exactamente ' + count + ' preguntas.' + (fileContext ? ' Basa las preguntas en el material proporcionado.' : '');
       const userMsg = 'Genera un cuestionario sobre: ' + topic + (fileContext ? '\n\nMaterial de estudio:\n' + fileContext : '');
       const result = await callAI(systemPrompt, userMsg);
@@ -2040,6 +2279,8 @@
     // Subjects
     openAddSubject,
     deleteSubjectUI,
+    toggleSidebarEdit,
+    moveSubject,
     // Schedule
     addScheduleBlock,
     confirmScheduleBlock,
@@ -2079,8 +2320,38 @@
     toggleChecklist
   };
 
+  // Welcome modal (first visit)
+  function checkWelcome() {
+    var name = getUserName();
+    if (!name) {
+      document.getElementById('welcome-modal').classList.add('open');
+    }
+  }
+
+  document.getElementById('welcome-save').addEventListener('click', function() {
+    var name = document.getElementById('welcome-name-input').value.trim();
+    if (!name) { showToast('Escribe tu nombre para continuar', 'error'); return; }
+    Store.set('userName', name);
+    document.getElementById('welcome-modal').classList.remove('open');
+    updateBrandName();
+    renderDashboard();
+    showToast('Bienvenido, ' + name + '!', 'success');
+  });
+
+  document.getElementById('welcome-name-input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') document.getElementById('welcome-save').click();
+  });
+
+  // Update brand on settings save
+  var origSaveSettings = document.getElementById('save-settings');
+  origSaveSettings.addEventListener('click', function() {
+    setTimeout(updateBrandName, 50);
+  });
+
   // Initial render
+  updateBrandName();
   renderSidebar();
   renderDashboard();
+  checkWelcome();
 
 })();
