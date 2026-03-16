@@ -417,8 +417,28 @@
     return data.content[0].text;
   }
 
+  // Retry logic for API rate limits
+  async function fetchWithRetry(url, options, maxRetries) {
+    maxRetries = maxRetries || 3;
+    for (var attempt = 0; attempt < maxRetries; attempt++) {
+      var response = await fetch(url, options);
+      if (response.ok) return response;
+      if (response.status === 429) {
+        // Rate limited - wait and retry
+        var waitTime = Math.min(Math.pow(2, attempt) * 2000, 30000); // 2s, 4s, 8s...
+        showToast('Limite de API alcanzado, reintentando en ' + (waitTime/1000) + 's...', 'info');
+        await new Promise(function(r) { setTimeout(r, waitTime); });
+        continue;
+      }
+      // Non-retryable error
+      var err = await response.text();
+      throw new Error('API Error: ' + response.status + ' ' + err);
+    }
+    throw new Error('API no disponible despues de ' + maxRetries + ' intentos. Intenta mas tarde.');
+  }
+
   async function callGemini(systemPrompt, userMessage, apiKey, images) {
-    // Build content parts - text first, then images if provided
+    // Build content parts - text first, then images
     var contentParts = [{ text: userMessage }];
     if (images && images.length > 0) {
       images.forEach(function(img) {
@@ -434,25 +454,27 @@
       });
     }
 
-    const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-goog-api-key': apiKey
-      },
-      body: JSON.stringify({
-        system_instruction: { parts: [{ text: systemPrompt }] },
-        contents: [{ parts: contentParts }],
-        generationConfig: { maxOutputTokens: 16384 }
-      })
-    });
-
-    if (!response.ok) {
-      const err = await response.text();
-      throw new Error('API Error: ' + response.status + ' ' + err);
-    }
+    var response = await fetchWithRetry(
+      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-goog-api-key': apiKey
+        },
+        body: JSON.stringify({
+          system_instruction: { parts: [{ text: systemPrompt }] },
+          contents: [{ parts: contentParts }],
+          generationConfig: { maxOutputTokens: 16384 }
+        })
+      }
+    );
 
     const data = await response.json();
+    if (!data.candidates || !data.candidates[0] || !data.candidates[0].content) {
+      var reason = data.promptFeedback ? JSON.stringify(data.promptFeedback) : 'Respuesta vacia de la API';
+      throw new Error('La IA no genero respuesta: ' + reason);
+    }
     return data.candidates[0].content.parts[0].text;
   }
 
@@ -648,7 +670,8 @@
   }
 
   // Extract images from PDF pages by rendering to canvas
-  async function extractPDFImages(file) {
+  // onProgress callback: function(currentPage, totalPages)
+  async function extractPDFImages(file, onProgress) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = async () => {
@@ -658,25 +681,24 @@
           pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
           const pdf = await pdfjsLib.getDocument(typedArray).promise;
           const images = [];
-          // Render ALL pages as images - this is the primary input for AI
-          const maxPages = pdf.numPages;
-          for (let i = 1; i <= maxPages; i++) {
+          var totalPages = pdf.numPages;
+          for (let i = 1; i <= totalPages; i++) {
+            if (onProgress) onProgress(i, totalPages);
             const page = await pdf.getPage(i);
-            const scale = 1.5;
+            const scale = 1.0; // Lower scale for speed with many pages
             const viewport = page.getViewport({ scale: scale });
             const canvas = document.createElement('canvas');
             canvas.width = viewport.width;
             canvas.height = viewport.height;
             const ctx = canvas.getContext('2d');
             await page.render({ canvasContext: ctx, viewport: viewport }).promise;
-            // Convert to JPEG for smaller size
-            const dataUri = canvas.toDataURL('image/jpeg', 0.7);
+            const dataUri = canvas.toDataURL('image/jpeg', 0.55);
             const base64 = dataUri.split(',')[1];
-            images.push({ data: base64, mimeType: 'image/jpeg', dataUri: dataUri });
+            images.push({ data: base64, mimeType: 'image/jpeg', dataUri: dataUri, pageNum: i });
           }
           resolve(images);
         } catch (e) {
-          resolve([]); // Don't fail the whole process if image extraction fails
+          resolve([]);
         }
       };
       reader.onerror = () => resolve([]);
@@ -694,8 +716,8 @@
       textContent = await readFileAsText(file);
     } else if (ext === 'pdf') {
       textContent = await extractPDFText(file);
-      try { rawData = await readFileAsDataURL(file); } catch(e) {}
-      try { images = await extractPDFImages(file); } catch(e) {}
+      // Don't store rawData for large PDFs (saves localStorage)
+      // Instead, cache the File object in memory for on-demand image extraction
     } else if (ext === 'docx' || ext === 'doc') {
       const docResult = await extractDocxContent(file);
       textContent = docResult.text;
@@ -728,6 +750,10 @@
     };
     // Attach all images in memory (not persisted) for AI use
     fileObj._allImages = allImages;
+    // Cache original file for on-demand PDF image extraction
+    if (ext === 'pdf') {
+      originalFileCache[fileObj.id] = file;
+    }
     return fileObj;
   }
 
@@ -832,36 +858,31 @@
 
   // --- Summary prompt builder ---
   function buildSummaryPrompt(subjectName) {
-    var uname = getUserName() || 'el estudiante';
-    return 'Eres un profesor universitario experto en ' + subjectName + '. ' +
-      'Generas resumenes tecnicos y rigurosos para ' + uname + '.\n\n' +
-      'TONO:\n' +
-      '- Precision tecnica y academica. Terminologia propia de la disciplina.\n' +
-      '- Directo y tecnico, como apuntes universitarios de alto nivel. NO divulgativo.\n' +
-      '- Incluye formulas, ecuaciones, valores numericos, unidades, datos concretos.\n' +
-      '- Explica los "por que", no solo el "que". Mantén la profundidad del material original.\n\n' +
-      'COBERTURA: Identifica TODOS los temas y subtemas. Desarrolla CADA UNO sin omitir nada.\n\n' +
-      'FORMATO: Responde en Markdown puro. NO uses HTML. NO uses bloques de codigo (```).\n\n' +
-      'ESTRUCTURA:\n' +
-      '- Usa ## para secciones principales, ### para subtemas, #### para categorias\n' +
-      '- Usa parrafos normales para el grueso del contenido tecnico\n' +
-      '- Usa **negrita** para terminos clave la primera vez que aparecen\n' +
-      '- Usa tablas markdown para comparaciones y clasificaciones\n' +
-      '- Usa listas (- o 1.) para enumeraciones\n' +
-      '- Usa > blockquotes para formulas, ecuaciones o datos criticos\n' +
-      '- Usa --- para separar secciones grandes\n' +
-      '- Termina con una seccion "## Puntos Clave" con los conceptos mas importantes\n\n' +
-      'REGLAS:\n' +
-      '1) El contenido debe ser denso y tecnico, no superficial\n' +
-      '2) Cada seccion debe tener suficiente profundidad para estudiar sin el material original\n' +
-      '3) Usa tablas cuando haya datos comparables o clasificaciones\n' +
-      '4) Usa blockquotes (>) para formulas y ecuaciones importantes\n' +
-      '5) Si se proporcionan imagenes, analiza su contenido y describelas tecnicamente\n' +
-      '6) NO uses emojis excepto en la seccion final de Puntos Clave';
+    return 'Eres un tutor experto en ' + subjectName + '. Genera un resumen de estudio DIDACTICO en Markdown.\n\n' +
+      'OBJETIVO: Que el estudiante pueda estudiar SOLO con este resumen, sin volver al material original.\n\n' +
+      'CONTENIDO:\n' +
+      '- Cubre TODOS los temas del documento sin omitir nada importante\n' +
+      '- Explica el POR QUE de cada concepto, no solo la definicion\n' +
+      '- Incluye formulas/ecuaciones con explicacion de cada variable\n' +
+      '- Agrega tips o errores comunes donde sea relevante (marcalos con "**Tip:**" o "**Ojo:**")\n' +
+      '- Conecta conceptos entre si cuando sea relevante\n' +
+      '- Usa ejemplos concretos cuando ayuden a entender\n\n' +
+      'FORMATO (Markdown puro, NO HTML):\n' +
+      '- ## para secciones, ### para subtemas\n' +
+      '- **negrita** para terminos clave\n' +
+      '- > blockquotes SOLO para formulas/ecuaciones importantes\n' +
+      '- Tablas para comparaciones\n' +
+      '- Listas para enumeraciones\n' +
+      '- --- entre secciones grandes\n' +
+      '- Termina con ## Puntos Clave (5-8 conceptos clave para recordar)\n\n' +
+      'NO uses emojis, HTML ni bloques de codigo. Si hay imagenes, describe su contenido.';
   }
 
   // Selected files for AI operations
   let selectedFileIds = [];
+
+  // In-memory cache of original File objects for on-demand image extraction
+  var originalFileCache = {};
 
   function getSelectedFilesContent() {
     const files = Store.get('files_' + currentSubject, []);
@@ -1051,7 +1072,7 @@
     const processingEl = document.getElementById('file-processing');
     if (processingEl) {
       processingEl.className = 'file-processing';
-      processingEl.innerHTML = '<div class="spinner"></div><span>Procesando ' + fileList.length + ' archivo(s)...</span>';
+      processingEl.innerHTML = '<div class="spinner"></div><span>Procesando ' + fileList.length + ' archivo(s)... (puede tomar unos segundos por PDF)</span>';
     }
 
     const files = Store.get('files_' + currentSubject, []);
@@ -1067,7 +1088,17 @@
       }
     }
 
-    Store.set('files_' + currentSubject, files);
+    try {
+      Store.set('files_' + currentSubject, files);
+    } catch(e) {
+      // localStorage quota exceeded - remove rawData and retry
+      files.forEach(function(f) { f.rawData = ''; f.images = []; });
+      try {
+        Store.set('files_' + currentSubject, files);
+      } catch(e2) {
+        showToast('Almacenamiento lleno. Elimina archivos antiguos.', 'error');
+      }
+    }
     if (processed > 0) {
       showToast(processed + ' archivo(s) subido(s)', 'success');
       logActivity();
@@ -1157,6 +1188,55 @@
     switchTab('quiz');
   }
 
+  // Chunked AI summarization for large documents
+  var CHUNK_SIZE = 10; // pages per chunk
+
+  async function summarizeChunked(images, summaryPrompt, fileName, statusEl) {
+    var totalPages = images.length;
+    var chunks = [];
+    for (var i = 0; i < totalPages; i += CHUNK_SIZE) {
+      chunks.push(images.slice(i, i + CHUNK_SIZE));
+    }
+
+    if (chunks.length === 1) {
+      if (statusEl) statusEl.innerHTML = '<div class="spinner"></div><span>Generando resumen (' + totalPages + ' pag)...</span>';
+      return await callAI(summaryPrompt, 'Documento "' + fileName + '" (' + totalPages + ' pag). Lee cada pagina visualmente. Resume TODO en Markdown.', images);
+    }
+
+    // Multi-chunk: summarize each, then integrate
+    var partialSummaries = [];
+    for (var c = 0; c < chunks.length; c++) {
+      var startPage = c * CHUNK_SIZE + 1;
+      var endPage = Math.min((c + 1) * CHUNK_SIZE, totalPages);
+      if (statusEl) {
+        statusEl.innerHTML = '<div class="spinner"></div><span>Analizando pag. ' + startPage + '-' + endPage + ' de ' + totalPages + ' (' + (c + 1) + '/' + chunks.length + ')...</span>';
+      }
+      var partial = await callAI(summaryPrompt,
+        'Paginas ' + startPage + '-' + endPage + ' de ' + totalPages + ' de "' + fileName + '". Lee visualmente. Resume DETALLADAMENTE en Markdown. No omitas nada.',
+        chunks[c]);
+      partialSummaries.push('## PARTE ' + (c + 1) + ' (Pag ' + startPage + '-' + endPage + ')\n\n' + partial);
+      // Free chunk images from memory after processing
+      chunks[c] = null;
+    }
+
+    // Integration call
+    if (statusEl) {
+      statusEl.innerHTML = '<div class="spinner"></div><span>Integrando ' + partialSummaries.length + ' secciones...</span>';
+    }
+    var allPartials = partialSummaries.join('\n\n');
+    return await callAI(
+      'Integra resumenes parciales en uno unico y coherente en Markdown. Mantén TODO el contenido. Elimina redundancias. Estructura con ## y ###. Conserva formulas y datos. Termina con ## Puntos Clave. NO uses HTML.',
+      allPartials
+    );
+  }
+
+  // Clean up file cache to free memory
+  function cleanupFileCache(fileId) {
+    if (originalFileCache[fileId]) {
+      delete originalFileCache[fileId];
+    }
+  }
+
   // Full AI processing: summary + quiz from a single file
   async function processFileWithAI(fileId) {
     const files = Store.get('files_' + currentSubject, []);
@@ -1195,34 +1275,33 @@
     // Step 1: Generate summary
     try {
       const summaryPrompt = buildSummaryPrompt(subject.name);
-      // Use all in-memory images if available, otherwise fall back to stored ones
+      var step1El = document.getElementById('ai-step-1');
+      var summaryResult = '';
+
+      // For PDFs: extract page images on-demand (not at upload time)
       var fileImages = file._allImages || file.images || [];
-      var userMessage = '';
-      if (fileImages.length > 0) {
-        // IMAGE-FIRST approach: send page images as primary input
-        userMessage = 'Se adjuntan ' + fileImages.length + ' paginas del documento "' + file.name + '" como imagenes. ' +
-          'LEE CADA PAGINA VISUALMENTE. Las imagenes son el documento original completo. ' +
-          'Genera un resumen tecnico y exhaustivo basado en lo que VES en las paginas. ' +
-          'Incluye TODAS las formulas exactamente como aparecen, todos los diagramas descritos en detalle, ' +
-          'todas las tablas, todos los datos numericos y todos los conceptos.\n\n' +
-          'Texto extraido como referencia adicional (puede tener errores en formulas):\n' + (file.content || '(no disponible)');
-      } else {
-        userMessage = 'Genera un resumen completo y tecnico del siguiente contenido academico. Cubre TODOS los temas sin omitir nada.\n\n' + file.content;
+      if (fileImages.length === 0 && file.type === 'pdf' && originalFileCache[fileId]) {
+        if (step1El) step1El.innerHTML = '<div class="spinner"></div><span>Escaneando paginas del PDF...</span>';
+        try {
+          fileImages = await extractPDFImages(originalFileCache[fileId], function(page, total) {
+            if (step1El) step1El.innerHTML = '<div class="spinner"></div><span>Escaneando pagina ' + page + ' de ' + total + '...</span>';
+          });
+        } catch(e) {
+          console.log('Image extraction failed, using text only:', e);
+        }
       }
-      const summaryResult = await callAI(summaryPrompt, userMessage, fileImages);
+
+      if (fileImages.length > 0) {
+        // Use chunked approach for image-based summaries
+        summaryResult = await summarizeChunked(fileImages, summaryPrompt, file.name, step1El);
+      } else {
+        // Text-only fallback
+        if (step1El) step1El.innerHTML = '<div class="spinner"></div><span>Generando resumen...</span>';
+        summaryResult = await callAI(summaryPrompt, 'Genera un resumen completo y tecnico del siguiente contenido academico. Cubre TODOS los temas sin omitir nada.\n\n' + file.content);
+      }
 
       // Render markdown to HTML
       var renderedHtml = renderMarkdown(summaryResult);
-
-      // Always embed document images in the summary
-      if (fileImages.length > 0) {
-        var imgHtml = '<div class="summary-images"><h3>Material Visual del Documento</h3>';
-        fileImages.forEach(function(img, i) {
-          imgHtml += '<figure><img src="' + img.dataUri + '" alt="Pagina ' + (i+1) + ' del documento"><figcaption>Pagina ' + (i+1) + ' del documento original</figcaption></figure>';
-        });
-        imgHtml += '</div>';
-        renderedHtml += imgHtml;
-      }
 
       // Save summary
       const summaries = Store.get('summaries_' + currentSubject, []);
@@ -1303,6 +1382,8 @@
 
       showToast('Material procesado: resumen + quiz listos!', 'success');
       logActivity();
+      // Free memory: remove cached PDF file
+      cleanupFileCache(fileId);
 
     } catch (err) {
       showToast('Error procesando: ' + err.message, 'error');
@@ -1983,29 +2064,17 @@
     try {
       const subject = getSubject(currentSubject);
       const systemPrompt = buildSummaryPrompt(subject.name);
-      var userMsg = '';
+      var result = '';
+
       if (images.length > 0) {
-        userMsg = 'Se adjuntan ' + images.length + ' paginas del documento como imagenes. ' +
-          'LEE CADA PAGINA VISUALMENTE. Genera un resumen tecnico y exhaustivo basado en lo que VES. ' +
-          'Incluye TODAS las formulas, diagramas, tablas y datos.\n\n' +
-          'Texto extraido como referencia adicional:\n' + (content || '(no disponible)');
+        // Use chunked approach for image-based summaries
+        result = await summarizeChunked(images, systemPrompt, 'documento seleccionado', loadingEl);
       } else {
-        userMsg = 'Genera un resumen completo y tecnico del siguiente contenido academico. Cubre TODOS los temas sin omitir nada.\n\n' + content;
+        result = await callAI(systemPrompt, 'Genera un resumen completo y tecnico del siguiente contenido academico. Cubre TODOS los temas sin omitir nada.\n\n' + content);
       }
-      const result = await callAI(systemPrompt, userMsg, images);
 
       // Render markdown to HTML
       var renderedResult = renderMarkdown(result);
-
-      // Always embed document images
-      if (images.length > 0) {
-        var imgHtml = '<div class="summary-images"><h3>Material Visual del Documento</h3>';
-        images.forEach(function(img, i) {
-          imgHtml += '<figure><img src="' + img.dataUri + '" alt="Pagina ' + (i+1) + ' del documento"><figcaption>Pagina ' + (i+1) + ' del documento original</figcaption></figure>';
-        });
-        imgHtml += '</div>';
-        renderedResult += imgHtml;
-      }
 
       // Save summary
       const summaries = Store.get('summaries_' + currentSubject, []);

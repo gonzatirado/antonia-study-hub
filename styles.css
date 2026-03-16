@@ -2260,115 +2260,122 @@ h3 { font-size: 18px; line-height: 1.4; }
   font-weight: 700;
 }
 
-/* --- Markdown Summary Styles --- */
+/* --- Markdown Summary Styles (purposeful design) --- */
+
+/* Section headings: left accent bar = "new topic" */
 .ai-result h2 {
-  font-family: var(--font-body);
-  font-size: 1.55rem;
+  font-size: 1.35rem;
   font-weight: 700;
-  margin: 2.25rem 0 0.75rem;
-  padding-bottom: 10px;
-  border-bottom: 2px solid rgba(155, 114, 207, 0.25);
-  color: var(--amethyst);
+  margin: 2rem 0 0.75rem;
+  padding: 8px 0 8px 16px;
+  border-left: 4px solid var(--amethyst);
+  color: var(--text-primary);
   letter-spacing: -0.01em;
 }
-
 .ai-result h2:first-of-type { margin-top: 0.5rem; }
 
+/* Subtopics: clean, lighter weight = "subtopic under section" */
 .ai-result h3 {
-  font-family: var(--font-body);
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin: 1.75rem 0 0.6rem;
-  color: var(--text-primary);
-}
-
-.ai-result h4:not(:first-child) {
-  font-family: var(--font-body);
   font-size: 1.1rem;
   font-weight: 600;
-  margin: 1.4rem 0 0.5rem;
+  margin: 1.5rem 0 0.5rem;
+  color: var(--text-primary);
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+/* Sub-subtopics */
+.ai-result h4:not(:first-child) {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 1.25rem 0 0.4rem;
   color: var(--text-secondary);
 }
 
+/* Bold terms: key vocabulary */
 .ai-result strong {
   color: var(--text-primary);
   font-weight: 700;
 }
 
+/* Blockquotes = FORMULAS/ECUACIONES (green accent = "math/science") */
 .ai-result blockquote {
-  border-left: 3px solid var(--amethyst);
-  margin: 1.25rem 0;
-  padding: 0.75rem 1.25rem;
-  background: rgba(155, 114, 207, 0.06);
+  border-left: 4px solid var(--malachite);
+  margin: 1rem 0;
+  padding: 12px 20px;
+  background: rgba(45, 155, 111, 0.06);
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
   color: var(--text-primary);
-  font-size: 15.5px;
+  font-size: 15px;
+  font-family: 'SFMono-Regular', Consolas, monospace;
 }
-
 .ai-result blockquote p { margin: 0.25rem 0; }
 
+/* Tables = COMPARACIONES (structured data) */
 .ai-result table {
   width: 100%;
   border-collapse: collapse;
   margin: 1.25rem 0;
-  font-size: 15px;
+  font-size: 14px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  overflow: hidden;
 }
-
 .ai-result th {
   text-align: left;
   font-weight: 700;
-  padding: 0.7rem 1rem;
-  border-bottom: 2px solid rgba(155, 114, 207, 0.2);
-  color: var(--amethyst);
-  font-size: 0.8rem;
+  padding: 10px 16px;
+  background: rgba(155, 114, 207, 0.08);
+  color: var(--text-primary);
+  font-size: 13px;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
+  border-bottom: 2px solid var(--border-color);
 }
-
 .ai-result td {
-  padding: 0.7rem 1rem;
+  padding: 10px 16px;
   border-bottom: 1px solid var(--border-color);
   color: var(--text-primary);
-  font-size: 15px;
 }
-
 .ai-result tr:last-child td { border-bottom: none; }
-.ai-result tr:hover td { background: rgba(155, 114, 207, 0.04); }
+.ai-result tr:hover td { background: rgba(155, 114, 207, 0.03); }
 
+/* Separator = "new big topic" */
 .ai-result hr {
   border: none;
-  border-top: 1px solid var(--border-color);
-  margin: 2rem 0;
+  border-top: 2px solid var(--border-color);
+  margin: 2.5rem 0;
 }
 
+/* Lists */
 .ai-result ul, .ai-result ol {
   padding-left: 24px;
   margin: 0.75rem 0;
 }
-
 .ai-result li {
   margin-bottom: 6px;
-  line-height: 1.8;
+  line-height: 1.75;
 }
 
+/* Code = technical terms or values */
 .ai-result code {
-  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-family: 'SFMono-Regular', Consolas, monospace;
   font-size: 0.88em;
-  background: rgba(155, 114, 207, 0.1);
-  padding: 0.2em 0.45em;
-  border-radius: 4px;
-  color: var(--amethyst);
+  background: rgba(155, 114, 207, 0.08);
+  padding: 0.15em 0.4em;
+  border-radius: 3px;
+  color: var(--text-primary);
 }
-
 .ai-result pre {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
-  padding: 1.25rem;
+  padding: 1rem;
   overflow-x: auto;
   font-size: 14px;
-  margin: 1.25rem 0;
+  margin: 1rem 0;
 }
+.ai-result pre code { background: none; padding: 0; }
 
 .ai-result pre code {
   background: none;
