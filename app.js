@@ -804,7 +804,23 @@
     if (typeof marked !== 'undefined') {
       // Clean markdown: remove ```markdown or ```html wrappers if AI added them
       var clean = md.replace(/^```(?:markdown|html|md)?\s*\n?/i, '').replace(/\n?```\s*$/i, '').trim();
-      return marked.parse(clean);
+      var html = marked.parse(clean);
+      // Render LaTeX math with KaTeX if available
+      if (typeof katex !== 'undefined') {
+        // Block math: $$...$$
+        html = html.replace(/\$\$([\s\S]*?)\$\$/g, function(match, tex) {
+          try {
+            return katex.renderToString(tex.trim(), { displayMode: true, throwOnError: false });
+          } catch(e) { return match; }
+        });
+        // Inline math: $...$  (but not $$)
+        html = html.replace(/\$([^\$\n]+?)\$/g, function(match, tex) {
+          try {
+            return katex.renderToString(tex.trim(), { displayMode: false, throwOnError: false });
+          } catch(e) { return match; }
+        });
+      }
+      return html;
     }
     // Fallback: return as-is (treat as HTML)
     return md;
@@ -1374,9 +1390,19 @@
     if (viewingSummary) {
       const sum = summaries.find(s => s.id === viewingSummary);
       if (sum) {
+        var summaryHtml = sum.html;
+        // Render LaTeX in old summaries that have raw $...$ notation
+        if (typeof katex !== 'undefined' && summaryHtml.indexOf('$') !== -1) {
+          summaryHtml = summaryHtml.replace(/\$\$([\s\S]*?)\$\$/g, function(m, tex) {
+            try { return katex.renderToString(tex.trim(), { displayMode: true, throwOnError: false }); } catch(e) { return m; }
+          });
+          summaryHtml = summaryHtml.replace(/\$([^\$\n]+?)\$/g, function(m, tex) {
+            try { return katex.renderToString(tex.trim(), { displayMode: false, throwOnError: false }); } catch(e) { return m; }
+          });
+        }
         container.innerHTML =
           '<button class="btn btn-secondary mb-16" onclick="window.app.backToSummaries()">&larr; Volver a la lista</button>' +
-          '<div class="summary-detail">' + sum.html + '</div>';
+          '<div class="summary-detail">' + summaryHtml + '</div>';
         return;
       }
     }
