@@ -23,9 +23,19 @@ export default function LoginPage() {
       const user = await signInWithGoogle();
       setUser(user);
       router.push("/dashboard");
-    } catch (err) {
-      setError("Error al iniciar sesión. Intenta de nuevo.");
-      console.error(err);
+    } catch (err: unknown) {
+      const firebaseError = err as { code?: string; message?: string };
+      console.error("Login error:", firebaseError.code, firebaseError.message);
+
+      if (firebaseError.code === "auth/popup-closed-by-user") {
+        setError("Cerraste la ventana de inicio de sesión.");
+      } else if (firebaseError.code === "auth/popup-blocked") {
+        setError("El navegador bloqueó la ventana emergente. Permite popups para este sitio.");
+      } else if (firebaseError.code === "auth/unauthorized-domain") {
+        setError("Dominio no autorizado. Agrega 'localhost' en Firebase Console → Authentication → Configuración → Dominios autorizados.");
+      } else {
+        setError(`Error: ${firebaseError.code || firebaseError.message || "Desconocido"}`);
+      }
     } finally {
       setLoading(false);
     }
