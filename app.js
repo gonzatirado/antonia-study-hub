@@ -658,11 +658,11 @@
           pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
           const pdf = await pdfjsLib.getDocument(typedArray).promise;
           const images = [];
-          // Render up to 5 pages as images for AI context
-          const maxPages = Math.min(pdf.numPages, 5);
+          // Render up to 20 pages as images for AI context
+          const maxPages = Math.min(pdf.numPages, 20);
           for (let i = 1; i <= maxPages; i++) {
             const page = await pdf.getPage(i);
-            const scale = 1.0;
+            const scale = 1.5;
             const viewport = page.getViewport({ scale: scale });
             const canvas = document.createElement('canvas');
             canvas.width = viewport.width;
@@ -1192,17 +1192,23 @@
     try {
       const summaryPrompt = buildSummaryPrompt(subject.name);
       var fileImages = file.images || [];
-      var imageNote = fileImages.length > 0 ? '\n\nNOTA: Se adjuntan ' + fileImages.length + ' imagen(es) del documento. Analiza las imagenes e incorporalas en el resumen usando etiquetas <img> con los src proporcionados, o describe su contenido en detalle si son diagramas/graficos.' : '';
-      const summaryResult = await callAI(summaryPrompt, 'Genera un resumen completo, extenso y visualmente estructurado del siguiente contenido academico. Cubre TODOS los temas sin omitir nada.' + imageNote + '\n\n' + file.content, fileImages);
+      var imageNote = fileImages.length > 0
+        ? '\n\nIMPORTANTE - IMAGENES: Se adjuntan ' + fileImages.length + ' imagen(es)/paginas del documento original. ' +
+          'Analiza CADA imagen cuidadosamente: diagramas, graficos, tablas visuales, fotografias, esquemas. ' +
+          'Describe su contenido tecnico en la seccion correspondiente del resumen. ' +
+          'Si una imagen muestra un proceso, ciclo o diagrama, explica cada parte en detalle. ' +
+          'Las imagenes son parte esencial del material y deben quedar reflejadas en el resumen.'
+        : '';
+      const summaryResult = await callAI(summaryPrompt, 'Genera un resumen completo y tecnico del siguiente contenido academico. Cubre TODOS los temas sin omitir nada.' + imageNote + '\n\n' + file.content, fileImages);
 
       // Render markdown to HTML
       var renderedHtml = renderMarkdown(summaryResult);
 
-      // Embed original images if not referenced
-      if (fileImages.length > 0 && renderedHtml.indexOf('<img') === -1) {
-        var imgHtml = '<div class="summary-images"><h4>Imagenes del documento</h4>';
+      // Always embed document images in the summary
+      if (fileImages.length > 0) {
+        var imgHtml = '<div class="summary-images"><h3>Material Visual del Documento</h3>';
         fileImages.forEach(function(img, i) {
-          imgHtml += '<figure><img src="' + img.dataUri + '" alt="Imagen ' + (i+1) + ' del documento"><figcaption>Imagen ' + (i+1) + '</figcaption></figure>';
+          imgHtml += '<figure><img src="' + img.dataUri + '" alt="Pagina ' + (i+1) + ' del documento"><figcaption>Pagina ' + (i+1) + ' del documento original</figcaption></figure>';
         });
         imgHtml += '</div>';
         renderedHtml += imgHtml;
@@ -1967,17 +1973,21 @@
     try {
       const subject = getSubject(currentSubject);
       const systemPrompt = buildSummaryPrompt(subject.name);
-      var imageNote = images.length > 0 ? '\n\nNOTA: Se adjuntan ' + images.length + ' imagen(es) del documento. Analiza las imagenes e incorporalas en el resumen usando etiquetas <img> con los src proporcionados, o describe su contenido en detalle si son diagramas/graficos.' : '';
+      var imageNote = images.length > 0
+        ? '\n\nIMPORTANTE - IMAGENES: Se adjuntan ' + images.length + ' imagen(es)/paginas del documento original. ' +
+          'Analiza CADA imagen cuidadosamente: diagramas, graficos, tablas visuales, fotografias, esquemas. ' +
+          'Describe su contenido tecnico en la seccion correspondiente del resumen.'
+        : '';
       const result = await callAI(systemPrompt, 'Genera un resumen completo y tecnico del siguiente contenido academico. Cubre TODOS los temas sin omitir nada.' + imageNote + '\n\n' + content, images);
 
       // Render markdown to HTML
       var renderedResult = renderMarkdown(result);
 
-      // Embed original images if not referenced
-      if (images.length > 0 && renderedResult.indexOf('<img') === -1) {
-        var imgHtml = '<div class="summary-images"><h4>Imagenes del documento</h4>';
+      // Always embed document images
+      if (images.length > 0) {
+        var imgHtml = '<div class="summary-images"><h3>Material Visual del Documento</h3>';
         images.forEach(function(img, i) {
-          imgHtml += '<figure><img src="' + img.dataUri + '" alt="Imagen ' + (i+1) + ' del documento"><figcaption>Imagen ' + (i+1) + '</figcaption></figure>';
+          imgHtml += '<figure><img src="' + img.dataUri + '" alt="Pagina ' + (i+1) + ' del documento"><figcaption>Pagina ' + (i+1) + ' del documento original</figcaption></figure>';
         });
         imgHtml += '</div>';
         renderedResult += imgHtml;

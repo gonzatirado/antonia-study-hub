@@ -1157,9 +1157,33 @@ h3 { font-size: 18px; line-height: 1.4; }
 }
 
 .summary-images {
-  margin-top: 24px;
-  padding-top: 20px;
-  border-top: 1px solid var(--border);
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 2px solid rgba(155, 114, 207, 0.2);
+}
+
+.summary-images h3 {
+  color: var(--amethyst);
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+.summary-images figure {
+  margin: 20px 0;
+  text-align: center;
+}
+
+.summary-images figure img {
+  max-width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+}
+
+.summary-images figure figcaption {
+  color: var(--text-muted);
+  font-size: 13px;
+  margin-top: 8px;
+  font-style: italic;
 }
 
 /* Summary list */
