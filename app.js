@@ -658,8 +658,8 @@
           pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
           const pdf = await pdfjsLib.getDocument(typedArray).promise;
           const images = [];
-          // Render up to 20 pages as images for AI context
-          const maxPages = Math.min(pdf.numPages, 20);
+          // Render ALL pages as images - this is the primary input for AI
+          const maxPages = pdf.numPages;
           for (let i = 1; i <= maxPages; i++) {
             const page = await pdf.getPage(i);
             const scale = 1.5;
@@ -708,13 +708,14 @@
     var cleanName = file.name;
     try { cleanName = decodeURIComponent(file.name.replace(/\+/g, ' ')); } catch(e) {}
 
-    // Limit stored images to avoid localStorage overflow (max 5, resize large ones)
-    var storedImages = images.slice(0, 5).map(function(img) {
-      // Only store dataUri for embedding, skip raw data to save space
+    // Keep ALL images in memory for AI processing
+    // But only store first 3 in localStorage (to avoid 5MB limit)
+    var allImages = images.map(function(img) {
       return { dataUri: img.dataUri, mimeType: img.mimeType };
     });
+    var storedImages = allImages.slice(0, 3);
 
-    return {
+    var fileObj = {
       id: generateId(),
       name: cleanName,
       type: ext,
@@ -725,6 +726,9 @@
       date: new Date().toISOString(),
       order: Date.now()
     };
+    // Attach all images in memory (not persisted) for AI use
+    fileObj._allImages = allImages;
+    return fileObj;
   }
 
   function formatFileSize(bytes) {
@@ -1191,15 +1195,21 @@
     // Step 1: Generate summary
     try {
       const summaryPrompt = buildSummaryPrompt(subject.name);
-      var fileImages = file.images || [];
-      var imageNote = fileImages.length > 0
-        ? '\n\nIMPORTANTE - IMAGENES: Se adjuntan ' + fileImages.length + ' imagen(es)/paginas del documento original. ' +
-          'Analiza CADA imagen cuidadosamente: diagramas, graficos, tablas visuales, fotografias, esquemas. ' +
-          'Describe su contenido tecnico en la seccion correspondiente del resumen. ' +
-          'Si una imagen muestra un proceso, ciclo o diagrama, explica cada parte en detalle. ' +
-          'Las imagenes son parte esencial del material y deben quedar reflejadas en el resumen.'
-        : '';
-      const summaryResult = await callAI(summaryPrompt, 'Genera un resumen completo y tecnico del siguiente contenido academico. Cubre TODOS los temas sin omitir nada.' + imageNote + '\n\n' + file.content, fileImages);
+      // Use all in-memory images if available, otherwise fall back to stored ones
+      var fileImages = file._allImages || file.images || [];
+      var userMessage = '';
+      if (fileImages.length > 0) {
+        // IMAGE-FIRST approach: send page images as primary input
+        userMessage = 'Se adjuntan ' + fileImages.length + ' paginas del documento "' + file.name + '" como imagenes. ' +
+          'LEE CADA PAGINA VISUALMENTE. Las imagenes son el documento original completo. ' +
+          'Genera un resumen tecnico y exhaustivo basado en lo que VES en las paginas. ' +
+          'Incluye TODAS las formulas exactamente como aparecen, todos los diagramas descritos en detalle, ' +
+          'todas las tablas, todos los datos numericos y todos los conceptos.\n\n' +
+          'Texto extraido como referencia adicional (puede tener errores en formulas):\n' + (file.content || '(no disponible)');
+      } else {
+        userMessage = 'Genera un resumen completo y tecnico del siguiente contenido academico. Cubre TODOS los temas sin omitir nada.\n\n' + file.content;
+      }
+      const summaryResult = await callAI(summaryPrompt, userMessage, fileImages);
 
       // Render markdown to HTML
       var renderedHtml = renderMarkdown(summaryResult);
@@ -1973,12 +1983,16 @@
     try {
       const subject = getSubject(currentSubject);
       const systemPrompt = buildSummaryPrompt(subject.name);
-      var imageNote = images.length > 0
-        ? '\n\nIMPORTANTE - IMAGENES: Se adjuntan ' + images.length + ' imagen(es)/paginas del documento original. ' +
-          'Analiza CADA imagen cuidadosamente: diagramas, graficos, tablas visuales, fotografias, esquemas. ' +
-          'Describe su contenido tecnico en la seccion correspondiente del resumen.'
-        : '';
-      const result = await callAI(systemPrompt, 'Genera un resumen completo y tecnico del siguiente contenido academico. Cubre TODOS los temas sin omitir nada.' + imageNote + '\n\n' + content, images);
+      var userMsg = '';
+      if (images.length > 0) {
+        userMsg = 'Se adjuntan ' + images.length + ' paginas del documento como imagenes. ' +
+          'LEE CADA PAGINA VISUALMENTE. Genera un resumen tecnico y exhaustivo basado en lo que VES. ' +
+          'Incluye TODAS las formulas, diagramas, tablas y datos.\n\n' +
+          'Texto extraido como referencia adicional:\n' + (content || '(no disponible)');
+      } else {
+        userMsg = 'Genera un resumen completo y tecnico del siguiente contenido academico. Cubre TODOS los temas sin omitir nada.\n\n' + content;
+      }
+      const result = await callAI(systemPrompt, userMsg, images);
 
       // Render markdown to HTML
       var renderedResult = renderMarkdown(result);
