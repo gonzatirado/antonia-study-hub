@@ -1110,10 +1110,11 @@ h3 { font-size: 18px; line-height: 1.4; }
   background: var(--bg-tertiary);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
-  padding: 32px 36px;
-  line-height: 1.8;
-  font-size: 15px;
+  padding: 36px 40px;
+  line-height: 1.85;
+  font-size: 16.5px;
   color: var(--text-primary);
+  font-weight: 400;
 }
 
 .ai-result h4 {
@@ -2235,15 +2236,15 @@ h3 { font-size: 18px; line-height: 1.4; }
   font-weight: 700;
 }
 
-/* --- Markdown Summary Styles (Professional/Clean) --- */
+/* --- Markdown Summary Styles --- */
 .ai-result h2 {
   font-family: var(--font-body);
-  font-size: 1.4rem;
+  font-size: 1.55rem;
   font-weight: 700;
-  margin: 2rem 0 0.75rem;
-  padding-bottom: 8px;
-  border-bottom: 1px solid var(--border-color);
-  color: var(--text-primary);
+  margin: 2.25rem 0 0.75rem;
+  padding-bottom: 10px;
+  border-bottom: 2px solid rgba(155, 114, 207, 0.25);
+  color: var(--amethyst);
   letter-spacing: -0.01em;
 }
 
@@ -2251,33 +2252,33 @@ h3 { font-size: 18px; line-height: 1.4; }
 
 .ai-result h3 {
   font-family: var(--font-body);
-  font-size: 1.15rem;
+  font-size: 1.25rem;
   font-weight: 600;
-  margin: 1.5rem 0 0.5rem;
+  margin: 1.75rem 0 0.6rem;
   color: var(--text-primary);
 }
 
 .ai-result h4:not(:first-child) {
   font-family: var(--font-body);
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 600;
-  margin: 1.25rem 0 0.4rem;
+  margin: 1.4rem 0 0.5rem;
   color: var(--text-secondary);
 }
 
 .ai-result strong {
   color: var(--text-primary);
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .ai-result blockquote {
-  border-left: 3px solid var(--border-color);
-  margin: 1rem 0;
-  padding: 0.6rem 1rem;
-  background: var(--bg-card);
+  border-left: 3px solid var(--amethyst);
+  margin: 1.25rem 0;
+  padding: 0.75rem 1.25rem;
+  background: rgba(155, 114, 207, 0.06);
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
   color: var(--text-primary);
-  font-size: 14px;
+  font-size: 15.5px;
 }
 
 .ai-result blockquote p { margin: 0.25rem 0; }
@@ -2285,29 +2286,30 @@ h3 { font-size: 18px; line-height: 1.4; }
 .ai-result table {
   width: 100%;
   border-collapse: collapse;
-  margin: 1rem 0;
-  font-size: 0.875rem;
+  margin: 1.25rem 0;
+  font-size: 15px;
 }
 
 .ai-result th {
   text-align: left;
-  font-weight: 600;
-  padding: 0.6rem 1rem;
-  border-bottom: 2px solid var(--border-color);
-  color: var(--text-muted);
-  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.7rem 1rem;
+  border-bottom: 2px solid rgba(155, 114, 207, 0.2);
+  color: var(--amethyst);
+  font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
 .ai-result td {
-  padding: 0.6rem 1rem;
+  padding: 0.7rem 1rem;
   border-bottom: 1px solid var(--border-color);
   color: var(--text-primary);
+  font-size: 15px;
 }
 
 .ai-result tr:last-child td { border-bottom: none; }
-.ai-result tr:hover td { background: rgba(155, 114, 207, 0.03); }
+.ai-result tr:hover td { background: rgba(155, 114, 207, 0.04); }
 
 .ai-result hr {
   border: none;
@@ -2315,27 +2317,39 @@ h3 { font-size: 18px; line-height: 1.4; }
   margin: 2rem 0;
 }
 
+.ai-result ul, .ai-result ol {
+  padding-left: 24px;
+  margin: 0.75rem 0;
+}
+
+.ai-result li {
+  margin-bottom: 6px;
+  line-height: 1.8;
+}
+
 .ai-result code {
   font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-  font-size: 0.85em;
-  background: rgba(135, 131, 120, 0.12);
-  padding: 0.15em 0.4em;
-  border-radius: 3px;
+  font-size: 0.88em;
+  background: rgba(155, 114, 207, 0.1);
+  padding: 0.2em 0.45em;
+  border-radius: 4px;
+  color: var(--amethyst);
 }
 
 .ai-result pre {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
-  padding: 1rem;
+  padding: 1.25rem;
   overflow-x: auto;
-  font-size: 0.85rem;
-  margin: 1rem 0;
+  font-size: 14px;
+  margin: 1.25rem 0;
 }
 
 .ai-result pre code {
   background: none;
   padding: 0;
+  color: var(--text-primary);
 }
 
 /* Legacy support - subtle styling for old summaries */
@@ -2357,7 +2371,7 @@ h3 { font-size: 18px; line-height: 1.4; }
 
 .concept-card h5 {
   font-family: var(--font-body);
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 700;
   margin: 0;
   padding: 14px 20px 12px;
@@ -2372,8 +2386,8 @@ h3 { font-size: 18px; line-height: 1.4; }
 .concept-card p {
   margin: 0;
   padding: 14px 20px 16px;
-  font-size: 14.5px;
-  line-height: 1.75;
+  font-size: 16px;
+  line-height: 1.8;
   color: var(--text-primary);
 }
 
@@ -2383,22 +2397,22 @@ h3 { font-size: 18px; line-height: 1.4; }
 }
 
 .concept-card li {
-  font-size: 14px;
-  margin-bottom: 4px;
+  font-size: 15.5px;
+  margin-bottom: 6px;
 }
 
-/* Card color accents - all use same subtle border, no color variation */
-.concept-card { border-top: 2px solid var(--border-color); }
+/* Card color accents - all use amethyst as single accent */
+.concept-card { border-top: 3px solid var(--amethyst); }
 .concept-card.green,
 .concept-card.orange,
 .concept-card.blue,
-.concept-card.pink { border-top-color: var(--border-color); }
+.concept-card.pink { border-top-color: var(--amethyst); }
 
 .concept-card h5,
 .concept-card.green h5,
 .concept-card.orange h5,
 .concept-card.blue h5,
-.concept-card.pink h5 { color: var(--text-primary); }
+.concept-card.pink h5 { color: var(--amethyst); }
 
 /* --- Key Terms (pill badges) --- */
 .key-term {
@@ -2461,22 +2475,23 @@ h3 { font-size: 18px; line-height: 1.4; }
   margin-bottom: 6px;
 }
 
-/* All callouts use same subtle neutral style */
+/* All callouts use amethyst accent */
 .callout.tip,
 .callout.important,
 .callout.formula,
 .callout.warning {
-  background: var(--bg-card);
-  border-color: var(--border-color);
+  background: rgba(155,114,207,0.05);
+  border-color: rgba(155,114,207,0.2);
+  font-size: 15.5px;
 }
 .callout.tip .callout-icon,
 .callout.important .callout-icon,
 .callout.formula .callout-icon,
-.callout.warning .callout-icon { background: rgba(155,114,207,0.08); }
+.callout.warning .callout-icon { background: rgba(155,114,207,0.12); }
 .callout.tip strong,
 .callout.important strong,
 .callout.formula strong,
-.callout.warning strong { color: var(--text-primary); }
+.callout.warning strong { color: var(--amethyst); }
 
 /* --- Diagram / Flow Container --- */
 .diagram-container {
@@ -2577,11 +2592,11 @@ h3 { font-size: 18px; line-height: 1.4; }
 
 .compare-table td {
   padding: 14px 20px;
-  font-size: 14px;
+  font-size: 15.5px;
   border-bottom: 1px solid var(--border-color);
   vertical-align: top;
-  line-height: 1.65;
-  color: var(--text-secondary);
+  line-height: 1.7;
+  color: var(--text-primary);
 }
 
 .compare-table tr:last-child td { border-bottom: none; }
@@ -2619,19 +2634,19 @@ h3 { font-size: 18px; line-height: 1.4; }
 
 /* --- Key Takeaway Box --- */
 .key-takeaway {
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
+  background: rgba(155,114,207,0.05);
+  border: 1px solid rgba(155,114,207,0.2);
   border-radius: var(--radius-lg);
   padding: 24px 28px;
   margin: 32px 0;
 }
 
 .key-takeaway-title {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1.5px;
-  color: var(--text-muted);
+  color: var(--amethyst);
   margin-bottom: 14px;
   display: flex;
   align-items: center;
@@ -2649,14 +2664,14 @@ h3 { font-size: 18px; line-height: 1.4; }
   padding-left: 20px;
   margin-bottom: 8px;
   color: var(--text-primary);
-  font-size: 14px;
+  font-size: 15.5px;
 }
 
 .key-takeaway li::before {
   content: '\2192';
   position: absolute;
   left: 0;
-  color: var(--text-muted);
+  color: var(--amethyst);
   font-weight: 700;
 }
 
