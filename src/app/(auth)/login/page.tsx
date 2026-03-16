@@ -1,0 +1,93 @@
+"use client";
+
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
+import { Sparkles, Loader2 } from "lucide-react";
+import { FcGoogle } from "react-icons/fc";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { signInWithGoogle } from "@/lib/firebase/auth";
+import { useAppStore } from "@/lib/store";
+
+export default function LoginPage() {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
+  const setUser = useAppStore((s) => s.setUser);
+
+  async function handleGoogleLogin() {
+    try {
+      setLoading(true);
+      setError(null);
+      const user = await signInWithGoogle();
+      setUser(user);
+      router.push("/dashboard");
+    } catch (err) {
+      setError("Error al iniciar sesión. Intenta de nuevo.");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 flex items-center justify-center p-6">
+      {/* Background animated gradient */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500/20 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl animate-pulse delay-1000" />
+      </div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 20, scale: 0.95 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.5 }}
+        className="relative z-10"
+      >
+        <Card className="w-full max-w-md bg-slate-900/80 border-slate-700/50 backdrop-blur-xl">
+          <CardHeader className="text-center space-y-4">
+            <div className="mx-auto w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+              <Sparkles className="w-8 h-8 text-white" />
+            </div>
+            <div>
+              <CardTitle className="text-2xl text-white">Bienvenido a StudyHub</CardTitle>
+              <CardDescription className="text-slate-400 mt-2">
+                Inicia sesión para acceder a tu espacio de estudio
+              </CardDescription>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <Button
+              onClick={handleGoogleLogin}
+              disabled={loading}
+              variant="outline"
+              className="w-full h-12 bg-white hover:bg-slate-100 text-slate-900 border-slate-200 text-base font-medium"
+            >
+              {loading ? (
+                <Loader2 className="w-5 h-5 animate-spin mr-2" />
+              ) : (
+                <FcGoogle className="w-5 h-5 mr-2" />
+              )}
+              Continuar con Google
+            </Button>
+
+            {error && (
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="text-red-400 text-sm text-center"
+              >
+                {error}
+              </motion.p>
+            )}
+
+            <p className="text-xs text-slate-500 text-center pt-4">
+              Al continuar, aceptas nuestros términos de servicio y política de privacidad.
+            </p>
+          </CardContent>
+        </Card>
+      </motion.div>
+    </div>
+  );
+}
