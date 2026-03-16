@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="80" fill="#0f172a"/>
+  <!-- Book/notebook base -->
+  <g transform="translate(256,274)">
+    <!-- Book spine shadow -->
+    <rect x="-128" y="-86" width="256" height="172" rx="14" fill="#4f46e5" opacity="0.3"/>
+    <!-- Left page -->
+    <path d="M-118,-76 L-10,-64 L-10,76 L-118,64 Z" fill="#818cf8" opacity="0.6"/>
+    <!-- Right page -->
+    <path d="M10,-64 L118,-76 L118,64 L10,76 Z" fill="#6366f1"/>
+    <!-- Book spine center line -->
+    <line x1="0" y1="-70" x2="0" y2="80" stroke="#a5b4fc" stroke-width="4" opacity="0.5"/>
+    <!-- Page lines on right page -->
+    <line x1="28" y1="-48" x2="98" y2="-56" stroke="#c7d2fe" stroke-width="3.5" opacity="0.4"/>
+    <line x1="28" y1="-28" x2="98" y2="-36" stroke="#c7d2fe" stroke-width="3.5" opacity="0.4"/>
+    <line x1="28" y1="-8" x2="98" y2="-16" stroke="#c7d2fe" stroke-width="3.5" opacity="0.4"/>
+    <line x1="28" y1="12" x2="98" y2="4" stroke="#c7d2fe" stroke-width="3.5" opacity="0.4"/>
+    <line x1="28" y1="32" x2="98" y2="24" stroke="#c7d2fe" stroke-width="3.5" opacity="0.4"/>
+    <!-- Page lines on left page -->
+    <line x1="-98" y1="-56" x2="-28" y2="-48" stroke="#e0e7ff" stroke-width="3.5" opacity="0.25"/>
+    <line x1="-98" y1="-36" x2="-28" y2="-28" stroke="#e0e7ff" stroke-width="3.5" opacity="0.25"/>
+    <line x1="-98" y1="-16" x2="-28" y2="-8" stroke="#e0e7ff" stroke-width="3.5" opacity="0.25"/>
+  </g>
+  <!-- Lightbulb above the book -->
+  <g transform="translate(256,134)">
+    <!-- Bulb glow rings -->
+    <circle cx="0" cy="0" r="64" fill="#6366f1" opacity="0.08"/>
+    <circle cx="0" cy="0" r="52" fill="#6366f1" opacity="0.1"/>
+    <circle cx="0" cy="0" r="40" fill="#6366f1" opacity="0.08"/>
+    <!-- Bulb glass -->
+    <path d="M0,-50 C-30,-50 -44,-28 -44,-6 C-44,14 -32,24 -22,36 L-22,44 L22,44 L22,36 C32,24 44,14 44,-6 C44,-28 30,-50 0,-50Z" fill="#a5b4fc" opacity="0.9"/>
+    <!-- Inner highlight -->
+    <path d="M-8,-40 C-24,-36 -32,-20 -32,-6 C-32,4 -28,12 -22,20" fill="none" stroke="#e0e7ff" stroke-width="3" opacity="0.3" stroke-linecap="round"/>
+    <!-- Bulb base -->
+    <rect x="-16" y="44" width="32" height="10" rx="3" fill="#818cf8"/>
+    <rect x="-14" y="54" width="28" height="8" rx="4" fill="#6366f1"/>
+    <!-- Filament -->
+    <path d="M-8,16 Q0,-2 8,16" fill="none" stroke="#e0e7ff" stroke-width="3.5" opacity="0.8"/>
+    <path d="M-8,4 Q0,-14 8,4" fill="none" stroke="#e0e7ff" stroke-width="3.5" opacity="0.6"/>
+    <!-- Light rays -->
+    <line x1="0" y1="-62" x2="0" y2="-74" stroke="#a5b4fc" stroke-width="4" stroke-linecap="round" opacity="0.6"/>
+    <line x1="-38" y1="-38" x2="-46" y2="-46" stroke="#a5b4fc" stroke-width="4" stroke-linecap="round" opacity="0.6"/>
+    <line x1="38" y1="-38" x2="46" y2="-46" stroke="#a5b4fc" stroke-width="4" stroke-linecap="round" opacity="0.6"/>
+    <line x1="-54" y1="0" x2="-64" y2="0" stroke="#a5b4fc" stroke-width="4" stroke-linecap="round" opacity="0.4"/>
+    <line x1="54" y1="0" x2="64" y2="0" stroke="#a5b4fc" stroke-width="4" stroke-linecap="round" opacity="0.4"/>
+    <line x1="-46" y1="-20" x2="-56" y2="-24" stroke="#a5b4fc" stroke-width="3" stroke-linecap="round" opacity="0.35"/>
+    <line x1="46" y1="-20" x2="56" y2="-24" stroke="#a5b4fc" stroke-width="3" stroke-linecap="round" opacity="0.35"/>
+  </g>
+</svg>

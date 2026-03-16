@@ -11,6 +11,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase/config";
 import { Loader2 } from "lucide-react";
 import type { User } from "@/lib/types";
+import { PWAInstallPrompt } from "@/components/shared/pwa-install-prompt";
 
 export default function DashboardLayout({
   children,
@@ -72,6 +73,7 @@ export default function DashboardLayout({
           </main>
         </SidebarInset>
       </div>
+      <PWAInstallPrompt />
     </SidebarProvider>
   );
 }
