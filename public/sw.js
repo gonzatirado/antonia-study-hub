@@ -1,25 +1,11 @@
-const CACHE_NAME = "studyhub-v1";
+const CACHE_NAME = "studyhub-v2";
 
-const APP_SHELL = [
-  "/",
-  "/dashboard",
-  "/summaries",
-  "/quizzes",
-  "/schedule",
-  "/exam-prep",
-  "/subjects",
-  "/settings",
-];
-
-// Install — cache app shell
+// Install — skip waiting to activate immediately
 self.addEventListener("install", (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL))
-  );
   self.skipWaiting();
 });
 
-// Activate — clean old caches
+// Activate — clean ALL old caches
 self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches.keys().then((keys) =>
@@ -33,37 +19,41 @@ self.addEventListener("activate", (event) => {
   self.clients.claim();
 });
 
-// Fetch — network-first for API, cache-first for static assets
+// Fetch — network-first for everything except static assets
 self.addEventListener("fetch", (event) => {
   const { request } = event;
   const url = new URL(request.url);
 
-  // Network-first for API routes
-  if (url.pathname.startsWith("/api/")) {
+  // Only handle same-origin requests
+  if (url.origin !== self.location.origin) return;
+
+  // Cache-first ONLY for static assets (images, fonts, icons)
+  if (request.destination === "image" || request.destination === "font" || url.pathname.startsWith("/icons/")) {
     event.respondWith(
-      fetch(request)
-        .then((response) => {
-          const clone = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
+      caches.match(request).then((cached) => {
+        if (cached) return cached;
+        return fetch(request).then((response) => {
+          if (response.ok) {
+            const clone = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
+          }
           return response;
-        })
-        .catch(() => caches.match(request))
+        });
+      })
     );
     return;
   }
 
-  // Cache-first for static assets
+  // Network-first for everything else (HTML, JS, CSS, API)
   event.respondWith(
-    caches.match(request).then((cached) => {
-      if (cached) return cached;
-      return fetch(request).then((response) => {
-        // Only cache successful same-origin responses
-        if (response.ok && url.origin === self.location.origin) {
+    fetch(request)
+      .then((response) => {
+        if (response.ok) {
           const clone = response.clone();
           caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
         }
         return response;
-      });
-    })
+      })
+      .catch(() => caches.match(request))
   );
 });

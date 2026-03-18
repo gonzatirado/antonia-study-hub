@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { generateSummary } from "@/lib/ai/gemini";
+import { checkUsageLimit, incrementUsage } from "@/lib/firebase/usage";
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { content, tier = "flash" } = body;
+    const { content, tier = "flash", userId } = body;
 
     if (!content || typeof content !== "string") {
       return NextResponse.json(
@@ -20,12 +21,29 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Check usage limit if userId provided
+    if (userId) {
+      const { allowed, used, limit } = await checkUsageLimit(userId, "summaries");
+      if (!allowed) {
+        return NextResponse.json(
+          { error: `Limite alcanzado: ${used}/${limit} resumenes usados este mes.` },
+          { status: 429 }
+        );
+      }
+    }
+
     const summary = await generateSummary(content, tier);
+    const tokensEstimated = Math.ceil(content.length / 4) + Math.ceil(summary.length / 4);
+
+    // Increment usage after successful generation
+    if (userId) {
+      await incrementUsage(userId, "summaries", tokensEstimated);
+    }
 
     return NextResponse.json({
       summary,
       model: tier,
-      tokens_estimated: Math.ceil(content.length / 4) + Math.ceil(summary.length / 4),
+      tokens_estimated: tokensEstimated,
     });
   } catch (error) {
     console.error("Summary generation error:", error);

@@ -27,7 +27,7 @@ interface QuizQuestion {
 }
 
 export default function QuizzesPage() {
-  const { subjects, usage } = useAppStore();
+  const { subjects, usage, user } = useAppStore();
   const [selectedSubject, setSelectedSubject] = useState<string>("");
   const [generating, setGenerating] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
@@ -61,7 +61,7 @@ export default function QuizzesPage() {
       const res = await fetch("/api/ai/quiz", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ content: text, numQuestions: 5, tier: "flash" }),
+        body: JSON.stringify({ content: text, numQuestions: 5, tier: "flash", userId: user?.uid }),
       });
 
       if (!res.ok) {

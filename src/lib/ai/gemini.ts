@@ -3,7 +3,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
 
 export function getModel(tier: "flash" | "pro" = "flash") {
-  const modelName = tier === "pro" ? "gemini-2.5-pro-preview-06-05" : "gemini-2.5-flash-preview-05-20";
+  const modelName = tier === "pro" ? "gemini-1.5-pro" : "gemini-1.5-flash";
   return genAI.getGenerativeModel({ model: modelName });
 }
 

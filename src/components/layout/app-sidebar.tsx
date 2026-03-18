@@ -10,6 +10,8 @@ import {
   Brain,
   Calendar,
   GraduationCap,
+  BarChart3,
+  ClipboardList,
   Settings,
   Sparkles,
   LogOut,
@@ -41,11 +43,13 @@ import { signOutUser } from "@/lib/firebase/auth";
 import { useRouter } from "next/navigation";
 
 const mainNav = [
-  { title: "Dashboard", icon: LayoutDashboard, href: "/dashboard" },
-  { title: "Mis Ramos", icon: BookOpen, href: "/subjects" },
+  { title: "Inicio", icon: LayoutDashboard, href: "/dashboard" },
+  { title: "Asignaturas", icon: BookOpen, href: "/subjects" },
+  { title: "Notas", icon: BarChart3, href: "/grades" },
+  { title: "Pendientes", icon: ClipboardList, href: "/pendings" },
+  { title: "Horario", icon: Calendar, href: "/schedule" },
   { title: "Resúmenes IA", icon: FileText, href: "/summaries", badge: "IA" },
   { title: "Quizzes", icon: Brain, href: "/quizzes", badge: "IA" },
-  { title: "Horario", icon: Calendar, href: "/schedule" },
   { title: "Prep. Pruebas", icon: GraduationCap, href: "/exam-prep", badge: "Pro" },
 ];
 

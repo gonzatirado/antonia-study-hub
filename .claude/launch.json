@@ -3,9 +3,10 @@
   "configurations": [
     {
       "name": "studyhub-dev",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev", "--prefix", "C:/Users/gonza/Documents/studyhub"],
-      "port": 3000
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["next", "dev", "--turbopack"],
+      "port": 3000,
+      "cwd": "C:\\Users\\gonza\\Documents\\studyhub"
     }
   ]
 }

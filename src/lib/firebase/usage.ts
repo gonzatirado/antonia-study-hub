@@ -1,5 +1,4 @@
-import { doc, getDoc, setDoc, updateDoc, increment } from 'firebase/firestore';
-import { db } from './config';
+import { getFirebaseDb, doc, getDoc, setDoc, updateDoc, increment } from './config';
 import { PLAN_LIMITS } from '@/lib/types';
 import type { UsageData } from '@/lib/types';
 
@@ -10,15 +9,14 @@ function getCurrentPeriod(): string {
 
 export async function getUserUsage(userId: string): Promise<UsageData> {
   const period = getCurrentPeriod();
-  const usageRef = doc(db, 'users', userId, 'usage', period);
+  const usageRef = doc(getFirebaseDb(), 'users', userId, 'usage', period);
   const usageSnap = await getDoc(usageRef);
 
   if (usageSnap.exists()) {
     return usageSnap.data() as UsageData;
   }
 
-  // Create new period with default limits
-  const userRef = doc(db, 'users', userId);
+  const userRef = doc(getFirebaseDb(), 'users', userId);
   const userSnap = await getDoc(userRef);
   const plan = userSnap.exists() ? (userSnap.data().plan || 'free') : 'free';
   const limits = PLAN_LIMITS[plan as keyof typeof PLAN_LIMITS];
@@ -61,7 +59,7 @@ export async function incrementUsage(
   tokens: number = 0
 ): Promise<void> {
   const period = getCurrentPeriod();
-  const usageRef = doc(db, 'users', userId, 'usage', period);
+  const usageRef = doc(getFirebaseDb(), 'users', userId, 'usage', period);
 
   await updateDoc(usageRef, {
     [`${action}_used`]: increment(1),

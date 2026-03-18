@@ -5,13 +5,11 @@ import { useRouter } from "next/navigation";
 import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/layout/app-sidebar";
 import { useAppStore } from "@/lib/store";
-import { onAuthChange } from "@/lib/firebase/auth";
+import { onAuthChange, getUserData } from "@/lib/firebase/auth";
 import { getUserUsage } from "@/lib/firebase/usage";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "@/lib/firebase/config";
 import { Loader2 } from "lucide-react";
-import type { User } from "@/lib/types";
 import { PWAInstallPrompt } from "@/components/shared/pwa-install-prompt";
+import { ErrorBoundary } from "@/components/shared/error-boundary";
 
 export default function DashboardLayout({
   children,
@@ -30,17 +28,15 @@ export default function DashboardLayout({
         return;
       }
 
-      // Load user data from Firestore
-      const userRef = doc(db, "users", firebaseUser.uid);
-      const userSnap = await getDoc(userRef);
-
-      if (userSnap.exists()) {
-        const userData = userSnap.data() as User;
-        setUser(userData);
-
-        // Load usage
-        const usage = await getUserUsage(userData.uid);
-        setUsage(usage);
+      try {
+        const userData = await getUserData(firebaseUser.uid);
+        if (userData) {
+          setUser(userData);
+          const usage = await getUserUsage(userData.uid);
+          setUsage(usage);
+        }
+      } catch (err) {
+        console.warn("Retrying user data load...", err);
       }
 
       setChecking(false);
@@ -69,7 +65,9 @@ export default function DashboardLayout({
             <SidebarTrigger className="text-slate-400 hover:text-white" />
           </header>
           <main className="flex-1 p-6">
-            {children}
+            <ErrorBoundary>
+              {children}
+            </ErrorBoundary>
           </main>
         </SidebarInset>
       </div>

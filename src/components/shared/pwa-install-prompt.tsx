@@ -12,7 +12,12 @@ interface BeforeInstallPromptEvent extends Event {
 export function PWAInstallPrompt() {
   const [deferredPrompt, setDeferredPrompt] =
     useState<BeforeInstallPromptEvent | null>(null);
-  const [dismissed, setDismissed] = useState(false);
+  const [dismissed, setDismissed] = useState(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("pwa-prompt-dismissed") === "true";
+    }
+    return false;
+  });
 
   useEffect(() => {
     const handler = (e: Event) => {
@@ -36,6 +41,7 @@ export function PWAInstallPrompt() {
   const handleDismiss = () => {
     setDismissed(true);
     setDeferredPrompt(null);
+    localStorage.setItem("pwa-prompt-dismissed", "true");
   };
 
   return (

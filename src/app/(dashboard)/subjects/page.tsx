@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, BookOpen, FileText, MoreVertical, Trash2, Edit, Upload } from "lucide-react";
+import { Plus, BookOpen, FileText, MoreVertical, Trash2, Edit, Upload, Loader2 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -23,6 +23,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAppStore } from "@/lib/store";
+import { getSubjects, createSubject, deleteSubject } from "@/lib/firebase/subjects";
 import Link from "next/link";
 
 const COLORS = [
@@ -45,8 +46,10 @@ const item = {
 };
 
 export default function SubjectsPage() {
-  const { subjects, addSubject, removeSubject } = useAppStore();
+  const { user, subjects, setSubjects, addSubject, removeSubject } = useAppStore();
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [loadingSubjects, setLoadingSubjects] = useState(true);
+  const [creating, setCreating] = useState(false);
   const [newSubject, setNewSubject] = useState({
     name: "",
     code: "",
@@ -54,23 +57,47 @@ export default function SubjectsPage() {
     color: COLORS[0],
   });
 
-  function handleCreate() {
-    if (!newSubject.name || !newSubject.code) return;
+  // Load subjects from Firestore
+  useEffect(() => {
+    if (!user?.uid) return;
+    setLoadingSubjects(true);
+    getSubjects(user.uid)
+      .then((data) => setSubjects(data))
+      .catch(console.error)
+      .finally(() => setLoadingSubjects(false));
+  }, [user?.uid, setSubjects]);
 
-    addSubject({
-      id: crypto.randomUUID(),
-      userId: "",
-      name: newSubject.name,
-      code: newSubject.code,
-      color: newSubject.color,
-      professor: newSubject.professor,
-      files: [],
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    });
+  async function handleCreate() {
+    if (!newSubject.name || !newSubject.code || !user?.uid) return;
+    setCreating(true);
 
-    setNewSubject({ name: "", code: "", professor: "", color: COLORS[0] });
-    setDialogOpen(false);
+    try {
+      const subject = await createSubject(user.uid, {
+        name: newSubject.name,
+        code: newSubject.code,
+        color: newSubject.color,
+        professor: newSubject.professor,
+        files: [],
+        folders: [],
+      });
+      addSubject(subject);
+      setNewSubject({ name: "", code: "", professor: "", color: COLORS[0] });
+      setDialogOpen(false);
+    } catch (err) {
+      console.error("Error creating subject:", err);
+    } finally {
+      setCreating(false);
+    }
+  }
+
+  async function handleDelete(subjectId: string) {
+    if (!user?.uid) return;
+    try {
+      await deleteSubject(user.uid, subjectId);
+      removeSubject(subjectId);
+    } catch (err) {
+      console.error("Error deleting subject:", err);
+    }
   }
 
   return (
@@ -135,15 +162,20 @@ export default function SubjectsPage() {
                   ))}
                 </div>
               </div>
-              <Button onClick={handleCreate} className="w-full bg-gradient-to-r from-blue-600 to-purple-600">
-                Crear ramo
+              <Button onClick={handleCreate} disabled={creating} className="w-full bg-gradient-to-r from-blue-600 to-purple-600">
+                {creating ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
+                {creating ? "Creando..." : "Crear ramo"}
               </Button>
             </div>
           </DialogContent>
         </Dialog>
       </div>
 
-      {subjects.length === 0 ? (
+      {loadingSubjects ? (
+        <div className="flex items-center justify-center py-20">
+          <Loader2 className="w-8 h-8 text-indigo-500 animate-spin" />
+        </div>
+      ) : subjects.length === 0 ? (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
           <Card className="bg-slate-900/50 border-slate-800">
             <CardContent className="p-16 text-center">
@@ -207,7 +239,7 @@ export default function SubjectsPage() {
                               className="text-red-400"
                               onClick={(e) => {
                                 e.preventDefault();
-                                removeSubject(subject.id);
+                                handleDelete(subject.id);
                               }}
                             >
                               <Trash2 className="w-4 h-4 mr-2" />

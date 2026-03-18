@@ -58,6 +58,7 @@ export interface Subject {
   professor?: string;
   schedule?: ScheduleBlock[];
   files: SubjectFile[];
+  folders: Folder[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -68,7 +69,63 @@ export interface SubjectFile {
   url: string;
   type: 'pdf' | 'doc' | 'image' | 'text' | 'other';
   size: number; // bytes
+  folderId: string | null; // null = root level
   uploadedAt: Date;
+}
+
+export interface Folder {
+  id: string;
+  name: string;
+  parentId: string | null; // null = root
+  createdAt: Date;
+}
+
+// Grade types
+export type GradeCategory = 'solemne' | 'examen' | 'control' | 'tarea' | 'proyecto' | 'otro';
+
+export const GRADE_CATEGORY_LABELS: Record<GradeCategory, string> = {
+  solemne: 'Solemne',
+  examen: 'Examen',
+  control: 'Control/Quiz',
+  tarea: 'Tarea',
+  proyecto: 'Proyecto',
+  otro: 'Otro',
+};
+
+export interface Grade {
+  id: string;
+  userId: string;
+  subjectId: string;
+  name: string;
+  score: number;
+  maxScore: number;
+  weight: number; // % sobre el total del ramo
+  category: GradeCategory;
+  date: Date;
+  createdAt: Date;
+}
+
+// Pending types
+export type PendingType = 'tarea' | 'prueba' | 'entrega' | 'otro';
+export type PendingStatus = 'pending' | 'in_progress' | 'completed';
+
+export const PENDING_TYPE_LABELS: Record<PendingType, string> = {
+  tarea: 'Tarea',
+  prueba: 'Prueba',
+  entrega: 'Entrega',
+  otro: 'Otro',
+};
+
+export interface Pending {
+  id: string;
+  userId: string;
+  subjectId: string;
+  title: string;
+  description?: string;
+  type: PendingType;
+  dueDate: Date;
+  status: PendingStatus;
+  createdAt: Date;
 }
 
 // Schedule types

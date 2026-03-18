@@ -21,7 +21,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
 export default function SummariesPage() {
-  const { subjects, usage } = useAppStore();
+  const { subjects, usage, user } = useAppStore();
   const [selectedSubject, setSelectedSubject] = useState<string>("");
   const [generating, setGenerating] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
@@ -49,7 +49,7 @@ export default function SummariesPage() {
       const res = await fetch("/api/ai/summary", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ content: text, tier: "flash" }),
+        body: JSON.stringify({ content: text, tier: "flash", userId: user?.uid }),
       });
 
       if (!res.ok) {

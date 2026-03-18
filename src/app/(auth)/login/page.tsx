@@ -1,13 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { Sparkles, Loader2 } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { signInWithGoogle } from "@/lib/firebase/auth";
+import { signInWithGoogle, onAuthChange } from "@/lib/firebase/auth";
 import { useAppStore } from "@/lib/store";
 
 export default function LoginPage() {
@@ -15,6 +15,16 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const setUser = useAppStore((s) => s.setUser);
+
+  // Redirect if already logged in
+  useEffect(() => {
+    const unsubscribe = onAuthChange((firebaseUser) => {
+      if (firebaseUser) {
+        router.push("/dashboard");
+      }
+    });
+    return () => unsubscribe();
+  }, [router]);
 
   async function handleGoogleLogin() {
     try {
