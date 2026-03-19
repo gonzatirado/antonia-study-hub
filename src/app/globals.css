@@ -349,23 +349,34 @@
   animation: aurora-bands 20s ease-in-out infinite;
 }
 
-/* Aurora curtain animations — each curtain sways independently */
-@keyframes aurora-curtain-1 {
-  0%, 100% { transform: translateX(0) scaleX(1); opacity: 0.9; }
-  25% { transform: translateX(3%) scaleX(1.05); opacity: 1; }
-  50% { transform: translateX(-2%) scaleX(0.97); opacity: 0.85; }
-  75% { transform: translateX(1%) scaleX(1.02); opacity: 0.95; }
+/* Aurora SVG curtain animations — gentle vertical sway like real curtains */
+.animate-aurora-wave {
+  animation: aurora-sway 10s ease-in-out infinite;
 }
 
-@keyframes aurora-curtain-2 {
-  0%, 100% { transform: translateX(0) skewX(0deg); opacity: 0.8; }
-  33% { transform: translateX(-4%) skewX(2deg); opacity: 0.95; }
-  66% { transform: translateX(3%) skewX(-1deg); opacity: 0.75; }
+.animate-aurora-curtain-2 {
+  animation: aurora-sway-2 14s ease-in-out infinite;
 }
 
-@keyframes aurora-curtain-3 {
-  0%, 100% { transform: translateX(2%) scaleX(1); opacity: 0.7; }
-  50% { transform: translateX(-3%) scaleX(1.08); opacity: 0.9; }
+.animate-aurora-curtain-3 {
+  animation: aurora-sway-3 18s ease-in-out infinite;
+}
+
+@keyframes aurora-sway {
+  0%, 100% { transform: translateY(0) scaleY(1); }
+  30% { transform: translateY(-15px) scaleY(1.04); }
+  60% { transform: translateY(8px) scaleY(0.97); }
+}
+
+@keyframes aurora-sway-2 {
+  0%, 100% { transform: translateY(0) scaleY(1); opacity: 0.85; }
+  40% { transform: translateY(12px) scaleY(1.03); opacity: 1; }
+  70% { transform: translateY(-10px) scaleY(0.98); opacity: 0.75; }
+}
+
+@keyframes aurora-sway-3 {
+  0%, 100% { transform: translateY(0); opacity: 0.8; }
+  50% { transform: translateY(-12px); opacity: 1; }
 }
 
 /* Shooting star animations for Midnight theme */

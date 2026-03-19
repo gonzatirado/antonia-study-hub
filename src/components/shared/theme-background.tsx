@@ -264,62 +264,76 @@ function AuroraDesign() {
         <rect width="100%" height="100%" fill="url(#aurora-depth-grid)" />
       </svg>
 
-      {/* === CURTAIN 1: Main green aurora — taller, more vibrant === */}
-      <div
-        className="pointer-events-none fixed inset-0 z-0 overflow-hidden"
-        style={{
-          background: `
-            linear-gradient(
-              180deg,
-              transparent 0%,
-              oklch(0.58 0.33 155 / 0.10) 4%,
-              oklch(0.63 0.36 155 / 0.35) 10%,
-              oklch(0.70 0.38 155 / 0.60) 20%,
-              oklch(0.65 0.34 160 / 0.50) 32%,
-              oklch(0.55 0.28 170 / 0.35) 45%,
-              oklch(0.45 0.20 180 / 0.18) 58%,
-              transparent 72%
-            )
-          `,
-          animation: "aurora-curtain-1 8s ease-in-out infinite",
-        }}
-      />
-      {/* === CURTAIN 2: Purple/violet secondary aurora — more vibrant === */}
-      <div
-        className="pointer-events-none fixed inset-0 z-0 overflow-hidden"
-        style={{
-          background: `
-            linear-gradient(
-              180deg,
-              transparent 0%,
-              oklch(0.48 0.28 290 / 0.08) 6%,
-              oklch(0.55 0.32 285 / 0.30) 15%,
-              oklch(0.60 0.34 280 / 0.48) 25%,
-              oklch(0.55 0.28 290 / 0.35) 38%,
-              oklch(0.45 0.22 300 / 0.18) 52%,
-              transparent 68%
-            )
-          `,
-          animation: "aurora-curtain-2 12s ease-in-out infinite",
-        }}
-      />
-      {/* === CURTAIN 3: Teal accent band — more vibrant === */}
-      <div
-        className="pointer-events-none fixed inset-0 z-0 overflow-hidden"
-        style={{
-          background: `
-            linear-gradient(
-              180deg,
-              transparent 0%,
-              oklch(0.55 0.32 175 / 0.25) 12%,
-              oklch(0.62 0.36 170 / 0.42) 22%,
-              oklch(0.55 0.28 180 / 0.30) 35%,
-              transparent 52%
-            )
-          `,
-          animation: "aurora-curtain-3 15s ease-in-out infinite",
-        }}
-      />
+      {/* === SVG Aurora Curtains — organic wavy shapes like real northern lights === */}
+      <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
+        <svg className="absolute inset-0 h-full w-full" viewBox="0 0 1440 900" preserveAspectRatio="none">
+          <defs>
+            {/* Main green aurora gradient — bright at bottom edge, fading up */}
+            <linearGradient id="aurora-green" x1="0" y1="1" x2="0" y2="0">
+              <stop offset="0%" stopColor="oklch(0.75 0.35 155)" stopOpacity="0.7" />
+              <stop offset="30%" stopColor="oklch(0.65 0.30 155)" stopOpacity="0.5" />
+              <stop offset="60%" stopColor="oklch(0.50 0.20 165)" stopOpacity="0.25" />
+              <stop offset="85%" stopColor="oklch(0.40 0.15 180)" stopOpacity="0.08" />
+              <stop offset="100%" stopColor="oklch(0.30 0.10 200)" stopOpacity="0" />
+            </linearGradient>
+            {/* Purple/pink aurora gradient */}
+            <linearGradient id="aurora-purple" x1="0" y1="1" x2="0" y2="0">
+              <stop offset="0%" stopColor="oklch(0.60 0.28 290)" stopOpacity="0.5" />
+              <stop offset="35%" stopColor="oklch(0.50 0.25 285)" stopOpacity="0.35" />
+              <stop offset="65%" stopColor="oklch(0.40 0.18 300)" stopOpacity="0.15" />
+              <stop offset="100%" stopColor="oklch(0.30 0.12 310)" stopOpacity="0" />
+            </linearGradient>
+            {/* Teal accent gradient */}
+            <linearGradient id="aurora-teal" x1="0" y1="1" x2="0" y2="0">
+              <stop offset="0%" stopColor="oklch(0.70 0.30 170)" stopOpacity="0.55" />
+              <stop offset="40%" stopColor="oklch(0.55 0.22 175)" stopOpacity="0.3" />
+              <stop offset="100%" stopColor="oklch(0.40 0.15 185)" stopOpacity="0" />
+            </linearGradient>
+            {/* Glow filter for soft edges */}
+            <filter id="aurora-blur">
+              <feGaussianBlur stdDeviation="12" />
+            </filter>
+            <filter id="aurora-blur-lg">
+              <feGaussianBlur stdDeviation="20" />
+            </filter>
+          </defs>
+
+          {/* Curtain 1: Main green — wavy ribbon across the sky */}
+          <g className="animate-aurora-wave" filter="url(#aurora-blur)">
+            <path
+              d="M-50,350 C100,280 200,380 350,300 C500,220 550,350 700,280 C850,210 900,330 1050,260 C1200,190 1300,310 1500,250 L1500,150 C1300,220 1200,100 1050,170 C900,240 850,120 700,190 C550,260 500,130 350,200 C200,270 100,180 -50,220 Z"
+              fill="url(#aurora-green)"
+            />
+          </g>
+
+          {/* Curtain 2: Purple — offset, slightly higher */}
+          <g className="animate-aurora-curtain-2" filter="url(#aurora-blur)">
+            <path
+              d="M-50,300 C150,230 250,320 400,250 C550,180 650,300 800,230 C950,160 1050,280 1200,210 C1350,140 1400,260 1500,200 L1500,100 C1400,160 1350,60 1200,120 C1050,180 950,80 800,140 C650,200 550,100 400,160 C250,220 150,140 -50,190 Z"
+              fill="url(#aurora-purple)"
+            />
+          </g>
+
+          {/* Curtain 3: Teal accent — lower, brighter edge */}
+          <g className="animate-aurora-curtain-3" filter="url(#aurora-blur-lg)">
+            <path
+              d="M-50,420 C100,370 250,440 400,380 C550,320 650,410 800,360 C950,310 1100,400 1250,340 C1400,280 1450,370 1500,330 L1500,250 C1450,290 1400,200 1250,260 C1100,320 950,230 800,280 C650,330 550,240 400,300 C250,360 100,290 -50,340 Z"
+              fill="url(#aurora-teal)"
+            />
+          </g>
+
+          {/* Bright green edge line — the sharp bottom edge of the aurora */}
+          <g className="animate-aurora-wave" filter="url(#aurora-blur)">
+            <path
+              d="M-50,355 C100,285 200,385 350,305 C500,225 550,355 700,285 C850,215 900,335 1050,265 C1200,195 1300,315 1500,255"
+              fill="none"
+              stroke="oklch(0.80 0.35 150)"
+              strokeWidth="3"
+              strokeOpacity="0.6"
+            />
+          </g>
+        </svg>
+      </div>
       {/* === Bottom glow: ground reflection === */}
       <div
         className="pointer-events-none fixed inset-0 z-0"
