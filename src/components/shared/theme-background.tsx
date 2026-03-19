@@ -74,83 +74,19 @@ function LightDesign() {
 }
 
 /* ─────────────────────────────────────────────
-   DARK — Star constellation field + nebula glow + dot grid
+   DARK — Clean professional dark mode: dot grid + subtle glow
    ───────────────────────────────────────────── */
 function DarkDesign() {
   return (
     <>
-      {/* Subtle dot grid overlay at 5% — Draftly depth texture */}
-      <DotGridOverlay opacity={0.05} color="oklch(0.70 0.10 265)" spacing={24} />
-      {/* Purple radial glow wash at top-center */}
+      {/* Subtle dot grid overlay at 4% — Draftly-style texture */}
+      <DotGridOverlay opacity={0.04} color="oklch(0.50 0.01 260)" spacing={24} />
+      {/* ONE subtle violet radial glow — barely visible ambient light */}
       <div
         className="pointer-events-none fixed inset-0 z-0"
         style={{
           backgroundImage: `
-            radial-gradient(ellipse 70% 45% at 50% 0%, oklch(0.22 0.15 280 / 0.55), transparent 65%)
-          `,
-        }}
-      />
-      {/* Star field */}
-      <svg className="pointer-events-none fixed inset-0 z-0 h-full w-full opacity-80">
-        <defs>
-          <radialGradient id="star-glow">
-            <stop offset="0%" stopColor="white" stopOpacity="1" />
-            <stop offset="100%" stopColor="white" stopOpacity="0" />
-          </radialGradient>
-        </defs>
-        {/* Big bright stars */}
-        {[
-          [5, 8, 4.0], [20, 15, 5.0], [42, 30, 4.5], [68, 12, 5.5], [92, 60, 4.0],
-          [25, 85, 4.5], [65, 80, 5.0], [85, 40, 4.0], [50, 50, 5.5], [15, 55, 4.5],
-        ].map(([x, y, r], i) => (
-          <circle key={`big-${i}`} cx={`${x}%`} cy={`${y}%`} r={r} fill="url(#star-glow)" opacity={0.8} />
-        ))}
-        {/* Medium stars */}
-        {[
-          [12, 25, 3.0], [35, 10, 2.8], [55, 20, 3.2], [75, 50, 2.8], [88, 35, 3.0],
-          [38, 75, 2.5], [52, 90, 3.0], [78, 65, 2.8], [8, 42, 2.5], [45, 68, 3.0],
-          [72, 92, 2.8], [32, 45, 2.5], [58, 78, 3.0], [90, 20, 2.5], [3, 90, 3.0],
-        ].map(([x, y, r], i) => (
-          <circle key={`med-${i}`} cx={`${x}%`} cy={`${y}%`} r={r} fill="url(#star-glow)" opacity={0.6} />
-        ))}
-        {/* Small accent stars */}
-        {[
-          [28, 45, 1.5], [48, 55, 1.8], [62, 40, 1.5], [82, 22, 1.8], [15, 70, 1.5],
-          [95, 75, 1.8], [18, 95, 1.5], [60, 10, 1.8], [40, 60, 1.5],
-        ].map(([x, y, r], i) => (
-          <circle key={`sm-${i}`} cx={`${x}%`} cy={`${y}%`} r={r} fill="url(#star-glow)" opacity={0.4} />
-        ))}
-        {/* Constellation lines — refined: thinner, lower opacity, dashed for elegance */}
-        <g stroke="oklch(0.70 0.15 270)" strokeWidth="0.5" opacity="0.25" strokeDasharray="4 6">
-          <line x1="5%" y1="8%" x2="12%" y2="25%" />
-          <line x1="12%" y1="25%" x2="20%" y2="15%" />
-          <line x1="35%" y1="10%" x2="42%" y2="30%" />
-          <line x1="42%" y1="30%" x2="48%" y2="55%" />
-          <line x1="62%" y1="40%" x2="68%" y2="12%" />
-          <line x1="68%" y1="12%" x2="75%" y2="50%" />
-          <line x1="82%" y1="22%" x2="88%" y2="35%" />
-          <line x1="15%" y1="70%" x2="25%" y2="85%" />
-          <line x1="25%" y1="85%" x2="38%" y2="75%" />
-          <line x1="65%" y1="80%" x2="78%" y2="65%" />
-          <line x1="78%" y1="65%" x2="85%" y2="88%" />
-        </g>
-        {/* Constellation node dots — small bright dots at connection points */}
-        {[
-          [5, 8], [12, 25], [20, 15], [35, 10], [42, 30], [48, 55],
-          [62, 40], [68, 12], [75, 50], [82, 22], [88, 35],
-          [15, 70], [25, 85], [38, 75], [65, 80], [78, 65], [85, 88],
-        ].map(([x, y], i) => (
-          <circle key={`node-${i}`} cx={`${x}%`} cy={`${y}%`} r="1.8" fill="url(#star-glow)" opacity={0.55} />
-        ))}
-      </svg>
-      {/* Nebula glow — multi-layer */}
-      <div
-        className="pointer-events-none fixed inset-0 z-0"
-        style={{
-          backgroundImage: `
-            radial-gradient(ellipse 50% 40% at 20% 30%, oklch(0.28 0.16 280 / 0.40), transparent 60%),
-            radial-gradient(ellipse 40% 50% at 80% 70%, oklch(0.23 0.13 250 / 0.35), transparent 60%),
-            radial-gradient(ellipse 35% 30% at 60% 85%, oklch(0.20 0.10 300 / 0.20), transparent 55%)
+            radial-gradient(ellipse 60% 50% at 30% 20%, oklch(0.18 0.08 280 / 0.18), transparent 65%)
           `,
         }}
       />
@@ -159,48 +95,61 @@ function DarkDesign() {
 }
 
 /* ─────────────────────────────────────────────
-   MIDNIGHT — Deep space nebula + twinkling stars + shooting star
+   MIDNIGHT — Immersive deep-space: dense star field + vivid nebula + shooting stars + aurora
    ───────────────────────────────────────────── */
 function MidnightDesign() {
   return (
     <>
-      {/* Deep space nebula effect — multiple colored radial gradients */}
+      {/* Deep space nebula effect — MORE visible (opacity +30%) with slow animated hue shift */}
       <div
         className="pointer-events-none fixed inset-0 z-0"
         style={{
           backgroundImage: `
-            radial-gradient(ellipse 60% 50% at 25% 20%, oklch(0.18 0.12 260 / 0.45), transparent 60%),
-            radial-gradient(ellipse 50% 45% at 75% 30%, oklch(0.16 0.10 285 / 0.35), transparent 55%),
-            radial-gradient(ellipse 45% 40% at 50% 60%, oklch(0.14 0.08 240 / 0.25), transparent 50%),
-            radial-gradient(ellipse 55% 35% at 80% 80%, oklch(0.15 0.09 270 / 0.20), transparent 50%)
+            radial-gradient(ellipse 60% 50% at 25% 20%, oklch(0.22 0.16 260 / 0.58), transparent 60%),
+            radial-gradient(ellipse 50% 45% at 75% 30%, oklch(0.20 0.14 285 / 0.46), transparent 55%),
+            radial-gradient(ellipse 45% 40% at 50% 60%, oklch(0.18 0.12 240 / 0.33), transparent 50%),
+            radial-gradient(ellipse 55% 35% at 80% 80%, oklch(0.19 0.13 270 / 0.26), transparent 50%),
+            radial-gradient(ellipse 40% 35% at 10% 70%, oklch(0.17 0.11 295 / 0.22), transparent 50%)
           `,
+          animation: "midnight-nebula-shift 60s ease-in-out infinite",
         }}
       />
       {/* Dot grid overlay for depth */}
       <DotGridOverlay opacity={0.04} color="oklch(0.60 0.12 260)" spacing={22} />
-      {/* Twinkling stars with CSS animation */}
+      {/* Twinkling stars with CSS animation — DENSE star field */}
       <div className="pointer-events-none fixed inset-0 z-0">
-        <svg className="h-full w-full opacity-80">
+        <svg className="h-full w-full opacity-85">
           {/* Big twinkling stars */}
           {[
             [10, 5, 4.5], [40, 8, 5.0], [70, 5, 4.0], [30, 42, 4.5], [65, 30, 5.5],
             [92, 28, 4.0], [45, 65, 5.0], [75, 68, 4.5], [5, 85, 4.0], [55, 82, 5.0],
+            [18, 22, 4.2], [82, 50, 4.8],
           ].map(([x, y, r], i) => (
-            <circle key={`big-${i}`} cx={`${x}%`} cy={`${y}%`} r={r} fill="white" opacity={0.7}
-              className="animate-twinkle" style={{ animationDelay: `${i * 0.5}s` }} />
+            <circle key={`big-${i}`} cx={`${x}%`} cy={`${y}%`} r={r} fill="white" opacity={0.75}
+              className="animate-twinkle" style={{ animationDelay: `${i * 0.45}s` }} />
           ))}
           {/* Medium stars */}
           {[
             [25, 18, 3.0], [55, 22, 2.8], [85, 15, 3.2], [15, 35, 2.8], [50, 38, 3.0],
             [80, 45, 2.5], [8, 60, 3.0], [22, 72, 2.8], [60, 55, 3.0], [88, 58, 2.5],
             [35, 88, 3.0], [70, 90, 2.8], [90, 80, 3.0], [18, 95, 2.5], [48, 92, 3.0],
+            [3, 18, 2.6], [42, 15, 2.9], [76, 38, 2.7], [62, 75, 3.1], [95, 42, 2.5],
           ].map(([x, y, r], i) => (
-            <circle key={`med-${i}`} cx={`${x}%`} cy={`${y}%`} r={r} fill="white" opacity={0.5}
-              className="animate-twinkle" style={{ animationDelay: `${i * 0.3}s` }} />
+            <circle key={`med-${i}`} cx={`${x}%`} cy={`${y}%`} r={r} fill="white" opacity={0.55}
+              className="animate-twinkle" style={{ animationDelay: `${i * 0.28}s` }} />
+          ))}
+          {/* Small distant stars — adds density for night-sky feel */}
+          {[
+            [7, 12, 1.5], [14, 48, 1.3], [28, 62, 1.6], [33, 30, 1.4], [46, 45, 1.7],
+            [52, 18, 1.3], [59, 68, 1.5], [67, 15, 1.4], [73, 55, 1.6], [79, 85, 1.3],
+            [86, 25, 1.5], [93, 70, 1.4], [38, 95, 1.6], [12, 88, 1.3], [58, 35, 1.5],
+          ].map(([x, y, r], i) => (
+            <circle key={`sm-${i}`} cx={`${x}%`} cy={`${y}%`} r={r} fill="white" opacity={0.35}
+              className="animate-twinkle" style={{ animationDelay: `${i * 0.35}s` }} />
           ))}
         </svg>
       </div>
-      {/* Shooting star — thin line that crosses once every ~9s */}
+      {/* Shooting stars — thin lines that cross periodically */}
       <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
         <div className="animate-shooting-star absolute" style={{
           top: "12%",
@@ -223,24 +172,24 @@ function MidnightDesign() {
           filter: "blur(0.3px)",
         }} />
       </div>
-      {/* Aurora waves at bottom — more intense */}
+      {/* Aurora waves at bottom — MORE prominent */}
       <div
         className="pointer-events-none fixed inset-0 z-0 animate-aurora-wave"
         style={{
           backgroundImage: `
-            radial-gradient(ellipse 130% 25% at 50% 100%, oklch(0.42 0.25 250 / 0.60), transparent),
-            radial-gradient(ellipse 90% 20% at 30% 92%, oklch(0.38 0.22 280 / 0.50), transparent),
-            radial-gradient(ellipse 70% 15% at 70% 96%, oklch(0.35 0.18 220 / 0.45), transparent),
-            radial-gradient(ellipse 50% 10% at 55% 100%, oklch(0.40 0.20 260 / 0.35), transparent)
+            radial-gradient(ellipse 140% 30% at 50% 100%, oklch(0.45 0.28 250 / 0.70), transparent),
+            radial-gradient(ellipse 100% 25% at 30% 92%, oklch(0.40 0.25 280 / 0.60), transparent),
+            radial-gradient(ellipse 80% 20% at 70% 96%, oklch(0.38 0.22 220 / 0.55), transparent),
+            radial-gradient(ellipse 60% 15% at 55% 100%, oklch(0.42 0.24 260 / 0.45), transparent)
           `,
         }}
       />
-      {/* Deep space top gradient */}
+      {/* Deep space top gradient — richer */}
       <div
         className="pointer-events-none fixed inset-0 z-0"
         style={{
           backgroundImage: `
-            radial-gradient(ellipse 70% 60% at 50% 0%, oklch(0.18 0.10 270 / 0.50), transparent)
+            radial-gradient(ellipse 70% 60% at 50% 0%, oklch(0.15 0.12 270 / 0.60), transparent)
           `,
         }}
       />
@@ -426,11 +375,11 @@ function GoldDesign() {
   return (
     <>
       {/* Art deco geometric pattern — layered diamond + inner ornament at very low opacity */}
-      <svg className="pointer-events-none fixed inset-0 z-0 h-full w-full opacity-[0.07]">
+      <svg className="pointer-events-none fixed inset-0 z-0 h-full w-full opacity-[0.15]">
         <defs>
           <pattern id="gold-art-deco" width="80" height="80" patternUnits="userSpaceOnUse" patternTransform="scale(1.5)">
             {/* Outer diamond */}
-            <path d="M40 0L80 40L40 80L0 40Z" fill="none" stroke="oklch(0.62 0.14 85)" strokeWidth="0.5" />
+            <path d="M40 0L80 40L40 80L0 40Z" fill="none" stroke="oklch(0.55 0.18 85)" strokeWidth="0.7" />
             {/* Inner diamond */}
             <path d="M40 12L68 40L40 68L12 40Z" fill="none" stroke="oklch(0.62 0.14 85)" strokeWidth="0.3" />
             {/* Cross lines through center */}
