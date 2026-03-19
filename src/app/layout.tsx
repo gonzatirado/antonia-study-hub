@@ -38,10 +38,12 @@ export default function RootLayout({
   return (
     <html lang="es" suppressHydrationWarning>
       <body className={`${inter.variable} font-sans antialiased`}>
+        {/* Migrate deprecated theme names before React hydrates */}
+        <script dangerouslySetInnerHTML={{ __html: `try{var t=localStorage.getItem("studyhub-theme");if(t==="sunset"){localStorage.setItem("studyhub-theme","gold");document.documentElement.setAttribute("data-theme","gold")}}catch(e){}` }} />
         <ThemeProvider
           attribute="data-theme"
           defaultTheme="dark"
-          themes={["light", "dark", "midnight", "aurora", "sunset"]}
+          themes={["light", "dark", "midnight", "aurora", "gold"]}
           enableSystem={false}
           disableTransitionOnChange={false}
           storageKey="studyhub-theme"

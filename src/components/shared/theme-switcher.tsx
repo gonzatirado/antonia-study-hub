@@ -3,7 +3,7 @@
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Sun, Moon, Stars, Sparkles, Sunset, Check } from "lucide-react";
+import { Sun, Moon, Stars, Sparkles, Crown, Check } from "lucide-react";
 import { themes } from "@/lib/themes";
 import { springs } from "@/lib/animations";
 
@@ -12,7 +12,7 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Moon,
   Stars,
   Sparkles,
-  Sunset,
+  Crown,
 };
 
 const previewColors: Record<string, { bg: string; card: string; accent: string; text: string }> = {
@@ -20,7 +20,7 @@ const previewColors: Record<string, { bg: string; card: string; accent: string; 
   dark: { bg: "#1e1b2e", card: "#2a2740", accent: "#8b7cf6", text: "#e8e4f0" },
   midnight: { bg: "#0d0a2a", card: "#161240", accent: "#4d7cff", text: "#c8d0f0" },
   aurora: { bg: "#0a1f1a", card: "#122b24", accent: "#34d399", text: "#c8f0e0" },
-  sunset: { bg: "#1f0f0a", card: "#2b1812", accent: "#f97316", text: "#f0d8c8" },
+  gold: { bg: "#f0ead2", card: "#f5f0e1", accent: "#8a7e3b", text: "#3a3525" },
 };
 
 export function ThemeSwitcher() {
@@ -34,7 +34,7 @@ export function ThemeSwitcher() {
     <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
       {themes.map((t) => {
         const Icon = iconMap[t.icon];
-        const colors = previewColors[t.id];
+        const colors = previewColors[t.id] ?? previewColors.dark;
         const isActive = theme === t.id;
 
         return (
