@@ -270,6 +270,34 @@
 }
 
 /* ============================================
+   SCROLLBAR STYLING
+   ============================================ */
+/* Thin, themed scrollbar that doesn't clash with backgrounds */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: oklch(from var(--muted-foreground) l c h / 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: oklch(from var(--muted-foreground) l c h / 0.5);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: oklch(from var(--muted-foreground) l c h / 0.3) transparent;
+}
+
+/* ============================================
    BACKGROUND EFFECTS
    ============================================ */
 @keyframes aurora-shift {
