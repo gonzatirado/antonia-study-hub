@@ -11,8 +11,31 @@ import type {
   Subject, SubjectFile, Folder, Grade, GradeCategory,
   Pending, PendingType, PendingStatus,
 } from "@/lib/types";
+import { PLAN_LIMITS } from "@/lib/types";
 
 type Tab = "files" | "grades" | "pendings";
+
+function detectFileType(mimeType: string, fileName: string): SubjectFile["type"] {
+  // MIME-based detection
+  if (mimeType === "application/pdf") return "pdf";
+  if (
+    mimeType === "application/msword" ||
+    mimeType === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
+    mimeType === "application/vnd.ms-excel" ||
+    mimeType === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+  ) return "doc";
+  if (mimeType === "text/html" || mimeType === "text/plain") return "text";
+  if (mimeType.startsWith("image/")) return "image";
+
+  // Extension-based fallback
+  const ext = fileName.split(".").pop()?.toLowerCase() ?? "";
+  if (ext === "pdf") return "pdf";
+  if (["doc", "docx", "xls", "xlsx", "ppt", "pptx"].includes(ext)) return "doc";
+  if (["txt", "html", "htm", "csv", "md"].includes(ext)) return "text";
+  if (["png", "jpg", "jpeg", "gif", "webp", "svg", "bmp"].includes(ext)) return "image";
+
+  return "other";
+}
 
 export function useSubjectData(subjectId: string) {
   const { user, subjects, setSubjects } = useAppStore();
@@ -133,6 +156,26 @@ export function useSubjectData(subjectId: string) {
   async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const fileList = e.target.files;
     if (!fileList || !user?.uid || !subject) return;
+
+    // Enforce plan limits
+    const planLimits = PLAN_LIMITS[user.plan ?? "free"];
+    const totalFiles = subjects.reduce((sum, s) => sum + s.files.length, 0);
+    const totalStorageBytes = subjects.reduce(
+      (sum, s) => sum + s.files.reduce((fSum, f) => fSum + f.size, 0), 0
+    );
+    const newFilesSize = Array.from(fileList).reduce((sum, f) => sum + f.size, 0);
+
+    if (planLimits.max_files !== -1 && totalFiles + fileList.length > planLimits.max_files) {
+      alert(`Has alcanzado el límite de archivos de tu plan (${planLimits.max_files}). Mejora tu plan para subir más.`);
+      e.target.value = "";
+      return;
+    }
+    if (totalStorageBytes + newFilesSize > planLimits.max_storage_mb * 1024 * 1024) {
+      alert(`Has alcanzado el límite de almacenamiento de tu plan (${planLimits.max_storage_mb} MB). Mejora tu plan para más espacio.`);
+      e.target.value = "";
+      return;
+    }
+
     setUploading(true);
     try {
       const storage = getFirebaseStorage();
@@ -142,11 +185,7 @@ export function useSubjectData(subjectId: string) {
         const storageRef = ref(storage, `users/${user.uid}/subjects/${subjectId}/${fileId}_${file.name}`);
         await uploadBytes(storageRef, file);
         const url = await getDownloadURL(storageRef);
-        const fileType = file.type.includes("pdf") ? "pdf"
-          : file.type.includes("html") ? "text"
-          : file.type.includes("text") ? "text"
-          : file.type.includes("image") ? "image"
-          : "other";
+        const fileType = detectFileType(file.type, file.name);
         newFiles.push({
           id: fileId, name: file.name, url,
           type: fileType as SubjectFile["type"],
@@ -224,6 +263,38 @@ export function useSubjectData(subjectId: string) {
     setMovingFile(null);
   }
 
+  async function moveFileToFolder(fileId: string, targetFolderId: string | null) {
+    if (!user?.uid || !subject) return;
+    const updatedFiles = subject.files.map((f) =>
+      f.id === fileId ? { ...f, folderId: targetFolderId } : f
+    );
+    await updateSubjectDoc(user.uid, subjectId, { files: updatedFiles });
+    const updated = { ...subject, files: updatedFiles };
+    setSubject(updated);
+    setSubjects(subjects.map((s) => s.id === subjectId ? updated : s));
+  }
+
+  async function moveFolderToFolder(folderId: string, targetFolderId: string | null) {
+    if (!user?.uid || !subject) return;
+    // Prevent moving into itself
+    if (folderId === targetFolderId) return;
+    // Prevent circular reference: target cannot be a descendant of the folder being moved
+    function getDescendantIds(parentId: string): string[] {
+      const children = subject!.folders.filter((f) => f.parentId === parentId);
+      return children.flatMap((c) => [c.id, ...getDescendantIds(c.id)]);
+    }
+    const descendants = getDescendantIds(folderId);
+    if (targetFolderId !== null && descendants.includes(targetFolderId)) return;
+
+    const updatedFolders = subject.folders.map((f) =>
+      f.id === folderId ? { ...f, parentId: targetFolderId } : f
+    );
+    await updateSubjectDoc(user.uid, subjectId, { folders: updatedFolders });
+    const updated = { ...subject, folders: updatedFolders };
+    setSubject(updated);
+    setSubjects(subjects.map((s) => s.id === subjectId ? updated : s));
+  }
+
   // === GRADE OPERATIONS ===
   async function handleSaveGrade(data: {
     name: string; score: number; maxScore: number;
@@ -277,6 +348,7 @@ export function useSubjectData(subjectId: string) {
     // File operations
     handleFileUpload, handleDeleteFile,
     handleCreateFolder, handleDeleteFolder, handleMoveFile,
+    moveFileToFolder, moveFolderToFolder,
     // Grades state
     grades, loadingGrades,
     showGradeDialog, setShowGradeDialog,
