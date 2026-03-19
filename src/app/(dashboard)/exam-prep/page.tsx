@@ -188,7 +188,7 @@ export default function ExamPrepPage() {
           </Card>
         </motion.div>
       ) : (
-        <Card className="bg-slate-900/50 border-slate-800">
+        <Card className="bg-card/50 border-border">
           <CardContent className="p-8">
             <div className="max-w-xl mx-auto space-y-6">
               <div className="text-center">
