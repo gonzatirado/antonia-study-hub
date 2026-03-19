@@ -2,6 +2,7 @@
 
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
+import { SnowEffect } from "./snow-effect";
 
 /* ─────────────────────────────────────────────
    LIGHT — Soft geometric hexagon grid + lavender bloom
@@ -254,6 +255,56 @@ function AuroraDesign() {
             className="animate-twinkle" style={{ animationDelay: `${i * 0.4}s` }} />
         ))}
       </svg>
+
+      {/* === Arctic mountain silhouettes — 3 layers for depth === */}
+      {/* Back layer — farthest mountains, lightest */}
+      <svg
+        className="pointer-events-none fixed bottom-0 left-0 z-0 w-full"
+        style={{ height: "20vh" }}
+        viewBox="0 0 1440 200"
+        preserveAspectRatio="none"
+      >
+        <path
+          d="M0 200 L0 120 L60 95 L110 110 L160 70 L210 100 L270 55 L320 85 L380 40 L430 75 L490 50 L540 80 L600 35 L660 65 L710 45 L770 78 L830 30 L890 60 L940 42 L1000 72 L1060 38 L1110 68 L1170 48 L1220 80 L1280 55 L1330 90 L1380 65 L1440 85 L1440 200 Z"
+          fill="oklch(0.18 0.04 200 / 0.50)"
+        />
+      </svg>
+      {/* Mid layer — medium depth */}
+      <svg
+        className="pointer-events-none fixed bottom-0 left-0 z-0 w-full"
+        style={{ height: "17vh" }}
+        viewBox="0 0 1440 170"
+        preserveAspectRatio="none"
+      >
+        <path
+          d="M0 170 L0 130 L40 115 L80 95 L120 120 L170 72 L220 100 L280 55 L330 88 L390 45 L440 78 L500 35 L550 65 L610 42 L670 75 L720 50 L780 82 L840 38 L900 70 L950 48 L1010 80 L1070 52 L1120 85 L1180 60 L1230 92 L1290 68 L1340 105 L1390 82 L1440 95 L1440 170 Z"
+          fill="oklch(0.14 0.05 210 / 0.65)"
+        />
+      </svg>
+      {/* Front layer — closest mountains, darkest */}
+      <svg
+        className="pointer-events-none fixed bottom-0 left-0 z-0 w-full"
+        style={{ height: "15vh" }}
+        viewBox="0 0 1440 150"
+        preserveAspectRatio="none"
+      >
+        <path
+          d="M0 150 L0 110 L50 88 L100 105 L150 68 L200 92 L260 50 L310 78 L370 42 L420 70 L480 30 L530 58 L590 38 L650 65 L700 45 L760 72 L820 35 L870 62 L930 40 L990 68 L1050 48 L1100 75 L1160 55 L1210 85 L1270 62 L1320 95 L1380 78 L1440 90 L1440 150 Z"
+          fill="oklch(0.10 0.06 215 / 0.80)"
+        />
+      </svg>
+
+      {/* === Frosty ground glow — ice-blue snow reflection === */}
+      <div
+        className="pointer-events-none fixed inset-0 z-0"
+        style={{
+          background: `
+            radial-gradient(ellipse 120% 15% at 50% 100%, oklch(0.85 0.05 200 / 0.20), transparent 70%),
+            radial-gradient(ellipse 80% 10% at 40% 100%, oklch(0.90 0.03 210 / 0.15), transparent 60%),
+            radial-gradient(ellipse 60% 8% at 70% 100%, oklch(0.80 0.06 190 / 0.18), transparent 55%)
+          `,
+        }}
+      />
     </>
   );
 }
@@ -358,6 +409,7 @@ export function ThemeBackground() {
     <>
       <Design />
       <NoiseOverlay />
+      <SnowEffect />
     </>
   );
 }
