@@ -63,7 +63,7 @@ export default function PomodoroPage() {
   // Load subjects if needed
   useEffect(() => {
     if (user && subjects.length === 0) {
-      getSubjects(user.uid).then(setSubjects);
+      getSubjects(user.uid).then(setSubjects).catch(() => { /* subjects load silently fails */ });
     }
   }, [user, subjects.length, setSubjects]);
 

@@ -197,8 +197,10 @@ export function useSubjectData(subjectId: string) {
       const updated = { ...subject, files: updatedFiles };
       setSubject(updated);
       setSubjects(subjects.map((s) => s.id === subjectId ? updated : s));
-    } catch (err) { Sentry.captureException(err); }
-    finally { setUploading(false); e.target.value = ""; }
+    } catch (err) {
+      Sentry.captureException(err);
+      alert("Error al subir archivos. Verifica tu conexión e inténtalo de nuevo.");
+    } finally { setUploading(false); e.target.value = ""; }
   }
 
   async function handleDeleteFile(file: SubjectFile) {
@@ -206,72 +208,95 @@ export function useSubjectData(subjectId: string) {
     try {
       const storage = getFirebaseStorage();
       const storageRef = ref(storage, `users/${user.uid}/subjects/${subjectId}/${file.id}_${file.name}`);
-      try { await deleteObject(storageRef); } catch {}
+      try { await deleteObject(storageRef); } catch { /* Storage object may already be deleted */ }
       const updatedFiles = subject.files.filter((f) => f.id !== file.id);
       await updateSubjectDoc(user.uid, subjectId, { files: updatedFiles });
       const updated = { ...subject, files: updatedFiles };
       setSubject(updated);
       setSubjects(subjects.map((s) => s.id === subjectId ? updated : s));
-    } catch (err) { Sentry.captureException(err); }
+    } catch (err) {
+      Sentry.captureException(err);
+      alert("Error al eliminar el archivo. Inténtalo de nuevo.");
+    }
   }
 
   async function handleCreateFolder() {
     if (!newFolderName.trim() || !user?.uid || !subject) return;
-    const folder: Folder = {
-      id: crypto.randomUUID(),
-      name: newFolderName.trim(),
-      parentId: currentFolderId,
-      createdAt: new Date(),
-    };
-    const updatedFolders = [...subject.folders, folder];
-    await updateSubjectDoc(user.uid, subjectId, { folders: updatedFolders });
-    const updated = { ...subject, folders: updatedFolders };
-    setSubject(updated);
-    setSubjects(subjects.map((s) => s.id === subjectId ? updated : s));
-    setNewFolderName("");
-    setShowNewFolder(false);
+    try {
+      const folder: Folder = {
+        id: crypto.randomUUID(),
+        name: newFolderName.trim(),
+        parentId: currentFolderId,
+        createdAt: new Date(),
+      };
+      const updatedFolders = [...subject.folders, folder];
+      await updateSubjectDoc(user.uid, subjectId, { folders: updatedFolders });
+      const updated = { ...subject, folders: updatedFolders };
+      setSubject(updated);
+      setSubjects(subjects.map((s) => s.id === subjectId ? updated : s));
+      setNewFolderName("");
+      setShowNewFolder(false);
+    } catch (err) {
+      Sentry.captureException(err);
+      alert("Error al crear la carpeta. Inténtalo de nuevo.");
+    }
   }
 
   async function handleDeleteFolder(folderId: string) {
     if (!user?.uid || !subject) return;
-    function getDescendantIds(parentId: string): string[] {
-      const children = subject!.folders.filter((f) => f.parentId === parentId);
-      return children.flatMap((c) => [c.id, ...getDescendantIds(c.id)]);
+    try {
+      function getDescendantIds(parentId: string): string[] {
+        const children = subject!.folders.filter((f) => f.parentId === parentId);
+        return children.flatMap((c) => [c.id, ...getDescendantIds(c.id)]);
+      }
+      const toDelete = [folderId, ...getDescendantIds(folderId)];
+      const updatedFolders = subject.folders.filter((f) => !toDelete.includes(f.id));
+      const updatedFiles = subject.files.map((f) =>
+        f.folderId && toDelete.includes(f.folderId)
+          ? { ...f, folderId: currentFolderId }
+          : f
+      );
+      await updateSubjectDoc(user.uid, subjectId, { folders: updatedFolders, files: updatedFiles });
+      const updated = { ...subject, folders: updatedFolders, files: updatedFiles };
+      setSubject(updated);
+      setSubjects(subjects.map((s) => s.id === subjectId ? updated : s));
+    } catch (err) {
+      Sentry.captureException(err);
+      alert("Error al eliminar la carpeta. Inténtalo de nuevo.");
     }
-    const toDelete = [folderId, ...getDescendantIds(folderId)];
-    const updatedFolders = subject.folders.filter((f) => !toDelete.includes(f.id));
-    const updatedFiles = subject.files.map((f) =>
-      f.folderId && toDelete.includes(f.folderId)
-        ? { ...f, folderId: currentFolderId }
-        : f
-    );
-    await updateSubjectDoc(user.uid, subjectId, { folders: updatedFolders, files: updatedFiles });
-    const updated = { ...subject, folders: updatedFolders, files: updatedFiles };
-    setSubject(updated);
-    setSubjects(subjects.map((s) => s.id === subjectId ? updated : s));
   }
 
   async function handleMoveFile(file: SubjectFile, targetFolderId: string | null) {
     if (!user?.uid || !subject) return;
-    const updatedFiles = subject.files.map((f) =>
-      f.id === file.id ? { ...f, folderId: targetFolderId } : f
-    );
-    await updateSubjectDoc(user.uid, subjectId, { files: updatedFiles });
-    const updated = { ...subject, files: updatedFiles };
-    setSubject(updated);
-    setSubjects(subjects.map((s) => s.id === subjectId ? updated : s));
-    setMovingFile(null);
+    try {
+      const updatedFiles = subject.files.map((f) =>
+        f.id === file.id ? { ...f, folderId: targetFolderId } : f
+      );
+      await updateSubjectDoc(user.uid, subjectId, { files: updatedFiles });
+      const updated = { ...subject, files: updatedFiles };
+      setSubject(updated);
+      setSubjects(subjects.map((s) => s.id === subjectId ? updated : s));
+      setMovingFile(null);
+    } catch (err) {
+      Sentry.captureException(err);
+      alert("Error al mover el archivo. Inténtalo de nuevo.");
+    }
   }
 
   async function moveFileToFolder(fileId: string, targetFolderId: string | null) {
     if (!user?.uid || !subject) return;
-    const updatedFiles = subject.files.map((f) =>
-      f.id === fileId ? { ...f, folderId: targetFolderId } : f
-    );
-    await updateSubjectDoc(user.uid, subjectId, { files: updatedFiles });
-    const updated = { ...subject, files: updatedFiles };
-    setSubject(updated);
-    setSubjects(subjects.map((s) => s.id === subjectId ? updated : s));
+    try {
+      const updatedFiles = subject.files.map((f) =>
+        f.id === fileId ? { ...f, folderId: targetFolderId } : f
+      );
+      await updateSubjectDoc(user.uid, subjectId, { files: updatedFiles });
+      const updated = { ...subject, files: updatedFiles };
+      setSubject(updated);
+      setSubjects(subjects.map((s) => s.id === subjectId ? updated : s));
+    } catch (err) {
+      Sentry.captureException(err);
+      alert("Error al mover el archivo. Inténtalo de nuevo.");
+    }
   }
 
   async function moveFolderToFolder(folderId: string, targetFolderId: string | null) {
@@ -286,13 +311,18 @@ export function useSubjectData(subjectId: string) {
     const descendants = getDescendantIds(folderId);
     if (targetFolderId !== null && descendants.includes(targetFolderId)) return;
 
-    const updatedFolders = subject.folders.map((f) =>
-      f.id === folderId ? { ...f, parentId: targetFolderId } : f
-    );
-    await updateSubjectDoc(user.uid, subjectId, { folders: updatedFolders });
-    const updated = { ...subject, folders: updatedFolders };
-    setSubject(updated);
-    setSubjects(subjects.map((s) => s.id === subjectId ? updated : s));
+    try {
+      const updatedFolders = subject.folders.map((f) =>
+        f.id === folderId ? { ...f, parentId: targetFolderId } : f
+      );
+      await updateSubjectDoc(user.uid, subjectId, { folders: updatedFolders });
+      const updated = { ...subject, folders: updatedFolders };
+      setSubject(updated);
+      setSubjects(subjects.map((s) => s.id === subjectId ? updated : s));
+    } catch (err) {
+      Sentry.captureException(err);
+      alert("Error al mover la carpeta. Inténtalo de nuevo.");
+    }
   }
 
   // === GRADE OPERATIONS ===
@@ -301,15 +331,25 @@ export function useSubjectData(subjectId: string) {
     weight: number; category: GradeCategory; date: Date;
   }) {
     if (!user?.uid) return;
-    const grade = await addGrade({ ...data, userId: user.uid, subjectId });
-    setGrades(prev => [grade, ...prev]);
-    setShowGradeDialog(false);
+    try {
+      const grade = await addGrade({ ...data, userId: user.uid, subjectId });
+      setGrades(prev => [grade, ...prev]);
+      setShowGradeDialog(false);
+    } catch (err) {
+      Sentry.captureException(err);
+      alert("Error al guardar la nota. Inténtalo de nuevo.");
+    }
   }
 
   async function handleDeleteGrade(gradeId: string) {
     if (!user?.uid) return;
-    await deleteGrade(user.uid, gradeId);
-    setGrades(prev => prev.filter((g) => g.id !== gradeId));
+    try {
+      await deleteGrade(user.uid, gradeId);
+      setGrades(prev => prev.filter((g) => g.id !== gradeId));
+    } catch (err) {
+      Sentry.captureException(err);
+      alert("Error al eliminar la nota. Inténtalo de nuevo.");
+    }
   }
 
   // === PENDING OPERATIONS ===
@@ -318,21 +358,36 @@ export function useSubjectData(subjectId: string) {
     type: PendingType; dueDate: Date; status: PendingStatus;
   }) {
     if (!user?.uid) return;
-    const pending = await addPending({ ...data, userId: user.uid, subjectId });
-    setPendings(prev => [...prev, pending]);
-    setShowPendingDialog(false);
+    try {
+      const pending = await addPending({ ...data, userId: user.uid, subjectId });
+      setPendings(prev => [...prev, pending]);
+      setShowPendingDialog(false);
+    } catch (err) {
+      Sentry.captureException(err);
+      alert("Error al guardar el pendiente. Inténtalo de nuevo.");
+    }
   }
 
   async function handleTogglePendingStatus(pendingId: string, newStatus: PendingStatus) {
     if (!user?.uid) return;
-    await updatePending(user.uid, pendingId, { status: newStatus });
-    setPendings(prev => prev.map((p) => p.id === pendingId ? { ...p, status: newStatus } : p));
+    try {
+      await updatePending(user.uid, pendingId, { status: newStatus });
+      setPendings(prev => prev.map((p) => p.id === pendingId ? { ...p, status: newStatus } : p));
+    } catch (err) {
+      Sentry.captureException(err);
+      alert("Error al actualizar el estado. Inténtalo de nuevo.");
+    }
   }
 
   async function handleDeletePending(pendingId: string) {
     if (!user?.uid) return;
-    await deletePending(user.uid, pendingId);
-    setPendings(prev => prev.filter((p) => p.id !== pendingId));
+    try {
+      await deletePending(user.uid, pendingId);
+      setPendings(prev => prev.filter((p) => p.id !== pendingId));
+    } catch (err) {
+      Sentry.captureException(err);
+      alert("Error al eliminar el pendiente. Inténtalo de nuevo.");
+    }
   }
 
   return {

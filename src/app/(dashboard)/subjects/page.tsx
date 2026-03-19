@@ -86,6 +86,7 @@ export default function SubjectsPage() {
       setDialogOpen(false);
     } catch (err) {
       Sentry.captureException(err);
+      alert("Error al crear el ramo. Verifica tu conexión e inténtalo de nuevo.");
     } finally {
       setCreating(false);
     }
@@ -98,6 +99,7 @@ export default function SubjectsPage() {
       removeSubject(subjectId);
     } catch (err) {
       Sentry.captureException(err);
+      alert("Error al eliminar el ramo. Inténtalo de nuevo.");
     }
   }
 

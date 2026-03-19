@@ -69,6 +69,7 @@ export default function SchedulePage() {
       setNewBlock(INITIAL_BLOCK_FORM);
     } catch (err) {
       Sentry.captureException(err);
+      alert("Error al agregar el bloque. Inténtalo de nuevo.");
     }
   }
 
@@ -79,6 +80,7 @@ export default function SchedulePage() {
       setBlocks(blocks.filter((b) => b.id !== blockId));
     } catch (err) {
       Sentry.captureException(err);
+      alert("Error al eliminar el bloque. Inténtalo de nuevo.");
     }
   }
 
