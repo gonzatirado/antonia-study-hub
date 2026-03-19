@@ -90,9 +90,9 @@ const item = {
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen text-foreground">
       {/* Navbar */}
-      <nav className="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-xl border-b border-foreground/5">
+      <nav className="fixed top-0 w-full z-50 bg-background/60 backdrop-blur-xl border-b border-foreground/5">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center">
@@ -184,7 +184,7 @@ export default function LandingPage() {
                 key={feature.title}
                 variants={item}
                 whileHover={{ scale: 1.02, y: -4 }}
-                className="group relative p-8 rounded-2xl bg-muted/50 border border-border/50 hover:border-border transition-all duration-300"
+                className="group relative p-8 rounded-2xl bg-card/80 backdrop-blur-sm border border-border/50 hover:border-border transition-all duration-300"
               >
                 <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${feature.color} flex items-center justify-center mb-4`}>
                   <feature.icon className="w-6 h-6 text-foreground" />
@@ -225,8 +225,8 @@ export default function LandingPage() {
                 whileHover={{ scale: 1.03, y: -4 }}
                 className={`relative p-8 rounded-2xl border transition-all duration-300 ${
                   plan.highlighted
-                    ? "bg-gradient-to-b from-primary/10 to-card border-primary/50 shadow-lg shadow-primary/10"
-                    : "bg-muted/50 border-border/50 hover:border-border"
+                    ? "bg-gradient-to-b from-primary/10 to-card/80 backdrop-blur-sm border-primary/50 shadow-lg shadow-primary/10"
+                    : "bg-card/80 backdrop-blur-sm border-border/50 hover:border-border"
                 }`}
               >
                 {plan.highlighted && (
@@ -265,7 +265,7 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="py-8 px-6 border-t border-border">
+      <footer className="py-8 px-6 border-t border-border bg-background/40 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto text-center text-muted-foreground text-sm">
           StudyHub &copy; {new Date().getFullYear()}. Hecho para estudiantes, por estudiantes.
         </div>

@@ -48,7 +48,7 @@ export default function DashboardLayout({
 
   if (checking) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
           <Loader2 className="w-8 h-8 text-primary animate-spin" />
           <p className="text-muted-foreground">Cargando...</p>
@@ -59,10 +59,10 @@ export default function DashboardLayout({
 
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen w-full bg-background">
+      <div className="flex min-h-screen w-full">
         <AppSidebar />
         <SidebarInset className="flex-1">
-          <header className="sticky top-0 z-40 flex h-14 items-center gap-4 border-b border-border bg-background/80 backdrop-blur-xl px-6">
+          <header className="sticky top-0 z-40 flex h-14 items-center gap-4 border-b border-border/50 bg-background/60 backdrop-blur-xl px-6">
             <SidebarTrigger className="text-muted-foreground hover:text-foreground" />
           </header>
           <main className="flex-1 p-6">

@@ -402,10 +402,14 @@ a:not([data-slot="button"]):not([class*="no-underline"]) {
   * {
     @apply border-border outline-ring/50;
   }
-  body {
-    @apply bg-background text-foreground;
-  }
   html {
-    @apply font-sans;
+    @apply bg-background font-sans;
+  }
+  body {
+    @apply text-foreground;
+    background: transparent;
   }
 }
+
+/* Theme background: ThemeBackground component handles all visual layers.
+   Content sits above via relative positioning. */

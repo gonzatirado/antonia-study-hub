@@ -70,7 +70,7 @@ export function AppSidebar() {
   }
 
   return (
-    <Sidebar className="border-r border-border">
+    <Sidebar className="border-r border-border/50">
       <SidebarHeader className="p-4">
         <Link href="/dashboard" className="flex items-center gap-2">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center">

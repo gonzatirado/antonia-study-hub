@@ -48,7 +48,9 @@ export default function RootLayout({
         >
           <ThemeBackground />
           <TooltipProvider>
-            {children}
+            <div className="relative z-10">
+              {children}
+            </div>
           </TooltipProvider>
         </ThemeProvider>
         <Script

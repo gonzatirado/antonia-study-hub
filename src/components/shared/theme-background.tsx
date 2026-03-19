@@ -10,7 +10,7 @@ function LightDesign() {
   return (
     <>
       {/* Hexagonal grid pattern */}
-      <svg className="pointer-events-none fixed inset-0 -z-10 h-full w-full opacity-[0.04]">
+      <svg className="pointer-events-none fixed inset-0 z-0 h-full w-full opacity-[0.12]">
         <defs>
           <pattern id="hex-grid" width="56" height="100" patternUnits="userSpaceOnUse" patternTransform="scale(2)">
             <path
@@ -31,12 +31,12 @@ function LightDesign() {
       </svg>
       {/* Soft lavender bloom */}
       <div
-        className="pointer-events-none fixed inset-0 -z-10"
+        className="pointer-events-none fixed inset-0 z-0"
         style={{
           backgroundImage: `
-            radial-gradient(ellipse 60% 50% at 15% 20%, oklch(0.88 0.12 280 / 0.15), transparent 60%),
-            radial-gradient(ellipse 40% 60% at 85% 75%, oklch(0.85 0.10 310 / 0.12), transparent 60%),
-            radial-gradient(ellipse 50% 40% at 50% 50%, oklch(0.92 0.06 240 / 0.08), transparent 60%)
+            radial-gradient(ellipse 60% 50% at 15% 20%, oklch(0.88 0.15 280 / 0.30), transparent 60%),
+            radial-gradient(ellipse 40% 60% at 85% 75%, oklch(0.85 0.12 310 / 0.25), transparent 60%),
+            radial-gradient(ellipse 50% 40% at 50% 50%, oklch(0.92 0.08 240 / 0.18), transparent 60%)
           `,
         }}
       />
@@ -51,7 +51,7 @@ function DarkDesign() {
   return (
     <>
       {/* Star field */}
-      <svg className="pointer-events-none fixed inset-0 -z-10 h-full w-full opacity-40">
+      <svg className="pointer-events-none fixed inset-0 z-0 h-full w-full opacity-80">
         <defs>
           <radialGradient id="star-glow">
             <stop offset="0%" stopColor="white" stopOpacity="1" />
@@ -60,12 +60,12 @@ function DarkDesign() {
         </defs>
         {/* Scattered stars — different sizes and positions */}
         {[
-          [5, 8, 1.2], [12, 25, 0.8], [20, 15, 1.5], [28, 45, 0.6], [35, 10, 1.0],
-          [42, 30, 1.3], [48, 55, 0.7], [55, 20, 1.1], [62, 40, 0.9], [68, 12, 1.4],
-          [75, 50, 0.8], [82, 22, 1.0], [88, 35, 0.6], [92, 60, 1.2], [15, 70, 0.9],
-          [25, 85, 1.1], [38, 75, 0.7], [52, 90, 1.0], [65, 80, 0.8], [78, 65, 1.3],
-          [85, 88, 0.6], [95, 75, 1.0], [8, 55, 0.7], [45, 68, 1.1], [72, 92, 0.9],
-          [18, 42, 0.5], [58, 78, 0.8], [32, 92, 1.0], [90, 48, 0.6], [3, 90, 1.2],
+          [5, 8, 2.0], [12, 25, 1.4], [20, 15, 2.5], [28, 45, 1.2], [35, 10, 1.8],
+          [42, 30, 2.2], [48, 55, 1.3], [55, 20, 1.9], [62, 40, 1.6], [68, 12, 2.4],
+          [75, 50, 1.4], [82, 22, 1.8], [88, 35, 1.2], [92, 60, 2.0], [15, 70, 1.6],
+          [25, 85, 1.9], [38, 75, 1.3], [52, 90, 1.8], [65, 80, 1.4], [78, 65, 2.2],
+          [85, 88, 1.2], [95, 75, 1.8], [8, 55, 1.3], [45, 68, 1.9], [72, 92, 1.6],
+          [18, 42, 1.0], [58, 78, 1.4], [32, 92, 1.8], [90, 48, 1.2], [3, 90, 2.0],
         ].map(([x, y, r], i) => (
           <circle
             key={i}
@@ -73,11 +73,11 @@ function DarkDesign() {
             cy={`${y}%`}
             r={r}
             fill="url(#star-glow)"
-            opacity={0.3 + (i % 5) * 0.15}
+            opacity={0.5 + (i % 5) * 0.1}
           />
         ))}
         {/* Constellation lines */}
-        <g stroke="oklch(0.70 0.10 265)" strokeWidth="0.3" opacity="0.15">
+        <g stroke="oklch(0.75 0.15 265)" strokeWidth="0.5" opacity="0.35">
           <line x1="5%" y1="8%" x2="12%" y2="25%" />
           <line x1="12%" y1="25%" x2="20%" y2="15%" />
           <line x1="35%" y1="10%" x2="42%" y2="30%" />
@@ -93,11 +93,11 @@ function DarkDesign() {
       </svg>
       {/* Nebula glow */}
       <div
-        className="pointer-events-none fixed inset-0 -z-10"
+        className="pointer-events-none fixed inset-0 z-0"
         style={{
           backgroundImage: `
-            radial-gradient(ellipse 50% 40% at 20% 30%, oklch(0.25 0.12 280 / 0.35), transparent 60%),
-            radial-gradient(ellipse 40% 50% at 80% 70%, oklch(0.20 0.10 250 / 0.25), transparent 60%)
+            radial-gradient(ellipse 50% 40% at 20% 30%, oklch(0.30 0.18 280 / 0.50), transparent 60%),
+            radial-gradient(ellipse 40% 50% at 80% 70%, oklch(0.25 0.15 250 / 0.40), transparent 60%)
           `,
         }}
       />
@@ -112,8 +112,8 @@ function MidnightDesign() {
   return (
     <>
       {/* Twinkling stars with CSS animation */}
-      <div className="pointer-events-none fixed inset-0 -z-10">
-        <svg className="h-full w-full opacity-50">
+      <div className="pointer-events-none fixed inset-0 z-0">
+        <svg className="h-full w-full opacity-80">
           {[
             [10, 5, 1.0], [25, 18, 0.7], [40, 8, 1.2], [55, 22, 0.6], [70, 5, 0.9],
             [85, 15, 1.1], [15, 35, 0.8], [30, 42, 1.0], [50, 38, 0.5], [65, 30, 1.3],
@@ -136,21 +136,21 @@ function MidnightDesign() {
       </div>
       {/* Aurora waves */}
       <div
-        className="pointer-events-none fixed inset-0 -z-10 animate-aurora-wave"
+        className="pointer-events-none fixed inset-0 z-0 animate-aurora-wave"
         style={{
           backgroundImage: `
-            radial-gradient(ellipse 120% 20% at 50% 100%, oklch(0.35 0.18 250 / 0.30), transparent),
-            radial-gradient(ellipse 80% 15% at 30% 90%, oklch(0.30 0.15 280 / 0.25), transparent),
-            radial-gradient(ellipse 60% 10% at 70% 95%, oklch(0.25 0.12 220 / 0.20), transparent)
+            radial-gradient(ellipse 120% 20% at 50% 100%, oklch(0.40 0.22 250 / 0.50), transparent),
+            radial-gradient(ellipse 80% 15% at 30% 90%, oklch(0.35 0.18 280 / 0.40), transparent),
+            radial-gradient(ellipse 60% 10% at 70% 95%, oklch(0.30 0.15 220 / 0.35), transparent)
           `,
         }}
       />
       {/* Deep space gradient */}
       <div
-        className="pointer-events-none fixed inset-0 -z-10"
+        className="pointer-events-none fixed inset-0 z-0"
         style={{
           backgroundImage: `
-            radial-gradient(ellipse 70% 60% at 50% 0%, oklch(0.15 0.06 270 / 0.50), transparent)
+            radial-gradient(ellipse 70% 60% at 50% 0%, oklch(0.20 0.10 270 / 0.60), transparent)
           `,
         }}
       />
@@ -165,20 +165,20 @@ function AuroraDesign() {
   return (
     <>
       {/* Aurora bands — animated vertical waves */}
-      <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+      <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
         <div
           className="absolute inset-0 animate-aurora-bands"
           style={{
             backgroundImage: `
-              linear-gradient(180deg, transparent 0%, oklch(0.40 0.20 160 / 0.12) 20%, oklch(0.35 0.18 180 / 0.18) 35%, transparent 50%),
-              linear-gradient(180deg, transparent 10%, oklch(0.38 0.15 280 / 0.10) 30%, oklch(0.30 0.20 200 / 0.15) 45%, transparent 60%),
-              linear-gradient(180deg, transparent 5%, oklch(0.42 0.18 150 / 0.08) 25%, oklch(0.35 0.12 190 / 0.12) 40%, transparent 55%)
+              linear-gradient(180deg, transparent 0%, oklch(0.45 0.25 160 / 0.25) 20%, oklch(0.40 0.22 180 / 0.30) 35%, transparent 50%),
+              linear-gradient(180deg, transparent 10%, oklch(0.42 0.20 280 / 0.20) 30%, oklch(0.35 0.25 200 / 0.25) 45%, transparent 60%),
+              linear-gradient(180deg, transparent 5%, oklch(0.48 0.22 150 / 0.15) 25%, oklch(0.40 0.18 190 / 0.20) 40%, transparent 55%)
             `,
             backgroundSize: "100% 100%, 100% 100%, 100% 100%",
           }}
         />
         {/* Shimmering particles */}
-        <svg className="absolute inset-0 h-full w-full opacity-30">
+        <svg className="absolute inset-0 h-full w-full opacity-60">
           {[
             [8, 15], [15, 25], [22, 18], [30, 30], [38, 22],
             [45, 28], [52, 20], [60, 32], [68, 25], [75, 18],
@@ -199,11 +199,11 @@ function AuroraDesign() {
       </div>
       {/* Base teal glow */}
       <div
-        className="pointer-events-none fixed inset-0 -z-10"
+        className="pointer-events-none fixed inset-0 z-0"
         style={{
           backgroundImage: `
-            radial-gradient(ellipse 80% 40% at 40% 20%, oklch(0.25 0.10 160 / 0.30), transparent),
-            radial-gradient(ellipse 60% 30% at 70% 40%, oklch(0.22 0.08 200 / 0.20), transparent)
+            radial-gradient(ellipse 80% 40% at 40% 20%, oklch(0.30 0.15 160 / 0.45), transparent),
+            radial-gradient(ellipse 60% 30% at 70% 40%, oklch(0.28 0.12 200 / 0.35), transparent)
           `,
         }}
       />
@@ -218,7 +218,7 @@ function SunsetDesign() {
   return (
     <>
       {/* Sun rays emanating from bottom-right */}
-      <svg className="pointer-events-none fixed inset-0 -z-10 h-full w-full opacity-[0.07]">
+      <svg className="pointer-events-none fixed inset-0 z-0 h-full w-full opacity-[0.18]">
         <defs>
           <linearGradient id="ray-fade" x1="0%" y1="0%" x2="100%" y2="0%">
             <stop offset="0%" stopColor="oklch(0.75 0.20 40)" stopOpacity="1" />
@@ -247,24 +247,24 @@ function SunsetDesign() {
       </svg>
       {/* Warm horizon gradient */}
       <div
-        className="pointer-events-none fixed inset-0 -z-10"
+        className="pointer-events-none fixed inset-0 z-0"
         style={{
           backgroundImage: `
-            radial-gradient(ellipse 100% 30% at 80% 100%, oklch(0.40 0.22 30 / 0.35), transparent),
-            radial-gradient(ellipse 80% 25% at 60% 90%, oklch(0.35 0.18 350 / 0.20), transparent),
-            radial-gradient(ellipse 60% 40% at 30% 20%, oklch(0.25 0.10 50 / 0.15), transparent)
+            radial-gradient(ellipse 100% 30% at 80% 100%, oklch(0.45 0.25 30 / 0.50), transparent),
+            radial-gradient(ellipse 80% 25% at 60% 90%, oklch(0.40 0.22 350 / 0.35), transparent),
+            radial-gradient(ellipse 60% 40% at 30% 20%, oklch(0.30 0.15 50 / 0.25), transparent)
           `,
         }}
       />
       {/* Warm cloud wisps */}
       <div
-        className="pointer-events-none fixed inset-0 -z-10 animate-cloud-drift"
+        className="pointer-events-none fixed inset-0 z-0 animate-cloud-drift"
         style={{
           backgroundImage: `
-            radial-gradient(ellipse 30% 8% at 20% 25%, oklch(0.35 0.12 30 / 0.12), transparent),
-            radial-gradient(ellipse 25% 6% at 55% 35%, oklch(0.30 0.10 40 / 0.10), transparent),
-            radial-gradient(ellipse 35% 7% at 75% 20%, oklch(0.32 0.14 25 / 0.08), transparent),
-            radial-gradient(ellipse 20% 5% at 40% 45%, oklch(0.28 0.08 50 / 0.10), transparent)
+            radial-gradient(ellipse 30% 8% at 20% 25%, oklch(0.40 0.15 30 / 0.22), transparent),
+            radial-gradient(ellipse 25% 6% at 55% 35%, oklch(0.35 0.12 40 / 0.18), transparent),
+            radial-gradient(ellipse 35% 7% at 75% 20%, oklch(0.38 0.16 25 / 0.15), transparent),
+            radial-gradient(ellipse 20% 5% at 40% 45%, oklch(0.32 0.10 50 / 0.18), transparent)
           `,
         }}
       />
@@ -278,7 +278,7 @@ function SunsetDesign() {
 function NoiseOverlay() {
   return (
     <div
-      className="pointer-events-none fixed inset-0 -z-10 opacity-[0.025]"
+      className="pointer-events-none fixed inset-0 z-0 opacity-[0.025]"
       style={{
         backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
       }}
