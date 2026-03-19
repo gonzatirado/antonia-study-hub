@@ -58,26 +58,30 @@ function DarkDesign() {
             <stop offset="100%" stopColor="white" stopOpacity="0" />
           </radialGradient>
         </defs>
-        {/* Scattered stars — different sizes and positions */}
+        {/* Big bright stars */}
         {[
-          [5, 8, 2.0], [12, 25, 1.4], [20, 15, 2.5], [28, 45, 1.2], [35, 10, 1.8],
-          [42, 30, 2.2], [48, 55, 1.3], [55, 20, 1.9], [62, 40, 1.6], [68, 12, 2.4],
-          [75, 50, 1.4], [82, 22, 1.8], [88, 35, 1.2], [92, 60, 2.0], [15, 70, 1.6],
-          [25, 85, 1.9], [38, 75, 1.3], [52, 90, 1.8], [65, 80, 1.4], [78, 65, 2.2],
-          [85, 88, 1.2], [95, 75, 1.8], [8, 55, 1.3], [45, 68, 1.9], [72, 92, 1.6],
-          [18, 42, 1.0], [58, 78, 1.4], [32, 92, 1.8], [90, 48, 1.2], [3, 90, 2.0],
+          [5, 8, 4.0], [20, 15, 5.0], [42, 30, 4.5], [68, 12, 5.5], [92, 60, 4.0],
+          [25, 85, 4.5], [65, 80, 5.0], [85, 40, 4.0], [50, 50, 5.5], [15, 55, 4.5],
         ].map(([x, y, r], i) => (
-          <circle
-            key={i}
-            cx={`${x}%`}
-            cy={`${y}%`}
-            r={r}
-            fill="url(#star-glow)"
-            opacity={0.5 + (i % 5) * 0.1}
-          />
+          <circle key={`big-${i}`} cx={`${x}%`} cy={`${y}%`} r={r} fill="url(#star-glow)" opacity={0.8} />
+        ))}
+        {/* Medium stars */}
+        {[
+          [12, 25, 3.0], [35, 10, 2.8], [55, 20, 3.2], [75, 50, 2.8], [88, 35, 3.0],
+          [38, 75, 2.5], [52, 90, 3.0], [78, 65, 2.8], [8, 42, 2.5], [45, 68, 3.0],
+          [72, 92, 2.8], [32, 45, 2.5], [58, 78, 3.0], [90, 20, 2.5], [3, 90, 3.0],
+        ].map(([x, y, r], i) => (
+          <circle key={`med-${i}`} cx={`${x}%`} cy={`${y}%`} r={r} fill="url(#star-glow)" opacity={0.6} />
+        ))}
+        {/* Small accent stars */}
+        {[
+          [28, 45, 1.5], [48, 55, 1.8], [62, 40, 1.5], [82, 22, 1.8], [15, 70, 1.5],
+          [95, 75, 1.8], [18, 95, 1.5], [60, 10, 1.8], [40, 60, 1.5],
+        ].map(([x, y, r], i) => (
+          <circle key={`sm-${i}`} cx={`${x}%`} cy={`${y}%`} r={r} fill="url(#star-glow)" opacity={0.4} />
         ))}
         {/* Constellation lines */}
-        <g stroke="oklch(0.75 0.15 265)" strokeWidth="0.5" opacity="0.35">
+        <g stroke="oklch(0.75 0.18 265)" strokeWidth="0.8" opacity="0.45">
           <line x1="5%" y1="8%" x2="12%" y2="25%" />
           <line x1="12%" y1="25%" x2="20%" y2="15%" />
           <line x1="35%" y1="10%" x2="42%" y2="30%" />
@@ -114,23 +118,22 @@ function MidnightDesign() {
       {/* Twinkling stars with CSS animation */}
       <div className="pointer-events-none fixed inset-0 z-0">
         <svg className="h-full w-full opacity-80">
+          {/* Big twinkling stars */}
           {[
-            [10, 5, 1.0], [25, 18, 0.7], [40, 8, 1.2], [55, 22, 0.6], [70, 5, 0.9],
-            [85, 15, 1.1], [15, 35, 0.8], [30, 42, 1.0], [50, 38, 0.5], [65, 30, 1.3],
-            [80, 45, 0.7], [92, 28, 0.9], [8, 60, 1.1], [22, 72, 0.6], [45, 65, 1.0],
-            [60, 55, 0.8], [75, 68, 1.2], [88, 58, 0.7], [5, 85, 0.9], [35, 88, 1.0],
-            [55, 82, 0.6], [70, 90, 1.1], [90, 80, 0.8], [18, 95, 0.7], [48, 92, 1.0],
+            [10, 5, 4.5], [40, 8, 5.0], [70, 5, 4.0], [30, 42, 4.5], [65, 30, 5.5],
+            [92, 28, 4.0], [45, 65, 5.0], [75, 68, 4.5], [5, 85, 4.0], [55, 82, 5.0],
           ].map(([x, y, r], i) => (
-            <circle
-              key={i}
-              cx={`${x}%`}
-              cy={`${y}%`}
-              r={r}
-              fill="white"
-              opacity={0.4}
-              className="animate-twinkle"
-              style={{ animationDelay: `${i * 0.4}s` }}
-            />
+            <circle key={`big-${i}`} cx={`${x}%`} cy={`${y}%`} r={r} fill="white" opacity={0.7}
+              className="animate-twinkle" style={{ animationDelay: `${i * 0.5}s` }} />
+          ))}
+          {/* Medium stars */}
+          {[
+            [25, 18, 3.0], [55, 22, 2.8], [85, 15, 3.2], [15, 35, 2.8], [50, 38, 3.0],
+            [80, 45, 2.5], [8, 60, 3.0], [22, 72, 2.8], [60, 55, 3.0], [88, 58, 2.5],
+            [35, 88, 3.0], [70, 90, 2.8], [90, 80, 3.0], [18, 95, 2.5], [48, 92, 3.0],
+          ].map(([x, y, r], i) => (
+            <circle key={`med-${i}`} cx={`${x}%`} cy={`${y}%`} r={r} fill="white" opacity={0.5}
+              className="animate-twinkle" style={{ animationDelay: `${i * 0.3}s` }} />
           ))}
         </svg>
       </div>
@@ -170,9 +173,9 @@ function AuroraDesign() {
           className="absolute inset-0 animate-aurora-bands"
           style={{
             backgroundImage: `
-              linear-gradient(180deg, transparent 0%, oklch(0.45 0.25 160 / 0.25) 20%, oklch(0.40 0.22 180 / 0.30) 35%, transparent 50%),
-              linear-gradient(180deg, transparent 10%, oklch(0.42 0.20 280 / 0.20) 30%, oklch(0.35 0.25 200 / 0.25) 45%, transparent 60%),
-              linear-gradient(180deg, transparent 5%, oklch(0.48 0.22 150 / 0.15) 25%, oklch(0.40 0.18 190 / 0.20) 40%, transparent 55%)
+              linear-gradient(180deg, transparent 0%, oklch(0.50 0.28 160 / 0.45) 15%, oklch(0.45 0.25 180 / 0.50) 30%, oklch(0.35 0.20 160 / 0.30) 45%, transparent 60%),
+              linear-gradient(180deg, transparent 5%, oklch(0.48 0.25 280 / 0.35) 20%, oklch(0.40 0.28 200 / 0.40) 35%, oklch(0.30 0.20 250 / 0.25) 50%, transparent 65%),
+              linear-gradient(180deg, transparent 0%, oklch(0.55 0.25 150 / 0.30) 18%, oklch(0.45 0.22 190 / 0.35) 33%, oklch(0.35 0.18 170 / 0.20) 48%, transparent 60%)
             `,
             backgroundSize: "100% 100%, 100% 100%, 100% 100%",
           }}
@@ -189,8 +192,8 @@ function AuroraDesign() {
               key={i}
               cx={`${x}%`}
               cy={`${y}%`}
-              r={i % 3 === 0 ? 1.5 : 0.8}
-              fill={i % 2 === 0 ? "oklch(0.75 0.18 160)" : "oklch(0.70 0.15 280)"}
+              r={i % 3 === 0 ? 3.5 : 2.0}
+              fill={i % 2 === 0 ? "oklch(0.80 0.22 160)" : "oklch(0.75 0.20 280)"}
               className="animate-twinkle"
               style={{ animationDelay: `${i * 0.3}s` }}
             />
