@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import * as Sentry from "@sentry/nextjs";
 import { generateExamPlan } from "@/lib/ai/gemini";
 import { checkUsageLimit, incrementUsage } from "@/lib/firebase/usage";
 
@@ -37,7 +38,7 @@ export async function POST(request: NextRequest) {
       model: tier,
     });
   } catch (error) {
-    console.error("Exam prep generation error:", error);
+    Sentry.captureException(error);
     return NextResponse.json(
       { error: "Failed to generate exam prep plan" },
       { status: 500 }

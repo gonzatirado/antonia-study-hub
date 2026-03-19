@@ -16,6 +16,7 @@ import {
   Sparkles,
   LogOut,
   ChevronsUpDown,
+  Timer,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -48,6 +49,7 @@ const mainNav = [
   { title: "Notas", icon: BarChart3, href: "/grades" },
   { title: "Pendientes", icon: ClipboardList, href: "/pendings" },
   { title: "Horario", icon: Calendar, href: "/schedule" },
+  { title: "Pomodoro", icon: Timer, href: "/pomodoro" },
   { title: "Resúmenes IA", icon: FileText, href: "/summaries", badge: "IA" },
   { title: "Quizzes", icon: Brain, href: "/quizzes", badge: "IA" },
   { title: "Prep. Pruebas", icon: GraduationCap, href: "/exam-prep", badge: "Pro" },

@@ -64,12 +64,15 @@ export async function addPending(
 }
 
 export async function updatePending(
+  userId: string,
   pendingId: string,
   data: Partial<Pending>
 ): Promise<void> {
-  await updateDoc(doc(getFirebaseDb(), 'pendings', pendingId), data);
+  const pendingDoc = doc(getFirebaseDb(), 'pendings', pendingId);
+  await updateDoc(pendingDoc, { ...data, userId });
 }
 
-export async function deletePending(pendingId: string): Promise<void> {
-  await deleteDoc(doc(getFirebaseDb(), 'pendings', pendingId));
+export async function deletePending(userId: string, pendingId: string): Promise<void> {
+  const pendingDoc = doc(getFirebaseDb(), 'pendings', pendingId);
+  await deleteDoc(pendingDoc);
 }

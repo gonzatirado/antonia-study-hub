@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import * as Sentry from "@sentry/nextjs";
 import { generateSummary } from "@/lib/ai/gemini";
 import { checkUsageLimit, incrementUsage } from "@/lib/firebase/usage";
 
@@ -46,7 +47,7 @@ export async function POST(request: NextRequest) {
       tokens_estimated: tokensEstimated,
     });
   } catch (error) {
-    console.error("Summary generation error:", error);
+    Sentry.captureException(error);
     return NextResponse.json(
       { error: "Failed to generate summary" },
       { status: 500 }

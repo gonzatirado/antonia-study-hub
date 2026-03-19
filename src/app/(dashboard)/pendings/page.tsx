@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { useAppStore } from "@/lib/store";
 import { getSubjects } from "@/lib/firebase/subjects";
 import { getAllPendings, addPending, updatePending, deletePending } from "@/lib/firebase/pendings";
+import * as Sentry from "@sentry/nextjs";
 import type { Pending, PendingType, PendingStatus, Subject } from "@/lib/types";
 
 const PENDING_LABELS: Record<string, string> = {
@@ -31,9 +32,9 @@ export default function PendingsPage() {
       getAllPendings(user.uid),
     ])
       .then(([, p]) => setPendings(p))
-      .catch(console.error)
+      .catch((err) => Sentry.captureException(err))
       .finally(() => setLoading(false));
-  }, [user?.uid]);
+  }, [user?.uid, subjects.length]);
 
   const filtered = useMemo(() => {
     if (filter === "active") return pendings.filter((p) => p.status !== "completed");
@@ -120,7 +121,9 @@ export default function PendingsPage() {
                 </div>
                 <div className="space-y-2">
                   {subjectPendings.map((pending) => {
-                    const isOverdue = new Date(pending.dueDate) < new Date() && pending.status !== "completed";
+                    const today = new Date();
+                    today.setHours(23, 59, 59, 999);
+                    const isOverdue = new Date(pending.dueDate) < today && pending.status !== "completed";
                     const isCompleted = pending.status === "completed";
                     return (
                       <div
@@ -135,9 +138,10 @@ export default function PendingsPage() {
                       >
                         <button
                           onClick={() => {
+                            if (!user?.uid) return;
                             const newStatus: PendingStatus = isCompleted ? "pending" : "completed";
-                            updatePending(pending.id, { status: newStatus }).then(() => {
-                              setPendings(pendings.map((p) => p.id === pending.id ? { ...p, status: newStatus } : p));
+                            updatePending(user.uid, pending.id, { status: newStatus }).then(() => {
+                              setPendings(prev => prev.map((p) => p.id === pending.id ? { ...p, status: newStatus } : p));
                             });
                           }}
                           className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors ${
@@ -164,7 +168,7 @@ export default function PendingsPage() {
                           </div>
                         </div>
                         <button
-                          onClick={() => deletePending(pending.id).then(() => setPendings(pendings.filter((p) => p.id !== pending.id)))}
+                          onClick={() => { if (!user?.uid) return; deletePending(user.uid, pending.id).then(() => setPendings(prev => prev.filter((p) => p.id !== pending.id))); }}
                           className="opacity-0 group-hover:opacity-100 p-1 rounded-md hover:bg-red-500/20 text-slate-500 hover:text-red-400 transition-all"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
@@ -187,7 +191,7 @@ export default function PendingsPage() {
           onSave={async (data) => {
             if (!user?.uid) return;
             const pending = await addPending({ ...data, userId: user.uid });
-            setPendings([...pendings, pending]);
+            setPendings(prev => [...prev, pending]);
             setShowDialog(false);
           }}
         />
@@ -215,7 +219,7 @@ function PendingDialogGlobal({ subjects, onClose, onSave }: {
       title: title.trim(),
       description: description.trim() || undefined,
       type,
-      dueDate: new Date(dueDate),
+      dueDate: new Date(dueDate + "T12:00:00"),
       status: "pending",
     });
   }

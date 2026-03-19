@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import * as Sentry from "@sentry/nextjs";
 
 export async function POST(request: NextRequest) {
   try {
@@ -20,7 +21,7 @@ export async function POST(request: NextRequest) {
       pages: data.numpages,
     });
   } catch (error) {
-    console.error("PDF extraction error:", error);
+    Sentry.captureException(error);
     return NextResponse.json(
       { error: "Failed to extract text from PDF" },
       { status: 500 }

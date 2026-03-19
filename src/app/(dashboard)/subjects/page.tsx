@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import * as Sentry from "@sentry/nextjs";
 import { useAppStore } from "@/lib/store";
 import { getSubjects, createSubject, deleteSubject } from "@/lib/firebase/subjects";
 import Link from "next/link";
@@ -63,7 +64,7 @@ export default function SubjectsPage() {
     setLoadingSubjects(true);
     getSubjects(user.uid)
       .then((data) => setSubjects(data))
-      .catch(console.error)
+      .catch((err) => Sentry.captureException(err))
       .finally(() => setLoadingSubjects(false));
   }, [user?.uid, setSubjects]);
 
@@ -84,7 +85,7 @@ export default function SubjectsPage() {
       setNewSubject({ name: "", code: "", professor: "", color: COLORS[0] });
       setDialogOpen(false);
     } catch (err) {
-      console.error("Error creating subject:", err);
+      Sentry.captureException(err);
     } finally {
       setCreating(false);
     }
@@ -96,7 +97,7 @@ export default function SubjectsPage() {
       await deleteSubject(user.uid, subjectId);
       removeSubject(subjectId);
     } catch (err) {
-      console.error("Error deleting subject:", err);
+      Sentry.captureException(err);
     }
   }
 

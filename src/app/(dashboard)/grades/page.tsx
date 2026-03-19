@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { BarChart3, Plus, Loader2, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import * as Sentry from "@sentry/nextjs";
 import { useAppStore } from "@/lib/store";
 import { getSubjects } from "@/lib/firebase/subjects";
 import { getAllGrades, addGrade, deleteGrade } from "@/lib/firebase/grades";
@@ -33,9 +34,9 @@ export default function GradesPage() {
       getAllGrades(user.uid),
     ])
       .then(([, g]) => setGrades(g))
-      .catch(console.error)
+      .catch((err) => Sentry.captureException(err))
       .finally(() => setLoading(false));
-  }, [user?.uid]);
+  }, [user?.uid, subjects.length]);
 
   // Group grades by subject, then by category
   const gradesBySubject = useMemo(() => {
@@ -54,7 +55,7 @@ export default function GradesPage() {
   function calcWeightedAvg(subjectGrades: Grade[]): number {
     const totalWeight = subjectGrades.reduce((s, g) => s + g.weight, 0);
     if (totalWeight === 0) return 0;
-    const sum = subjectGrades.reduce((acc, g) => acc + (g.score / g.maxScore) * g.weight, 0);
+    const sum = subjectGrades.reduce((acc, g) => acc + (g.maxScore === 0 ? 0 : (g.score / g.maxScore) * g.weight), 0);
     return (sum / totalWeight) * 7;
   }
 
@@ -128,7 +129,7 @@ export default function GradesPage() {
                 {/* Categories */}
                 {Object.entries(byCategory).map(([category, catGrades]) => {
                   const catWeight = catGrades.reduce((s, g) => s + g.weight, 0);
-                  const catAvg = catGrades.reduce((s, g) => s + (g.score / g.maxScore) * g.weight, 0) / catWeight * 7;
+                  const catAvg = catWeight === 0 ? 0 : catGrades.reduce((s, g) => s + (g.maxScore === 0 ? 0 : (g.score / g.maxScore) * g.weight), 0) / catWeight * 7;
 
                   return (
                     <div key={category}>
@@ -152,11 +153,11 @@ export default function GradesPage() {
                               </p>
                             </div>
                             <div className="flex items-center gap-2">
-                              <span className={`text-base font-bold ${(grade.score / grade.maxScore * 7) >= 4 ? "text-emerald-400" : "text-red-400"}`}>
+                              <span className={`text-base font-bold ${(grade.maxScore === 0 ? 0 : grade.score / grade.maxScore * 7) >= 4 ? "text-emerald-400" : "text-red-400"}`}>
                                 {grade.score}
                               </span>
                               <button
-                                onClick={() => deleteGrade(grade.id).then(() => setGrades(grades.filter((g) => g.id !== grade.id)))}
+                                onClick={() => { if (!user?.uid) return; deleteGrade(user.uid, grade.id).then(() => setGrades(prev => prev.filter((g) => g.id !== grade.id))); }}
                                 className="opacity-0 group-hover:opacity-100 p-1 rounded-md hover:bg-red-500/20 text-slate-500 hover:text-red-400 transition-all"
                               >
                                 <Trash2 className="w-3.5 h-3.5" />
@@ -182,7 +183,7 @@ export default function GradesPage() {
           onSave={async (data) => {
             if (!user?.uid) return;
             const grade = await addGrade({ ...data, userId: user.uid });
-            setGrades([grade, ...grades]);
+            setGrades(prev => [grade, ...prev]);
             setShowDialog(false);
           }}
         />
@@ -214,7 +215,7 @@ function GradeDialogGlobal({ subjects, onClose, onSave }: {
       maxScore: parseFloat(maxScore),
       weight: parseFloat(weight),
       category,
-      date: new Date(date),
+      date: new Date(date + "T12:00:00"),
     });
   }
 

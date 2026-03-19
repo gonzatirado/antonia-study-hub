@@ -14,11 +14,15 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Progress } from "@/components/ui/progress";
+import dynamic from "next/dynamic";
 import { useAppStore } from "@/lib/store";
 import { FileDropzone } from "@/components/shared/file-dropzone";
 import { extractTextFromFiles } from "@/lib/utils/extract-text";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
+
+const MarkdownRenderer = dynamic(
+  () => import("@/components/shared/markdown-renderer").then((mod) => ({ default: mod.MarkdownRenderer })),
+  { loading: () => <div className="flex justify-center py-8"><Loader2 className="w-6 h-6 animate-spin text-blue-500" /></div> }
+);
 
 export default function SummariesPage() {
   const { subjects, usage, user } = useAppStore();
@@ -98,9 +102,7 @@ export default function SummariesPage() {
             prose-th:text-white prose-th:border-slate-700
             prose-td:border-slate-700
             prose-hr:border-slate-700">
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>
-              {generatedSummary}
-            </ReactMarkdown>
+            <MarkdownRenderer content={generatedSummary} />
           </CardContent>
         </Card>
       </div>

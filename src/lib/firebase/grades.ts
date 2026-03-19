@@ -64,12 +64,15 @@ export async function addGrade(
 }
 
 export async function updateGrade(
+  userId: string,
   gradeId: string,
   data: Partial<Grade>
 ): Promise<void> {
-  await updateDoc(doc(getFirebaseDb(), 'grades', gradeId), data);
+  const gradeDoc = doc(getFirebaseDb(), 'grades', gradeId);
+  await updateDoc(gradeDoc, { ...data, userId });
 }
 
-export async function deleteGrade(gradeId: string): Promise<void> {
-  await deleteDoc(doc(getFirebaseDb(), 'grades', gradeId));
+export async function deleteGrade(userId: string, gradeId: string): Promise<void> {
+  const gradeDoc = doc(getFirebaseDb(), 'grades', gradeId);
+  await deleteDoc(gradeDoc);
 }

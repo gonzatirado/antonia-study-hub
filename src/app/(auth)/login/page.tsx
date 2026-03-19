@@ -7,6 +7,7 @@ import { Sparkles, Loader2 } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import * as Sentry from "@sentry/nextjs";
 import { signInWithGoogle, onAuthChange } from "@/lib/firebase/auth";
 import { useAppStore } from "@/lib/store";
 
@@ -35,7 +36,7 @@ export default function LoginPage() {
       router.push("/dashboard");
     } catch (err: unknown) {
       const firebaseError = err as { code?: string; message?: string };
-      console.error("Login error:", firebaseError.code, firebaseError.message);
+      Sentry.captureException(err, { extra: { code: firebaseError.code } });
 
       if (firebaseError.code === "auth/popup-closed-by-user") {
         setError("Cerraste la ventana de inicio de sesión.");

@@ -8,6 +8,7 @@ import { useAppStore } from "@/lib/store";
 import { onAuthChange, getUserData } from "@/lib/firebase/auth";
 import { getUserUsage } from "@/lib/firebase/usage";
 import { Loader2 } from "lucide-react";
+import * as Sentry from "@sentry/nextjs";
 import { PWAInstallPrompt } from "@/components/shared/pwa-install-prompt";
 import { ErrorBoundary } from "@/components/shared/error-boundary";
 
@@ -36,7 +37,7 @@ export default function DashboardLayout({
           setUsage(usage);
         }
       } catch (err) {
-        console.warn("Retrying user data load...", err);
+        Sentry.captureException(err, { extra: { context: "user data load" } });
       }
 
       setChecking(false);

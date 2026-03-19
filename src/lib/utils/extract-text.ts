@@ -1,3 +1,5 @@
+import * as Sentry from "@sentry/nextjs";
+
 export async function extractTextFromFiles(files: File[]): Promise<string> {
   const texts: string[] = [];
 
@@ -20,7 +22,7 @@ export async function extractTextFromFiles(files: File[]): Promise<string> {
           texts.push(data.text);
         }
       } catch (err) {
-        console.error("Failed to extract PDF text:", err);
+        Sentry.captureException(err);
       }
     } else {
       // For other file types, try reading as text
@@ -28,7 +30,7 @@ export async function extractTextFromFiles(files: File[]): Promise<string> {
         const text = await file.text();
         texts.push(text);
       } catch {
-        console.error(`Cannot read file: ${file.name}`);
+        Sentry.captureMessage(`Cannot read file: ${file.name}`, "warning");
       }
     }
   }

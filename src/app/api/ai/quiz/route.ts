@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import * as Sentry from "@sentry/nextjs";
 import { generateQuiz } from "@/lib/ai/gemini";
 import { checkUsageLimit, incrementUsage } from "@/lib/firebase/usage";
 
@@ -41,7 +42,7 @@ export async function POST(request: NextRequest) {
       model: tier,
     });
   } catch (error) {
-    console.error("Quiz generation error:", error);
+    Sentry.captureException(error);
     return NextResponse.json(
       { error: "Failed to generate quiz" },
       { status: 500 }
