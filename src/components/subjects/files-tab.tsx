@@ -91,8 +91,15 @@ function ContextMenu({
         onClose();
       }
     }
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") onClose();
+    }
     document.addEventListener("mousedown", handleClick);
-    return () => document.removeEventListener("mousedown", handleClick);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", handleClick);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
   }, [open, onClose, anchorRef]);
 
   if (!open) return null;
@@ -100,6 +107,7 @@ function ContextMenu({
   return (
     <div
       ref={menuRef}
+      role="menu"
       className="absolute right-0 top-8 z-50 min-w-[160px] bg-card border border-border rounded-lg shadow-lg py-1 animate-in fade-in-0 zoom-in-95"
     >
       {items.map((item) => (
@@ -142,7 +150,6 @@ function FileCardGrid({
 
   return (
     <motion.div
-      layout
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       className={`group relative bg-card border rounded-xl p-3 cursor-default transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md ${
@@ -153,6 +160,7 @@ function FileCardGrid({
       <div className="absolute top-2 right-2 z-10">
         <button
           ref={btnRef}
+          aria-label="Opciones de archivo"
           onClick={(e) => { e.stopPropagation(); setMenuOpen(!menuOpen); }}
           className="p-1 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
         >
@@ -216,6 +224,7 @@ function FileRowList({
       <div className="relative">
         <button
           ref={btnRef}
+          aria-label="Opciones de archivo"
           onClick={() => setMenuOpen(!menuOpen)}
           className="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
         >
@@ -253,7 +262,6 @@ function FolderCard({
   if (isGrid) {
     return (
       <motion.div
-        layout
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         whileTap={{ scale: 0.98 }}
@@ -263,6 +271,7 @@ function FolderCard({
         <div className="absolute top-2 right-2 z-10">
           <button
             ref={btnRef}
+            aria-label="Opciones de carpeta"
             onClick={(e) => { e.stopPropagation(); setMenuOpen(!menuOpen); }}
             className="p-1 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
           >
@@ -283,7 +292,6 @@ function FolderCard({
 
   return (
     <motion.div
-      layout
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       whileTap={{ scale: 0.98 }}
@@ -298,6 +306,7 @@ function FolderCard({
       <div className="relative">
         <button
           ref={btnRef}
+          aria-label="Opciones de carpeta"
           onClick={(e) => { e.stopPropagation(); setMenuOpen(!menuOpen); }}
           className="p-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
         >
@@ -340,7 +349,7 @@ export function FilesTab({
     fileInputRef.current.dispatchEvent(evt);
   }, []);
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+  const { getRootProps, isDragActive } = useDropzone({
     onDrop,
     noClick: true,
     noKeyboard: true,
@@ -367,6 +376,7 @@ export function FilesTab({
         <div className="flex items-center gap-1 text-sm flex-1 min-w-0">
           <button
             onClick={() => onSetCurrentFolderId(null)}
+            aria-label="Ir a Archivos"
             className={`hover:text-foreground transition-colors shrink-0 ${currentFolderId ? "text-muted-foreground" : "text-foreground font-medium"}`}
           >
             Archivos
@@ -376,6 +386,7 @@ export function FilesTab({
               <ChevronRight className="w-3 h-3 text-muted-foreground/60 shrink-0" />
               <button
                 onClick={() => onSetCurrentFolderId(folder.id)}
+                aria-label={`Ir a ${folder.name}`}
                 className={`hover:text-foreground transition-colors truncate ${
                   folder.id === currentFolderId ? "text-foreground font-medium" : "text-muted-foreground"
                 }`}
@@ -391,6 +402,7 @@ export function FilesTab({
           <div className="flex items-center bg-muted rounded-lg p-0.5">
             <button
               onClick={() => toggleView("grid")}
+              aria-label="Vista en cuadrícula"
               className={`p-1.5 rounded-md transition-colors ${isGrid ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
               title="Vista grilla"
             >
@@ -398,6 +410,7 @@ export function FilesTab({
             </button>
             <button
               onClick={() => toggleView("list")}
+              aria-label="Vista en lista"
               className={`p-1.5 rounded-md transition-colors ${!isGrid ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
               title="Vista lista"
             >
@@ -460,8 +473,6 @@ export function FilesTab({
 
       {/* Drop zone wrapper */}
       <div {...getRootProps()} className="relative">
-        <input {...getInputProps()} />
-
         {/* Drag overlay */}
         {isDragActive && (
           <div className="absolute inset-0 z-40 flex items-center justify-center bg-primary/10 border-2 border-dashed border-primary rounded-xl backdrop-blur-sm">
