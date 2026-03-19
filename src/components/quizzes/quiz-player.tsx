@@ -34,37 +34,37 @@ export function QuizPlayer({
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <Button variant="ghost" onClick={onReset} className="text-slate-400 hover:text-white">
+        <Button variant="ghost" onClick={onReset} className="text-muted-foreground hover:text-foreground">
           <ArrowLeft className="w-4 h-4 mr-2" />
           Salir
         </Button>
-        <Badge variant="outline" className="border-purple-500/50 text-purple-400">
+        <Badge variant="outline" className="border-primary/50 text-primary">
           {currentQuestion + 1}/{questions.length}
         </Badge>
       </div>
 
-      <Progress value={((currentQuestion + 1) / questions.length) * 100} className="h-2 bg-slate-800" />
+      <Progress value={((currentQuestion + 1) / questions.length) * 100} className="h-2 bg-muted" />
 
-      <Card className="bg-slate-900/50 border-slate-800">
+      <Card className="bg-card/50 border-border">
         <CardContent className="p-8">
-          <h2 className="text-xl font-semibold text-white mb-6">{q.question}</h2>
+          <h2 className="text-xl font-semibold text-foreground mb-6">{q.question}</h2>
 
           <div className="space-y-3">
             {q.options.map((option, i) => {
-              let borderClass = "border-slate-700 hover:border-slate-600";
-              let bgClass = "bg-slate-800/50";
+              let borderClass = "border-border hover:border-border/80";
+              let bgClass = "bg-muted/50";
 
               if (showResult) {
                 if (i === q.correctAnswer) {
-                  borderClass = "border-green-500/50";
-                  bgClass = "bg-green-500/10";
+                  borderClass = "border-success/50";
+                  bgClass = "bg-success/10";
                 } else if (i === selectedAnswer && i !== q.correctAnswer) {
-                  borderClass = "border-red-500/50";
-                  bgClass = "bg-red-500/10";
+                  borderClass = "border-destructive/50";
+                  bgClass = "bg-destructive/10";
                 }
               } else if (i === selectedAnswer) {
-                borderClass = "border-purple-500/50";
-                bgClass = "bg-purple-500/10";
+                borderClass = "border-primary/50";
+                bgClass = "bg-primary/10";
               }
 
               return (
@@ -77,20 +77,20 @@ export function QuizPlayer({
                 >
                   <div className="flex items-center gap-3">
                     <span className={`w-8 h-8 rounded-full border ${
-                      i === selectedAnswer ? "border-purple-500 bg-purple-500/20" : "border-slate-600"
+                      i === selectedAnswer ? "border-primary bg-primary/20" : "border-muted-foreground/60"
                     } flex items-center justify-center text-sm font-medium ${
-                      showResult && i === q.correctAnswer ? "border-green-500 bg-green-500/20 text-green-400" :
-                      showResult && i === selectedAnswer ? "border-red-500 bg-red-500/20 text-red-400" :
-                      i === selectedAnswer ? "text-purple-400" : "text-slate-400"
+                      showResult && i === q.correctAnswer ? "border-success bg-success/20 text-success" :
+                      showResult && i === selectedAnswer ? "border-destructive bg-destructive/20 text-destructive" :
+                      i === selectedAnswer ? "text-primary" : "text-muted-foreground"
                     }`}>
                       {String.fromCharCode(65 + i)}
                     </span>
-                    <span className="text-slate-200">{option}</span>
+                    <span className="text-foreground/80">{option}</span>
                     {showResult && i === q.correctAnswer && (
-                      <CheckCircle2 className="w-5 h-5 text-green-400 ml-auto" />
+                      <CheckCircle2 className="w-5 h-5 text-success ml-auto" />
                     )}
                     {showResult && i === selectedAnswer && i !== q.correctAnswer && (
-                      <XCircle className="w-5 h-5 text-red-400 ml-auto" />
+                      <XCircle className="w-5 h-5 text-destructive ml-auto" />
                     )}
                   </div>
                 </motion.button>
@@ -102,10 +102,10 @@ export function QuizPlayer({
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mt-6 p-4 rounded-lg bg-slate-800/50 border border-slate-700"
+              className="mt-6 p-4 rounded-lg bg-muted/50 border border-border"
             >
-              <p className="text-sm text-slate-300">
-                <span className="font-medium text-white">Explicacion: </span>
+              <p className="text-sm text-foreground/80">
+                <span className="font-medium text-foreground">Explicacion: </span>
                 {q.explanation}
               </p>
             </motion.div>
@@ -116,14 +116,14 @@ export function QuizPlayer({
               <Button
                 onClick={onConfirm}
                 disabled={selectedAnswer === null}
-                className="bg-gradient-to-r from-purple-600 to-pink-600"
+                className="bg-gradient-to-r from-primary to-accent"
               >
                 Confirmar respuesta
               </Button>
             ) : (
               <Button
                 onClick={onNext}
-                className="bg-gradient-to-r from-purple-600 to-pink-600"
+                className="bg-gradient-to-r from-primary to-accent"
               >
                 {currentQuestion < questions.length - 1 ? "Siguiente pregunta" : "Ver resultados"}
               </Button>

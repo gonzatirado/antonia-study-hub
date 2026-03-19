@@ -70,19 +70,19 @@ export function AppSidebar() {
   }
 
   return (
-    <Sidebar className="border-r border-slate-800">
+    <Sidebar className="border-r border-border">
       <SidebarHeader className="p-4">
         <Link href="/dashboard" className="flex items-center gap-2">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-            <Sparkles className="w-5 h-5 text-white" />
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center">
+            <Sparkles className="w-5 h-5 text-primary-foreground" />
           </div>
-          <span className="text-lg font-bold text-white">StudyHub</span>
+          <span className="text-lg font-bold text-foreground">StudyHub</span>
         </Link>
       </SidebarHeader>
 
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel className="text-slate-500 text-xs uppercase tracking-wider">
+          <SidebarGroupLabel className="text-muted-foreground text-xs uppercase tracking-wider">
             Principal
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -99,12 +99,12 @@ export function AppSidebar() {
                         {isActive && (
                           <motion.div
                             layoutId="sidebar-active"
-                            className="absolute inset-0 rounded-md bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20"
+                            className="absolute inset-0 rounded-md bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20"
                             transition={{ type: "spring", duration: 0.4 }}
                           />
                         )}
-                        <navItem.icon className={`w-5 h-5 relative z-10 ${isActive ? "text-blue-400" : "text-slate-400"}`} />
-                        <span className={`relative z-10 ${isActive ? "text-white font-medium" : "text-slate-300"}`}>
+                        <navItem.icon className={`w-5 h-5 relative z-10 ${isActive ? "text-primary" : "text-muted-foreground"}`} />
+                        <span className={`relative z-10 ${isActive ? "text-foreground font-medium" : "text-secondary-foreground"}`}>
                           {navItem.title}
                         </span>
                         {navItem.badge && (
@@ -112,8 +112,8 @@ export function AppSidebar() {
                             variant="outline"
                             className={`ml-auto relative z-10 text-[10px] px-1.5 py-0 ${
                               navItem.badge === "Pro"
-                                ? "border-amber-500/50 text-amber-400"
-                                : "border-blue-500/50 text-blue-400"
+                                ? "border-warning/50 text-warning"
+                                : "border-primary/50 text-primary"
                             }`}
                           >
                             {navItem.badge}
@@ -128,7 +128,7 @@ export function AppSidebar() {
         </SidebarGroup>
 
         <SidebarGroup>
-          <SidebarGroupLabel className="text-slate-500 text-xs uppercase tracking-wider">
+          <SidebarGroupLabel className="text-muted-foreground text-xs uppercase tracking-wider">
             Cuenta
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -138,8 +138,8 @@ export function AppSidebar() {
                 return (
                   <SidebarMenuItem key={navItem.href}>
                     <SidebarMenuButton render={<Link href={navItem.href} className="flex items-center gap-3" />} isActive={isActive}>
-                        <navItem.icon className={`w-5 h-5 ${isActive ? "text-blue-400" : "text-slate-400"}`} />
-                        <span className={isActive ? "text-white font-medium" : "text-slate-300"}>
+                        <navItem.icon className={`w-5 h-5 ${isActive ? "text-primary" : "text-muted-foreground"}`} />
+                        <span className={isActive ? "text-foreground font-medium" : "text-secondary-foreground"}>
                           {navItem.title}
                         </span>
                     </SidebarMenuButton>
@@ -154,31 +154,31 @@ export function AppSidebar() {
       <SidebarFooter className="p-4">
         <DropdownMenu>
           <DropdownMenuTrigger
-            render={<button className="w-full flex items-center gap-3 p-2 rounded-lg hover:bg-slate-800/50 transition-colors" />}
+            render={<button className="w-full flex items-center gap-3 p-2 rounded-lg hover:bg-muted/50 transition-colors" />}
           >
               <Avatar className="w-8 h-8">
                 <AvatarImage src={user?.photoURL || undefined} />
-                <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-600 text-white text-sm">
+                <AvatarFallback className="bg-gradient-to-br from-primary to-accent text-primary-foreground text-sm">
                   {user?.displayName?.charAt(0) || "U"}
                 </AvatarFallback>
               </Avatar>
               <div className="flex-1 text-left">
-                <p className="text-sm font-medium text-white truncate">
+                <p className="text-sm font-medium text-foreground truncate">
                   {user?.displayName || "Usuario"}
                 </p>
-                <p className="text-xs text-slate-400 truncate">
+                <p className="text-xs text-muted-foreground truncate">
                   {user?.email || ""}
                 </p>
               </div>
-              <ChevronsUpDown className="w-4 h-4 text-slate-400" />
+              <ChevronsUpDown className="w-4 h-4 text-muted-foreground" />
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-56 bg-slate-900 border-slate-700">
-            <DropdownMenuItem render={<Link href="/settings" className="text-slate-300" />}>
+          <DropdownMenuContent align="end" className="w-56 bg-card border-border">
+            <DropdownMenuItem render={<Link href="/settings" className="text-secondary-foreground" />}>
                 <Settings className="w-4 h-4 mr-2" />
                 Configuración
             </DropdownMenuItem>
-            <DropdownMenuSeparator className="bg-slate-700" />
-            <DropdownMenuItem onClick={handleSignOut} className="text-red-400">
+            <DropdownMenuSeparator className="bg-border" />
+            <DropdownMenuItem onClick={handleSignOut} className="text-destructive">
               <LogOut className="w-4 h-4 mr-2" />
               Cerrar sesión
             </DropdownMenuItem>

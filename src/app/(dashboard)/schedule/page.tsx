@@ -86,8 +86,8 @@ export default function SchedulePage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Horario</h1>
-          <p className="text-slate-400 mt-1">Organiza tu semana academica</p>
+          <h1 className="text-2xl font-bold text-foreground">Horario</h1>
+          <p className="text-muted-foreground mt-1">Organiza tu semana academica</p>
         </div>
         <AddBlockDialog
           open={dialogOpen}
@@ -101,7 +101,7 @@ export default function SchedulePage() {
 
       {loading ? (
         <div className="flex items-center justify-center py-20">
-          <Loader2 className="w-8 h-8 text-indigo-500 animate-spin" />
+          <Loader2 className="w-8 h-8 text-primary animate-spin" />
         </div>
       ) : (
         <>

@@ -26,22 +26,22 @@ export function SubjectTabs({
   ];
 
   return (
-    <div className="flex gap-1 bg-slate-900/50 p-1 rounded-xl border border-slate-800">
+    <div className="flex gap-1 bg-card/50 p-1 rounded-xl border border-border">
       {tabs.map((tab) => (
         <button
           key={tab.key}
           onClick={() => onTabChange(tab.key)}
           className={`flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg text-sm font-medium transition-all ${
             activeTab === tab.key
-              ? "bg-violet-600 text-white shadow-lg shadow-violet-600/20"
-              : "text-slate-400 hover:text-white hover:bg-slate-800/50"
+              ? "bg-primary text-foreground shadow-lg shadow-primary/20"
+              : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
           }`}
         >
           <tab.icon className="w-4 h-4" />
           {tab.label}
           {tab.count > 0 && (
             <span className={`text-xs px-1.5 py-0.5 rounded-full ${
-              activeTab === tab.key ? "bg-white/20" : "bg-slate-700"
+              activeTab === tab.key ? "bg-white/20" : "bg-secondary"
             }`}>
               {tab.count}
             </span>

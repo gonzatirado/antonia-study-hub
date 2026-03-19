@@ -21,7 +21,7 @@ import { extractTextFromFiles } from "@/lib/utils/extract-text";
 
 const MarkdownRenderer = dynamic(
   () => import("@/components/shared/markdown-renderer").then((mod) => ({ default: mod.MarkdownRenderer })),
-  { loading: () => <div className="flex justify-center py-8"><Loader2 className="w-6 h-6 animate-spin text-blue-500" /></div> }
+  { loading: () => <div className="flex justify-center py-8"><Loader2 className="w-6 h-6 animate-spin text-primary" /></div> }
 );
 
 export default function SummariesPage() {
@@ -77,31 +77,31 @@ export default function SummariesPage() {
           <Button
             variant="ghost"
             onClick={() => setGeneratedSummary(null)}
-            className="text-slate-400 hover:text-white"
+            className="text-muted-foreground hover:text-foreground"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Volver
           </Button>
           <div className="flex-1" />
-          <Badge variant="outline" className="border-blue-500/50 text-blue-400">
+          <Badge variant="outline" className="border-info/50 text-info">
             Generado con IA
           </Badge>
         </div>
 
-        <Card className="bg-slate-900/50 border-slate-800">
+        <Card className="bg-card/50 border-border">
           <CardContent className="p-8 prose prose-invert prose-blue max-w-none
-            prose-headings:text-white prose-headings:font-semibold
-            prose-p:text-slate-300 prose-p:leading-relaxed
-            prose-strong:text-white
-            prose-li:text-slate-300
-            prose-a:text-blue-400
-            prose-blockquote:border-blue-500/50 prose-blockquote:text-slate-400
-            prose-code:text-blue-300 prose-code:bg-slate-800 prose-code:px-1 prose-code:py-0.5 prose-code:rounded
-            prose-pre:bg-slate-800/80 prose-pre:border prose-pre:border-slate-700
-            prose-table:text-slate-300
-            prose-th:text-white prose-th:border-slate-700
-            prose-td:border-slate-700
-            prose-hr:border-slate-700">
+            prose-headings:text-foreground prose-headings:font-semibold
+            prose-p:text-foreground/80 prose-p:leading-relaxed
+            prose-strong:text-foreground
+            prose-li:text-foreground/80
+            prose-a:text-info
+            prose-blockquote:border-info/50 prose-blockquote:text-muted-foreground
+            prose-code:text-info prose-code:bg-muted prose-code:px-1 prose-code:py-0.5 prose-code:rounded
+            prose-pre:bg-muted/80 prose-pre:border prose-pre:border-border
+            prose-table:text-foreground/80
+            prose-th:text-foreground prose-th:border-border
+            prose-td:border-border
+            prose-hr:border-border">
             <MarkdownRenderer content={generatedSummary} />
           </CardContent>
         </Card>
@@ -113,53 +113,53 @@ export default function SummariesPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Resúmenes IA</h1>
-          <p className="text-slate-400 mt-1">Genera resúmenes visuales de tu material de estudio</p>
+          <h1 className="text-2xl font-bold text-foreground">Resúmenes IA</h1>
+          <p className="text-muted-foreground mt-1">Genera resúmenes visuales de tu material de estudio</p>
         </div>
-        <Badge variant="outline" className="border-blue-500/50 text-blue-400">
+        <Badge variant="outline" className="border-info/50 text-info">
           {summariesUsed}/{summariesLimit} usados
         </Badge>
       </div>
 
       {/* Usage bar */}
-      <Card className="bg-slate-900/50 border-slate-800">
+      <Card className="bg-card/50 border-border">
         <CardContent className="p-4">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-slate-400">Uso mensual de resúmenes</span>
-            <span className="text-sm text-slate-300">{summariesUsed} de {summariesLimit}</span>
+            <span className="text-sm text-muted-foreground">Uso mensual de resúmenes</span>
+            <span className="text-sm text-foreground/80">{summariesUsed} de {summariesLimit}</span>
           </div>
           <Progress
             value={summariesLimit > 0 ? (summariesUsed / summariesLimit) * 100 : 0}
-            className="h-2 bg-slate-800"
+            className="h-2 bg-muted"
           />
         </CardContent>
       </Card>
 
       {/* Generator */}
-      <Card className="bg-slate-900/50 border-slate-800">
+      <Card className="bg-card/50 border-border">
         <CardContent className="p-8">
           <div className="max-w-xl mx-auto space-y-6">
             <div className="text-center">
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center mx-auto mb-4">
-                <Sparkles className="w-8 h-8 text-white" />
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center mx-auto mb-4">
+                <Sparkles className="w-8 h-8 text-foreground" />
               </div>
-              <h2 className="text-xl font-semibold text-white">Generar nuevo resumen</h2>
-              <p className="text-slate-400 mt-1">Selecciona un ramo y sube archivos para crear tu resumen</p>
+              <h2 className="text-xl font-semibold text-foreground">Generar nuevo resumen</h2>
+              <p className="text-muted-foreground mt-1">Selecciona un ramo y sube archivos para crear tu resumen</p>
             </div>
 
             <div className="space-y-4">
               <Select value={selectedSubject} onValueChange={(v) => setSelectedSubject(v ?? "")}>
-                <SelectTrigger className="bg-slate-800 border-slate-700 text-white">
+                <SelectTrigger className="bg-muted border-border text-foreground">
                   <SelectValue placeholder="Selecciona un ramo" />
                 </SelectTrigger>
-                <SelectContent className="bg-slate-900 border-slate-700">
+                <SelectContent className="bg-card border-border">
                   {subjects.length === 0 ? (
-                    <SelectItem value="general" className="text-white">
+                    <SelectItem value="general" className="text-foreground">
                       General (sin ramo)
                     </SelectItem>
                   ) : (
                     subjects.map((s) => (
-                      <SelectItem key={s.id} value={s.id} className="text-white">
+                      <SelectItem key={s.id} value={s.id} className="text-foreground">
                         {s.code} — {s.name}
                       </SelectItem>
                     ))
@@ -175,16 +175,16 @@ export default function SummariesPage() {
               />
 
               {error && (
-                <div className="flex items-center gap-2 p-3 rounded-lg bg-red-500/10 border border-red-500/20">
-                  <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0" />
-                  <p className="text-sm text-red-300">{error}</p>
+                <div className="flex items-center gap-2 p-3 rounded-lg bg-destructive/10 border border-destructive/20">
+                  <AlertCircle className="w-5 h-5 text-destructive flex-shrink-0" />
+                  <p className="text-sm text-destructive">{error}</p>
                 </div>
               )}
 
               {!canGenerate && (
-                <div className="flex items-center gap-2 p-3 rounded-lg bg-amber-500/10 border border-amber-500/20">
-                  <AlertCircle className="w-5 h-5 text-amber-400 flex-shrink-0" />
-                  <p className="text-sm text-amber-300">
+                <div className="flex items-center gap-2 p-3 rounded-lg bg-warning/10 border border-warning/20">
+                  <AlertCircle className="w-5 h-5 text-warning flex-shrink-0" />
+                  <p className="text-sm text-warning">
                     Llegaste a tu límite mensual. Mejora tu plan para generar más resúmenes.
                   </p>
                 </div>
@@ -193,7 +193,7 @@ export default function SummariesPage() {
               <Button
                 onClick={handleGenerate}
                 disabled={!canGenerate || !selectedSubject || !files.length || generating}
-                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 h-12"
+                className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 h-12"
               >
                 {generating ? (
                   <>

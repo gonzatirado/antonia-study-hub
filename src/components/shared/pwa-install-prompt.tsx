@@ -52,29 +52,29 @@ export function PWAInstallPrompt() {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 100, opacity: 0 }}
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
-          className="fixed bottom-4 left-4 right-4 z-50 mx-auto max-w-md rounded-xl border border-slate-700 bg-slate-900 p-4 shadow-2xl shadow-indigo-500/10"
+          className="fixed bottom-4 left-4 right-4 z-50 mx-auto max-w-md rounded-xl border border-border bg-card p-4 shadow-2xl shadow-primary/10"
         >
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-indigo-500/20">
-              <Download className="h-5 w-5 text-indigo-400" />
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/20">
+              <Download className="h-5 w-5 text-primary" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-white">
+              <p className="text-sm font-medium text-foreground">
                 Instala StudyHub
               </p>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-muted-foreground">
                 Accede mas rapido desde tu pantalla de inicio
               </p>
             </div>
             <button
               onClick={handleInstall}
-              className="shrink-0 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-indigo-500"
+              className="shrink-0 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-primary/90"
             >
               Instalar
             </button>
             <button
               onClick={handleDismiss}
-              className="shrink-0 rounded-md p-1 text-slate-500 transition-colors hover:text-slate-300"
+              className="shrink-0 rounded-md p-1 text-muted-foreground transition-colors hover:text-foreground/80"
               aria-label="Cerrar"
             >
               <X className="h-4 w-4" />

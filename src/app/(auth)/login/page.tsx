@@ -53,11 +53,11 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 flex items-center justify-center p-6">
+    <div className="min-h-screen bg-background flex items-center justify-center p-6">
       {/* Background animated gradient */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500/20 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl animate-pulse delay-1000" />
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-accent/10 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-primary/10 rounded-full blur-3xl animate-pulse delay-1000" />
       </div>
 
       <motion.div
@@ -66,14 +66,14 @@ export default function LoginPage() {
         transition={{ duration: 0.5 }}
         className="relative z-10"
       >
-        <Card className="w-full max-w-md bg-slate-900/80 border-slate-700/50 backdrop-blur-xl">
+        <Card className="w-full max-w-md bg-card/80 border-border/50 backdrop-blur-xl">
           <CardHeader className="text-center space-y-4">
-            <div className="mx-auto w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-              <Sparkles className="w-8 h-8 text-white" />
+            <div className="mx-auto w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center">
+              <Sparkles className="w-8 h-8 text-foreground" />
             </div>
             <div>
-              <CardTitle className="text-2xl text-white">Bienvenido a StudyHub</CardTitle>
-              <CardDescription className="text-slate-400 mt-2">
+              <CardTitle className="text-2xl text-foreground">Bienvenido a StudyHub</CardTitle>
+              <CardDescription className="text-muted-foreground mt-2">
                 Inicia sesión para acceder a tu espacio de estudio
               </CardDescription>
             </div>
@@ -97,13 +97,13 @@ export default function LoginPage() {
               <motion.p
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="text-red-400 text-sm text-center"
+                className="text-destructive text-sm text-center"
               >
                 {error}
               </motion.p>
             )}
 
-            <p className="text-xs text-slate-500 text-center pt-4">
+            <p className="text-xs text-muted-foreground text-center pt-4">
               Al continuar, aceptas nuestros términos de servicio y política de privacidad.
             </p>
           </CardContent>

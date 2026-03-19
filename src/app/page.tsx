@@ -90,24 +90,24 @@ const item = {
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white">
+    <div className="min-h-screen bg-background text-foreground">
       {/* Navbar */}
-      <nav className="fixed top-0 w-full z-50 bg-slate-950/80 backdrop-blur-xl border-b border-white/5">
+      <nav className="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-xl border-b border-foreground/5">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-              <Sparkles className="w-5 h-5 text-white" />
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center">
+              <Sparkles className="w-5 h-5 text-foreground" />
             </div>
             <span className="text-xl font-bold">StudyHub</span>
           </div>
           <div className="flex items-center gap-4">
             <Link href="/login">
-              <Button variant="ghost" className="text-slate-300 hover:text-white">
+              <Button variant="ghost" className="text-foreground/80 hover:text-foreground">
                 Iniciar sesión
               </Button>
             </Link>
             <Link href="/login">
-              <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+              <Button className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90">
                 Registrarse
               </Button>
             </Link>
@@ -123,26 +123,26 @@ export default function LandingPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm mb-8">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm mb-8">
               <Sparkles className="w-4 h-4" />
               Potenciado con Inteligencia Artificial
             </div>
             <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
               Estudia más{" "}
-              <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-primary via-accent to-pink-400 bg-clip-text text-transparent">
                 inteligente
               </span>
               ,{" "}
               <br className="hidden md:block" />
               no más difícil
             </h1>
-            <p className="text-xl text-slate-400 max-w-2xl mx-auto mb-10">
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-10">
               Sube tu material, genera resúmenes visuales con IA, practica con quizzes
               y prepara tus pruebas con un plan personalizado.
             </p>
             <div className="flex items-center justify-center gap-4">
               <Link href="/login">
-                <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-lg px-8 py-6">
+                <Button size="lg" className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-lg px-8 py-6">
                   Empezar gratis
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </Button>
@@ -163,11 +163,11 @@ export default function LandingPage() {
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
               Todo lo que necesitas para{" "}
-              <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                 aprobar
               </span>
             </h2>
-            <p className="text-slate-400 text-lg">
+            <p className="text-muted-foreground text-lg">
               Herramientas diseñadas para maximizar tu rendimiento académico
             </p>
           </motion.div>
@@ -184,13 +184,13 @@ export default function LandingPage() {
                 key={feature.title}
                 variants={item}
                 whileHover={{ scale: 1.02, y: -4 }}
-                className="group relative p-8 rounded-2xl bg-slate-800/50 border border-slate-700/50 hover:border-slate-600/50 transition-all duration-300"
+                className="group relative p-8 rounded-2xl bg-muted/50 border border-border/50 hover:border-border transition-all duration-300"
               >
                 <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${feature.color} flex items-center justify-center mb-4`}>
-                  <feature.icon className="w-6 h-6 text-white" />
+                  <feature.icon className="w-6 h-6 text-foreground" />
                 </div>
                 <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-                <p className="text-slate-400">{feature.description}</p>
+                <p className="text-muted-foreground">{feature.description}</p>
                 <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${feature.color} opacity-0 group-hover:opacity-5 transition-opacity duration-300`} />
               </motion.div>
             ))}
@@ -208,7 +208,7 @@ export default function LandingPage() {
             viewport={{ once: true }}
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Planes simples y transparentes</h2>
-            <p className="text-slate-400 text-lg">Elige el plan que se adapte a tu ritmo de estudio</p>
+            <p className="text-muted-foreground text-lg">Elige el plan que se adapte a tu ritmo de estudio</p>
           </motion.div>
 
           <motion.div
@@ -225,26 +225,26 @@ export default function LandingPage() {
                 whileHover={{ scale: 1.03, y: -4 }}
                 className={`relative p-8 rounded-2xl border transition-all duration-300 ${
                   plan.highlighted
-                    ? "bg-gradient-to-b from-blue-950/80 to-slate-900 border-blue-500/50 shadow-lg shadow-blue-500/10"
-                    : "bg-slate-800/50 border-slate-700/50 hover:border-slate-600/50"
+                    ? "bg-gradient-to-b from-primary/10 to-card border-primary/50 shadow-lg shadow-primary/10"
+                    : "bg-muted/50 border-border/50 hover:border-border"
                 }`}
               >
                 {plan.highlighted && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full text-sm font-medium">
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-primary to-accent rounded-full text-sm font-medium">
                     Más popular
                   </div>
                 )}
                 <div className="mb-6">
-                  <h3 className="text-lg font-medium text-slate-300 mb-2">{plan.name}</h3>
+                  <h3 className="text-lg font-medium text-foreground/80 mb-2">{plan.name}</h3>
                   <div className="flex items-baseline gap-1">
                     <span className="text-4xl font-bold">{plan.price}</span>
-                    <span className="text-slate-400">/{plan.period}</span>
+                    <span className="text-muted-foreground">/{plan.period}</span>
                   </div>
                 </div>
                 <ul className="space-y-3 mb-8">
                   {plan.features.map((f) => (
-                    <li key={f} className="flex items-center gap-2 text-slate-300">
-                      <CheckCircle2 className="w-4 h-4 text-blue-400 flex-shrink-0" />
+                    <li key={f} className="flex items-center gap-2 text-foreground/80">
+                      <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0" />
                       {f}
                     </li>
                   ))}
@@ -252,8 +252,8 @@ export default function LandingPage() {
                 <Button
                   className={`w-full ${
                     plan.highlighted
-                      ? "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
-                      : "bg-slate-700 hover:bg-slate-600"
+                      ? "bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90"
+                      : "bg-secondary hover:bg-secondary/80"
                   }`}
                 >
                   {plan.cta}
@@ -265,8 +265,8 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="py-8 px-6 border-t border-slate-800">
-        <div className="max-w-7xl mx-auto text-center text-slate-500 text-sm">
+      <footer className="py-8 px-6 border-t border-border">
+        <div className="max-w-7xl mx-auto text-center text-muted-foreground text-sm">
           StudyHub &copy; {new Date().getFullYear()}. Hecho para estudiantes, por estudiantes.
         </div>
       </footer>

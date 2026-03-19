@@ -51,51 +51,51 @@ export function QuizGenerator({
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Quizzes</h1>
-          <p className="text-slate-400 mt-1">Crea cuestionarios de practica con IA</p>
+          <h1 className="text-2xl font-bold text-foreground">Quizzes</h1>
+          <p className="text-muted-foreground mt-1">Crea cuestionarios de practica con IA</p>
         </div>
-        <Badge variant="outline" className="border-purple-500/50 text-purple-400">
+        <Badge variant="outline" className="border-primary/50 text-primary">
           {quizzesUsed}/{quizzesLimit} usados
         </Badge>
       </div>
 
-      <Card className="bg-slate-900/50 border-slate-800">
+      <Card className="bg-card/50 border-border">
         <CardContent className="p-4">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-slate-400">Uso mensual de quizzes</span>
-            <span className="text-sm text-slate-300">{quizzesUsed} de {quizzesLimit}</span>
+            <span className="text-sm text-muted-foreground">Uso mensual de quizzes</span>
+            <span className="text-sm text-foreground/80">{quizzesUsed} de {quizzesLimit}</span>
           </div>
           <Progress
             value={quizzesLimit > 0 ? (quizzesUsed / quizzesLimit) * 100 : 0}
-            className="h-2 bg-slate-800"
+            className="h-2 bg-muted"
           />
         </CardContent>
       </Card>
 
-      <Card className="bg-slate-900/50 border-slate-800">
+      <Card className="bg-card/50 border-border">
         <CardContent className="p-8">
           <div className="max-w-xl mx-auto space-y-6">
             <div className="text-center">
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center mx-auto mb-4">
-                <Brain className="w-8 h-8 text-white" />
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center mx-auto mb-4">
+                <Brain className="w-8 h-8 text-foreground" />
               </div>
-              <h2 className="text-xl font-semibold text-white">Crear nuevo quiz</h2>
-              <p className="text-slate-400 mt-1">Selecciona material y genera preguntas de practica</p>
+              <h2 className="text-xl font-semibold text-foreground">Crear nuevo quiz</h2>
+              <p className="text-muted-foreground mt-1">Selecciona material y genera preguntas de practica</p>
             </div>
 
             <div className="space-y-4">
               <Select value={selectedSubject} onValueChange={(v) => onSubjectChange(v ?? "")}>
-                <SelectTrigger className="bg-slate-800 border-slate-700 text-white">
+                <SelectTrigger className="bg-muted border-border text-foreground">
                   <SelectValue placeholder="Selecciona un ramo" />
                 </SelectTrigger>
-                <SelectContent className="bg-slate-900 border-slate-700">
+                <SelectContent className="bg-card border-border">
                   {subjects.length === 0 ? (
-                    <SelectItem value="general" className="text-white">
+                    <SelectItem value="general" className="text-foreground">
                       General (sin ramo)
                     </SelectItem>
                   ) : (
                     subjects.map((s) => (
-                      <SelectItem key={s.id} value={s.id} className="text-white">
+                      <SelectItem key={s.id} value={s.id} className="text-foreground">
                         {s.code} — {s.name}
                       </SelectItem>
                     ))
@@ -111,16 +111,16 @@ export function QuizGenerator({
               />
 
               {error && (
-                <div className="flex items-center gap-2 p-3 rounded-lg bg-red-500/10 border border-red-500/20">
-                  <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0" />
-                  <p className="text-sm text-red-300">{error}</p>
+                <div className="flex items-center gap-2 p-3 rounded-lg bg-destructive/10 border border-destructive/20">
+                  <AlertCircle className="w-5 h-5 text-destructive flex-shrink-0" />
+                  <p className="text-sm text-destructive">{error}</p>
                 </div>
               )}
 
               {!canGenerate && (
-                <div className="flex items-center gap-2 p-3 rounded-lg bg-amber-500/10 border border-amber-500/20">
-                  <AlertCircle className="w-5 h-5 text-amber-400 flex-shrink-0" />
-                  <p className="text-sm text-amber-300">
+                <div className="flex items-center gap-2 p-3 rounded-lg bg-warning/10 border border-warning/20">
+                  <AlertCircle className="w-5 h-5 text-warning flex-shrink-0" />
+                  <p className="text-sm text-warning">
                     Llegaste a tu limite mensual. Mejora tu plan para generar mas quizzes.
                   </p>
                 </div>
@@ -129,7 +129,7 @@ export function QuizGenerator({
               <Button
                 onClick={onGenerate}
                 disabled={!canGenerate || !selectedSubject || !files.length || generating}
-                className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 h-12"
+                className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 h-12"
               >
                 {generating ? (
                   <>

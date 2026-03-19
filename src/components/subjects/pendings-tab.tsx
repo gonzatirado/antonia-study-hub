@@ -45,13 +45,13 @@ export function PendingsTab({
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
       <div className="flex items-center justify-between">
-        <p className="text-sm text-slate-400">
+        <p className="text-sm text-muted-foreground">
           {pendings.filter((p) => p.status !== "completed").length} pendientes activos
         </p>
         <Button
           size="sm"
           onClick={() => onSetShowPendingDialog(true)}
-          className="bg-violet-600 hover:bg-violet-700 text-white"
+          className="bg-primary hover:bg-primary/90 text-foreground"
         >
           <Plus className="w-4 h-4 mr-1" /> Nuevo pendiente
         </Button>
@@ -59,13 +59,13 @@ export function PendingsTab({
 
       {loadingPendings ? (
         <div className="flex justify-center py-10">
-          <Loader2 className="w-6 h-6 text-violet-500 animate-spin" />
+          <Loader2 className="w-6 h-6 text-primary animate-spin" />
         </div>
       ) : pendings.length === 0 ? (
-        <div className="text-center py-16 border border-dashed border-slate-700 rounded-xl">
-          <ClipboardList className="w-10 h-10 text-slate-600 mx-auto mb-3" />
-          <p className="text-slate-400 font-medium">Sin pendientes</p>
-          <p className="text-xs text-slate-500 mt-1">Todo al dia</p>
+        <div className="text-center py-16 border border-dashed border-border rounded-xl">
+          <ClipboardList className="w-10 h-10 text-muted-foreground/60 mx-auto mb-3" />
+          <p className="text-muted-foreground font-medium">Sin pendientes</p>
+          <p className="text-xs text-muted-foreground mt-1">Todo al dia</p>
         </div>
       ) : (
         <div className="space-y-2">
@@ -79,10 +79,10 @@ export function PendingsTab({
                 key={pending.id}
                 className={`group flex items-center gap-3 px-4 py-3 rounded-xl border transition-all ${
                   isCompleted
-                    ? "bg-slate-900/30 border-slate-800/50 opacity-60"
+                    ? "bg-card/30 border-border/50 opacity-60"
                     : isOverdue
-                    ? "bg-red-950/20 border-red-500/20"
-                    : "bg-slate-900/50 border-slate-800 hover:border-slate-700"
+                    ? "bg-destructive/20 border-destructive/20"
+                    : "bg-card/50 border-border hover:border-border/80"
                 }`}
               >
                 <button
@@ -92,21 +92,21 @@ export function PendingsTab({
                   }}
                   className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors ${
                     isCompleted
-                      ? "bg-emerald-500 border-emerald-500"
-                      : "border-slate-600 hover:border-violet-500"
+                      ? "bg-success border-success"
+                      : "border-muted-foreground/60 hover:border-primary"
                   }`}
                 >
-                  {isCompleted && <Check className="w-3 h-3 text-white" />}
+                  {isCompleted && <Check className="w-3 h-3 text-foreground" />}
                 </button>
                 <div className="flex-1 min-w-0">
-                  <p className={`text-sm font-medium ${isCompleted ? "line-through text-slate-500" : "text-white"}`}>
+                  <p className={`text-sm font-medium ${isCompleted ? "line-through text-muted-foreground" : "text-foreground"}`}>
                     {pending.title}
                   </p>
                   <div className="flex items-center gap-2 mt-0.5">
-                    <Badge variant="outline" className="text-[10px] px-1.5 py-0 border-slate-700 text-slate-400">
+                    <Badge variant="outline" className="text-[10px] px-1.5 py-0 border-border text-muted-foreground">
                       {PENDING_LABELS[pending.type] || pending.type}
                     </Badge>
-                    <span className={`text-xs flex items-center gap-1 ${isOverdue ? "text-red-400" : "text-slate-500"}`}>
+                    <span className={`text-xs flex items-center gap-1 ${isOverdue ? "text-destructive" : "text-muted-foreground"}`}>
                       {isOverdue ? <AlertCircle className="w-3 h-3" /> : <Calendar className="w-3 h-3" />}
                       {new Date(pending.dueDate).toLocaleDateString("es-CL", { day: "numeric", month: "short" })}
                     </span>
@@ -114,7 +114,7 @@ export function PendingsTab({
                 </div>
                 <button
                   onClick={() => onDeletePending(pending.id)}
-                  className="opacity-0 group-hover:opacity-100 p-1 rounded-md hover:bg-red-500/20 text-slate-500 hover:text-red-400 transition-all"
+                  className="opacity-0 group-hover:opacity-100 p-1 rounded-md hover:bg-destructive/20 text-muted-foreground hover:text-destructive transition-all"
                 >
                   <Trash2 className="w-3.5 h-3.5" />
                 </button>

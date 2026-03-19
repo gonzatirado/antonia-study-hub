@@ -76,17 +76,17 @@ export function FilesTab({
         <div className="flex items-center gap-1 text-sm">
           <button
             onClick={() => onSetCurrentFolderId(null)}
-            className={`hover:text-white transition-colors ${currentFolderId ? "text-slate-400" : "text-white font-medium"}`}
+            className={`hover:text-foreground transition-colors ${currentFolderId ? "text-muted-foreground" : "text-foreground font-medium"}`}
           >
             Archivos
           </button>
           {breadcrumb.map((folder) => (
             <span key={folder.id} className="flex items-center gap-1">
-              <ChevronRight className="w-3 h-3 text-slate-600" />
+              <ChevronRight className="w-3 h-3 text-muted-foreground/60" />
               <button
                 onClick={() => onSetCurrentFolderId(folder.id)}
-                className={`hover:text-white transition-colors ${
-                  folder.id === currentFolderId ? "text-white font-medium" : "text-slate-400"
+                className={`hover:text-foreground transition-colors ${
+                  folder.id === currentFolderId ? "text-foreground font-medium" : "text-muted-foreground"
                 }`}
               >
                 {folder.name}
@@ -100,7 +100,7 @@ export function FilesTab({
             variant="ghost"
             size="sm"
             onClick={() => onSetShowNewFolder(true)}
-            className="text-slate-400 hover:text-white"
+            className="text-muted-foreground hover:text-foreground"
           >
             <FolderPlus className="w-4 h-4 mr-1" /> Carpeta
           </Button>
@@ -113,7 +113,7 @@ export function FilesTab({
               onChange={onFileUpload}
               disabled={uploading}
             />
-            <Button size="sm" className="bg-violet-600 hover:bg-violet-700 text-white">
+            <Button size="sm" className="bg-primary hover:bg-primary/90 text-foreground">
               {uploading ? <Loader2 className="w-4 h-4 animate-spin mr-1" /> : <Upload className="w-4 h-4 mr-1" />}
               {uploading ? "Subiendo..." : "Subir"}
             </Button>
@@ -136,13 +136,13 @@ export function FilesTab({
               onChange={(e) => onSetNewFolderName(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && onCreateFolder()}
               placeholder="Nombre de la carpeta..."
-              className="flex-1 bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-violet-500"
+              className="flex-1 bg-muted border border-border rounded-lg px-3 py-2 text-sm text-foreground placeholder-muted-foreground focus:outline-none focus:border-ring"
             />
-            <Button size="sm" onClick={onCreateFolder} className="bg-violet-600 hover:bg-violet-700 text-white">
+            <Button size="sm" onClick={onCreateFolder} className="bg-primary hover:bg-primary/90 text-foreground">
               Crear
             </Button>
             <Button size="sm" variant="ghost" onClick={() => { onSetShowNewFolder(false); onSetNewFolderName(""); }}
-              className="text-slate-400">
+              className="text-muted-foreground">
               Cancelar
             </Button>
           </motion.div>
@@ -157,20 +157,20 @@ export function FilesTab({
               key={folder.id}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="group relative bg-slate-900/80 border border-slate-800 rounded-xl p-4 cursor-pointer hover:border-violet-500/30 hover:bg-slate-800/50 transition-all"
+              className="group relative bg-card/80 border border-border rounded-xl p-4 cursor-pointer hover:border-primary/30 hover:bg-muted/50 transition-all"
               onClick={() => onSetCurrentFolderId(folder.id)}
             >
               <div className="flex items-center gap-3">
-                <FolderIcon className="w-8 h-8 text-amber-400" />
-                <span className="text-sm text-white font-medium truncate">{folder.name}</span>
+                <FolderIcon className="w-8 h-8 text-warning" />
+                <span className="text-sm text-foreground font-medium truncate">{folder.name}</span>
               </div>
-              <p className="text-xs text-slate-500 mt-2">
+              <p className="text-xs text-muted-foreground mt-2">
                 {files.filter((f) => f.folderId === folder.id).length} archivos
                 {" · "}{allFolders.filter((f) => f.parentId === folder.id).length} carpetas
               </p>
               <button
                 onClick={(e) => { e.stopPropagation(); onDeleteFolder(folder.id); }}
-                className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 p-1 rounded-md hover:bg-red-500/20 text-slate-500 hover:text-red-400 transition-all"
+                className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 p-1 rounded-md hover:bg-destructive/20 text-muted-foreground hover:text-destructive transition-all"
               >
                 <Trash2 className="w-3.5 h-3.5" />
               </button>
@@ -199,13 +199,13 @@ export function FilesTab({
             <div
               key={file.id}
               className={`group flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                movingFile?.id === file.id ? "bg-violet-950/30 border border-violet-500/30" : "hover:bg-slate-800/50"
+                movingFile?.id === file.id ? "bg-primary/10 border border-primary/30" : "hover:bg-muted/50"
               }`}
             >
               <span className="text-lg">{getFileIcon(file.type)}</span>
               <div className="flex-1 min-w-0">
-                <p className="text-sm text-white truncate">{file.name}</p>
-                <p className="text-xs text-slate-500">
+                <p className="text-sm text-foreground truncate">{file.name}</p>
+                <p className="text-xs text-muted-foreground">
                   {formatSize(file.size)} · {file.type.toUpperCase()}
                 </p>
               </div>
@@ -214,8 +214,8 @@ export function FilesTab({
                   onClick={() => onSetMovingFile(movingFile?.id === file.id ? null : file)}
                   className={`p-1.5 rounded-md transition-colors ${
                     movingFile?.id === file.id
-                      ? "bg-violet-500/20 text-violet-400"
-                      : "hover:bg-slate-700 text-slate-400 hover:text-white"
+                      ? "bg-primary/20 text-primary"
+                      : "hover:bg-secondary text-muted-foreground hover:text-foreground"
                   }`}
                   title="Mover a carpeta"
                 >
@@ -225,20 +225,20 @@ export function FilesTab({
                   href={file.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-1.5 rounded-md hover:bg-slate-700 text-slate-400 hover:text-white transition-colors"
+                  className="p-1.5 rounded-md hover:bg-secondary text-muted-foreground hover:text-foreground transition-colors"
                 >
                   <Eye className="w-4 h-4" />
                 </a>
                 <a
                   href={file.url}
                   download
-                  className="p-1.5 rounded-md hover:bg-slate-700 text-slate-400 hover:text-white transition-colors"
+                  className="p-1.5 rounded-md hover:bg-secondary text-muted-foreground hover:text-foreground transition-colors"
                 >
                   <Download className="w-4 h-4" />
                 </a>
                 <button
                   onClick={() => onDeleteFile(file)}
-                  className="p-1.5 rounded-md hover:bg-red-500/20 text-slate-400 hover:text-red-400 transition-colors"
+                  className="p-1.5 rounded-md hover:bg-destructive/20 text-muted-foreground hover:text-destructive transition-colors"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>
@@ -247,10 +247,10 @@ export function FilesTab({
           ))}
         </div>
       ) : currentFolders.length === 0 && (
-        <div className="text-center py-16 border border-dashed border-slate-700 rounded-xl">
-          <Upload className="w-10 h-10 text-slate-600 mx-auto mb-3" />
-          <p className="text-slate-400 font-medium">Arrastra archivos o haz click en &quot;Subir&quot;</p>
-          <p className="text-xs text-slate-500 mt-1">PDF, HTML, Excel, TXT, imagenes</p>
+        <div className="text-center py-16 border border-dashed border-border rounded-xl">
+          <Upload className="w-10 h-10 text-muted-foreground/60 mx-auto mb-3" />
+          <p className="text-muted-foreground font-medium">Arrastra archivos o haz click en &quot;Subir&quot;</p>
+          <p className="text-xs text-muted-foreground mt-1">PDF, HTML, Excel, TXT, imagenes</p>
         </div>
       )}
     </motion.div>

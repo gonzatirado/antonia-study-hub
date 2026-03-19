@@ -39,7 +39,7 @@ export default function SubjectDetailPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <Loader2 className="w-8 h-8 text-violet-500 animate-spin" />
+        <Loader2 className="w-8 h-8 text-primary animate-spin" />
       </div>
     );
   }
@@ -47,11 +47,11 @@ export default function SubjectDetailPage() {
   if (!subject) {
     return (
       <div className="space-y-6">
-        <Button variant="ghost" onClick={() => router.push("/subjects")} className="text-slate-400 hover:text-white">
+        <Button variant="ghost" onClick={() => router.push("/subjects")} className="text-muted-foreground hover:text-foreground">
           <ArrowLeft className="w-4 h-4 mr-2" /> Asignaturas
         </Button>
         <div className="text-center py-20">
-          <p className="text-slate-400">Asignatura no encontrada.</p>
+          <p className="text-muted-foreground">Asignatura no encontrada.</p>
         </div>
       </div>
     );

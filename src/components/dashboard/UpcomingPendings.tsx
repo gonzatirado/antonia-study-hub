@@ -13,14 +13,14 @@ interface UpcomingPendingsProps {
 export function UpcomingPendings({ pendings, subjectMap }: UpcomingPendingsProps) {
   return (
     <motion.div variants={item}>
-      <Card className="bg-slate-900/50 border-slate-800 rounded-xl h-full">
+      <Card className="bg-card/50 border-border rounded-xl h-full">
         <CardContent className="p-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-white">Próximos pendientes</h2>
-            <span className="text-xs text-slate-500">7 días</span>
+            <h2 className="text-lg font-semibold text-foreground">Próximos pendientes</h2>
+            <span className="text-xs text-muted-foreground">7 días</span>
           </div>
           {pendings.length === 0 ? (
-            <p className="text-slate-500 text-sm py-4">No tienes pendientes esta semana</p>
+            <p className="text-muted-foreground text-sm py-4">No tienes pendientes esta semana</p>
           ) : (
             <ul className="space-y-3">
               {pendings.map((p) => {
@@ -33,12 +33,12 @@ export function UpcomingPendings({ pendings, subjectMap }: UpcomingPendingsProps
                       style={{ backgroundColor: sub?.color || "#64748b" }}
                     />
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm text-white truncate">{p.title}</p>
-                      <p className="text-xs text-slate-500">{sub?.name || "Sin ramo"}</p>
+                      <p className="text-sm text-foreground truncate">{p.title}</p>
+                      <p className="text-xs text-muted-foreground">{sub?.name || "Sin ramo"}</p>
                     </div>
                     <span
                       className={`text-xs font-medium shrink-0 ${
-                        overdue ? "text-red-400" : daysUntil(p.dueDate) <= 1 ? "text-amber-400" : "text-slate-400"
+                        overdue ? "text-destructive" : daysUntil(p.dueDate) <= 1 ? "text-warning" : "text-muted-foreground"
                       }`}
                     >
                       {formatDueLabel(p.dueDate)}

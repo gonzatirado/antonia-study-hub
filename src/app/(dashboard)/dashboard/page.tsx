@@ -109,8 +109,8 @@ export default function DashboardPage() {
     <div className="space-y-8">
       {/* Greeting */}
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
-        <h1 className="text-3xl font-bold text-white">Hola, {firstName}</h1>
-        <p className="text-slate-400 mt-1">{formatDateSpanish(new Date())}</p>
+        <h1 className="text-3xl font-bold text-foreground">Hola, {firstName}</h1>
+        <p className="text-muted-foreground mt-1">{formatDateSpanish(new Date())}</p>
       </motion.div>
 
       {/* Pendings + Average row */}

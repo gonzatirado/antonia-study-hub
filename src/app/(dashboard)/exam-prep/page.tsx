@@ -88,14 +88,14 @@ export default function ExamPrepPage() {
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-white">Plan de Estudio</h1>
-            <p className="text-slate-400 mt-1">
+            <h1 className="text-2xl font-bold text-foreground">Plan de Estudio</h1>
+            <p className="text-muted-foreground mt-1">
               {subject?.name} - Prueba: {examDate}
             </p>
           </div>
           <Button
             variant="outline"
-            className="border-slate-700 text-slate-300"
+            className="border-border text-foreground/80"
             onClick={() => setPlan(null)}
           >
             Crear nuevo plan
@@ -110,29 +110,29 @@ export default function ExamPrepPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.05 }}
             >
-              <Card className="bg-slate-900/50 border-slate-800">
+              <Card className="bg-card/50 border-border">
                 <CardContent className="p-5">
                   <div className="flex items-center gap-3 mb-3">
-                    <Calendar className="w-5 h-5 text-orange-400" />
-                    <h3 className="font-semibold text-white">{day.date}</h3>
+                    <Calendar className="w-5 h-5 text-warning" />
+                    <h3 className="font-semibold text-foreground">{day.date}</h3>
                   </div>
                   <div className="space-y-2 pl-8">
                     {day.tasks.map((task, j) => (
                       <div
                         key={j}
-                        className="flex items-start gap-3 p-3 rounded-lg bg-slate-800/50"
+                        className="flex items-start gap-3 p-3 rounded-lg bg-muted/50"
                       >
                         <div className={`w-2 h-2 rounded-full mt-2 flex-shrink-0 ${
-                          task.type === "study" ? "bg-blue-400" :
-                          task.type === "quiz" ? "bg-purple-400" :
-                          task.type === "practice" ? "bg-green-400" :
-                          "bg-orange-400"
+                          task.type === "study" ? "bg-info" :
+                          task.type === "quiz" ? "bg-primary" :
+                          task.type === "practice" ? "bg-success" :
+                          "bg-warning"
                         }`} />
                         <div>
-                          <p className="text-sm font-medium text-white">{task.title}</p>
-                          <p className="text-xs text-slate-400 mt-0.5">{task.description}</p>
+                          <p className="text-sm font-medium text-foreground">{task.title}</p>
+                          <p className="text-xs text-muted-foreground mt-0.5">{task.description}</p>
                         </div>
-                        <Badge variant="outline" className="ml-auto text-xs shrink-0 border-slate-700 text-slate-400">
+                        <Badge variant="outline" className="ml-auto text-xs shrink-0 border-border text-muted-foreground">
                           {task.type === "study" ? "Estudio" :
                            task.type === "quiz" ? "Quiz" :
                            task.type === "practice" ? "Practica" :
@@ -154,15 +154,15 @@ export default function ExamPrepPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Preparacion de Pruebas</h1>
-          <p className="text-slate-400 mt-1">Crea un plan de estudio personalizado hasta tu examen</p>
+          <h1 className="text-2xl font-bold text-foreground">Preparacion de Pruebas</h1>
+          <p className="text-muted-foreground mt-1">Crea un plan de estudio personalizado hasta tu examen</p>
         </div>
         {isPro ? (
-          <Badge variant="outline" className="border-orange-500/50 text-orange-400">
+          <Badge variant="outline" className="border-warning/50 text-warning">
             {prepsUsed}/{prepsLimit} usados
           </Badge>
         ) : (
-          <Badge variant="outline" className="border-amber-500/50 text-amber-400">
+          <Badge variant="outline" className="border-warning/50 text-warning">
             <Lock className="w-3 h-3 mr-1" />
             Solo Pro
           </Badge>
@@ -171,17 +171,17 @@ export default function ExamPrepPage() {
 
       {!isPro ? (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-          <Card className="bg-gradient-to-br from-amber-950/30 to-slate-900 border-amber-500/20">
+          <Card className="bg-gradient-to-br from-warning/10 to-card border-warning/20">
             <CardContent className="p-12 text-center">
-              <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-amber-500/20 to-orange-500/20 flex items-center justify-center mx-auto mb-6">
-                <Lock className="w-10 h-10 text-amber-400" />
+              <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-warning/20 to-destructive/20 flex items-center justify-center mx-auto mb-6">
+                <Lock className="w-10 h-10 text-warning" />
               </div>
-              <h2 className="text-2xl font-bold text-white mb-3">Funcion exclusiva Pro</h2>
-              <p className="text-slate-400 max-w-md mx-auto mb-6">
+              <h2 className="text-2xl font-bold text-foreground mb-3">Funcion exclusiva Pro</h2>
+              <p className="text-muted-foreground max-w-md mx-auto mb-6">
                 Prepara tus pruebas con un plan de estudio personalizado dia a dia.
                 La IA analiza tu material y crea contenido, preguntas y repasos adaptados a ti.
               </p>
-              <Button className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600">
+              <Button className="bg-gradient-to-r from-warning to-destructive hover:from-warning/90 hover:to-destructive/90">
                 Mejorar a Pro - $4.990/mes
               </Button>
             </CardContent>
@@ -192,21 +192,21 @@ export default function ExamPrepPage() {
           <CardContent className="p-8">
             <div className="max-w-xl mx-auto space-y-6">
               <div className="text-center">
-                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center mx-auto mb-4">
-                  <GraduationCap className="w-8 h-8 text-white" />
+                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-warning to-destructive flex items-center justify-center mx-auto mb-4">
+                  <GraduationCap className="w-8 h-8 text-foreground" />
                 </div>
-                <h2 className="text-xl font-semibold text-white">Crear plan de preparacion</h2>
-                <p className="text-slate-400 mt-1">Ingresa los datos de tu prueba y sube el material relevante</p>
+                <h2 className="text-xl font-semibold text-foreground">Crear plan de preparacion</h2>
+                <p className="text-muted-foreground mt-1">Ingresa los datos de tu prueba y sube el material relevante</p>
               </div>
 
               <div className="space-y-4">
                 <Select value={selectedSubject} onValueChange={(v) => setSelectedSubject(v ?? "")}>
-                  <SelectTrigger className="bg-slate-800 border-slate-700 text-white">
+                  <SelectTrigger className="bg-muted border-border text-foreground">
                     <SelectValue placeholder="Selecciona un ramo" />
                   </SelectTrigger>
-                  <SelectContent className="bg-slate-900 border-slate-700">
+                  <SelectContent className="bg-card border-border">
                     {subjects.map((s) => (
-                      <SelectItem key={s.id} value={s.id} className="text-white">
+                      <SelectItem key={s.id} value={s.id} className="text-foreground">
                         {s.code} - {s.name}
                       </SelectItem>
                     ))}
@@ -214,22 +214,22 @@ export default function ExamPrepPage() {
                 </Select>
 
                 <div className="space-y-2">
-                  <Label className="text-slate-300">Fecha de la prueba</Label>
+                  <Label className="text-foreground/80">Fecha de la prueba</Label>
                   <Input
                     type="date"
                     value={examDate}
                     onChange={(e) => setExamDate(e.target.value)}
-                    className="bg-slate-800 border-slate-700 text-white"
+                    className="bg-muted border-border text-foreground"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label className="text-slate-300">Descripcion del contenido</Label>
+                  <Label className="text-foreground/80">Descripcion del contenido</Label>
                   <Textarea
                     placeholder="Describe el contenido de la prueba: temas, capitulos, unidades..."
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
-                    className="bg-slate-800 border-slate-700 text-white min-h-[100px]"
+                    className="bg-muted border-border text-foreground min-h-[100px]"
                   />
                 </div>
 
@@ -241,16 +241,16 @@ export default function ExamPrepPage() {
                 />
 
                 {error && (
-                  <div className="flex items-center gap-2 p-3 rounded-lg bg-red-500/10 border border-red-500/20">
-                    <Sparkles className="w-5 h-5 text-red-400 flex-shrink-0" />
-                    <p className="text-sm text-red-300">{error}</p>
+                  <div className="flex items-center gap-2 p-3 rounded-lg bg-destructive/10 border border-destructive/20">
+                    <Sparkles className="w-5 h-5 text-destructive flex-shrink-0" />
+                    <p className="text-sm text-destructive">{error}</p>
                   </div>
                 )}
 
                 <Button
                   onClick={handleGenerate}
                   disabled={!canGenerate || !selectedSubject || !examDate || !description || generating}
-                  className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 h-12"
+                  className="w-full bg-gradient-to-r from-warning to-destructive hover:from-warning/90 hover:to-destructive/90 h-12"
                 >
                   {generating ? (
                     <>

@@ -69,7 +69,7 @@ function getColorClasses(color: string, isDragActive: boolean) {
   const c = colorMap[color] || colorMap.blue;
 
   return {
-    borderClass: isDragActive ? c.border : "border-slate-700",
+    borderClass: isDragActive ? c.border : "border-border",
     bgClass: isDragActive ? c.bg : "",
     hoverBorder: c.hoverBorder,
     textClass: c.text,
@@ -126,8 +126,8 @@ export function FileDropzone({
         <input {...getInputProps()} />
         {extracting ? (
           <div className="flex flex-col items-center gap-2">
-            <Loader2 className="w-10 h-10 text-slate-500 animate-spin" />
-            <p className="text-slate-300">Extrayendo texto...</p>
+            <Loader2 className="w-10 h-10 text-muted-foreground animate-spin" />
+            <p className="text-foreground/80">Extrayendo texto...</p>
           </div>
         ) : isDragActive ? (
           <div className="flex flex-col items-center gap-2">
@@ -136,9 +136,9 @@ export function FileDropzone({
           </div>
         ) : (
           <div className="flex flex-col items-center gap-2">
-            <Upload className="w-10 h-10 text-slate-500" />
-            <p className="text-slate-300 font-medium">Arrastra archivos aqui o haz click</p>
-            <p className="text-sm text-slate-500">
+            <Upload className="w-10 h-10 text-muted-foreground" />
+            <p className="text-foreground/80 font-medium">Arrastra archivos aqui o haz click</p>
+            <p className="text-sm text-muted-foreground">
               PDF, DOC, TXT - maximo {maxSizeMB} MB ({files.length}/{maxFiles} archivos)
             </p>
           </div>
@@ -155,17 +155,17 @@ export function FileDropzone({
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              className="flex items-center gap-3 p-3 rounded-lg bg-slate-800/50 border border-slate-700/50"
+              className="flex items-center gap-3 p-3 rounded-lg bg-muted/50 border border-border/50"
             >
               <Icon className={`w-5 h-5 ${textClass} flex-shrink-0`} />
               <div className="flex-1 min-w-0">
-                <p className="text-sm text-white truncate">{file.name}</p>
-                <p className="text-xs text-slate-500">{formatSize(file.size)}</p>
+                <p className="text-sm text-foreground truncate">{file.name}</p>
+                <p className="text-xs text-muted-foreground">{formatSize(file.size)}</p>
               </div>
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-7 w-7 text-slate-400 hover:text-red-400"
+                className="h-7 w-7 text-muted-foreground hover:text-destructive"
                 onClick={(e) => {
                   e.stopPropagation();
                   removeFile(index);

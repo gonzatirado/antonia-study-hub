@@ -64,30 +64,30 @@ export function AddBlockDialog({
 }: AddBlockDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogTrigger render={<Button className="bg-gradient-to-r from-blue-600 to-purple-600" />}>
+      <DialogTrigger render={<Button className="bg-gradient-to-r from-primary to-accent" />}>
         <Plus className="w-4 h-4 mr-2" />
         Agregar bloque
       </DialogTrigger>
-      <DialogContent className="bg-slate-900 border-slate-700">
+      <DialogContent className="bg-card border-border">
         <DialogHeader>
-          <DialogTitle className="text-white">Agregar bloque horario</DialogTitle>
-          <DialogDescription className="text-slate-400">
+          <DialogTitle className="text-foreground">Agregar bloque horario</DialogTitle>
+          <DialogDescription className="text-muted-foreground">
             Agrega una clase a tu horario semanal
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-4 pt-4">
           <div className="space-y-2">
-            <Label className="text-slate-300">Ramo</Label>
+            <Label className="text-foreground/80">Ramo</Label>
             <Select
               value={newBlock.subjectId}
               onValueChange={(v) => onNewBlockChange({ ...newBlock, subjectId: v ?? "" })}
             >
-              <SelectTrigger className="bg-slate-800 border-slate-700 text-white">
+              <SelectTrigger className="bg-muted border-border text-foreground">
                 <SelectValue placeholder="Selecciona un ramo" />
               </SelectTrigger>
-              <SelectContent className="bg-slate-900 border-slate-700">
+              <SelectContent className="bg-card border-border">
                 {subjects.map((s) => (
-                  <SelectItem key={s.id} value={s.id} className="text-white">
+                  <SelectItem key={s.id} value={s.id} className="text-foreground">
                     {s.code} - {s.name}
                   </SelectItem>
                 ))}
@@ -96,17 +96,17 @@ export function AddBlockDialog({
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label className="text-slate-300">Dia</Label>
+              <Label className="text-foreground/80">Dia</Label>
               <Select
                 value={newBlock.day}
                 onValueChange={(v) => v && onNewBlockChange({ ...newBlock, day: v as ScheduleBlock["day"] })}
               >
-                <SelectTrigger className="bg-slate-800 border-slate-700 text-white">
+                <SelectTrigger className="bg-muted border-border text-foreground">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="bg-slate-900 border-slate-700">
+                <SelectContent className="bg-card border-border">
                   {DAYS.map((d) => (
-                    <SelectItem key={d.key} value={d.key} className="text-white">
+                    <SelectItem key={d.key} value={d.key} className="text-foreground">
                       {d.label}
                     </SelectItem>
                   ))}
@@ -114,56 +114,56 @@ export function AddBlockDialog({
               </Select>
             </div>
             <div className="space-y-2">
-              <Label className="text-slate-300">Tipo</Label>
+              <Label className="text-foreground/80">Tipo</Label>
               <Select
                 value={newBlock.type}
                 onValueChange={(v) => v && onNewBlockChange({ ...newBlock, type: v as ScheduleBlock["type"] })}
               >
-                <SelectTrigger className="bg-slate-800 border-slate-700 text-white">
+                <SelectTrigger className="bg-muted border-border text-foreground">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="bg-slate-900 border-slate-700">
-                  <SelectItem value="class" className="text-white">Clase</SelectItem>
-                  <SelectItem value="lab" className="text-white">Laboratorio</SelectItem>
-                  <SelectItem value="tutorial" className="text-white">Ayudantia</SelectItem>
+                <SelectContent className="bg-card border-border">
+                  <SelectItem value="class" className="text-foreground">Clase</SelectItem>
+                  <SelectItem value="lab" className="text-foreground">Laboratorio</SelectItem>
+                  <SelectItem value="tutorial" className="text-foreground">Ayudantia</SelectItem>
                 </SelectContent>
               </Select>
             </div>
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label className="text-slate-300">Inicio</Label>
+              <Label className="text-foreground/80">Inicio</Label>
               <Input
                 type="time"
                 min="07:00"
                 max="21:00"
                 value={newBlock.startTime}
                 onChange={(e) => onNewBlockChange({ ...newBlock, startTime: e.target.value })}
-                className="bg-slate-800 border-slate-700 text-white"
+                className="bg-muted border-border text-foreground"
               />
             </div>
             <div className="space-y-2">
-              <Label className="text-slate-300">Fin</Label>
+              <Label className="text-foreground/80">Fin</Label>
               <Input
                 type="time"
                 min="07:00"
                 max="21:00"
                 value={newBlock.endTime}
                 onChange={(e) => onNewBlockChange({ ...newBlock, endTime: e.target.value })}
-                className="bg-slate-800 border-slate-700 text-white"
+                className="bg-muted border-border text-foreground"
               />
             </div>
           </div>
           <div className="space-y-2">
-            <Label className="text-slate-300">Sala (opcional)</Label>
+            <Label className="text-foreground/80">Sala (opcional)</Label>
             <Input
               placeholder="Ej: A-201"
               value={newBlock.room}
               onChange={(e) => onNewBlockChange({ ...newBlock, room: e.target.value })}
-              className="bg-slate-800 border-slate-700 text-white"
+              className="bg-muted border-border text-foreground"
             />
           </div>
-          <Button onClick={onAddBlock} className="w-full bg-gradient-to-r from-blue-600 to-purple-600">
+          <Button onClick={onAddBlock} className="w-full bg-gradient-to-r from-primary to-accent">
             Agregar bloque
           </Button>
         </div>

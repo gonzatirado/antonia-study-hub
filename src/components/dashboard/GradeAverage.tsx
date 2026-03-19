@@ -13,34 +13,34 @@ interface GradeAverageProps {
 export function GradeAverage({ weightedAverage, gradeCount }: GradeAverageProps) {
   return (
     <motion.div variants={item}>
-      <Card className="bg-slate-900/50 border-slate-800 rounded-xl h-full">
+      <Card className="bg-card/50 border-border rounded-xl h-full">
         <CardContent className="p-6 flex flex-col items-center justify-center h-full">
-          <p className="text-sm text-slate-400 mb-2">Promedio general</p>
+          <p className="text-sm text-muted-foreground mb-2">Promedio general</p>
           {weightedAverage !== null ? (
             <>
-              <p className="text-5xl font-bold text-white">{weightedAverage.toFixed(1)}</p>
+              <p className="text-5xl font-bold text-foreground">{weightedAverage.toFixed(1)}</p>
               <div className="flex items-center gap-1 mt-2">
                 {weightedAverage >= 4.0 ? (
-                  <TrendingUp className="w-4 h-4 text-emerald-400" />
+                  <TrendingUp className="w-4 h-4 text-success" />
                 ) : (
-                  <TrendingDown className="w-4 h-4 text-red-400" />
+                  <TrendingDown className="w-4 h-4 text-destructive" />
                 )}
                 <span
                   className={`text-sm font-medium ${
-                    weightedAverage >= 4.0 ? "text-emerald-400" : "text-red-400"
+                    weightedAverage >= 4.0 ? "text-success" : "text-destructive"
                   }`}
                 >
                   {weightedAverage >= 4.0 ? "Aprobando" : "En riesgo"}
                 </span>
               </div>
-              <p className="text-xs text-slate-500 mt-1">
+              <p className="text-xs text-muted-foreground mt-1">
                 Basado en {gradeCount} nota{gradeCount !== 1 ? "s" : ""}
               </p>
             </>
           ) : (
             <div className="text-center">
-              <AlertCircle className="w-10 h-10 text-slate-600 mx-auto mb-2" />
-              <p className="text-slate-500 text-sm">Aún no tienes notas registradas</p>
+              <AlertCircle className="w-10 h-10 text-muted-foreground/60 mx-auto mb-2" />
+              <p className="text-muted-foreground text-sm">Aún no tienes notas registradas</p>
             </div>
           )}
         </CardContent>

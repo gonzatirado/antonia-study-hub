@@ -62,7 +62,7 @@ export default function GradesPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <Loader2 className="w-8 h-8 text-violet-500 animate-spin" />
+        <Loader2 className="w-8 h-8 text-primary animate-spin" />
       </div>
     );
   }
@@ -71,22 +71,22 @@ export default function GradesPage() {
     <div className="space-y-6 max-w-4xl">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Notas</h1>
-          <p className="text-sm text-slate-400 mt-1">Registra y calcula tus promedios</p>
+          <h1 className="text-2xl font-bold text-foreground">Notas</h1>
+          <p className="text-sm text-muted-foreground mt-1">Registra y calcula tus promedios</p>
         </div>
         <Button
           onClick={() => setShowDialog(true)}
-          className="bg-violet-600 hover:bg-violet-700 text-white"
+          className="bg-primary hover:bg-primary/90 text-primary-foreground"
         >
           <Plus className="w-4 h-4 mr-1" /> Registrar nota
         </Button>
       </div>
 
       {grades.length === 0 ? (
-        <div className="text-center py-20 border border-dashed border-slate-700 rounded-xl">
-          <BarChart3 className="w-12 h-12 text-slate-600 mx-auto mb-3" />
-          <p className="text-slate-400 font-medium">Sin notas registradas</p>
-          <p className="text-sm text-slate-500 mt-1">Empezá registrando una evaluación</p>
+        <div className="text-center py-20 border border-dashed border-border rounded-xl">
+          <BarChart3 className="w-12 h-12 text-muted-foreground/60 mx-auto mb-3" />
+          <p className="text-muted-foreground font-medium">Sin notas registradas</p>
+          <p className="text-sm text-muted-foreground mt-1">Empezá registrando una evaluación</p>
         </div>
       ) : (
         <div className="space-y-6">
@@ -107,21 +107,21 @@ export default function GradesPage() {
                 key={subjectId}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-slate-900/50 border border-slate-800 rounded-xl overflow-hidden"
+                className="bg-card/50 border border-border rounded-xl overflow-hidden"
               >
                 {/* Subject header */}
-                <div className="flex items-center justify-between px-5 py-4 border-b border-slate-800">
+                <div className="flex items-center justify-between px-5 py-4 border-b border-border">
                   <div className="flex items-center gap-3">
                     <div
                       className="w-3 h-3 rounded-full"
                       style={{ backgroundColor: subject?.color || "#8b5cf6" }}
                     />
-                    <h2 className="text-base font-semibold text-white">
+                    <h2 className="text-base font-semibold text-foreground">
                       {subject?.name || "Asignatura"}
                     </h2>
-                    <span className="text-xs text-slate-500">Pond. usada: {totalWeight}%</span>
+                    <span className="text-xs text-muted-foreground">Pond. usada: {totalWeight}%</span>
                   </div>
-                  <span className={`text-base font-bold ${avg >= 4 ? "text-emerald-400" : "text-red-400"}`}>
+                  <span className={`text-base font-bold ${avg >= 4 ? "text-success" : "text-destructive"}`}>
                     Promedio: {avg.toFixed(1)}
                   </span>
                 </div>
@@ -133,32 +133,32 @@ export default function GradesPage() {
 
                   return (
                     <div key={category}>
-                      <div className="flex items-center justify-between px-5 py-2 bg-slate-800/20">
-                        <span className="text-xs font-medium text-slate-300">
+                      <div className="flex items-center justify-between px-5 py-2 bg-muted/20">
+                        <span className="text-xs font-medium text-foreground/80">
                           {CATEGORY_LABELS[category] || category}
-                          <span className="text-slate-500 ml-2">({catWeight}%)</span>
+                          <span className="text-muted-foreground ml-2">({catWeight}%)</span>
                         </span>
-                        <span className={`text-xs font-semibold ${catAvg >= 4 ? "text-emerald-400" : "text-red-400"}`}>
+                        <span className={`text-xs font-semibold ${catAvg >= 4 ? "text-success" : "text-destructive"}`}>
                           {catAvg.toFixed(1)}
                         </span>
                       </div>
-                      <div className="divide-y divide-slate-800/30">
+                      <div className="divide-y divide-border/30">
                         {catGrades.map((grade) => (
-                          <div key={grade.id} className="group flex items-center justify-between px-5 py-2.5 hover:bg-slate-800/20 transition-colors">
+                          <div key={grade.id} className="group flex items-center justify-between px-5 py-2.5 hover:bg-muted/20 transition-colors">
                             <div>
-                              <p className="text-sm text-white">{grade.name}</p>
-                              <p className="text-xs text-slate-500">
+                              <p className="text-sm text-foreground">{grade.name}</p>
+                              <p className="text-xs text-muted-foreground">
                                 {new Date(grade.date).toLocaleDateString("es-CL", { day: "numeric", month: "short" })}
                                 {" · "}{grade.weight}%
                               </p>
                             </div>
                             <div className="flex items-center gap-2">
-                              <span className={`text-base font-bold ${(grade.maxScore === 0 ? 0 : grade.score / grade.maxScore * 7) >= 4 ? "text-emerald-400" : "text-red-400"}`}>
+                              <span className={`text-base font-bold ${(grade.maxScore === 0 ? 0 : grade.score / grade.maxScore * 7) >= 4 ? "text-success" : "text-destructive"}`}>
                                 {grade.score}
                               </span>
                               <button
                                 onClick={() => { if (!user?.uid) return; deleteGrade(user.uid, grade.id).then(() => setGrades(prev => prev.filter((g) => g.id !== grade.id))); }}
-                                className="opacity-0 group-hover:opacity-100 p-1 rounded-md hover:bg-red-500/20 text-slate-500 hover:text-red-400 transition-all"
+                                className="opacity-0 group-hover:opacity-100 p-1 rounded-md hover:bg-destructive/20 text-muted-foreground hover:text-destructive transition-all"
                               >
                                 <Trash2 className="w-3.5 h-3.5" />
                               </button>
@@ -229,84 +229,84 @@ function GradeDialogGlobal({ subjects, onClose, onSave }: {
   ];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/60 backdrop-blur-sm" onClick={onClose}>
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="bg-slate-900 border border-slate-700 rounded-2xl p-6 w-full max-w-md mx-4"
+        className="bg-card border border-border rounded-2xl p-6 w-full max-w-md mx-4"
         onClick={(e) => e.stopPropagation()}
       >
-        <h3 className="text-lg font-semibold text-white mb-1">Registrar nota</h3>
-        <p className="text-sm text-slate-400 mb-5">Ej: "Control 1" tipo Control/Quiz, 15% del ramo</p>
+        <h3 className="text-lg font-semibold text-foreground mb-1">Registrar nota</h3>
+        <p className="text-sm text-muted-foreground mb-5">Ej: "Control 1" tipo Control/Quiz, 15% del ramo</p>
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Subject selector - always visible from global page */}
           <div>
-            <label className="text-xs text-slate-400 mb-1 block">Asignatura *</label>
+            <label className="text-xs text-muted-foreground mb-1 block">Asignatura *</label>
             <div className="relative">
               <select
                 value={subjectId}
                 onChange={(e) => setSubjectId(e.target.value)}
-                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white appearance-none focus:outline-none focus:border-violet-500 cursor-pointer"
+                className="w-full bg-muted border border-border rounded-lg px-3 py-2.5 text-sm text-foreground appearance-none focus:outline-none focus:border-ring cursor-pointer"
               >
                 {subjects.map((s) => (
-                  <option key={s.id} value={s.id} className="bg-slate-800">{s.name}</option>
+                  <option key={s.id} value={s.id} className="bg-muted">{s.name}</option>
                 ))}
               </select>
-              <ChevronRight className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 rotate-90 pointer-events-none" />
+              <ChevronRight className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground rotate-90 pointer-events-none" />
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="text-xs text-slate-400 mb-1 block">Nombre *</label>
+              <label className="text-xs text-muted-foreground mb-1 block">Nombre *</label>
               <input value={name} onChange={(e) => setName(e.target.value)}
                 placeholder="Ej: Control 1..."
-                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-violet-500" />
+                className="w-full bg-muted border border-border rounded-lg px-3 py-2.5 text-sm text-foreground placeholder-muted-foreground focus:outline-none focus:border-ring" />
             </div>
             <div>
-              <label className="text-xs text-slate-400 mb-1 block">Tipo</label>
+              <label className="text-xs text-muted-foreground mb-1 block">Tipo</label>
               <div className="relative">
                 <select value={category} onChange={(e) => setCategory(e.target.value as GradeCategory)}
-                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white appearance-none focus:outline-none focus:border-violet-500 cursor-pointer">
+                  className="w-full bg-muted border border-border rounded-lg px-3 py-2.5 text-sm text-foreground appearance-none focus:outline-none focus:border-ring cursor-pointer">
                   {categories.map((c) => (
-                    <option key={c.value} value={c.value} className="bg-slate-800">{c.label}</option>
+                    <option key={c.value} value={c.value} className="bg-muted">{c.label}</option>
                   ))}
                 </select>
-                <ChevronRight className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 rotate-90 pointer-events-none" />
+                <ChevronRight className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground rotate-90 pointer-events-none" />
               </div>
             </div>
           </div>
 
           <div className="grid grid-cols-3 gap-3">
             <div>
-              <label className="text-xs text-slate-400 mb-1 block">Nota *</label>
+              <label className="text-xs text-muted-foreground mb-1 block">Nota *</label>
               <input type="number" step="0.1" min="1" max="7" value={score}
                 onChange={(e) => setScore(e.target.value)} placeholder="4.5"
-                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-violet-500 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none" />
+                className="w-full bg-muted border border-border rounded-lg px-3 py-2.5 text-sm text-foreground placeholder-muted-foreground focus:outline-none focus:border-ring [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none" />
             </div>
             <div>
-              <label className="text-xs text-slate-400 mb-1 block">Nota máx.</label>
+              <label className="text-xs text-muted-foreground mb-1 block">Nota máx.</label>
               <input type="number" step="0.1" value={maxScore}
                 onChange={(e) => setMaxScore(e.target.value)}
-                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-violet-500 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none" />
+                className="w-full bg-muted border border-border rounded-lg px-3 py-2.5 text-sm text-foreground placeholder-muted-foreground focus:outline-none focus:border-ring [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none" />
             </div>
             <div>
-              <label className="text-xs text-slate-400 mb-1 block">Pond. (%) *</label>
+              <label className="text-xs text-muted-foreground mb-1 block">Pond. (%) *</label>
               <input type="number" step="1" min="1" max="100" value={weight}
                 onChange={(e) => setWeight(e.target.value)} placeholder="30"
-                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-violet-500 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none" />
+                className="w-full bg-muted border border-border rounded-lg px-3 py-2.5 text-sm text-foreground placeholder-muted-foreground focus:outline-none focus:border-ring [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none" />
             </div>
           </div>
 
           <div>
-            <label className="text-xs text-slate-400 mb-1 block">Fecha</label>
+            <label className="text-xs text-muted-foreground mb-1 block">Fecha</label>
             <input type="date" value={date} onChange={(e) => setDate(e.target.value)}
-              className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2.5 text-sm text-white focus:outline-none focus:border-violet-500" />
+              className="w-full bg-muted border border-border rounded-lg px-3 py-2.5 text-sm text-foreground focus:outline-none focus:border-ring" />
           </div>
 
           <div className="flex justify-end gap-2 pt-2">
-            <Button type="button" variant="ghost" onClick={onClose} className="text-slate-400">Cancelar</Button>
-            <Button type="submit" className="bg-violet-600 hover:bg-violet-700 text-white">Registrar nota</Button>
+            <Button type="button" variant="ghost" onClick={onClose} className="text-muted-foreground">Cancelar</Button>
+            <Button type="submit" className="bg-primary hover:bg-primary/90 text-primary-foreground">Registrar nota</Button>
           </div>
         </form>
       </motion.div>

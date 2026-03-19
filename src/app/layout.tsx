@@ -1,8 +1,10 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
+import { ThemeProvider } from "next-themes";
 import Script from "next/script";
 import "./globals.css";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { ThemeBackground } from "@/components/shared/theme-background";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -17,12 +19,15 @@ export const metadata: Metadata = {
     icon: "/icons/favicon.svg",
     apple: "/icons/icon-192.svg",
   },
-  themeColor: "#6366f1",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
     title: "StudyHub",
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#6366f1",
 };
 
 export default function RootLayout({
@@ -31,23 +36,25 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className="dark" suppressHydrationWarning>
+    <html lang="es" suppressHydrationWarning>
       <body className={`${inter.variable} font-sans antialiased`}>
-        <TooltipProvider>
-          {children}
-        </TooltipProvider>
+        <ThemeProvider
+          attribute="data-theme"
+          defaultTheme="dark"
+          themes={["light", "dark", "midnight", "aurora", "sunset"]}
+          enableSystem={false}
+          disableTransitionOnChange={false}
+          storageKey="studyhub-theme"
+        >
+          <ThemeBackground />
+          <TooltipProvider>
+            {children}
+          </TooltipProvider>
+        </ThemeProvider>
         <Script
           id="sw-register"
           strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              if ('serviceWorker' in navigator) {
-                window.addEventListener('load', () => {
-                  navigator.serviceWorker.register('/sw.js');
-                });
-              }
-            `,
-          }}
+          src="/register-sw.js"
         />
       </body>
     </html>

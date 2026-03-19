@@ -35,11 +35,11 @@ export class ErrorBoundary extends Component<Props, State> {
       if (this.props.fallback) return this.props.fallback;
 
       return (
-        <Card className="bg-slate-900/50 border-red-500/20 m-6">
+        <Card className="bg-card/50 border-destructive/20 m-6">
           <CardContent className="p-12 text-center">
-            <AlertCircle className="w-12 h-12 text-red-400 mx-auto mb-4" />
-            <h2 className="text-xl font-semibold text-white mb-2">Algo salio mal</h2>
-            <p className="text-slate-400 mb-6 max-w-md mx-auto">
+            <AlertCircle className="w-12 h-12 text-destructive mx-auto mb-4" />
+            <h2 className="text-xl font-semibold text-foreground mb-2">Algo salio mal</h2>
+            <p className="text-muted-foreground mb-6 max-w-md mx-auto">
               Ocurrio un error inesperado. Intenta recargar la pagina.
             </p>
             <Button
@@ -47,7 +47,7 @@ export class ErrorBoundary extends Component<Props, State> {
                 this.setState({ hasError: false, error: null });
                 window.location.reload();
               }}
-              className="bg-gradient-to-r from-blue-600 to-purple-600"
+              className="bg-gradient-to-r from-primary to-accent"
             >
               <RotateCcw className="w-4 h-4 mr-2" />
               Recargar
