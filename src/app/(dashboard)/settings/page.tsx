@@ -85,7 +85,7 @@ export default function SettingsPage() {
               </Badge>
             </div>
             {plan === "free" && (
-              <Button className="bg-gradient-to-r from-primary to-accent">
+              <Button className="bg-primary">
                 Mejorar plan
               </Button>
             )}

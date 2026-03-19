@@ -64,7 +64,7 @@ export function AddBlockDialog({
 }: AddBlockDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogTrigger render={<Button className="bg-gradient-to-r from-primary to-accent" />}>
+      <DialogTrigger render={<Button className="bg-primary" />}>
         <Plus className="w-4 h-4 mr-2" />
         Agregar bloque
       </DialogTrigger>
@@ -163,7 +163,7 @@ export function AddBlockDialog({
               className="bg-muted border-border text-foreground"
             />
           </div>
-          <Button onClick={onAddBlock} className="w-full bg-gradient-to-r from-primary to-accent">
+          <Button onClick={onAddBlock} className="w-full bg-primary">
             Agregar bloque
           </Button>
         </div>

@@ -109,7 +109,7 @@ export default function SubjectsPage() {
           <p className="text-muted-foreground mt-1">Organiza tus asignaturas y material de estudio</p>
         </div>
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-          <DialogTrigger render={<Button className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90" />}>
+          <DialogTrigger render={<Button className="bg-primary hover:bg-primary/90" />}>
               <Plus className="w-4 h-4 mr-2" />
               Nuevo ramo
           </DialogTrigger>
@@ -163,7 +163,7 @@ export default function SubjectsPage() {
                   ))}
                 </div>
               </div>
-              <Button onClick={handleCreate} disabled={creating} className="w-full bg-gradient-to-r from-primary to-accent">
+              <Button onClick={handleCreate} disabled={creating} className="w-full bg-primary">
                 {creating ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
                 {creating ? "Creando..." : "Crear ramo"}
               </Button>
@@ -183,7 +183,7 @@ export default function SubjectsPage() {
               <BookOpen className="w-16 h-16 text-muted-foreground/60 mx-auto mb-4" />
               <h3 className="text-xl font-semibold text-foreground mb-2">No tienes ramos aún</h3>
               <p className="text-muted-foreground mb-6">Crea tu primer ramo para empezar a organizar tu material</p>
-              <Button onClick={() => setDialogOpen(true)} className="bg-gradient-to-r from-primary to-accent">
+              <Button onClick={() => setDialogOpen(true)} className="bg-primary">
                 <Plus className="w-4 h-4 mr-2" />
                 Crear primer ramo
               </Button>

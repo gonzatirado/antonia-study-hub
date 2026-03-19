@@ -193,7 +193,7 @@ export default function SummariesPage() {
               <Button
                 onClick={handleGenerate}
                 disabled={!canGenerate || !selectedSubject || !files.length || generating}
-                className="w-full bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 h-12"
+                className="w-full bg-primary hover:bg-primary/90 h-12"
               >
                 {generating ? (
                   <>

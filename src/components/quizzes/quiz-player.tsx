@@ -116,14 +116,14 @@ export function QuizPlayer({
               <Button
                 onClick={onConfirm}
                 disabled={selectedAnswer === null}
-                className="bg-gradient-to-r from-primary to-accent"
+                className="bg-primary"
               >
                 Confirmar respuesta
               </Button>
             ) : (
               <Button
                 onClick={onNext}
-                className="bg-gradient-to-r from-primary to-accent"
+                className="bg-primary"
               >
                 {currentQuestion < questions.length - 1 ? "Siguiente pregunta" : "Ver resultados"}
               </Button>

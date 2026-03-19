@@ -107,7 +107,7 @@ export default function LandingPage() {
               </Button>
             </Link>
             <Link href="/login">
-              <Button className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90">
+              <Button className="bg-primary hover:bg-primary/90">
                 Registrarse
               </Button>
             </Link>
@@ -142,7 +142,7 @@ export default function LandingPage() {
             </p>
             <div className="flex items-center justify-center gap-4">
               <Link href="/login">
-                <Button size="lg" className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-lg px-8 py-6">
+                <Button size="lg" className="bg-primary hover:bg-primary/90 text-lg px-8 py-6">
                   Empezar gratis
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </Button>
@@ -252,7 +252,7 @@ export default function LandingPage() {
                 <Button
                   className={`w-full ${
                     plan.highlighted
-                      ? "bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90"
+                      ? "bg-primary hover:bg-primary/90"
                       : "bg-secondary hover:bg-secondary/80"
                   }`}
                 >

@@ -47,7 +47,7 @@ export class ErrorBoundary extends Component<Props, State> {
                 this.setState({ hasError: false, error: null });
                 window.location.reload();
               }}
-              className="bg-gradient-to-r from-primary to-accent"
+              className="bg-primary"
             >
               <RotateCcw className="w-4 h-4 mr-2" />
               Recargar
