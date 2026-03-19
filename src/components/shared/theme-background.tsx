@@ -375,7 +375,7 @@ function GoldDesign() {
   return (
     <>
       {/* Art deco geometric pattern — layered diamond + inner ornament at very low opacity */}
-      <svg className="pointer-events-none fixed inset-0 z-0 h-full w-full opacity-[0.15]">
+      <svg className="pointer-events-none fixed inset-0 z-0 h-full w-full opacity-[0.10]">
         <defs>
           <pattern id="gold-art-deco" width="80" height="80" patternUnits="userSpaceOnUse" patternTransform="scale(1.5)">
             {/* Outer diamond */}
