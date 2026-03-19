@@ -5,39 +5,67 @@ import { useEffect, useState } from "react";
 import { SnowEffect } from "./snow-effect";
 
 /* ─────────────────────────────────────────────
-   LIGHT — Soft geometric hexagon grid + lavender bloom
+   Shared: Dot grid pattern overlay (Draftly-style)
+   ───────────────────────────────────────────── */
+function DotGridOverlay({ opacity = 0.05, color = "white", spacing = 24 }: { opacity?: number; color?: string; spacing?: number }) {
+  return (
+    <svg className="pointer-events-none fixed inset-0 z-0 h-full w-full" style={{ opacity }}>
+      <defs>
+        <pattern id={`dot-grid-${color.replace(/[^a-z]/g, "")}`} width={spacing} height={spacing} patternUnits="userSpaceOnUse">
+          <circle cx={spacing / 2} cy={spacing / 2} r="0.8" fill={color} />
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill={`url(#dot-grid-${color.replace(/[^a-z]/g, "")})`} />
+    </svg>
+  );
+}
+
+/* ─────────────────────────────────────────────
+   LIGHT — Soft geometric hexagon grid + warm bloom + dot texture
    ───────────────────────────────────────────── */
 function LightDesign() {
   return (
     <>
       {/* Hexagonal grid pattern */}
-      <svg className="pointer-events-none fixed inset-0 z-0 h-full w-full opacity-[0.12]">
+      <svg className="pointer-events-none fixed inset-0 z-0 h-full w-full opacity-[0.08]">
         <defs>
           <pattern id="hex-grid" width="56" height="100" patternUnits="userSpaceOnUse" patternTransform="scale(2)">
             <path
               d="M28 66L0 50L0 16L28 0L56 16L56 50L28 66L28 100"
               fill="none"
               stroke="oklch(0.55 0.20 265)"
-              strokeWidth="0.5"
+              strokeWidth="0.4"
             />
             <path
               d="M28 0L56 16L56 50L28 66L0 50L0 16"
               fill="none"
               stroke="oklch(0.55 0.20 265)"
-              strokeWidth="0.5"
+              strokeWidth="0.4"
             />
           </pattern>
         </defs>
         <rect width="100%" height="100%" fill="url(#hex-grid)" />
       </svg>
-      {/* Soft lavender bloom */}
+      {/* Subtle dot pattern overlay at 3% for Draftly texture */}
+      <DotGridOverlay opacity={0.03} color="oklch(0.40 0.05 265)" spacing={20} />
+      {/* Warm gradient bloom — top left warm peach, center lavender, bottom right soft rose */}
       <div
         className="pointer-events-none fixed inset-0 z-0"
         style={{
           backgroundImage: `
-            radial-gradient(ellipse 60% 50% at 15% 20%, oklch(0.88 0.15 280 / 0.30), transparent 60%),
-            radial-gradient(ellipse 40% 60% at 85% 75%, oklch(0.85 0.12 310 / 0.25), transparent 60%),
-            radial-gradient(ellipse 50% 40% at 50% 50%, oklch(0.92 0.08 240 / 0.18), transparent 60%)
+            radial-gradient(ellipse 60% 50% at 10% 15%, oklch(0.92 0.08 60 / 0.18), transparent 55%),
+            radial-gradient(ellipse 50% 45% at 50% 40%, oklch(0.90 0.10 280 / 0.14), transparent 55%),
+            radial-gradient(ellipse 55% 50% at 85% 75%, oklch(0.88 0.09 330 / 0.16), transparent 55%),
+            radial-gradient(ellipse 40% 35% at 30% 80%, oklch(0.93 0.06 200 / 0.10), transparent 50%)
+          `,
+        }}
+      />
+      {/* Soft top edge highlight — makes it feel designed not flat */}
+      <div
+        className="pointer-events-none fixed inset-0 z-0"
+        style={{
+          backgroundImage: `
+            linear-gradient(180deg, oklch(0.96 0.03 265 / 0.30) 0%, transparent 12%)
           `,
         }}
       />
@@ -46,11 +74,22 @@ function LightDesign() {
 }
 
 /* ─────────────────────────────────────────────
-   DARK — Star constellation field + nebula glow
+   DARK — Star constellation field + nebula glow + dot grid
    ───────────────────────────────────────────── */
 function DarkDesign() {
   return (
     <>
+      {/* Subtle dot grid overlay at 5% — Draftly depth texture */}
+      <DotGridOverlay opacity={0.05} color="oklch(0.70 0.10 265)" spacing={24} />
+      {/* Purple radial glow wash at top-center */}
+      <div
+        className="pointer-events-none fixed inset-0 z-0"
+        style={{
+          backgroundImage: `
+            radial-gradient(ellipse 70% 45% at 50% 0%, oklch(0.22 0.15 280 / 0.55), transparent 65%)
+          `,
+        }}
+      />
       {/* Star field */}
       <svg className="pointer-events-none fixed inset-0 z-0 h-full w-full opacity-80">
         <defs>
@@ -81,8 +120,8 @@ function DarkDesign() {
         ].map(([x, y, r], i) => (
           <circle key={`sm-${i}`} cx={`${x}%`} cy={`${y}%`} r={r} fill="url(#star-glow)" opacity={0.4} />
         ))}
-        {/* Constellation lines */}
-        <g stroke="oklch(0.75 0.18 265)" strokeWidth="0.8" opacity="0.45">
+        {/* Constellation lines — refined: thinner, lower opacity, dashed for elegance */}
+        <g stroke="oklch(0.70 0.15 270)" strokeWidth="0.5" opacity="0.25" strokeDasharray="4 6">
           <line x1="5%" y1="8%" x2="12%" y2="25%" />
           <line x1="12%" y1="25%" x2="20%" y2="15%" />
           <line x1="35%" y1="10%" x2="42%" y2="30%" />
@@ -95,14 +134,23 @@ function DarkDesign() {
           <line x1="65%" y1="80%" x2="78%" y2="65%" />
           <line x1="78%" y1="65%" x2="85%" y2="88%" />
         </g>
+        {/* Constellation node dots — small bright dots at connection points */}
+        {[
+          [5, 8], [12, 25], [20, 15], [35, 10], [42, 30], [48, 55],
+          [62, 40], [68, 12], [75, 50], [82, 22], [88, 35],
+          [15, 70], [25, 85], [38, 75], [65, 80], [78, 65], [85, 88],
+        ].map(([x, y], i) => (
+          <circle key={`node-${i}`} cx={`${x}%`} cy={`${y}%`} r="1.8" fill="url(#star-glow)" opacity={0.55} />
+        ))}
       </svg>
-      {/* Nebula glow */}
+      {/* Nebula glow — multi-layer */}
       <div
         className="pointer-events-none fixed inset-0 z-0"
         style={{
           backgroundImage: `
-            radial-gradient(ellipse 50% 40% at 20% 30%, oklch(0.30 0.18 280 / 0.50), transparent 60%),
-            radial-gradient(ellipse 40% 50% at 80% 70%, oklch(0.25 0.15 250 / 0.40), transparent 60%)
+            radial-gradient(ellipse 50% 40% at 20% 30%, oklch(0.28 0.16 280 / 0.40), transparent 60%),
+            radial-gradient(ellipse 40% 50% at 80% 70%, oklch(0.23 0.13 250 / 0.35), transparent 60%),
+            radial-gradient(ellipse 35% 30% at 60% 85%, oklch(0.20 0.10 300 / 0.20), transparent 55%)
           `,
         }}
       />
@@ -111,11 +159,25 @@ function DarkDesign() {
 }
 
 /* ─────────────────────────────────────────────
-   MIDNIGHT — Deep space aurora waves + twinkling stars
+   MIDNIGHT — Deep space nebula + twinkling stars + shooting star
    ───────────────────────────────────────────── */
 function MidnightDesign() {
   return (
     <>
+      {/* Deep space nebula effect — multiple colored radial gradients */}
+      <div
+        className="pointer-events-none fixed inset-0 z-0"
+        style={{
+          backgroundImage: `
+            radial-gradient(ellipse 60% 50% at 25% 20%, oklch(0.18 0.12 260 / 0.45), transparent 60%),
+            radial-gradient(ellipse 50% 45% at 75% 30%, oklch(0.16 0.10 285 / 0.35), transparent 55%),
+            radial-gradient(ellipse 45% 40% at 50% 60%, oklch(0.14 0.08 240 / 0.25), transparent 50%),
+            radial-gradient(ellipse 55% 35% at 80% 80%, oklch(0.15 0.09 270 / 0.20), transparent 50%)
+          `,
+        }}
+      />
+      {/* Dot grid overlay for depth */}
+      <DotGridOverlay opacity={0.04} color="oklch(0.60 0.12 260)" spacing={22} />
       {/* Twinkling stars with CSS animation */}
       <div className="pointer-events-none fixed inset-0 z-0">
         <svg className="h-full w-full opacity-80">
@@ -138,23 +200,47 @@ function MidnightDesign() {
           ))}
         </svg>
       </div>
-      {/* Aurora waves */}
+      {/* Shooting star — thin line that crosses once every ~9s */}
+      <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
+        <div className="animate-shooting-star absolute" style={{
+          top: "12%",
+          left: "-10%",
+          width: "80px",
+          height: "1px",
+          background: "linear-gradient(90deg, transparent, oklch(0.90 0.05 250 / 0.8), oklch(0.95 0.02 260 / 0.4), transparent)",
+          borderRadius: "1px",
+          transform: "rotate(-15deg)",
+          filter: "blur(0.3px)",
+        }} />
+        <div className="animate-shooting-star-2 absolute" style={{
+          top: "35%",
+          left: "-10%",
+          width: "60px",
+          height: "1px",
+          background: "linear-gradient(90deg, transparent, oklch(0.85 0.06 270 / 0.7), oklch(0.90 0.03 280 / 0.3), transparent)",
+          borderRadius: "1px",
+          transform: "rotate(-20deg)",
+          filter: "blur(0.3px)",
+        }} />
+      </div>
+      {/* Aurora waves at bottom — more intense */}
       <div
         className="pointer-events-none fixed inset-0 z-0 animate-aurora-wave"
         style={{
           backgroundImage: `
-            radial-gradient(ellipse 120% 20% at 50% 100%, oklch(0.40 0.22 250 / 0.50), transparent),
-            radial-gradient(ellipse 80% 15% at 30% 90%, oklch(0.35 0.18 280 / 0.40), transparent),
-            radial-gradient(ellipse 60% 10% at 70% 95%, oklch(0.30 0.15 220 / 0.35), transparent)
+            radial-gradient(ellipse 130% 25% at 50% 100%, oklch(0.42 0.25 250 / 0.60), transparent),
+            radial-gradient(ellipse 90% 20% at 30% 92%, oklch(0.38 0.22 280 / 0.50), transparent),
+            radial-gradient(ellipse 70% 15% at 70% 96%, oklch(0.35 0.18 220 / 0.45), transparent),
+            radial-gradient(ellipse 50% 10% at 55% 100%, oklch(0.40 0.20 260 / 0.35), transparent)
           `,
         }}
       />
-      {/* Deep space gradient */}
+      {/* Deep space top gradient */}
       <div
         className="pointer-events-none fixed inset-0 z-0"
         style={{
           backgroundImage: `
-            radial-gradient(ellipse 70% 60% at 50% 0%, oklch(0.20 0.10 270 / 0.60), transparent)
+            radial-gradient(ellipse 70% 60% at 50% 0%, oklch(0.18 0.10 270 / 0.50), transparent)
           `,
         }}
       />
@@ -163,12 +249,22 @@ function MidnightDesign() {
 }
 
 /* ─────────────────────────────────────────────
-   AURORA — Northern lights animated bands + particle glow
+   AURORA — Northern lights animated bands + grid overlay + particle glow
    ───────────────────────────────────────────── */
 function AuroraDesign() {
   return (
     <>
-      {/* === CURTAIN 1: Main green aurora — tall, bright, animated === */}
+      {/* === Subtle grid overlay behind aurora for Draftly-style depth === */}
+      <svg className="pointer-events-none fixed inset-0 z-0 h-full w-full opacity-[0.04]">
+        <defs>
+          <pattern id="aurora-depth-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="oklch(0.70 0.15 160)" strokeWidth="0.4" />
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#aurora-depth-grid)" />
+      </svg>
+
+      {/* === CURTAIN 1: Main green aurora — taller, more vibrant === */}
       <div
         className="pointer-events-none fixed inset-0 z-0 overflow-hidden"
         style={{
@@ -176,19 +272,19 @@ function AuroraDesign() {
             linear-gradient(
               180deg,
               transparent 0%,
-              oklch(0.55 0.30 155 / 0.08) 5%,
-              oklch(0.60 0.32 155 / 0.30) 12%,
-              oklch(0.65 0.35 155 / 0.55) 22%,
-              oklch(0.60 0.30 160 / 0.45) 35%,
-              oklch(0.50 0.25 170 / 0.30) 48%,
-              oklch(0.40 0.18 180 / 0.15) 60%,
-              transparent 75%
+              oklch(0.58 0.33 155 / 0.10) 4%,
+              oklch(0.63 0.36 155 / 0.35) 10%,
+              oklch(0.70 0.38 155 / 0.60) 20%,
+              oklch(0.65 0.34 160 / 0.50) 32%,
+              oklch(0.55 0.28 170 / 0.35) 45%,
+              oklch(0.45 0.20 180 / 0.18) 58%,
+              transparent 72%
             )
           `,
           animation: "aurora-curtain-1 8s ease-in-out infinite",
         }}
       />
-      {/* === CURTAIN 2: Purple/violet secondary aurora === */}
+      {/* === CURTAIN 2: Purple/violet secondary aurora — more vibrant === */}
       <div
         className="pointer-events-none fixed inset-0 z-0 overflow-hidden"
         style={{
@@ -196,18 +292,18 @@ function AuroraDesign() {
             linear-gradient(
               180deg,
               transparent 0%,
-              oklch(0.45 0.25 290 / 0.06) 8%,
-              oklch(0.50 0.28 285 / 0.25) 18%,
-              oklch(0.55 0.30 280 / 0.40) 28%,
-              oklch(0.50 0.25 290 / 0.30) 40%,
-              oklch(0.40 0.20 300 / 0.15) 55%,
-              transparent 70%
+              oklch(0.48 0.28 290 / 0.08) 6%,
+              oklch(0.55 0.32 285 / 0.30) 15%,
+              oklch(0.60 0.34 280 / 0.48) 25%,
+              oklch(0.55 0.28 290 / 0.35) 38%,
+              oklch(0.45 0.22 300 / 0.18) 52%,
+              transparent 68%
             )
           `,
           animation: "aurora-curtain-2 12s ease-in-out infinite",
         }}
       />
-      {/* === CURTAIN 3: Teal accent band === */}
+      {/* === CURTAIN 3: Teal accent band — more vibrant === */}
       <div
         className="pointer-events-none fixed inset-0 z-0 overflow-hidden"
         style={{
@@ -215,10 +311,10 @@ function AuroraDesign() {
             linear-gradient(
               180deg,
               transparent 0%,
-              oklch(0.52 0.28 175 / 0.20) 15%,
-              oklch(0.58 0.32 170 / 0.35) 25%,
-              oklch(0.52 0.25 180 / 0.25) 38%,
-              transparent 55%
+              oklch(0.55 0.32 175 / 0.25) 12%,
+              oklch(0.62 0.36 170 / 0.42) 22%,
+              oklch(0.55 0.28 180 / 0.30) 35%,
+              transparent 52%
             )
           `,
           animation: "aurora-curtain-3 15s ease-in-out infinite",
@@ -310,62 +406,93 @@ function AuroraDesign() {
 }
 
 /* ─────────────────────────────────────────────
-   SUNSET — Warm horizon with sun rays + warm clouds
+   GOLD — Luxurious parchment with art deco geometry + golden glows
    ───────────────────────────────────────────── */
-function SunsetDesign() {
+function GoldDesign() {
   return (
     <>
-      {/* Sun rays emanating from bottom-right */}
-      <svg className="pointer-events-none fixed inset-0 z-0 h-full w-full opacity-[0.18]">
+      {/* Art deco geometric pattern — layered diamond + inner ornament at very low opacity */}
+      <svg className="pointer-events-none fixed inset-0 z-0 h-full w-full opacity-[0.07]">
         <defs>
-          <linearGradient id="ray-fade" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="oklch(0.75 0.20 40)" stopOpacity="1" />
-            <stop offset="100%" stopColor="oklch(0.75 0.20 40)" stopOpacity="0" />
-          </linearGradient>
+          <pattern id="gold-art-deco" width="80" height="80" patternUnits="userSpaceOnUse" patternTransform="scale(1.5)">
+            {/* Outer diamond */}
+            <path d="M40 0L80 40L40 80L0 40Z" fill="none" stroke="oklch(0.62 0.14 85)" strokeWidth="0.5" />
+            {/* Inner diamond */}
+            <path d="M40 12L68 40L40 68L12 40Z" fill="none" stroke="oklch(0.62 0.14 85)" strokeWidth="0.3" />
+            {/* Cross lines through center */}
+            <line x1="40" y1="0" x2="40" y2="80" stroke="oklch(0.62 0.14 85)" strokeWidth="0.2" />
+            <line x1="0" y1="40" x2="80" y2="40" stroke="oklch(0.62 0.14 85)" strokeWidth="0.2" />
+            {/* Corner ornament dots */}
+            <circle cx="40" cy="0" r="1.5" fill="oklch(0.65 0.12 85)" opacity="0.6" />
+            <circle cx="80" cy="40" r="1.5" fill="oklch(0.65 0.12 85)" opacity="0.6" />
+            <circle cx="40" cy="80" r="1.5" fill="oklch(0.65 0.12 85)" opacity="0.6" />
+            <circle cx="0" cy="40" r="1.5" fill="oklch(0.65 0.12 85)" opacity="0.6" />
+            {/* Center ornament */}
+            <circle cx="40" cy="40" r="2" fill="none" stroke="oklch(0.65 0.12 85)" strokeWidth="0.4" />
+            <circle cx="40" cy="40" r="0.8" fill="oklch(0.68 0.14 85)" opacity="0.5" />
+          </pattern>
         </defs>
-        <g transform="translate(85%, 95%)" opacity="0.8">
-          {Array.from({ length: 12 }, (_, i) => {
-            const angle = -90 - 80 + i * (160 / 11);
-            const rad = (angle * Math.PI) / 180;
-            const len = 1200;
-            return (
-              <line
-                key={i}
-                x1="0"
-                y1="0"
-                x2={Math.cos(rad) * len}
-                y2={Math.sin(rad) * len}
-                stroke="oklch(0.75 0.20 40)"
-                strokeWidth={i % 2 === 0 ? "2" : "1"}
-                opacity={0.3 + (i % 3) * 0.2}
-              />
-            );
-          })}
-        </g>
+        <rect width="100%" height="100%" fill="url(#gold-art-deco)" />
       </svg>
-      {/* Warm horizon gradient */}
+      {/* Warm golden radial glows — multiple positioned for richness */}
       <div
         className="pointer-events-none fixed inset-0 z-0"
         style={{
           backgroundImage: `
-            radial-gradient(ellipse 100% 30% at 80% 100%, oklch(0.45 0.25 30 / 0.50), transparent),
-            radial-gradient(ellipse 80% 25% at 60% 90%, oklch(0.40 0.22 350 / 0.35), transparent),
-            radial-gradient(ellipse 60% 40% at 30% 20%, oklch(0.30 0.15 50 / 0.25), transparent)
+            radial-gradient(ellipse 55% 45% at 15% 20%, oklch(0.90 0.10 80 / 0.25), transparent 55%),
+            radial-gradient(ellipse 45% 50% at 85% 25%, oklch(0.88 0.08 90 / 0.20), transparent 55%),
+            radial-gradient(ellipse 50% 40% at 50% 75%, oklch(0.86 0.09 75 / 0.18), transparent 50%),
+            radial-gradient(ellipse 60% 30% at 70% 50%, oklch(0.92 0.06 95 / 0.14), transparent 50%),
+            radial-gradient(ellipse 40% 35% at 25% 65%, oklch(0.85 0.07 70 / 0.12), transparent 45%)
           `,
         }}
       />
-      {/* Warm cloud wisps */}
+      {/* Warm top-edge highlight — parchment glow */}
       <div
-        className="pointer-events-none fixed inset-0 z-0 animate-cloud-drift"
+        className="pointer-events-none fixed inset-0 z-0"
         style={{
           backgroundImage: `
-            radial-gradient(ellipse 30% 8% at 20% 25%, oklch(0.40 0.15 30 / 0.22), transparent),
-            radial-gradient(ellipse 25% 6% at 55% 35%, oklch(0.35 0.12 40 / 0.18), transparent),
-            radial-gradient(ellipse 35% 7% at 75% 20%, oklch(0.38 0.16 25 / 0.15), transparent),
-            radial-gradient(ellipse 20% 5% at 40% 45%, oklch(0.32 0.10 50 / 0.18), transparent)
+            linear-gradient(180deg, oklch(0.94 0.04 80 / 0.35) 0%, transparent 15%),
+            linear-gradient(0deg, oklch(0.90 0.05 75 / 0.15) 0%, transparent 10%)
           `,
         }}
       />
+      {/* Floating golden particles — refined with shimmer animation */}
+      <svg className="pointer-events-none fixed inset-0 z-0 h-full w-full opacity-[0.20]">
+        <defs>
+          <radialGradient id="gold-particle">
+            <stop offset="0%" stopColor="oklch(0.78 0.14 85)" stopOpacity="1" />
+            <stop offset="100%" stopColor="oklch(0.78 0.14 85)" stopOpacity="0" />
+          </radialGradient>
+          <radialGradient id="gold-particle-warm">
+            <stop offset="0%" stopColor="oklch(0.75 0.16 75)" stopOpacity="1" />
+            <stop offset="100%" stopColor="oklch(0.75 0.16 75)" stopOpacity="0" />
+          </radialGradient>
+        </defs>
+        {[
+          [8, 12, 3.5, "gold-particle"], [25, 8, 4.0, "gold-particle-warm"],
+          [45, 18, 3.0, "gold-particle"], [68, 10, 4.5, "gold-particle-warm"],
+          [88, 22, 3.5, "gold-particle"], [15, 45, 3.0, "gold-particle-warm"],
+          [38, 55, 4.0, "gold-particle"], [62, 42, 3.5, "gold-particle-warm"],
+          [82, 50, 3.0, "gold-particle"], [50, 72, 4.0, "gold-particle-warm"],
+          [20, 80, 3.5, "gold-particle"], [72, 78, 3.0, "gold-particle-warm"],
+          [42, 90, 3.5, "gold-particle"], [90, 85, 4.0, "gold-particle-warm"],
+          [5, 65, 3.0, "gold-particle"],
+        ].map(([x, y, r, grad], i) => (
+          <circle
+            key={i}
+            cx={`${x}%`}
+            cy={`${y}%`}
+            r={r as number}
+            fill={`url(#${grad})`}
+            opacity={0.25 + (i % 4) * 0.1}
+            className="animate-gold-float"
+            style={{ animationDelay: `${i * 0.6}s` }}
+          />
+        ))}
+      </svg>
+      {/* Subtle dot grid for texture depth */}
+      <DotGridOverlay opacity={0.025} color="oklch(0.55 0.10 80)" spacing={18} />
     </>
   );
 }
@@ -392,7 +519,7 @@ const themeDesigns: Record<string, () => React.JSX.Element> = {
   dark: DarkDesign,
   midnight: MidnightDesign,
   aurora: AuroraDesign,
-  sunset: SunsetDesign,
+  gold: GoldDesign,
 };
 
 export function ThemeBackground() {
