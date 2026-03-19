@@ -2,6 +2,7 @@
 
 import { Button as ButtonPrimitive } from "@base-ui/react/button"
 import { cva, type VariantProps } from "class-variance-authority"
+import * as React from "react"
 import { useRef, useCallback } from "react"
 
 import { cn } from "@/lib/utils"
@@ -49,13 +50,32 @@ function Button({
   size = "default",
   ...props
 }: ButtonPrimitive.Props & VariantProps<typeof buttonVariants>) {
-  const ref = useRef<HTMLButtonElement>(null);
+  const rippleRef = useRef<HTMLButtonElement>(null);
+
+  // Merge the internal ripple ref with any external ref (e.g. from Base UI's render prop)
+  const { ref: externalRef, ...restProps } = props as typeof props & { ref?: React.Ref<HTMLButtonElement> };
+  const mergedRef = useCallback(
+    (node: HTMLButtonElement | null) => {
+      rippleRef.current = node;
+      if (typeof externalRef === "function") {
+        externalRef(node);
+      } else if (externalRef != null && typeof externalRef === "object") {
+        (externalRef as React.MutableRefObject<HTMLButtonElement | null>).current = node;
+      }
+    },
+    [externalRef]
+  );
 
   const handleClick = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
-    const button = ref.current;
+    // Always call original onClick first, even if ripple ref is unavailable
+    if (typeof restProps.onClick === "function") {
+      (restProps.onClick as (e: React.MouseEvent<HTMLButtonElement>) => void)(e);
+    }
+
+    // Ripple effect (purely visual, non-blocking)
+    const button = rippleRef.current;
     if (!button) return;
 
-    // Create ripple element
     const ripple = document.createElement("span");
     const rect = button.getBoundingClientRect();
     const size = Math.max(rect.width, rect.height);
@@ -72,19 +92,14 @@ function Button({
     `;
     button.appendChild(ripple);
     setTimeout(() => ripple.remove(), 500);
-
-    // Call original onClick if exists
-    if (typeof props.onClick === "function") {
-      (props.onClick as (e: React.MouseEvent<HTMLButtonElement>) => void)(e);
-    }
-  }, [props.onClick]);
+  }, [restProps.onClick]);
 
   return (
     <ButtonPrimitive
-      ref={ref}
       data-slot="button"
       className={cn(buttonVariants({ variant, size, className }))}
-      {...props}
+      {...restProps}
+      ref={mergedRef}
       onClick={handleClick}
     />
   )
