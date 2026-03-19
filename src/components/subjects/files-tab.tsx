@@ -3,9 +3,8 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Upload, Trash2, Loader2, FolderIcon, FolderPlus,
-  ChevronRight, Download, Eye, ArrowRightLeft,
-  MoreVertical, FileText, Image, FileSpreadsheet, File,
+  Upload, Loader2, FolderIcon, FolderPlus,
+  ChevronRight, MoreVertical, FileText, Image, File,
   LayoutGrid, List,
 } from "lucide-react";
 import { useDropzone } from "react-dropzone";
