@@ -3,6 +3,7 @@
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { SnowEffect } from "./snow-effect";
+import { StarfieldEffect } from "./starfield-effect";
 
 /* ─────────────────────────────────────────────
    Shared: Dot grid pattern overlay (Draftly-style)
@@ -116,39 +117,7 @@ function MidnightDesign() {
       />
       {/* Dot grid overlay for depth */}
       <DotGridOverlay opacity={0.04} color="oklch(0.60 0.12 260)" spacing={22} />
-      {/* Twinkling stars with CSS animation — DENSE star field */}
-      <div className="pointer-events-none fixed inset-0 z-0">
-        <svg className="h-full w-full opacity-85">
-          {/* Big twinkling stars */}
-          {[
-            [10, 5, 4.5], [40, 8, 5.0], [70, 5, 4.0], [30, 42, 4.5], [65, 30, 5.5],
-            [92, 28, 4.0], [45, 65, 5.0], [75, 68, 4.5], [5, 85, 4.0], [55, 82, 5.0],
-            [18, 22, 4.2], [82, 50, 4.8],
-          ].map(([x, y, r], i) => (
-            <circle key={`big-${i}`} cx={`${x}%`} cy={`${y}%`} r={r} fill="white" opacity={0.75}
-              className="animate-twinkle" style={{ animationDelay: `${i * 0.45}s` }} />
-          ))}
-          {/* Medium stars */}
-          {[
-            [25, 18, 3.0], [55, 22, 2.8], [85, 15, 3.2], [15, 35, 2.8], [50, 38, 3.0],
-            [80, 45, 2.5], [8, 60, 3.0], [22, 72, 2.8], [60, 55, 3.0], [88, 58, 2.5],
-            [35, 88, 3.0], [70, 90, 2.8], [90, 80, 3.0], [18, 95, 2.5], [48, 92, 3.0],
-            [3, 18, 2.6], [42, 15, 2.9], [76, 38, 2.7], [62, 75, 3.1], [95, 42, 2.5],
-          ].map(([x, y, r], i) => (
-            <circle key={`med-${i}`} cx={`${x}%`} cy={`${y}%`} r={r} fill="white" opacity={0.55}
-              className="animate-twinkle" style={{ animationDelay: `${i * 0.28}s` }} />
-          ))}
-          {/* Small distant stars — adds density for night-sky feel */}
-          {[
-            [7, 12, 1.5], [14, 48, 1.3], [28, 62, 1.6], [33, 30, 1.4], [46, 45, 1.7],
-            [52, 18, 1.3], [59, 68, 1.5], [67, 15, 1.4], [73, 55, 1.6], [79, 85, 1.3],
-            [86, 25, 1.5], [93, 70, 1.4], [38, 95, 1.6], [12, 88, 1.3], [58, 35, 1.5],
-          ].map(([x, y, r], i) => (
-            <circle key={`sm-${i}`} cx={`${x}%`} cy={`${y}%`} r={r} fill="white" opacity={0.35}
-              className="animate-twinkle" style={{ animationDelay: `${i * 0.35}s` }} />
-          ))}
-        </svg>
-      </div>
+      {/* Stars replaced by tsParticles StarfieldEffect with constellation links */}
       {/* Shooting stars — thin lines that cross periodically */}
       <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
         <div className="animate-shooting-star absolute" style={{
@@ -500,6 +469,7 @@ export function ThemeBackground() {
       <Design />
       <NoiseOverlay />
       <SnowEffect />
+      <StarfieldEffect />
     </>
   );
 }
