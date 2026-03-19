@@ -167,49 +167,93 @@ function MidnightDesign() {
 function AuroraDesign() {
   return (
     <>
-      {/* Aurora bands — animated vertical waves */}
-      <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
-        <div
-          className="absolute inset-0 animate-aurora-bands"
-          style={{
-            backgroundImage: `
-              linear-gradient(180deg, transparent 0%, oklch(0.50 0.28 160 / 0.45) 15%, oklch(0.45 0.25 180 / 0.50) 30%, oklch(0.35 0.20 160 / 0.30) 45%, transparent 60%),
-              linear-gradient(180deg, transparent 5%, oklch(0.48 0.25 280 / 0.35) 20%, oklch(0.40 0.28 200 / 0.40) 35%, oklch(0.30 0.20 250 / 0.25) 50%, transparent 65%),
-              linear-gradient(180deg, transparent 0%, oklch(0.55 0.25 150 / 0.30) 18%, oklch(0.45 0.22 190 / 0.35) 33%, oklch(0.35 0.18 170 / 0.20) 48%, transparent 60%)
-            `,
-            backgroundSize: "100% 100%, 100% 100%, 100% 100%",
-          }}
-        />
-        {/* Shimmering particles */}
-        <svg className="absolute inset-0 h-full w-full opacity-60">
-          {[
-            [8, 15], [15, 25], [22, 18], [30, 30], [38, 22],
-            [45, 28], [52, 20], [60, 32], [68, 25], [75, 18],
-            [82, 28], [90, 22], [12, 38], [35, 40], [58, 35],
-            [72, 42], [88, 38], [20, 45], [48, 48], [65, 44],
-          ].map(([x, y], i) => (
-            <circle
-              key={i}
-              cx={`${x}%`}
-              cy={`${y}%`}
-              r={i % 3 === 0 ? 3.5 : 2.0}
-              fill={i % 2 === 0 ? "oklch(0.80 0.22 160)" : "oklch(0.75 0.20 280)"}
-              className="animate-twinkle"
-              style={{ animationDelay: `${i * 0.3}s` }}
-            />
-          ))}
-        </svg>
-      </div>
-      {/* Base teal glow */}
+      {/* === CURTAIN 1: Main green aurora — tall, bright, animated === */}
+      <div
+        className="pointer-events-none fixed inset-0 z-0 overflow-hidden"
+        style={{
+          background: `
+            linear-gradient(
+              180deg,
+              transparent 0%,
+              oklch(0.55 0.30 155 / 0.08) 5%,
+              oklch(0.60 0.32 155 / 0.30) 12%,
+              oklch(0.65 0.35 155 / 0.55) 22%,
+              oklch(0.60 0.30 160 / 0.45) 35%,
+              oklch(0.50 0.25 170 / 0.30) 48%,
+              oklch(0.40 0.18 180 / 0.15) 60%,
+              transparent 75%
+            )
+          `,
+          animation: "aurora-curtain-1 8s ease-in-out infinite",
+        }}
+      />
+      {/* === CURTAIN 2: Purple/violet secondary aurora === */}
+      <div
+        className="pointer-events-none fixed inset-0 z-0 overflow-hidden"
+        style={{
+          background: `
+            linear-gradient(
+              180deg,
+              transparent 0%,
+              oklch(0.45 0.25 290 / 0.06) 8%,
+              oklch(0.50 0.28 285 / 0.25) 18%,
+              oklch(0.55 0.30 280 / 0.40) 28%,
+              oklch(0.50 0.25 290 / 0.30) 40%,
+              oklch(0.40 0.20 300 / 0.15) 55%,
+              transparent 70%
+            )
+          `,
+          animation: "aurora-curtain-2 12s ease-in-out infinite",
+        }}
+      />
+      {/* === CURTAIN 3: Teal accent band === */}
+      <div
+        className="pointer-events-none fixed inset-0 z-0 overflow-hidden"
+        style={{
+          background: `
+            linear-gradient(
+              180deg,
+              transparent 0%,
+              oklch(0.52 0.28 175 / 0.20) 15%,
+              oklch(0.58 0.32 170 / 0.35) 25%,
+              oklch(0.52 0.25 180 / 0.25) 38%,
+              transparent 55%
+            )
+          `,
+          animation: "aurora-curtain-3 15s ease-in-out infinite",
+        }}
+      />
+      {/* === Bottom glow: ground reflection === */}
       <div
         className="pointer-events-none fixed inset-0 z-0"
         style={{
-          backgroundImage: `
-            radial-gradient(ellipse 80% 40% at 40% 20%, oklch(0.30 0.15 160 / 0.45), transparent),
-            radial-gradient(ellipse 60% 30% at 70% 40%, oklch(0.28 0.12 200 / 0.35), transparent)
+          background: `
+            radial-gradient(ellipse 100% 30% at 50% 100%, oklch(0.30 0.18 160 / 0.40), transparent 70%),
+            radial-gradient(ellipse 60% 20% at 30% 95%, oklch(0.25 0.15 280 / 0.25), transparent 60%),
+            radial-gradient(ellipse 50% 25% at 75% 100%, oklch(0.28 0.16 170 / 0.30), transparent 60%)
           `,
         }}
       />
+      {/* === Stars behind the aurora === */}
+      <svg className="pointer-events-none fixed inset-0 z-0 h-full w-full opacity-70">
+        <defs>
+          <radialGradient id="aurora-star">
+            <stop offset="0%" stopColor="white" stopOpacity="1" />
+            <stop offset="100%" stopColor="white" stopOpacity="0" />
+          </radialGradient>
+        </defs>
+        {[
+          [8, 6, 3.0], [22, 3, 2.5], [38, 8, 3.5], [55, 4, 2.8], [72, 7, 3.2],
+          [88, 5, 2.5], [15, 15, 2.0], [45, 12, 2.2], [65, 18, 2.5], [82, 14, 2.0],
+          [5, 50, 2.5], [30, 55, 2.0], [60, 48, 2.8], [85, 52, 2.2], [48, 62, 2.5],
+          [12, 75, 2.0], [35, 78, 2.5], [68, 72, 2.2], [90, 68, 2.8], [25, 88, 2.0],
+          [55, 85, 2.5], [78, 82, 2.2], [42, 95, 2.0], [92, 90, 2.5],
+        ].map(([x, y, r], i) => (
+          <circle key={i} cx={`${x}%`} cy={`${y}%`} r={r} fill="url(#aurora-star)"
+            opacity={0.5 + (i % 4) * 0.1}
+            className="animate-twinkle" style={{ animationDelay: `${i * 0.4}s` }} />
+        ))}
+      </svg>
     </>
   );
 }
