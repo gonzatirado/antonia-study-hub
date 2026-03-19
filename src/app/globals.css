@@ -282,6 +282,119 @@
   100% { background-position: -200% 0; }
 }
 
+/* Theme background design animations */
+@keyframes twinkle {
+  0%, 100% { opacity: 0.2; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.3); }
+}
+
+@keyframes aurora-wave {
+  0% { transform: translateY(0) scaleY(1); }
+  33% { transform: translateY(-8px) scaleY(1.05); }
+  66% { transform: translateY(4px) scaleY(0.97); }
+  100% { transform: translateY(0) scaleY(1); }
+}
+
+@keyframes aurora-bands {
+  0% { transform: translateX(0) skewX(0deg); opacity: 0.8; }
+  25% { transform: translateX(3%) skewX(-1deg); opacity: 1; }
+  50% { transform: translateX(-2%) skewX(1deg); opacity: 0.7; }
+  75% { transform: translateX(1%) skewX(-0.5deg); opacity: 0.9; }
+  100% { transform: translateX(0) skewX(0deg); opacity: 0.8; }
+}
+
+@keyframes cloud-drift {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(30px); }
+  100% { transform: translateX(0); }
+}
+
+.animate-twinkle {
+  animation: twinkle 3s ease-in-out infinite;
+}
+
+.animate-aurora-wave {
+  animation: aurora-wave 12s ease-in-out infinite;
+}
+
+.animate-aurora-bands {
+  animation: aurora-bands 20s ease-in-out infinite;
+}
+
+.animate-cloud-drift {
+  animation: cloud-drift 30s ease-in-out infinite;
+}
+
+/* ============================================
+   BUTTON RIPPLE EFFECT
+   ============================================ */
+@keyframes ripple-expand {
+  0% { transform: scale(0); opacity: 1; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+
+/* ============================================
+   INTERACTIVE ELEVATION SYSTEM
+   Cards, inputs, and interactive surfaces
+   ============================================ */
+
+/* Cards get subtle lift on hover */
+[data-slot="card"],
+.interactive-card {
+  transition: transform 200ms ease-out, box-shadow 200ms ease-out;
+}
+
+[data-slot="card"]:hover,
+.interactive-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.12), 0 2px 6px rgba(0,0,0,0.08);
+}
+
+[data-slot="card"]:active,
+.interactive-card:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  transition-duration: 50ms;
+}
+
+/* Inputs get glow on focus */
+input:not([type="checkbox"]):not([type="radio"]),
+textarea,
+select {
+  transition: box-shadow 200ms ease-out, border-color 200ms ease-out;
+}
+
+input:not([type="checkbox"]):not([type="radio"]):focus,
+textarea:focus,
+select:focus {
+  box-shadow: 0 0 0 3px oklch(from var(--primary) l c h / 0.15);
+}
+
+/* Sidebar nav items — smooth hover */
+[data-slot="sidebar-menu-button"] {
+  transition: background-color 150ms ease-out, transform 150ms ease-out;
+}
+
+[data-slot="sidebar-menu-button"]:hover {
+  transform: translateX(2px);
+}
+
+/* Links get underline animation */
+a:not([data-slot="button"]):not([class*="no-underline"]) {
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: text-decoration-color 200ms ease-out;
+}
+
+/* Badges pulse subtly */
+[data-slot="badge"] {
+  transition: transform 150ms ease-out, box-shadow 150ms ease-out;
+}
+
+[data-slot="badge"]:hover {
+  transform: scale(1.05);
+}
+
 /* ============================================
    BASE STYLES
    ============================================ */
