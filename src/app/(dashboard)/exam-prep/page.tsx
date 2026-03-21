@@ -202,7 +202,7 @@ export default function ExamPrepPage() {
               <div className="space-y-4">
                 <Select value={selectedSubject} onValueChange={(v) => setSelectedSubject(v ?? "")}>
                   <SelectTrigger className="bg-muted border-border text-foreground">
-                    <SelectValue placeholder="Selecciona un ramo" />
+                    <SelectValue placeholder="Selecciona una asignatura" />
                   </SelectTrigger>
                   <SelectContent className="bg-card border-border">
                     {subjects.map((s) => (

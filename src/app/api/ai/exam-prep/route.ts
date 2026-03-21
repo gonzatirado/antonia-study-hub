@@ -6,7 +6,7 @@ import { checkUsageLimit, incrementUsage } from "@/lib/firebase/usage";
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { content, examDate, description, tier = "flash", userId } = body;
+    const { content, examDate, description, userId } = body;
 
     if (!content || !examDate || !description) {
       return NextResponse.json(
@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    const plan = await generateExamPlan(content, examDate, description, tier);
+    const plan = await generateExamPlan(content, examDate, description);
 
     // Increment usage after successful generation
     if (userId) {
@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       ...plan,
-      model: tier,
+      model: "gemini-2.5-flash",
     });
   } catch (error) {
     Sentry.captureException(error);

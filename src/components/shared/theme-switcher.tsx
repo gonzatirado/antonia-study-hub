@@ -3,7 +3,7 @@
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Sun, Moon, Stars, Sparkles, Crown, Check } from "lucide-react";
+import { Sun, Moon, Stars, Sparkles, Crown, Zap, Mountain, TreePine, Umbrella, Check } from "lucide-react";
 import { themes } from "@/lib/themes";
 import { springs } from "@/lib/animations";
 
@@ -13,14 +13,22 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Stars,
   Sparkles,
   Crown,
+  Zap,
+  Mountain,
+  TreePine,
+  Umbrella,
 };
 
-const previewColors: Record<string, { bg: string; card: string; accent: string; text: string }> = {
+const previewColors: Record<string, { bg: string; card: string; accent: string; text: string; image?: string }> = {
   light: { bg: "#f5f3ff", card: "#ffffff", accent: "#6d28d9", text: "#1e1b4b" },
   dark: { bg: "#1e1b2e", card: "#2a2740", accent: "#8b7cf6", text: "#e8e4f0" },
-  midnight: { bg: "#0d0a2a", card: "#161240", accent: "#4d7cff", text: "#c8d0f0" },
-  aurora: { bg: "#0a1f1a", card: "#122b24", accent: "#34d399", text: "#c8f0e0" },
+  midnight: { bg: "#0d0a2a", card: "#161240", accent: "#4d7cff", text: "#c8d0f0", image: "/themes/fondo-medianoche.png" },
+  aurora: { bg: "#0a1f1a", card: "#122b24", accent: "#34d399", text: "#c8f0e0", image: "/themes/fondo-aurora.png" },
   gold: { bg: "#f0ead2", card: "#f5f0e1", accent: "#8a7e3b", text: "#3a3525" },
+  neon: { bg: "#120818", card: "#1e0e2a", accent: "#ff2d9b", text: "#f0d0ff", image: "/themes/fondo-neon.png" },
+  alpes: { bg: "#f0f5fa", card: "#ffffff", accent: "#3b82c8", text: "#1a2a40", image: "/themes/fondo-alpes.png" },
+  bosque: { bg: "#1a1c14", card: "#252818", accent: "#d4883a", text: "#e8e0c8", image: "/themes/fondo-bosque.png" },
+  playa: { bg: "#faf5eb", card: "#fff8ee", accent: "#1a9aa0", text: "#2a3530", image: "/themes/fondo-playa.png" },
 };
 
 export function ThemeSwitcher() {
@@ -49,7 +57,14 @@ export function ThemeSwitcher() {
                 ? "ring-2 ring-primary ring-offset-2 ring-offset-background"
                 : "hover:ring-1 hover:ring-border"
             }`}
-            style={{ backgroundColor: colors.bg }}
+            style={{
+              backgroundColor: colors.bg,
+              ...(colors.image ? {
+                backgroundImage: `linear-gradient(to bottom, ${colors.bg}cc 0%, ${colors.bg}88 100%), url(${colors.image})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              } : {}),
+            }}
           >
             {/* Mini preview */}
             <div className="flex items-center gap-2 mb-2">
@@ -66,17 +81,6 @@ export function ThemeSwitcher() {
                 <p className="text-[10px] truncate" style={{ color: colors.text, opacity: 0.6 }}>
                   {t.description}
                 </p>
-              </div>
-            </div>
-            {/* Preview bars */}
-            <div className="space-y-1.5">
-              <div className="flex gap-1.5">
-                <div className="h-1.5 rounded-full flex-1" style={{ backgroundColor: colors.accent }} />
-                <div className="h-1.5 rounded-full w-4" style={{ backgroundColor: colors.card }} />
-              </div>
-              <div className="flex gap-1.5">
-                <div className="h-1.5 rounded-full w-6" style={{ backgroundColor: colors.card }} />
-                <div className="h-1.5 rounded-full flex-1" style={{ backgroundColor: colors.card }} />
               </div>
             </div>
             {/* Active check */}

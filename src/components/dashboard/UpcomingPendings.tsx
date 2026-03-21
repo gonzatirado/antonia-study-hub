@@ -34,7 +34,7 @@ export function UpcomingPendings({ pendings, subjectMap }: UpcomingPendingsProps
                     />
                     <div className="flex-1 min-w-0">
                       <p className="text-sm text-foreground truncate">{p.title}</p>
-                      <p className="text-xs text-muted-foreground">{sub?.name || "Sin ramo"}</p>
+                      <p className="text-xs text-muted-foreground">{sub?.name || "Sin asignatura"}</p>
                     </div>
                     <span
                       className={`text-xs font-medium shrink-0 ${

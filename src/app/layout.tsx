@@ -13,7 +13,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: "StudyHub — Tu espacio de estudio inteligente",
-  description: "Organiza tus ramos, genera resúmenes con IA, crea quizzes y prepara tus pruebas.",
+  description: "Organiza tus asignaturas, genera resúmenes con IA, crea quizzes y prepara tus pruebas.",
   manifest: "/manifest.json",
   icons: {
     icon: "/icons/favicon.svg",
@@ -39,11 +39,12 @@ export default function RootLayout({
     <html lang="es" suppressHydrationWarning>
       <body className={`${inter.variable} font-sans antialiased`}>
         {/* Migrate deprecated theme names before React hydrates */}
-        <script dangerouslySetInnerHTML={{ __html: `try{var t=localStorage.getItem("studyhub-theme");if(t==="sunset"){localStorage.setItem("studyhub-theme","gold");document.documentElement.setAttribute("data-theme","gold")}}catch(e){}` }} />
+        {/* Reset deprecated themes to dark on first load */}
+        <script dangerouslySetInnerHTML={{ __html: `try{var t=localStorage.getItem("studyhub-theme");if(!t||t==="sunset"||t==="gold"){localStorage.setItem("studyhub-theme","dark");document.documentElement.setAttribute("data-theme","dark")}}catch(e){}` }} />
         <ThemeProvider
           attribute="data-theme"
           defaultTheme="dark"
-          themes={["light", "dark", "midnight", "aurora", "gold"]}
+          themes={["light", "dark", "midnight", "aurora", "gold", "neon", "alpes", "bosque", "playa"]}
           enableSystem={false}
           disableTransitionOnChange={false}
           storageKey="studyhub-theme"

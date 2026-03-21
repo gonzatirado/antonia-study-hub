@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>StudyHub - Sylvan Nocturne</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&amp;family=Space+Grotesk:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "background": "#121410",
+                        "on-secondary-fixed-variant": "#653d1e",
+                        "surface-container-lowest": "#0d0f0b",
+                        "on-tertiary-fixed": "#221b00",
+                        "secondary-fixed": "#ffdcc5",
+                        "inverse-primary": "#006d36",
+                        "primary-fixed": "#83fba5",
+                        "on-secondary-container": "#e1aa82",
+                        "on-surface": "#e3e3dc",
+                        "primary-container": "#003f1c",
+                        "surface-dim": "#121410",
+                        "on-error": "#690005",
+                        "error-container": "#93000a",
+                        "tertiary-container": "#c9a900",
+                        "surface-tint": "#66dd8b",
+                        "outline-variant": "#454840",
+                        "on-primary-fixed-variant": "#005227",
+                        "surface": "#121410",
+                        "surface-bright": "#383a35",
+                        "inverse-surface": "#e3e3dc",
+                        "surface-container-highest": "#333531",
+                        "secondary": "#f4bb92",
+                        "inverse-on-surface": "#2f312d",
+                        "on-secondary": "#4a280a",
+                        "tertiary-fixed": "#ffe16d",
+                        "primary": "#66dd8b",
+                        "on-surface-variant": "#c5c8bd",
+                        "surface-container-high": "#292b26",
+                        "on-primary-container": "#38b366",
+                        "surface-variant": "#333531",
+                        "on-secondary-fixed": "#301400",
+                        "on-primary": "#003919",
+                        "surface-container": "#1e201c",
+                        "on-tertiary-container": "#4c3f00",
+                        "primary-fixed-dim": "#66dd8b",
+                        "secondary-container": "#653d1e",
+                        "outline": "#8f9288",
+                        "error": "#ffb4ab",
+                        "on-background": "#e3e3dc",
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary": "#3a3000",
+                        "on-primary-fixed": "#00210c",
+                        "tertiary": "#e9c400",
+                        "surface-container-low": "#1a1c18",
+                        "secondary-fixed-dim": "#f4bb92",
+                        "tertiary-fixed-dim": "#e9c400",
+                        "on-tertiary-fixed-variant": "#544600"
+                    },
+                    fontFamily: {
+                        "headline": ["Manrope"],
+                        "body": ["Manrope"],
+                        "label": ["Space Grotesk"]
+                    },
+                    borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .filled-icon {
+            font-variation-settings: 'FILL' 1;
+        }
+        .glass-card {
+            background: rgba(41, 43, 38, 0.6);
+            backdrop-filter: blur(12px);
+        }
+        .forest-glow {
+            background: radial-gradient(circle at center, rgba(102, 221, 139, 0.08) 0%, transparent 70%);
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.5);
+        }
+        .button-3d {
+            box-shadow: 0 4px 0 0 rgba(0, 57, 25, 0.4);
+            transition: all 0.1s ease;
+        }
+        .button-3d:active {
+            transform: translateY(2px);
+            box-shadow: 0 1px 0 0 rgba(0, 57, 25, 0.4);
+        }
+        .side-nav-hover:hover {
+            border-left: 3px solid #66dd8b;
+            padding-left: 1.25rem;
+            background: rgba(51, 53, 49, 0.4);
+        }
+    </style>
+</head>
+<body class="bg-background font-body text-on-surface selection:bg-primary/30 min-h-screen">
+<!-- SideNavBar (Authority: Shared Components JSON) -->
+<aside class="fixed left-0 h-screen w-64 bg-[#1a1c18] border-r border-[#454840]/15 flex flex-col py-8 px-4 z-50 shadow-[24px_0_24px_rgba(0,0,0,0.2)]">
+<div class="flex items-center gap-3 px-2 mb-10">
+<div class="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-2xl filled-icon">auto_stories</span>
+</div>
+<div>
+<h1 class="text-xl font-bold text-[#e3e3dc] leading-tight">StudyHub</h1>
+<p class="text-[10px] font-label tracking-widest uppercase text-primary/60">Sylvan Nocturne</p>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg bg-[#333531] text-[#66dd8b] shadow-[0_0_8px_rgba(102,221,139,0.2)] font-bold transition-all duration-200" href="#">
+<span class="material-symbols-outlined filled-icon">dashboard</span>
+<span class="font-manrope text-sm font-medium">Inicio</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-[#8f9288] side-nav-hover transition-all duration-200" href="#">
+<span class="material-symbols-outlined">timer</span>
+<span class="font-manrope text-sm font-medium">Pomodoro</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-[#8f9288] side-nav-hover transition-all duration-200" href="#">
+<span class="material-symbols-outlined">calendar_today</span>
+<span class="font-manrope text-sm font-medium">Horario</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-[#8f9288] side-nav-hover transition-all duration-200" href="#">
+<span class="material-symbols-outlined">description</span>
+<span class="font-manrope text-sm font-medium">Notas</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-[#8f9288] side-nav-hover transition-all duration-200" href="#">
+<span class="material-symbols-outlined">folder_open</span>
+<span class="font-manrope text-sm font-medium">Archivos</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-[#8f9288] side-nav-hover transition-all duration-200" href="#">
+<span class="material-symbols-outlined">grade</span>
+<span class="font-manrope text-sm font-medium">Calificaciones</span>
+</a>
+</nav>
+<div class="mt-auto">
+<button class="w-full bg-primary text-on-primary py-3 rounded-lg font-bold font-manrope text-sm flex items-center justify-center gap-2 button-3d">
+<span class="material-symbols-outlined text-lg">add_circle</span>
+                Nueva Sesión
+            </button>
+</div>
+</aside>
+<!-- TopAppBar (Authority: Shared Components JSON) -->
+<header class="fixed top-0 w-full z-40 bg-[#121410]/80 backdrop-blur-xl flex justify-between items-center px-8 py-3 ml-64 max-w-[calc(100%-16rem)]">
+<div class="flex items-center gap-4">
+<div class="bg-surface-container-lowest border border-outline-variant/15 rounded-full px-4 py-1.5 flex items-center gap-2 w-80">
+<span class="material-symbols-outlined text-outline text-lg">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm text-on-surface-variant w-full placeholder:text-outline/50" placeholder="Buscar en mis apuntes..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<button class="text-[#e3e3dc] hover:bg-[#333531] p-2 rounded-full transition-colors duration-200">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-[#e3e3dc] hover:bg-[#333531] p-2 rounded-full transition-colors duration-200">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="flex items-center gap-3 pl-4 border-l border-outline-variant/20">
+<div class="text-right">
+<p class="text-xs font-label font-bold text-on-surface leading-none">Marcos R.</p>
+<p class="text-[10px] text-primary leading-none">Pro Plan</p>
+</div>
+<img alt="Avatar" class="w-9 h-9 rounded-full object-cover border border-primary/20" data-alt="Portrait of a young man with glasses" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-m7bDdEwWh_185w_sDuOoXq1BziF0CMY6WqYeeLjZ1gMj9u4RwJw5mo1wbDuJ9nS0gf0Nl3srUO0n2xusJ22YhzJwZPHgGKCEggvSXv7nlba-42P1cfxZiiIPT3ihB1sy1RwueOxPvuOkG0LRgfKyjIOqTUwI6rb1QcpU6E4TY1XGS9FcjtL811sJei_2tlfeSYZdoAu1x_LVQM4o24NbW567N5YvGL6cGcXYpQtTKKr3uAcWeQx2m81FmoXcBqBciW4bY-Lok4yv"/>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-64 pt-24 pb-12 px-8 min-h-screen relative overflow-hidden">
+<!-- Sunbeam ambient glows -->
+<div class="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px]"></div>
+<div class="absolute bottom-[5%] left-[10%] w-[300px] h-[300px] bg-tertiary/5 rounded-full blur-[100px]"></div>
+<div class="max-w-7xl mx-auto space-y-8 relative z-10">
+<!-- Greeting & Metrics Bento -->
+<section class="grid grid-cols-1 md:grid-cols-12 gap-6">
+<div class="md:col-span-8 glass-card p-8 rounded-xl border border-outline-variant/10 relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-[120px] filled-icon text-primary">eco</span>
+</div>
+<h2 class="text-4xl font-extrabold font-headline text-on-surface mb-2">¡Hola, Marcos!</h2>
+<p class="text-on-surface-variant max-w-md text-lg">Has completado el <span class="text-primary font-bold">85%</span> de tus objetivos semanales. Sigue así, el bosque de conocimiento florece.</p>
+<div class="mt-8 flex gap-4">
+<button class="bg-primary text-on-primary px-6 py-2.5 rounded-lg font-bold flex items-center gap-2 button-3d">
+                            Continuar: Cálculo II
+                        </button>
+<button class="bg-surface-container-high text-on-surface border border-outline-variant/30 px-6 py-2.5 rounded-lg font-bold hover:bg-surface-variant transition-colors">
+                            Ver reporte semanal
+                        </button>
+</div>
+</div>
+<div class="md:col-span-4 space-y-4">
+<div class="bg-surface-container-low p-6 rounded-xl border border-outline-variant/10 flex items-center justify-between card-hover transition-all duration-300">
+<div>
+<p class="text-xs font-label text-outline uppercase tracking-widest">Estudio Hoy</p>
+<p class="text-3xl font-black text-on-surface mt-1">4.5<span class="text-sm font-normal text-outline ml-1">hrs</span></p>
+</div>
+<div class="w-12 h-12 bg-primary-container/30 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-primary filled-icon">schedule</span>
+</div>
+</div>
+<div class="bg-surface-container-low p-6 rounded-xl border border-outline-variant/10 flex items-center justify-between card-hover transition-all duration-300">
+<div>
+<p class="text-xs font-label text-outline uppercase tracking-widest">Racha Actual</p>
+<p class="text-3xl font-black text-on-surface mt-1">12<span class="text-sm font-normal text-outline ml-1">días</span></p>
+</div>
+<div class="w-12 h-12 bg-tertiary-container/20 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary filled-icon">local_fire_department</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Main Layout: 3 Columns -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Left: Tasks & Quick Pomodoro -->
+<div class="lg:col-span-2 space-y-8">
+<!-- Próximas Tareas -->
+<section>
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-xl font-bold font-headline flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">assignment</span>
+                                Próximas Tareas
+                            </h3>
+<button class="text-primary text-sm font-label font-bold hover:underline">Ver todas</button>
+</div>
+<div class="space-y-3">
+<div class="glass-card p-4 rounded-xl border border-outline-variant/10 flex items-center gap-4 card-hover transition-all duration-300 group">
+<div class="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center text-primary border border-outline-variant/20">
+<span class="material-symbols-outlined">functions</span>
+</div>
+<div class="flex-1">
+<h4 class="font-bold text-on-surface">Repasar Integrales Triples</h4>
+<p class="text-xs text-outline font-label">Matemáticas Avanzadas • Hoy, 18:00</p>
+</div>
+<span class="px-2 py-1 rounded bg-error/10 text-error text-[10px] font-bold uppercase tracking-tighter">Urgente</span>
+<button class="w-8 h-8 rounded-full hover:bg-primary/20 flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-sm">more_vert</span>
+</button>
+</div>
+<div class="glass-card p-4 rounded-xl border border-outline-variant/10 flex items-center gap-4 card-hover transition-all duration-300">
+<div class="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center text-secondary border border-outline-variant/20">
+<span class="material-symbols-outlined">biotech</span>
+</div>
+<div class="flex-1">
+<h4 class="font-bold text-on-surface">Ensayo Biología Molecular</h4>
+<p class="text-xs text-outline font-label">Ciencias Naturales • Mañana, 09:00</p>
+</div>
+<span class="px-2 py-1 rounded bg-secondary/10 text-secondary text-[10px] font-bold uppercase tracking-tighter">Media</span>
+<button class="w-8 h-8 rounded-full hover:bg-primary/20 flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-sm">more_vert</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Pomodoro Rápido -->
+<section class="bg-surface-container-highest/30 rounded-2xl border border-outline-variant/10 p-8 forest-glow">
+<div class="flex flex-col md:flex-row items-center gap-8">
+<div class="relative">
+<svg class="w-40 h-40 transform -rotate-90">
+<circle class="text-surface-container-high" cx="80" cy="80" fill="transparent" r="70" stroke="currentColor" stroke-width="8"></circle>
+<circle class="text-primary" cx="80" cy="80" fill="transparent" r="70" stroke="currentColor" stroke-dasharray="440" stroke-dashoffset="110" stroke-width="8"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<p class="text-3xl font-black font-label text-on-surface">25:00</p>
+<p class="text-[10px] font-label text-outline uppercase tracking-widest">Restantes</p>
+</div>
+</div>
+<div class="flex-1 text-center md:text-left">
+<h3 class="text-2xl font-black font-headline text-on-surface mb-2">Pomodoro Rápido</h3>
+<p class="text-on-surface-variant text-sm mb-6">Inicia un ciclo de enfoque instantáneo. Tu cerebro te lo agradecerá.</p>
+<div class="flex flex-wrap gap-3 justify-center md:justify-start">
+<button class="bg-primary text-on-primary px-8 py-3 rounded-xl font-bold button-3d">Empezar</button>
+<div class="flex gap-2">
+<button class="w-12 h-12 rounded-xl bg-surface-container-high border border-outline-variant/20 flex items-center justify-center hover:bg-surface-variant transition-colors"><span class="material-symbols-outlined">settings</span></button>
+<button class="w-12 h-12 rounded-xl bg-surface-container-high border border-outline-variant/20 flex items-center justify-center hover:bg-surface-variant transition-colors"><span class="material-symbols-outlined">restart_alt</span></button>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Sidebar: Notes & Tools -->
+<div class="space-y-8">
+<!-- Notas Recientes -->
+<section>
+<h3 class="text-xl font-bold font-headline mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">history_edu</span>
+                            Notas Recientes
+                        </h3>
+<div class="space-y-4">
+<div class="bg-surface-container-low p-5 rounded-xl border-l-4 border-primary/40 card-hover transition-all duration-300">
+<h4 class="font-bold text-on-surface mb-1">Algoritmos de Búsqueda</h4>
+<p class="text-sm text-on-surface-variant line-clamp-2">Revisión de BFS vs DFS. Aplicaciones en grafos ponderados y heurísticas A*...</p>
+<div class="mt-4 flex items-center justify-between text-[10px] font-label text-outline uppercase">
+<span>Hace 2 horas</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-xs">attach_file</span> 2 archivos</span>
+</div>
+</div>
+<div class="bg-surface-container-low p-5 rounded-xl border-l-4 border-secondary/40 card-hover transition-all duration-300">
+<h4 class="font-bold text-on-surface mb-1">Conceptos de Redes</h4>
+<p class="text-sm text-on-surface-variant line-clamp-2">Modelo OSI: Capas 1 a 4. Diferencias entre TCP y UDP en transmisiones críticas.</p>
+<div class="mt-4 flex items-center justify-between text-[10px] font-label text-outline uppercase">
+<span>Ayer</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-xs">edit</span> Editado</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Almacenamiento & Herramientas -->
+<section class="space-y-6">
+<div class="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/10">
+<div class="flex justify-between items-end mb-4">
+<div>
+<p class="text-xs font-label text-outline uppercase tracking-widest">Almacenamiento</p>
+<p class="text-xl font-bold text-on-surface">1.2 GB <span class="text-sm font-normal text-outline">de 5 GB</span></p>
+</div>
+<span class="material-symbols-outlined text-primary">cloud_done</span>
+</div>
+<!-- Custom Sunbeam Progress Bar -->
+<div class="h-2 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full w-[24%] bg-gradient-to-r from-primary to-tertiary shadow-[0_0_12px_rgba(102,221,139,0.5)]"></div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<button class="flex flex-col items-center justify-center p-4 rounded-xl bg-surface-container-low border border-outline-variant/10 hover:border-primary/50 transition-colors group">
+<span class="material-symbols-outlined text-primary mb-2 group-hover:scale-110 transition-transform">timer</span>
+<span class="text-[10px] font-label font-bold uppercase tracking-wider">Pomodoro</span>
+</button>
+<button class="flex flex-col items-center justify-center p-4 rounded-xl bg-surface-container-low border border-outline-variant/10 hover:border-primary/50 transition-colors group">
+<span class="material-symbols-outlined text-primary mb-2 group-hover:scale-110 transition-transform">event_note</span>
+<span class="text-[10px] font-label font-bold uppercase tracking-wider">Horario</span>
+</button>
+<button class="flex flex-col items-center justify-center p-4 rounded-xl bg-surface-container-low border border-outline-variant/10 hover:border-primary/50 transition-colors group">
+<span class="material-symbols-outlined text-primary mb-2 group-hover:scale-110 transition-transform">edit_note</span>
+<span class="text-[10px] font-label font-bold uppercase tracking-wider">Notas</span>
+</button>
+<button class="flex flex-col items-center justify-center p-4 rounded-xl bg-surface-container-low border border-outline-variant/10 hover:border-primary/50 transition-colors group">
+<span class="material-symbols-outlined text-primary mb-2 group-hover:scale-110 transition-transform">school</span>
+<span class="text-[10px] font-label font-bold uppercase tracking-wider">Notas Finales</span>
+</button>
+</div>
+</section>
+</div>
+</div>
+</div>
+</main>
+<!-- Contextual FAB (Only for main dash) -->
+<button class="fixed bottom-8 right-8 w-16 h-16 bg-primary text-on-primary rounded-full shadow-2xl flex items-center justify-center button-3d z-50 group">
+<span class="material-symbols-outlined text-3xl transition-transform duration-300 group-hover:rotate-90">add</span>
+</button>
+</body></html>

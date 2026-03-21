@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Cálculo II - Detalle de Calificaciones</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "inverse-surface": "#e5e2e1",
+              "on-tertiary": "#422c00",
+              "on-background": "#e5e2e1",
+              "secondary-container": "#6200ea",
+              "on-tertiary-container": "#6e4d00",
+              "on-surface-variant": "#bac9cd",
+              "on-secondary": "#3a0092",
+              "surface-container-lowest": "#0e0e0e",
+              "surface-container": "#201f1f",
+              "primary-fixed-dim": "#00daf8",
+              "outline-variant": "#3b494c",
+              "tertiary-fixed-dim": "#feba32",
+              "tertiary-fixed": "#ffdeaa",
+              "on-secondary-container": "#cfbcff",
+              "on-error": "#690005",
+              "secondary-fixed-dim": "#cfbcff",
+              "secondary": "#cfbcff",
+              "on-error-container": "#ffdad6",
+              "error": "#ffb4ab",
+              "surface-bright": "#3a3939",
+              "surface-dim": "#131313",
+              "on-surface": "#e5e2e1",
+              "secondary-fixed": "#e9ddff",
+              "on-tertiary-fixed-variant": "#5f4100",
+              "tertiary": "#ffdeac",
+              "surface-container-high": "#2a2a2a",
+              "surface-tint": "#00daf8",
+              "outline": "#859397",
+              "surface-variant": "#353534",
+              "on-primary-fixed": "#001f25",
+              "on-primary": "#00363f",
+              "inverse-on-surface": "#313030",
+              "primary": "#a6eeff",
+              "surface-container-low": "#1c1b1b",
+              "surface-container-highest": "#353534",
+              "background": "#131313",
+              "on-secondary-fixed-variant": "#5400cc",
+              "primary-fixed": "#a4eeff",
+              "on-primary-container": "#005b69",
+              "on-secondary-fixed": "#22005d",
+              "inverse-primary": "#006877",
+              "error-container": "#93000a",
+              "primary-container": "#00daf8",
+              "tertiary-container": "#ffbb33",
+              "on-primary-fixed-variant": "#004e5a",
+              "surface": "#131313",
+              "on-tertiary-fixed": "#271900"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      body {
+        background-color: #0e0e0e;
+        color: #e5e2e1;
+        font-family: 'Inter', sans-serif;
+      }
+      .glass-card {
+        background: rgba(32, 31, 31, 0.6);
+        backdrop-filter: blur(20px);
+        border-top: 1px solid rgba(0, 218, 248, 0.1);
+      }
+      .grade-input::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 12px;
+        height: 12px;
+        background: #00daf8;
+        cursor: pointer;
+        border-radius: 50%;
+        box-shadow: 0 0 10px rgba(0, 218, 248, 0.5);
+      }
+    </style>
+</head>
+<body class="flex min-h-screen overflow-x-hidden">
+<!-- SideNavBar (Shared Component) -->
+<nav class="fixed left-0 top-0 h-full w-64 z-40 bg-[#131313] flex flex-col py-8 gap-6 border-r border-[#00daf8]/5">
+<div class="px-8">
+<span class="text-lg font-black text-[#00daf8] tracking-tighter">LUMINARY PORTAL</span>
+<p class="font-['Inter'] uppercase tracking-widest text-[10px] font-semibold text-slate-500 mt-1">Elite Academic Tier</p>
+</div>
+<div class="flex flex-col mt-4">
+<a class="flex items-center px-8 py-3 gap-4 text-slate-500 hover:bg-[#201f1f] hover:text-slate-200 transition-all active:translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-['Inter'] uppercase tracking-widest text-[10px] font-semibold">Dashboard</span>
+</a>
+<a class="flex items-center px-8 py-3 gap-4 text-slate-500 hover:bg-[#201f1f] hover:text-slate-200 transition-all active:translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="timer">timer</span>
+<span class="font-['Inter'] uppercase tracking-widest text-[10px] font-semibold">Pomodoro</span>
+</a>
+<a class="flex items-center px-8 py-3 gap-4 text-slate-500 hover:bg-[#201f1f] hover:text-slate-200 transition-all active:translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_month">calendar_month</span>
+<span class="font-['Inter'] uppercase tracking-widest text-[10px] font-semibold">Schedule</span>
+</a>
+<a class="flex items-center px-8 py-3 gap-4 text-slate-500 hover:bg-[#201f1f] hover:text-slate-200 transition-all active:translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+<span class="font-['Inter'] uppercase tracking-widest text-[10px] font-semibold">Notes</span>
+</a>
+<a class="flex items-center px-8 py-3 gap-4 text-slate-500 hover:bg-[#201f1f] hover:text-slate-200 transition-all active:translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="folder_open">folder_open</span>
+<span class="font-['Inter'] uppercase tracking-widest text-[10px] font-semibold">Files</span>
+</a>
+<a class="flex items-center px-8 py-3 gap-4 text-[#00daf8] border-r-2 border-[#00daf8] bg-[#00daf8]/5 active:translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="grade">grade</span>
+<span class="font-['Inter'] uppercase tracking-widest text-[10px] font-semibold">Grades</span>
+</a>
+</div>
+<div class="mt-auto px-6">
+<button class="w-full bg-gradient-to-r from-primary-container to-secondary-container text-on-primary-fixed py-3 rounded-md font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-2 hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-sm" data-icon="bolt">bolt</span>
+                Focus Mode
+            </button>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-1 ml-64 p-12 bg-surface-container-lowest min-h-screen">
+<!-- Header Section -->
+<header class="mb-16 flex items-start justify-between">
+<div class="max-w-2xl">
+<div class="flex items-center gap-4 mb-4">
+<button class="group flex items-center text-primary-fixed-dim hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-2xl" data-icon="arrow_back">arrow_back</span>
+</button>
+<span class="font-label uppercase tracking-[0.2em] text-[10px] text-slate-500">FACULTAD DE INGENIERÍA / CIENCIAS BÁSICAS</span>
+</div>
+<h1 class="text-6xl font-headline font-black tracking-tighter text-on-surface mb-2">Cálculo II</h1>
+<p class="text-slate-400 font-body text-lg max-w-lg leading-relaxed">Análisis de integración, sucesiones y series. Seguimiento detallado de rendimiento semestral.</p>
+</div>
+<div class="glass-card p-6 flex flex-col items-end">
+<span class="text-xs font-label uppercase tracking-widest text-primary mb-1">PROMEDIO ACTUAL</span>
+<span class="text-5xl font-headline font-black text-on-surface">4.5</span>
+<span class="text-[10px] font-label text-slate-500 mt-2">ESTADO: <span class="text-primary">EN CURSO</span></span>
+</div>
+</header>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-12 gap-10">
+<!-- Section 1: Detailed Grades Table -->
+<section class="col-span-8 space-y-8">
+<div class="glass-card p-10">
+<div class="flex justify-between items-end mb-10">
+<h2 class="text-2xl font-headline font-bold">Evaluaciones</h2>
+<span class="font-label text-[10px] text-slate-500 uppercase tracking-widest">SISTEMA CHILENO (1.0 - 7.0)</span>
+</div>
+<div class="space-y-4">
+<!-- Table Header -->
+<div class="grid grid-cols-4 px-4 py-2 font-label text-[10px] text-slate-500 uppercase tracking-widest">
+<div class="col-span-2">Concepto</div>
+<div class="text-center">Peso (%)</div>
+<div class="text-right">Calificación</div>
+</div>
+<!-- Grade Row 1 -->
+<div class="grid grid-cols-4 items-center px-4 py-5 bg-surface-container rounded-lg hover:bg-surface-bright transition-colors group">
+<div class="col-span-2 flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-primary-container"></div>
+<span class="font-semibold text-on-surface">Certamen 1</span>
+</div>
+<div class="text-center font-mono text-slate-400">30%</div>
+<div class="text-right font-headline font-bold text-xl text-primary">4.5</div>
+</div>
+<!-- Grade Row 2 -->
+<div class="grid grid-cols-4 items-center px-4 py-5 bg-surface-container rounded-lg hover:bg-surface-bright transition-colors group">
+<div class="col-span-2 flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-primary-container"></div>
+<span class="font-semibold text-on-surface">Certamen 2</span>
+</div>
+<div class="text-center font-mono text-slate-400">30%</div>
+<div class="text-right font-headline font-bold text-xl text-primary">5.2</div>
+</div>
+<!-- Grade Row 3 -->
+<div class="grid grid-cols-4 items-center px-4 py-5 bg-surface-container rounded-lg hover:bg-surface-bright transition-colors group">
+<div class="col-span-2 flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-slate-600"></div>
+<span class="font-semibold text-slate-400">Tareas</span>
+</div>
+<div class="text-center font-mono text-slate-400">40%</div>
+<div class="text-right font-headline font-bold text-xl text-slate-200">3.8</div>
+</div>
+</div>
+</div>
+<!-- Section 2: Configuration Weights -->
+<div class="glass-card p-10">
+<div class="flex items-center gap-3 mb-8">
+<span class="material-symbols-outlined text-primary" data-icon="settings_suggest">settings_suggest</span>
+<h2 class="text-xl font-headline font-bold">Ponderación Personalizada</h2>
+</div>
+<div class="grid grid-cols-3 gap-8">
+<div class="space-y-3">
+<label class="font-label text-[10px] text-slate-500 uppercase tracking-widest">CERTAMEN 1</label>
+<input class="w-full bg-surface-container-low border border-outline-variant/15 text-on-surface p-3 focus:border-primary/50 transition-all outline-none rounded-sm" type="number" value="30"/>
+</div>
+<div class="space-y-3">
+<label class="font-label text-[10px] text-slate-500 uppercase tracking-widest">CERTAMEN 2</label>
+<input class="w-full bg-surface-container-low border border-outline-variant/15 text-on-surface p-3 focus:border-primary/50 transition-all outline-none rounded-sm" type="number" value="30"/>
+</div>
+<div class="space-y-3">
+<label class="font-label text-[10px] text-slate-500 uppercase tracking-widest">TAREAS TOTALES</label>
+<input class="w-full bg-surface-container-low border border-outline-variant/15 text-on-surface p-3 focus:border-primary/50 transition-all outline-none rounded-sm" type="number" value="40"/>
+</div>
+</div>
+<div class="mt-8 pt-8 border-t border-outline-variant/10 flex justify-end">
+<button class="px-6 py-2 bg-surface-container-highest text-primary-fixed font-bold text-[10px] uppercase tracking-widest hover:bg-surface-bright transition-colors">
+                            Guardar Cambios
+                        </button>
+</div>
+</div>
+</section>
+<!-- Sidebar Section (Stats & Simulator) -->
+<aside class="col-span-4 space-y-10">
+<!-- Section 3: Note Simulator -->
+<div class="glass-card p-8 border-l-2 border-primary-container/30">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-tertiary-container" data-icon="calculate">calculate</span>
+<h2 class="text-lg font-headline font-bold">Simulador de Nota</h2>
+</div>
+<p class="text-sm text-slate-400 mb-8 font-body">¿Qué nota necesito en el <span class="text-on-surface font-bold">C3</span> para aprobar con 4.0?</p>
+<div class="space-y-8">
+<div>
+<div class="flex justify-between mb-4">
+<span class="font-label text-[10px] text-slate-500 uppercase">Nota Objetivo</span>
+<span class="text-primary font-mono font-bold">4.0</span>
+</div>
+<input class="w-full h-1 bg-surface-container-highest appearance-none cursor-pointer grade-input" max="70" min="10" type="range" value="40"/>
+</div>
+<div class="bg-primary/5 p-6 rounded-lg text-center border border-primary/10">
+<span class="font-label text-[10px] text-slate-400 uppercase tracking-tighter block mb-2">REQUERIDO PARA APROBAR</span>
+<div class="text-4xl font-headline font-black text-primary">4.2</div>
+<p class="text-[10px] text-slate-500 mt-2">Basado en promedio ponderado actual</p>
+</div>
+</div>
+</div>
+<!-- Section 4: Attendance Stats -->
+<div class="glass-card p-8">
+<div class="flex items-center gap-3 mb-8">
+<span class="material-symbols-outlined text-primary" data-icon="how_to_reg">how_to_reg</span>
+<h2 class="text-lg font-headline font-bold">Asistencia</h2>
+</div>
+<div class="relative pt-1">
+<div class="flex mb-4 items-center justify-between">
+<div>
+<span class="text-[10px] font-semibold inline-block py-1 px-2 uppercase rounded-full text-primary bg-primary/10">
+                                    Al día
+                                </span>
+</div>
+<div class="text-right">
+<span class="text-sm font-black inline-block text-on-surface">
+                                    85%
+                                </span>
+</div>
+</div>
+<div class="overflow-hidden h-2 mb-4 text-xs flex rounded bg-surface-container-highest">
+<div class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-primary-container" style="width:85%"></div>
+</div>
+</div>
+<div class="space-y-4 mt-6">
+<div class="flex justify-between items-center text-sm">
+<span class="text-slate-500 font-body">Clases asistidas:</span>
+<span class="text-on-surface font-mono">17/20</span>
+</div>
+<div class="flex justify-between items-center text-sm">
+<span class="text-slate-500 font-body">Mínimo requerido:</span>
+<span class="text-slate-400 font-mono">75%</span>
+</div>
+<div class="pt-4 border-t border-outline-variant/10">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-sm" data-icon="check_circle">check_circle</span>
+<span class="text-[10px] font-bold uppercase tracking-widest">Cumples con el requisito</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Abstract Decorative Card -->
+<div class="h-48 rounded-lg relative overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-br from-primary-container/20 to-secondary-container/20 backdrop-blur-sm"></div>
+<img alt="Abstract mathematical visualization" class="w-full h-full object-cover mix-blend-overlay opacity-40 group-hover:scale-110 transition-transform duration-700" data-alt="Abstract complex mathematical geometry visual" src="https://lh3.googleusercontent.com/aida-public/AB6AXuANUCqvYmBjjrn4kxTNiP0JQQRDl9rJDfdseqagD8Rw5kGvQg2ckIcRHl0gTjGayaBDVnRl3FW0KcvWNmsMlpUiR5O188tyAebs-e1w29iFUYSWtmAjMpMys4XqQkKXFvsDQzCdmnHgpI67O7HMgP5thfB6aH56MLTP3-SPHD1yRWPtMF66bEKki-qcE5R6TfPSw5RBBJQu2AACuf5C9iZmaYTGcGbpw6A7yJP8Br1l8UHtLqCr4m9pA60Qo2fCCJsi6FSw6BJOscrF"/>
+<div class="absolute inset-0 p-6 flex flex-col justify-end">
+<span class="text-xs font-label text-slate-300 uppercase tracking-widest mb-1">Próxima Evaluación</span>
+<h3 class="text-xl font-headline font-bold text-white">Certamen 3</h3>
+<p class="text-[10px] text-primary font-bold">24 NOVIEMBRE</p>
+</div>
+</div>
+</aside>
+</div>
+</main>
+</body></html>

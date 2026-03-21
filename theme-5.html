@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>StudyHub - Dashboard Académico</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Manrope:wght@300;400;500;600;700;800&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,700;1,6..72,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "outline-variant": "#424853",
+              "on-secondary": "#350056",
+              "on-primary-fixed": "#004344",
+              "on-error": "#490006",
+              "primary": "#52f2f5",
+              "error": "#ff716c",
+              "on-secondary-container": "#fff5ff",
+              "primary-container": "#0cd0d3",
+              "on-background": "#e8eefc",
+              "background": "#080f18",
+              "inverse-on-surface": "#4f5561",
+              "inverse-surface": "#f8f9ff",
+              "surface-variant": "#1d2634",
+              "on-primary-fixed-variant": "#006264",
+              "surface-container-lowest": "#000000",
+              "on-primary-container": "#004041",
+              "on-tertiary-fixed": "#064200",
+              "tertiary-container": "#2ff801",
+              "primary-dim": "#3de4e7",
+              "outline": "#6f7682",
+              "surface-container-highest": "#1d2634",
+              "error-dim": "#d7383b",
+              "primary-fixed-dim": "#3de4e7",
+              "surface-tint": "#52f2f5",
+              "on-tertiary": "#0d6100",
+              "on-surface": "#e8eefc",
+              "surface-container-low": "#0c141e",
+              "surface": "#080f18",
+              "on-tertiary-container": "#0b5800",
+              "tertiary-fixed": "#2ff801",
+              "secondary": "#c97cff",
+              "on-surface-variant": "#a5abb8",
+              "secondary-fixed": "#e9c4ff",
+              "primary-fixed": "#52f2f5",
+              "on-tertiary-fixed-variant": "#0d6200",
+              "on-secondary-fixed": "#530082",
+              "on-secondary-fixed-variant": "#7c00c0",
+              "secondary-container": "#9000de",
+              "tertiary-fixed-dim": "#2be800",
+              "inverse-primary": "#006a6c",
+              "surface-container": "#121a25",
+              "surface-bright": "#222d3b",
+              "secondary-fixed-dim": "#e1b2ff",
+              "on-error-container": "#ffa8a3",
+              "error-container": "#9f0519",
+              "tertiary": "#8eff71"
+            },
+            fontFamily: {
+              "headline": ["Space Grotesk"],
+              "body": ["Manrope"],
+              "label": ["Space Grotesk"],
+              "serif": ["Newsreader"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .aurora-gradient {
+            background: radial-gradient(circle at 50% -20%, rgba(142, 255, 113, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 10%, rgba(201, 124, 255, 0.1) 0%, transparent 40%),
+                        radial-gradient(circle at 20% 20%, rgba(82, 242, 245, 0.12) 0%, transparent 50%);
+        }
+        .glass-panel {
+            backdrop-filter: blur(20px);
+            background: rgba(12, 20, 30, 0.7);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body selection:bg-primary/30 min-h-screen overflow-x-hidden aurora-gradient">
+<!-- Sidebar Navigation -->
+<aside class="h-screen w-64 fixed left-0 top-0 z-50 bg-slate-100 dark:bg-slate-900 flex flex-col h-full p-4 space-y-2">
+<div class="mb-8 px-2">
+<h1 class="text-xl font-serif font-black text-blue-900 dark:text-blue-200 tracking-tight">StudyHub</h1>
+<p class="text-[10px] uppercase tracking-[0.2em] text-on-surface-variant font-label">Academic Portal</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 bg-white dark:bg-slate-800 text-blue-700 dark:text-blue-300 rounded-lg shadow-sm font-semibold translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="school">school</span>
+<span>My Courses</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="auto_stories">auto_stories</span>
+<span>Research Vault</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_today">calendar_today</span>
+<span>Schedule</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+<span>Faculty Notes</span>
+</a>
+</nav>
+<div class="mt-auto pt-4 border-t border-outline-variant/10 space-y-1">
+<button class="w-full mb-4 py-2.5 bg-gradient-to-br from-primary to-primary-container text-on-primary rounded-md font-bold text-sm shadow-lg shadow-primary/10 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+                New Research
+            </button>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span>Help Center</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span>Sign Out</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-64 min-h-screen relative">
+<!-- TopAppBar -->
+<header class="sticky top-0 w-full z-40 bg-slate-50/70 dark:bg-slate-950/70 backdrop-blur-xl shadow-sm dark:shadow-none flex justify-between items-center px-8 h-16 w-full">
+<div class="flex items-center gap-8">
+<span class="text-2xl font-serif font-bold text-blue-800 dark:text-blue-300">StudyHub</span>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-slate-600 dark:text-slate-400 hover:text-blue-600 transition-colors" href="#">Library</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-blue-600 transition-colors" href="#">Archive</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-blue-600 transition-colors" href="#">Colloquium</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative group">
+<input class="bg-surface-container-low border-none rounded-full px-4 py-1.5 text-sm w-64 focus:ring-1 focus:ring-primary transition-all" placeholder="Search knowledge..." type="text"/>
+</div>
+<button class="p-2 rounded-full hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-colors">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-400" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 rounded-full hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-colors">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-400" data-icon="settings">settings</span>
+</button>
+<img alt="User avatar" class="w-8 h-8 rounded-full border border-primary/20 object-cover" data-alt="Portrait of a young academic professional" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-c5aQnWsifxPQAOLupiznrnqMh2K2VkUpDeRdNPb25_GoN7d7YmxBfbVbW0J5uNZDclE6miz4xw3UV44IFiGz5h6uUN25SWxEX9GNGqkt1if3mNJpUulIcZ_b0xtzsWD-CPPZ_971nWV-2uvOqu2SShgmGmyrxQHX1i8tBxl1ePvnKdNzbVRVbNWOsU2w7WCzb58WyphYbzqIx3LbpvNnapuxDr7UnUNOm-xHm-nsJMGGWYy_SRWN6PlFbEDouYSD_xWubVHROSwb"/>
+</div>
+</header>
+<!-- Dashboard Canvas -->
+<div class="p-8 max-w-7xl mx-auto space-y-8">
+<!-- Hero Section -->
+<section class="relative overflow-hidden rounded-xl p-12 bg-surface-container-low border border-outline-variant/5">
+<div class="absolute top-0 right-0 w-1/2 h-full opacity-30 pointer-events-none">
+<div class="absolute inset-0 bg-gradient-to-l from-primary/20 to-transparent"></div>
+<img alt="Aurora background" class="w-full h-full object-cover" data-alt="Bright green aurora borealis over snowy mountains" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvVk_WQqXKgnu98r-opd82Y_OnrauWEcNB3lMBlZLoe1dpDaC8ayK8jOnYemm3mALnN63AekV7uLE0V09yH7kwKY-dixyNVGkKGmr8J5JjDjjVSzerGwmgZL3lPvXmDyOQRL_U66mayocaegSrBKA9GrU2Q0VDsX8BB4Vq87MybAWPWQhGAI14c5itJwXl1pECVl2reAfzo0mK9fuj2eN6uozMOV2TU-6-nbOrmTTLbj5_K6AEnUMvxq-Ivcbm6xTrc_E2dQFKxI0y"/>
+</div>
+<div class="relative z-10 max-w-2xl">
+<h2 class="font-headline text-5xl font-bold text-primary tracking-tight mb-4">Bienvenido al Observatorio, Alex.</h2>
+<p class="text-lg text-on-surface-variant leading-relaxed">Tu enfoque actual está en <span class="text-secondary font-bold italic">Mecánica Cuántica II</span>. Has completado el 65% de tus objetivos semanales. Mantén el ritmo glacial.</p>
+</div>
+</section>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-12 gap-6">
+<!-- Pomodoro Rápido (4 columns) -->
+<div class="col-span-12 lg:col-span-4 glass-panel rounded-xl p-6 border border-outline-variant/10 flex flex-col justify-between min-h-[320px]">
+<div class="flex justify-between items-start">
+<h3 class="font-headline text-xl font-medium flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="timer">timer</span>
+                            Pomodoro Rápido
+                        </h3>
+<span class="text-xs font-label text-on-surface-variant uppercase tracking-widest">Siguiente: Descanso</span>
+</div>
+<div class="text-center py-8">
+<div class="text-7xl font-headline font-light tracking-tighter text-on-surface">25:00</div>
+<div class="mt-2 text-primary/60 text-sm font-label uppercase tracking-widest">Sesión de Enfoque</div>
+</div>
+<div class="flex gap-3">
+<button class="flex-1 py-3 bg-primary text-on-primary font-bold rounded-md hover:brightness-110 transition-all">INICIAR</button>
+<button class="p-3 border border-outline-variant/20 rounded-md hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined" data-icon="refresh">refresh</span>
+</button>
+</div>
+</div>
+<!-- Tareas Críticas (8 columns) -->
+<div class="col-span-12 lg:col-span-8 bg-surface-container-high rounded-xl p-6 border border-outline-variant/5">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline text-xl font-medium flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" data-icon="priority_high">priority_high</span>
+                            Tareas Críticas
+                        </h3>
+<button class="text-sm text-primary hover:underline">Ver todas</button>
+</div>
+<div class="space-y-3">
+<div class="group flex items-center justify-between p-4 bg-background/50 rounded-lg border border-transparent hover:border-primary/20 transition-all cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-2 h-2 rounded-full bg-error shadow-[0_0_8px_rgba(255,113,108,0.5)]"></div>
+<div>
+<p class="font-medium">Entrega de Tesis: Capítulo 3</p>
+<p class="text-xs text-on-surface-variant">Vence hoy a las 23:59</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity" data-icon="chevron_right">chevron_right</span>
+</div>
+<div class="group flex items-center justify-between p-4 bg-background/50 rounded-lg border border-transparent hover:border-primary/20 transition-all cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<div>
+<p class="font-medium">Revisión bibliográfica: Superconductores</p>
+<p class="text-xs text-on-surface-variant">Mañana</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity" data-icon="chevron_right">chevron_right</span>
+</div>
+<div class="group flex items-center justify-between p-4 bg-background/50 rounded-lg border border-transparent hover:border-primary/20 transition-all cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-2 h-2 rounded-full bg-tertiary"></div>
+<div>
+<p class="font-medium">Preparar presentación de Coloquio</p>
+<p class="text-xs text-on-surface-variant">Viernes</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+</div>
+<!-- Notas Recientes (6 columns) -->
+<div class="col-span-12 md:col-span-6 bg-surface-container-low rounded-xl p-6 border border-outline-variant/5">
+<h3 class="font-headline text-xl font-medium mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary" data-icon="edit_note">edit_note</span>
+                        Notas Recientes
+                    </h3>
+<div class="grid grid-cols-2 gap-4">
+<div class="p-4 bg-surface-container-highest rounded-lg space-y-2 group cursor-pointer">
+<h4 class="font-bold text-sm text-primary">Teoría de Cuerdas</h4>
+<p class="text-xs text-on-surface-variant line-clamp-3">Notas sobre la dualidad AdS/CFT y las implicaciones en la gravedad cuántica...</p>
+<div class="text-[10px] text-on-surface-variant/50 pt-2 italic">Hace 2 horas</div>
+</div>
+<div class="p-4 bg-surface-container-highest rounded-lg space-y-2 group cursor-pointer">
+<h4 class="font-bold text-sm text-secondary">Seminario de Física</h4>
+<p class="text-xs text-on-surface-variant line-clamp-3">Puntos clave sobre la charla del Dr. Thorne sobre ondas gravitacionales...</p>
+<div class="text-[10px] text-on-surface-variant/50 pt-2 italic">Ayer</div>
+</div>
+</div>
+</div>
+<!-- Métricas de Rendimiento (6 columns) -->
+<div class="col-span-12 md:col-span-6 bg-surface-container-highest rounded-xl p-6 border border-outline-variant/10 relative overflow-hidden">
+<div class="relative z-10">
+<h3 class="font-headline text-xl font-medium mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="monitoring">monitoring</span>
+                            Métricas de Rendimiento
+                        </h3>
+<div class="flex items-end gap-2 h-32 mb-4">
+<div class="flex-1 bg-surface-container-low rounded-t-sm h-[40%] group relative">
+<div class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+</div>
+<div class="flex-1 bg-surface-container-low rounded-t-sm h-[65%] group relative">
+<div class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+</div>
+<div class="flex-1 bg-surface-container-low rounded-t-sm h-[85%] group relative">
+<div class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+</div>
+<div class="flex-1 bg-primary rounded-t-sm h-[50%] shadow-[0_0_15px_rgba(82,242,245,0.3)]"></div>
+<div class="flex-1 bg-surface-container-low rounded-t-sm h-[75%] group relative">
+<div class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+</div>
+<div class="flex-1 bg-surface-container-low rounded-t-sm h-[95%] group relative">
+<div class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+</div>
+<div class="flex-1 bg-surface-container-low rounded-t-sm h-[60%] group relative">
+<div class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+</div>
+</div>
+<div class="flex justify-between text-[10px] font-label text-on-surface-variant uppercase tracking-widest px-1">
+<span>L</span><span>M</span><span>X</span><span>J</span><span>V</span><span>S</span><span>D</span>
+</div>
+</div>
+</div>
+<!-- Herramientas Rápidas (Full Width) -->
+<div class="col-span-12 grid grid-cols-2 md:grid-cols-4 gap-4">
+<button class="flex flex-col items-center justify-center p-6 bg-surface-container-low rounded-xl border border-outline-variant/5 hover:bg-surface-variant transition-all space-y-3 group">
+<span class="material-symbols-outlined text-3xl text-primary transition-transform group-hover:scale-110" data-icon="calculate">calculate</span>
+<span class="text-sm font-medium">Calculadora</span>
+</button>
+<button class="flex flex-col items-center justify-center p-6 bg-surface-container-low rounded-xl border border-outline-variant/5 hover:bg-surface-variant transition-all space-y-3 group">
+<span class="material-symbols-outlined text-3xl text-secondary transition-transform group-hover:scale-110" data-icon="translate">translate</span>
+<span class="text-sm font-medium">Traductor</span>
+</button>
+<button class="flex flex-col items-center justify-center p-6 bg-surface-container-low rounded-xl border border-outline-variant/5 hover:bg-surface-variant transition-all space-y-3 group">
+<span class="material-symbols-outlined text-3xl text-tertiary transition-transform group-hover:scale-110" data-icon="science">science</span>
+<span class="text-sm font-medium">Laboratorio</span>
+</button>
+<button class="flex flex-col items-center justify-center p-6 bg-surface-container-low rounded-xl border border-outline-variant/5 hover:bg-surface-variant transition-all space-y-3 group">
+<span class="material-symbols-outlined text-3xl text-on-surface-variant transition-transform group-hover:scale-110" data-icon="extension">extension</span>
+<span class="text-sm font-medium">Plugins</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Decorative Footer Accent -->
+<footer class="mt-20 py-12 px-8 border-t border-outline-variant/5 relative overflow-hidden">
+<div class="absolute inset-0 opacity-10">
+<div class="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-primary to-transparent"></div>
+</div>
+<div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8 relative z-10">
+<div class="space-y-2">
+<h4 class="font-serif font-bold text-xl text-blue-300">StudyHub Academic</h4>
+<p class="text-sm text-on-surface-variant">© 2024 Observatorio de Datos Educativos. Todos los derechos reservados.</p>
+</div>
+<div class="flex gap-8">
+<a class="text-xs uppercase tracking-widest hover:text-primary transition-colors" href="#">Privacidad</a>
+<a class="text-xs uppercase tracking-widest hover:text-primary transition-colors" href="#">Términos</a>
+<a class="text-xs uppercase tracking-widest hover:text-primary transition-colors" href="#">Soporte</a>
+</div>
+</div>
+</footer>
+</main>
+<!-- Floating Action Button - Contextual -->
+<button class="fixed bottom-8 right-8 w-14 h-14 rounded-full bg-gradient-to-br from-secondary to-secondary-container text-on-secondary shadow-2xl shadow-secondary/30 flex items-center justify-center hover:scale-110 transition-transform z-50 group">
+<span class="material-symbols-outlined text-3xl group-hover:rotate-90 transition-transform" data-icon="add">add</span>
+</button>
+</body></html>

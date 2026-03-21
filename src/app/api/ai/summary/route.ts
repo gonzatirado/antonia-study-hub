@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import * as Sentry from "@sentry/nextjs";
-import { generateSummary } from "@/lib/ai/gemini";
+import { streamSummary } from "@/lib/ai/gemini";
 import { checkUsageLimit, incrementUsage } from "@/lib/firebase/usage";
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { content, tier = "flash", userId } = body;
+    const { content, userId } = body;
 
     if (!content || typeof content !== "string") {
       return NextResponse.json(
@@ -22,34 +22,38 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check usage limit if userId provided
+    // Check usage limit if userId provided (fail-open: don't block if Firebase is unreachable)
     if (userId) {
-      const { allowed, used, limit } = await checkUsageLimit(userId, "summaries");
-      if (!allowed) {
-        return NextResponse.json(
-          { error: `Limite alcanzado: ${used}/${limit} resumenes usados este mes.` },
-          { status: 429 }
-        );
+      try {
+        const { allowed, used, limit } = await checkUsageLimit(userId, "summaries");
+        if (!allowed) {
+          return NextResponse.json(
+            { error: `Límite alcanzado: ${used}/${limit} resúmenes usados este mes.` },
+            { status: 429 }
+          );
+        }
+      } catch (usageErr) {
+        console.warn("[summary] Usage check failed, proceeding anyway:", usageErr);
       }
     }
 
-    const summary = await generateSummary(content, tier);
-    const tokensEstimated = Math.ceil(content.length / 4) + Math.ceil(summary.length / 4);
+    const result = streamSummary(content);
 
-    // Increment usage after successful generation
+    // Increment usage after starting generation
     if (userId) {
-      await incrementUsage(userId, "summaries", tokensEstimated);
+      const tokensEstimated = Math.ceil(content.length / 4);
+      incrementUsage(userId, "summaries", tokensEstimated).catch((err) =>
+        Sentry.captureException(err)
+      );
     }
 
-    return NextResponse.json({
-      summary,
-      model: tier,
-      tokens_estimated: tokensEstimated,
-    });
+    return result.toTextStreamResponse();
   } catch (error) {
+    console.error("[summary] Error:", error);
     Sentry.captureException(error);
+    const message = error instanceof Error ? error.message : "Error desconocido";
     return NextResponse.json(
-      { error: "Failed to generate summary" },
+      { error: `Error al generar el resumen: ${message}` },
       { status: 500 }
     );
   }

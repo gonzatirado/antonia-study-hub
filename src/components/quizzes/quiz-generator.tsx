@@ -86,12 +86,12 @@ export function QuizGenerator({
             <div className="space-y-4">
               <Select value={selectedSubject} onValueChange={(v) => onSubjectChange(v ?? "")}>
                 <SelectTrigger className="bg-muted border-border text-foreground">
-                  <SelectValue placeholder="Selecciona un ramo" />
+                  <SelectValue placeholder="Selecciona una asignatura" />
                 </SelectTrigger>
                 <SelectContent className="bg-card border-border">
                   {subjects.length === 0 ? (
                     <SelectItem value="general" className="text-foreground">
-                      General (sin ramo)
+                      General (sin asignatura)
                     </SelectItem>
                   ) : (
                     subjects.map((s) => (

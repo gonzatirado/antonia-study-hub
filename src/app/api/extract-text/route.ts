@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import * as Sentry from "@sentry/nextjs";
+import { google } from "@ai-sdk/google";
+import { generateText } from "ai";
 
 export async function POST(request: NextRequest) {
   try {
@@ -11,19 +13,146 @@ export async function POST(request: NextRequest) {
     }
 
     const buffer = Buffer.from(await file.arrayBuffer());
+    const ext = file.name.split(".").pop()?.toLowerCase() ?? "";
+    const mime = file.type;
 
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const pdfParse = require("pdf-parse");
-    const data = await pdfParse(buffer);
+    let text = "";
+
+    // ── PDF — Gemini reads PDFs natively ──
+    if (mime === "application/pdf" || ext === "pdf") {
+      const base64 = buffer.toString("base64");
+      const { text: pdfText } = await generateText({
+        model: google("gemini-2.5-flash"),
+        messages: [{
+          role: "user",
+          content: [
+            { type: "text", text: "Extrae TODO el texto de este documento PDF. Transcribe el contenido completo manteniendo la estructura original (títulos, párrafos, listas, tablas). Si hay diagramas o figuras, descríbelos brevemente. Responde SOLO con el texto extraído, sin comentarios." },
+            { type: "file", data: base64, mediaType: "application/pdf" },
+          ],
+        }],
+      });
+      text = pdfText;
+    }
+
+    // ── Word (.docx) ──
+    else if (
+      mime === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
+      ext === "docx"
+    ) {
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      const mammoth = require("mammoth");
+      const result = await mammoth.extractRawText({ buffer });
+      text = result.value;
+    }
+
+    // ── Excel (.xlsx, .xls) ──
+    else if (
+      mime === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
+      mime === "application/vnd.ms-excel" ||
+      ext === "xlsx" || ext === "xls"
+    ) {
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      const XLSX = require("xlsx");
+      const workbook = XLSX.read(buffer, { type: "buffer" });
+      const sheets: string[] = [];
+      for (const sheetName of workbook.SheetNames) {
+        const sheet = workbook.Sheets[sheetName];
+        const csv = XLSX.utils.sheet_to_csv(sheet);
+        sheets.push(`## ${sheetName}\n${csv}`);
+      }
+      text = sheets.join("\n\n---\n\n");
+    }
+
+    // ── PowerPoint (.pptx) ──
+    else if (
+      mime === "application/vnd.openxmlformats-officedocument.presentationml.presentation" ||
+      ext === "pptx"
+    ) {
+      // Extract text from PPTX using xlsx's zip reader (PPTX is a ZIP)
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      const JSZip = require("jszip") as typeof import("jszip");
+      let zip;
+      try {
+        zip = await JSZip.loadAsync(buffer);
+      } catch {
+        text = "[No se pudo leer el archivo PowerPoint]";
+      }
+      if (zip) {
+        const slideTexts: string[] = [];
+        const slideFiles = Object.keys(zip.files)
+          .filter((name) => name.match(/^ppt\/slides\/slide\d+\.xml$/))
+          .sort();
+        for (const slidePath of slideFiles) {
+          const xml = await zip.files[slidePath].async("text");
+          // Extract text content from XML tags
+          const textContent = xml.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+          if (textContent) {
+            const slideNum = slidePath.match(/slide(\d+)/)?.[1];
+            slideTexts.push(`## Slide ${slideNum}\n${textContent}`);
+          }
+        }
+        text = slideTexts.join("\n\n");
+      }
+    }
+
+    // ── Images (fotos de apuntes) — Gemini Vision ──
+    else if (mime.startsWith("image/")) {
+      const base64 = buffer.toString("base64");
+      const { text: extractedText } = await generateText({
+        model: google("gemini-2.5-flash"),
+        messages: [
+          {
+            role: "user",
+            content: [
+              {
+                type: "text",
+                text: "Extrae TODO el texto visible en esta imagen. Si es una foto de apuntes, pizarra, libro o documento, transcribe el contenido completo. Mantén la estructura (títulos, listas, párrafos). Si hay diagramas o fórmulas, descríbelos. Responde SOLO con el texto extraído, sin comentarios adicionales.",
+              },
+              {
+                type: "image",
+                image: `data:${mime};base64,${base64}`,
+              },
+            ],
+          },
+        ],
+      });
+      text = extractedText;
+    }
+
+    // ── Plain text, CSV, markdown ──
+    else if (
+      mime.startsWith("text/") ||
+      ext === "txt" || ext === "csv" || ext === "md" || ext === "json"
+    ) {
+      text = buffer.toString("utf-8");
+    }
+
+    // ── Unsupported ──
+    else {
+      return NextResponse.json(
+        { error: `Formato no soportado: ${ext || mime}. Soportamos: PDF, Word, Excel, PowerPoint, imágenes y texto.` },
+        { status: 400 }
+      );
+    }
+
+    if (!text || text.trim().length === 0) {
+      return NextResponse.json(
+        { error: "No se pudo extraer texto del archivo. El archivo puede estar vacío o protegido." },
+        { status: 422 }
+      );
+    }
 
     return NextResponse.json({
-      text: data.text,
-      pages: data.numpages,
+      text: text.trim(),
+      format: ext,
+      chars: text.trim().length,
     });
   } catch (error) {
+    console.error("[extract-text] Error:", error);
     Sentry.captureException(error);
+    const message = error instanceof Error ? error.message : "Error desconocido";
     return NextResponse.json(
-      { error: "Failed to extract text from PDF" },
+      { error: `Error al procesar el archivo: ${message}` },
       { status: 500 }
     );
   }

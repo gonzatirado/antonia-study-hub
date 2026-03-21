@@ -17,7 +17,7 @@ export function ScheduleEmptyState({ hasSubjects }: ScheduleEmptyStateProps) {
       <Clock className="w-12 h-12 text-muted-foreground/60 mx-auto mb-4" />
       <p className="text-muted-foreground">
         {!hasSubjects
-          ? "Primero crea un ramo para poder agregar bloques horarios"
+          ? "Primero crea una asignatura para poder agregar bloques horarios"
           : "Agrega bloques a tu horario para visualizar tu semana"
         }
       </p>

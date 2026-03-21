@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>StudyHub - Gestión de Notas</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "inverse-surface": "#e5e2e1",
+              "background": "#131313",
+              "primary-container": "#00daf8",
+              "on-tertiary-fixed": "#271900",
+              "on-error": "#690005",
+              "secondary-fixed": "#e9ddff",
+              "tertiary-container": "#ffbb33",
+              "surface-container-high": "#2a2a2a",
+              "surface-variant": "#353534",
+              "error": "#ffb4ab",
+              "primary-fixed-dim": "#00daf8",
+              "outline": "#859397",
+              "on-tertiary-fixed-variant": "#5f4100",
+              "surface": "#131313",
+              "secondary": "#cfbcff",
+              "on-tertiary": "#422c00",
+              "inverse-primary": "#006877",
+              "tertiary": "#ffdeac",
+              "secondary-fixed-dim": "#cfbcff",
+              "on-surface": "#e5e2e1",
+              "outline-variant": "#3b494c",
+              "on-secondary-container": "#cfbcff",
+              "surface-dim": "#131313",
+              "surface-container-low": "#1c1b1b",
+              "on-secondary-fixed": "#22005d",
+              "surface-container-highest": "#353534",
+              "surface-bright": "#3a3939",
+              "surface-container": "#201f1f",
+              "on-primary": "#00363f",
+              "on-primary-fixed": "#001f25",
+              "on-surface-variant": "#bac9cd",
+              "surface-container-lowest": "#0e0e0e",
+              "secondary-container": "#6200ea",
+              "tertiary-fixed": "#ffdeaa",
+              "on-primary-container": "#005b69",
+              "tertiary-fixed-dim": "#feba32",
+              "on-tertiary-container": "#6e4d00",
+              "inverse-on-surface": "#313030",
+              "surface-tint": "#00daf8",
+              "primary-fixed": "#a4eeff",
+              "on-secondary-fixed-variant": "#5400cc",
+              "on-error-container": "#ffdad6",
+              "on-secondary": "#3a0092",
+              "on-primary-fixed-variant": "#004e5a",
+              "on-background": "#e5e2e1",
+              "error-container": "#93000a",
+              "primary": "#a6eeff"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #0e0e0e; color: #e5e2e1; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-panel { background: rgba(19, 19, 19, 0.6); backdrop-filter: blur(20px); }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="flex min-h-screen overflow-hidden">
+<!-- SideNavBar (Persistent Anchor) -->
+<aside class="fixed left-0 top-0 h-screen w-64 z-50 bg-[#131313] border-r border-[#00daf8]/15 flex flex-col p-8 space-y-6">
+<div class="text-xl font-black text-[#00daf8] mb-8">StudyHub</div>
+<nav class="flex-1 space-y-2">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-200 hover:bg-[#201f1f] transition-all duration-200 hover:translate-x-1 uppercase tracking-widest text-[10px] font-bold" href="#">
+<span class="material-symbols-outlined text-lg">dashboard</span>
+                Dashboard
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-200 hover:bg-[#201f1f] transition-all duration-200 hover:translate-x-1 uppercase tracking-widest text-[10px] font-bold" href="#">
+<span class="material-symbols-outlined text-lg">timer</span>
+                Pomodoro
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-200 hover:bg-[#201f1f] transition-all duration-200 hover:translate-x-1 uppercase tracking-widest text-[10px] font-bold" href="#">
+<span class="material-symbols-outlined text-lg">calendar_today</span>
+                Schedule
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#00daf8] bg-[#00daf8]/10 rounded-lg shadow-[0_0_10px_rgba(0,218,248,0.2)] uppercase tracking-widest text-[10px] font-bold" href="#">
+<span class="material-symbols-outlined text-lg">description</span>
+                Notes
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-200 hover:bg-[#201f1f] transition-all duration-200 hover:translate-x-1 uppercase tracking-widest text-[10px] font-bold" href="#">
+<span class="material-symbols-outlined text-lg">folder</span>
+                Files
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-200 hover:bg-[#201f1f] transition-all duration-200 hover:translate-x-1 uppercase tracking-widest text-[10px] font-bold" href="#">
+<span class="material-symbols-outlined text-lg">grade</span>
+                Grades
+            </a>
+</nav>
+<div class="pt-6 border-t border-outline-variant/20 space-y-2">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-200 hover:bg-[#201f1f] transition-all duration-200 uppercase tracking-widest text-[10px] font-bold" href="#">
+<span class="material-symbols-outlined text-lg">settings</span>
+                Settings
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-200 hover:bg-[#201f1f] transition-all duration-200 uppercase tracking-widest text-[10px] font-bold" href="#">
+<span class="material-symbols-outlined text-lg">logout</span>
+                Logout
+            </a>
+</div>
+</aside>
+<!-- Main Content Layout -->
+<main class="flex-1 ml-64 flex overflow-hidden">
+<!-- Notes Sidebar List -->
+<section class="w-80 bg-surface-container-low flex flex-col border-r border-outline-variant/10">
+<div class="p-6 space-y-4">
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-[#00daf8] transition-colors">search</span>
+<input class="w-full bg-surface-container border-none rounded-lg pl-10 pr-4 py-2.5 text-sm focus:ring-1 focus:ring-[#00daf8]/50 placeholder-slate-600 transition-all" placeholder="Buscar notas..." type="text"/>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto scrollbar-hide px-4 pb-4 space-y-6">
+<!-- Subject Folder: Redes -->
+<div class="space-y-2">
+<div class="flex items-center justify-between px-2 cursor-pointer group">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-500 text-sm">keyboard_arrow_down</span>
+<span class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Redes de Computadoras</span>
+</div>
+<span class="text-[10px] text-slate-600 font-mono">08</span>
+</div>
+<div class="space-y-1 ml-4 border-l border-outline-variant/20">
+<div class="pl-4 pr-2 py-2 bg-[#00daf8]/5 border-r-2 border-[#00daf8] group cursor-pointer">
+<h4 class="text-sm font-medium text-on-surface truncate">Resumen Teoría de Redes</h4>
+<p class="text-[10px] text-slate-500 mt-1">Hoy, 10:45 AM</p>
+</div>
+<div class="pl-4 pr-2 py-2 hover:bg-surface-container group cursor-pointer transition-colors">
+<h4 class="text-sm font-medium text-slate-400 group-hover:text-on-surface truncate">Modelo OSI y TCP/IP</h4>
+<p class="text-[10px] text-slate-600 mt-1">Ayer</p>
+</div>
+<div class="pl-4 pr-2 py-2 hover:bg-surface-container group cursor-pointer transition-colors">
+<h4 class="text-sm font-medium text-slate-400 group-hover:text-on-surface truncate">Subnetting Avanzado</h4>
+<p class="text-[10px] text-slate-600 mt-1">12 Oct</p>
+</div>
+</div>
+</div>
+<!-- Subject Folder: Cálculo II -->
+<div class="space-y-2">
+<div class="flex items-center justify-between px-2 cursor-pointer group">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-500 text-sm">keyboard_arrow_right</span>
+<span class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Cálculo II</span>
+</div>
+<span class="text-[10px] text-slate-600 font-mono">12</span>
+</div>
+</div>
+<!-- Subject Folder: Ética -->
+<div class="space-y-2">
+<div class="flex items-center justify-between px-2 cursor-pointer group">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-500 text-sm">keyboard_arrow_right</span>
+<span class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Ética Profesional</span>
+</div>
+<span class="text-[10px] text-slate-600 font-mono">03</span>
+</div>
+</div>
+</div>
+<!-- Footer Action -->
+<div class="p-4 bg-surface-container-low border-t border-outline-variant/10">
+<button class="w-full flex items-center justify-center gap-2 py-3 bg-gradient-to-r from-[#00daf8] to-on-primary-container rounded-lg text-on-primary font-bold text-sm shadow-lg shadow-[#00daf8]/10 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-sm">add</span>
+                    Nueva Nota
+                </button>
+</div>
+</section>
+<!-- Main Editor Panel -->
+<section class="flex-1 bg-surface-container-lowest flex flex-col relative">
+<!-- TopAppBar context -->
+<header class="h-16 border-b border-outline-variant/10 flex items-center justify-between px-10 glass-panel sticky top-0 z-10">
+<div class="flex items-center gap-4 text-xs font-medium text-slate-500">
+<span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-sm">folder</span> Mis Notas</span>
+<span class="text-slate-700">/</span>
+<span class="flex items-center gap-1.5 text-on-surface"><span class="material-symbols-outlined text-sm text-[#00daf8]">description</span> Resumen Teoría de Redes</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-slate-400 hover:text-[#00daf8] transition-colors"><span class="material-symbols-outlined">share</span></button>
+<button class="p-2 text-slate-400 hover:text-[#00daf8] transition-colors"><span class="material-symbols-outlined">star</span></button>
+<button class="p-2 text-slate-400 hover:text-[#00daf8] transition-colors"><span class="material-symbols-outlined">more_horiz</span></button>
+</div>
+</header>
+<!-- Editor Content -->
+<div class="flex-1 overflow-y-auto p-12 lg:px-24">
+<div class="max-w-4xl mx-auto space-y-10">
+<!-- Note Header Details -->
+<div class="space-y-4">
+<div class="flex items-center gap-3">
+<span class="px-2 py-1 bg-[#00daf8]/10 text-[#00daf8] text-[10px] font-bold uppercase tracking-wider rounded">Redes de Computadoras</span>
+<span class="text-[10px] text-slate-500 uppercase tracking-widest font-medium">Creado: 14/10/2023</span>
+<span class="text-[10px] text-slate-500 uppercase tracking-widest font-medium">•</span>
+<span class="text-[10px] text-slate-500 uppercase tracking-widest font-medium">Editado: Hace 12 min</span>
+</div>
+<h1 class="text-5xl font-extrabold tracking-tight text-on-surface">Resumen Teoría de Redes</h1>
+</div>
+<!-- Toolbar (Floating style within content) -->
+<div class="flex items-center gap-1 p-1 bg-surface-container rounded-lg w-fit border border-outline-variant/20 shadow-xl">
+<button class="p-1.5 hover:bg-surface-bright rounded text-slate-400 hover:text-on-surface"><span class="material-symbols-outlined text-[20px]">format_bold</span></button>
+<button class="p-1.5 hover:bg-surface-bright rounded text-slate-400 hover:text-on-surface"><span class="material-symbols-outlined text-[20px]">format_italic</span></button>
+<div class="w-px h-4 bg-outline-variant/30 mx-1"></div>
+<button class="p-1.5 hover:bg-surface-bright rounded text-[#00daf8]"><span class="material-symbols-outlined text-[20px]">title</span></button>
+<button class="p-1.5 hover:bg-surface-bright rounded text-slate-400 hover:text-on-surface"><span class="material-symbols-outlined text-[20px]">format_list_bulleted</span></button>
+<button class="p-1.5 hover:bg-surface-bright rounded text-slate-400 hover:text-on-surface"><span class="material-symbols-outlined text-[20px]">code</span></button>
+<button class="p-1.5 hover:bg-surface-bright rounded text-slate-400 hover:text-on-surface"><span class="material-symbols-outlined text-[20px]">image</span></button>
+</div>
+<!-- Editor Canvas -->
+<div class="space-y-6 text-on-surface leading-relaxed text-lg font-light">
+<p>El estudio de las redes de computadoras se centra en la interconexión de nodos para el intercambio de recursos y datos. Fundamentalmente, debemos comprender el flujo de información a través de los diferentes medios físicos y lógicos.</p>
+<div class="space-y-3">
+<h2 class="text-2xl font-bold text-on-surface">Conceptos Clave de la Capa de Enlace</h2>
+<ul class="space-y-3 list-none pl-1">
+<li class="flex items-start gap-3">
+<span class="mt-2 w-1.5 h-1.5 rounded-full bg-[#00daf8] shadow-[0_0_8px_rgba(0,218,248,0.8)]"></span>
+<span><strong>Direccionamiento MAC:</strong> Identificador único de 48 bits asignado a tarjetas de red (NIC).</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="mt-2 w-1.5 h-1.5 rounded-full bg-[#00daf8] shadow-[0_0_8px_rgba(0,218,248,0.8)]"></span>
+<span><strong>Protocolo ARP:</strong> Resolución de direcciones IP a direcciones físicas dentro de una red local.</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="mt-2 w-1.5 h-1.5 rounded-full bg-[#00daf8] shadow-[0_0_8px_rgba(0,218,248,0.8)]"></span>
+<span><strong>Encapsulamiento:</strong> Proceso de añadir encabezados (headers) a los datos a medida que descienden por el stack.</span>
+</li>
+</ul>
+</div>
+<div class="relative group mt-8">
+<div class="absolute -inset-2 bg-gradient-to-r from-[#00daf8]/10 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="relative p-6 bg-surface-container rounded-xl border border-outline-variant/10 shadow-inner">
+<div class="flex justify-between items-center mb-4">
+<span class="text-[10px] font-mono text-slate-500 uppercase tracking-widest">Ejemplo de Configuración de Interfaz</span>
+<span class="material-symbols-outlined text-sm text-slate-600">content_copy</span>
+</div>
+<code class="block font-mono text-sm text-primary-fixed-dim leading-6">
+                                    interface GigabitEthernet0/0<br/>
+                                      ip address 192.168.1.1 255.255.255.0<br/>
+                                      no shutdown<br/>
+                                      description LAN_G0/0
+                                </code>
+</div>
+</div>
+<p>Recordar que para el examen parcial se enfatizará en la diferencia entre <em>Switching</em> y <em>Routing</em>, así como los dominios de colisión vs. dominios de broadcast.</p>
+<div class="pt-10 border-t border-outline-variant/10 flex items-center justify-between">
+<div class="flex -space-x-2">
+<img alt="Avatar Usuario" class="w-8 h-8 rounded-full border-2 border-surface shadow-md" data-alt="User profile avatar circle" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBhL6mBwrZBnrg8e_ChkUGouSfv1ApUT1VWogvfJ6I4lX4b3DAeVDvF70u5KphkBbiTt768lk9HZZ18O-JkRBmfRJmU7WYtyja6so6IsKyLJzucqpp4hMIcQrCr_4ac5AAHJQnHX_SQVH6KOr42Bk5GXyRqtwqy168ZxNBqJxkkGeeH_A0_TdInpLJI9BwRyN2CyNFQQQHUrHvJma7mFOpHEVw2TRjephq0-KPU6iYUgjoSCyWdja1n8j3LXuZCChI-HKnzzDCJG_g_"/>
+<div class="w-8 h-8 rounded-full bg-surface-container-high border-2 border-surface flex items-center justify-center text-[10px] font-bold text-slate-400">+2</div>
+</div>
+<span class="text-[10px] text-slate-600 font-medium italic">Editado por última vez por Elite Scholar</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Floating Quick Actions (Invisible but present for structure) -->
+<div class="fixed bottom-8 right-8 flex flex-col gap-4">
+<button class="w-12 h-12 rounded-full bg-surface-container-high text-slate-300 shadow-2xl flex items-center justify-center hover:bg-[#00daf8]/20 hover:text-[#00daf8] transition-all duration-300 group">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">search</span>
+</button>
+<button class="w-14 h-14 rounded-full bg-gradient-to-br from-[#00daf8] to-on-primary-container text-on-primary shadow-[0_10px_30px_rgba(0,218,248,0.3)] flex items-center justify-center active:scale-90 transition-all group">
+<span class="material-symbols-outlined text-2xl group-hover:rotate-90 transition-transform">add</span>
+</button>
+</div>
+</body></html>

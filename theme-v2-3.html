@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Estudiar - StudyHub</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Public+Sans:wght@300;400;500;600;700&amp;family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-bright": "#fff8f0",
+              "surface-container-high": "#f1e7d4",
+              "surface-dim": "#e3d9c6",
+              "inverse-on-surface": "#faf0dc",
+              "on-secondary": "#ffffff",
+              "tertiary-fixed": "#f9e450",
+              "error-container": "#ffdad6",
+              "inverse-primary": "#e5beb5",
+              "on-secondary-container": "#795c51",
+              "surface-container-lowest": "#ffffff",
+              "on-primary": "#ffffff",
+              "background": "#fff8f0",
+              "on-tertiary-fixed": "#201c00",
+              "primary-fixed-dim": "#e5beb5",
+              "on-tertiary-container": "#484000",
+              "surface-container-low": "#fdf3df",
+              "inverse-surface": "#353023",
+              "on-primary-fixed": "#2b1611",
+              "surface-tint": "#755750",
+              "surface-variant": "#ebe1cf",
+              "secondary-container": "#fed7ca",
+              "on-primary-container": "#dcb5ad",
+              "on-surface-variant": "#51443a",
+              "surface": "#fff8f0",
+              "secondary-fixed-dim": "#e4beb2",
+              "secondary-fixed": "#ffdbce",
+              "on-error": "#ffffff",
+              "error": "#ba1a1a",
+              "primary-fixed": "#ffdad2",
+              "on-secondary-fixed": "#2b160f",
+              "surface-container-highest": "#ebe1cf",
+              "on-secondary-fixed-variant": "#5b4137",
+              "on-error-container": "#93000a",
+              "secondary": "#75584d",
+              "primary-container": "#624640",
+              "outline-variant": "#d6c3b6",
+              "primary": "#49302a",
+              "on-tertiary-fixed-variant": "#504700",
+              "on-primary-fixed-variant": "#5c403a",
+              "tertiary-fixed-dim": "#dbc835",
+              "tertiary-container": "#bfad15",
+              "on-surface": "#1f1b10",
+              "tertiary": "#6a5f00",
+              "surface-container": "#f7edda",
+              "on-tertiary": "#ffffff",
+              "on-background": "#1f1b10",
+              "outline": "#847469"
+            },
+            fontFamily: {
+              "headline": ["Newsreader", "serif"],
+              "body": ["Newsreader", "serif"],
+              "label": ["Public Sans", "sans-serif"],
+              "serif": ["Newsreader", "serif"],
+              "sans": ["Manrope", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body {
+            background-color: #fff8f0;
+            color: #1f1b10;
+        }
+    </style>
+</head>
+<body class="font-body selection:bg-secondary-container selection:text-on-secondary-container">
+<!-- TopAppBar -->
+<header class="sticky top-0 w-full z-40 bg-slate-50/70 backdrop-blur-xl shadow-sm flex justify-between items-center px-8 h-16 w-full">
+<div class="flex items-center gap-8">
+<span class="text-2xl font-serif font-bold text-blue-800">StudyHub</span>
+<nav class="hidden md:flex space-x-6 items-center">
+<a class="text-blue-700 font-bold border-b-2 border-blue-700 pb-1" href="#">Library</a>
+<a class="text-slate-600 hover:text-blue-600 transition-colors" href="#">Archive</a>
+<a class="text-slate-600 hover:text-blue-600 transition-colors" href="#">Colloquium</a>
+</nav>
+</div>
+<div class="flex items-center space-x-4">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+<input class="bg-surface-container-low border-none rounded-lg pl-10 pr-4 py-1.5 text-sm focus:ring-2 focus:ring-primary/20 outline-none" placeholder="Buscar..." type="text"/>
+</div>
+<button class="p-2 text-slate-600 hover:bg-slate-200/50 rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 text-slate-600 hover:bg-slate-200/50 rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<img alt="User profile avatar" class="w-8 h-8 rounded-full border border-outline-variant/30" data-alt="User profile avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbF_jj0CKKzOcFVofrVdr5NAlSGYHEyQuxYnwGQ9hKxQ-4G8-L7ODjMxA4XgVkKm4ISE6HSrEAtc73r5Hu75xsmCiLE1qAURjpE5R9wyI6Pyi_y-H-pc78gJcLsrZZELD19sTotek9Sa7OY1FIkMCnfjJbD0szftVmV4ty3T0hbGOcM4biyuXNp0Ui_2-NZWEKGxMy7ZajhKQhKuTUhei4_3cbNbvD9DKtFYlrhb0gFE508INsh0N7pDZVRwDDZFuRqgHe18ai7ACY"/>
+</div>
+</header>
+<div class="flex">
+<!-- SideNavBar -->
+<aside class="h-screen w-64 fixed left-0 top-0 z-50 bg-slate-100 flex flex-col p-4 space-y-2 hidden lg:flex">
+<div class="mb-8 px-2">
+<h1 class="text-xl font-serif font-black text-blue-900">StudyHub</h1>
+<p class="text-xs font-sans text-slate-500 uppercase tracking-widest">Academic Portal</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center space-x-3 px-3 py-2 text-slate-500 hover:bg-slate-200 transition-all rounded-lg group" href="#">
+<span class="material-symbols-outlined group-hover:translate-x-1 duration-200" data-icon="dashboard">dashboard</span>
+<span class="font-sans font-medium">Dashboard</span>
+</a>
+<a class="flex items-center space-x-3 px-3 py-2 bg-white text-blue-700 rounded-lg shadow-sm font-semibold group" href="#">
+<span class="material-symbols-outlined group-hover:translate-x-1 duration-200" data-icon="school">school</span>
+<span class="font-sans font-medium">My Courses</span>
+</a>
+<a class="flex items-center space-x-3 px-3 py-2 text-slate-500 hover:bg-slate-200 transition-all rounded-lg group" href="#">
+<span class="material-symbols-outlined group-hover:translate-x-1 duration-200" data-icon="auto_stories">auto_stories</span>
+<span class="font-sans font-medium">Research Vault</span>
+</a>
+<a class="flex items-center space-x-3 px-3 py-2 text-slate-500 hover:bg-slate-200 transition-all rounded-lg group" href="#">
+<span class="material-symbols-outlined group-hover:translate-x-1 duration-200" data-icon="calendar_today">calendar_today</span>
+<span class="font-sans font-medium">Schedule</span>
+</a>
+<a class="flex items-center space-x-3 px-3 py-2 text-slate-500 hover:bg-slate-200 transition-all rounded-lg group" href="#">
+<span class="material-symbols-outlined group-hover:translate-x-1 duration-200" data-icon="description">description</span>
+<span class="font-sans font-medium">Faculty Notes</span>
+</a>
+</nav>
+<div class="pt-4 border-t border-slate-200 space-y-1">
+<button class="w-full bg-primary text-on-primary py-2.5 rounded-sm font-label text-xs tracking-wider uppercase mb-4 shadow-md">New Research</button>
+<a class="flex items-center space-x-3 px-3 py-2 text-slate-500 hover:bg-slate-200 transition-all rounded-lg group" href="#">
+<span class="material-symbols-outlined group-hover:translate-x-1 duration-200" data-icon="help">help</span>
+<span class="font-sans font-medium">Help Center</span>
+</a>
+<a class="flex items-center space-x-3 px-3 py-2 text-slate-500 hover:bg-slate-200 transition-all rounded-lg group" href="#">
+<span class="material-symbols-outlined group-hover:translate-x-1 duration-200" data-icon="logout">logout</span>
+<span class="font-sans font-medium">Sign Out</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 lg:ml-64 p-8 min-h-screen">
+<!-- Header Section -->
+<section class="max-w-6xl mx-auto mb-16">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<span class="font-label text-xs uppercase tracking-[0.2em] text-secondary mb-4 block">SECCIÓN ACADÉMICA</span>
+<h2 class="text-5xl font-serif font-bold text-on-surface leading-tight max-w-2xl italic">Continuar Estudios: Historia del Arte Moderno</h2>
+</div>
+<div class="flex gap-4">
+<button class="bg-surface-container-highest px-6 py-3 rounded-sm font-label text-xs uppercase tracking-wider text-primary">REVISAR NOTAS</button>
+<button class="bg-primary text-on-primary px-8 py-3 rounded-sm font-label text-xs uppercase tracking-widest shadow-lg">SIGUIENTE LECCIÓN</button>
+</div>
+</div>
+</section>
+<!-- Bento Grid Content -->
+<div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-8">
+<!-- Main Lesson Card -->
+<div class="md:col-span-8 bg-surface-container-low p-10 rounded-md relative overflow-hidden group">
+<div class="absolute top-0 left-0 w-1 h-full bg-primary"></div>
+<div class="flex justify-between items-start mb-8">
+<div>
+<h3 class="text-3xl font-serif text-on-surface mb-2">Módulo IV: El Impresionismo</h3>
+<p class="text-secondary font-serif italic">La revolución de la luz y el color en el París del XIX.</p>
+</div>
+<span class="bg-secondary-container text-on-secondary-container px-3 py-1 text-[10px] font-label tracking-tighter uppercase">EN CURSO</span>
+</div>
+<div class="aspect-video mb-8 overflow-hidden rounded-sm bg-surface-dim">
+<img class="w-full h-full object-cover mix-blend-multiply opacity-80" data-alt="Classic painting showing impressionist brushstrokes of a sunrise" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMwpD93wRifGSIhp3Hdlts1YSG-Dc7r-22_EWtnH7tHOaCer4KDx9_5rD7asAlBQPBo1QtmWw1izpulvHdNz9WnpTDORbNwcmT3WFKWGPbi5QkjF5NyDNi56f5RwbdZrOLz9ozpwBkFhyl2SOakrPAMqItafLlCN0M-5Jy-6QDOntwBd1iIRbNfZqZupCWp263v7Qui6Ns4vXTXuwAr-Jy2wQxdTF1Y5o9WuTMPCFX9h5C3oNHB51qL36ETf_RlH7oOr3bTa51Xu7e"/>
+</div>
+<div class="grid grid-cols-3 gap-8">
+<div>
+<span class="block font-label text-[10px] text-outline uppercase mb-1">PROGRESO</span>
+<div class="w-full bg-surface-dim h-1">
+<div class="bg-primary h-full w-[65%]"></div>
+</div>
+<span class="text-xs font-sans font-bold mt-1 block">65% Completado</span>
+</div>
+<div>
+<span class="block font-label text-[10px] text-outline uppercase mb-1">TIEMPO RESTANTE</span>
+<p class="font-serif text-lg">24 min</p>
+</div>
+<div>
+<span class="block font-label text-[10px] text-outline uppercase mb-1">ARCHIVOS</span>
+<p class="font-serif text-lg">12 Citaciones</p>
+</div>
+</div>
+</div>
+<!-- Sidebar Metadata -->
+<div class="md:col-span-4 space-y-8">
+<!-- Folio Card -->
+<div class="bg-surface-container-highest p-8 rounded-md shadow-sm border-l-4 border-primary/20">
+<h4 class="font-serif text-xl mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="menu_book">menu_book</span>
+                            Bibliografía
+                        </h4>
+<ul class="space-y-4">
+<li class="flex items-start gap-4 pb-4 border-b border-outline-variant/30">
+<span class="font-serif text-lg italic text-primary">01.</span>
+<div>
+<p class="font-sans font-bold text-sm">Gombrich, E. H.</p>
+<p class="font-serif text-xs text-secondary">La Historia del Arte, Cap. 25</p>
+</div>
+</li>
+<li class="flex items-start gap-4 pb-4 border-b border-outline-variant/30">
+<span class="font-serif text-lg italic text-primary">02.</span>
+<div>
+<p class="font-sans font-bold text-sm">Rewald, John</p>
+<p class="font-serif text-xs text-secondary">Historia del Impresionismo</p>
+</div>
+</li>
+</ul>
+<button class="w-full mt-6 text-primary font-label text-[10px] uppercase tracking-widest text-center hover:underline">Ver catálogo completo</button>
+</div>
+<!-- Task Tracker -->
+<div class="bg-surface p-8 border border-outline-variant/20 rounded-md">
+<h4 class="font-serif text-xl mb-6">Tareas de Archivo</h4>
+<div class="space-y-4">
+<label class="flex items-center gap-3 cursor-pointer group">
+<input checked="" class="rounded-none border-outline text-primary focus:ring-primary" type="checkbox"/>
+<span class="font-serif text-sm line-through text-outline">Análisis de "Soleil levant"</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="rounded-none border-outline text-primary focus:ring-primary" type="checkbox"/>
+<span class="font-serif text-sm">Ensayo: La técnica del 'plein air'</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="rounded-none border-outline text-primary focus:ring-primary" type="checkbox"/>
+<span class="font-serif text-sm">Mapa conceptual: Post-impresionismo</span>
+</label>
+</div>
+</div>
+</div>
+<!-- Footer Asymmetric Section -->
+<div class="md:col-span-12 mt-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
+<div class="lg:col-span-2 bg-surface-dim p-10 rounded-md flex items-center gap-8">
+<div class="w-24 h-24 rounded-full bg-secondary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-4xl text-on-secondary-container" data-icon="workspace_premium" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+</div>
+<div>
+<h4 class="text-2xl font-serif italic mb-2">Próxima Certificación</h4>
+<p class="font-serif text-secondary max-w-md">Estás a solo 3 lecciones de completar tu especialización en Curaduría de Arte Moderno. Mantén el ritmo académico.</p>
+</div>
+</div>
+<div class="bg-primary p-10 rounded-md text-on-primary relative overflow-hidden">
+<span class="material-symbols-outlined absolute -bottom-4 -right-4 text-9xl opacity-10" data-icon="auto_stories">auto_stories</span>
+<h4 class="font-label text-xs uppercase tracking-widest mb-6 opacity-80">NOTA AL MARGEN</h4>
+<p class="font-serif text-xl italic leading-relaxed">"El ojo debería aprender a mirar la naturaleza tal como es."</p>
+<p class="font-label text-[10px] mt-4 uppercase tracking-tighter">— Claude Monet, 1888</p>
+</div>
+</div>
+</div>
+<!-- Bottom Margin Spacing -->
+<div class="h-20"></div>
+</main>
+</div>
+</body></html>

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Manrope:wght@300;400;500;600;700;800&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,700;1,6..72,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-surface-variant": "#404751",
+              "surface": "#f7f9fb",
+              "secondary-fixed-dim": "#9accf3",
+              "secondary-fixed": "#c9e6ff",
+              "on-error": "#ffffff",
+              "error": "#ba1a1a",
+              "primary-fixed": "#d1e4ff",
+              "on-secondary-fixed": "#001e2f",
+              "surface-container-highest": "#e0e3e5",
+              "on-secondary-fixed-variant": "#0c4b6c",
+              "on-error-container": "#93000a",
+              "secondary": "#2e6385",
+              "primary-container": "#2e76b6",
+              "outline-variant": "#c0c7d2",
+              "primary": "#005d9b",
+              "on-tertiary-fixed-variant": "#374952",
+              "on-primary-fixed-variant": "#00497c",
+              "tertiary-fixed-dim": "#b6c9d4",
+              "tertiary-container": "#62757e",
+              "on-surface": "#191c1e",
+              "tertiary": "#4a5c66",
+              "surface-container": "#eceef0",
+              "on-tertiary": "#ffffff",
+              "on-background": "#191c1e",
+              "outline": "#707882",
+              "surface-bright": "#f7f9fb",
+              "surface-container-high": "#e6e8ea",
+              "surface-dim": "#d8dadc",
+              "inverse-on-surface": "#eff1f3",
+              "on-secondary": "#ffffff",
+              "tertiary-fixed": "#d2e6f0",
+              "error-container": "#ffdad6",
+              "inverse-primary": "#9dcaff",
+              "on-secondary-container": "#285f80",
+              "surface-container-lowest": "#ffffff",
+              "on-primary": "#ffffff",
+              "background": "#f7f9fb",
+              "on-tertiary-fixed": "#0b1e26",
+              "primary-fixed-dim": "#9dcaff",
+              "on-tertiary-container": "#f2faff",
+              "surface-container-low": "#f2f4f6",
+              "inverse-surface": "#2d3133",
+              "on-primary-fixed": "#001d35",
+              "surface-tint": "#0861a1",
+              "surface-variant": "#e0e3e5",
+              "secondary-container": "#a5d8ff",
+              "on-primary-container": "#f7f9ff"
+            },
+            fontFamily: {
+              "headline": ["Space Grotesk"],
+              "body": ["Manrope"],
+              "label": ["Manrope"],
+              "serif": ["Newsreader"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>.material-symbols-outlined {
+    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24
+    }
+.alpine-bg {
+    background-image: linear-gradient(to bottom, rgba(247, 249, 251, 0.9), rgba(247, 249, 251, 0.7)), url(https://lh3.googleusercontent.com/aida-public/AB6AXuBbI0VXkp8JuF9O-ZSDvokENatBuY3uAdS3h3oMWG9dyDOFY_iwR8TYHaLKZBM5GPi1-jZOdR8lcpyimbSrlS2njbFRCBWmAW6fzQ35hx5AbnDeKYytXrzavVXH3ARVr8CVM3AasJHonRJVcifr_SSEbye5smkTEsopeM6bCNhdUbQrQyWdng0ngUYqzhlfGl8aX5NbsN3xA2IxXkLlgepPMrFxSKoGD0XsxRgCN014iYDHXOAxe58LSZdfP8WiwNSCPZdAs0dPUEby);
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center bottom
+    }
+.glass-panel {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(24px)
+    }</style>
+</head>
+<body class="bg-surface font-body text-on-surface alpine-bg min-h-screen">
+<!-- TopAppBar -->
+<header class="bg-slate-50/70 dark:bg-slate-950/70 backdrop-blur-xl sticky top-0 w-full z-40 shadow-sm dark:shadow-none flex justify-between items-center px-8 h-16 w-full">
+<div class="flex items-center gap-8">
+<span class="text-2xl font-serif font-bold text-blue-800 dark:text-blue-300">StudyHub</span>
+<nav class="hidden md:flex space-x-6">
+<a class="text-slate-600 dark:text-slate-400 hover:text-blue-600 transition-colors" href="#">Library</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-blue-600 transition-colors" href="#">Archive</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-blue-600 transition-colors" href="#">Colloquium</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative group">
+<span class="material-symbols-outlined text-slate-500 hover:bg-slate-200/50 p-2 rounded-full cursor-pointer transition-all">notifications</span>
+</div>
+<span class="material-symbols-outlined text-slate-500 hover:bg-slate-200/50 p-2 rounded-full cursor-pointer transition-all">settings</span>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant">
+<img alt="User profile avatar" data-alt="User profile avatar circular portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9_gVHq7NQF30XrVq6XexLhwAt74GKG7G0QarpqQP3RRgVHMc90P1sO6huwhVrqwuOSvslnhRY8VdNPo5zXi-nOR99SXTx0HCp8NIvjKsgIK4IItP7kLTMbjarkl-tiUupQyzpS80FUxkyZwG9PYV6aBP9Kl9B-x3vBOCCARBg4GjQ9e3FTtcl5pfV1aC45-7JA9x9xb9wxaEXrG-OQwCwmEVQ2ZMxvRT2GKN3BJd-XV6YvRlJ1bs02TLPAoOBtWcqDzSoQuMO4NHL"/>
+</div>
+</div>
+</header>
+<div class="flex">
+<!-- SideNavBar -->
+<aside class="h-screen w-64 fixed left-0 top-0 z-50 bg-slate-100 dark:bg-slate-900 flex flex-col h-full p-4 space-y-2 mt-16 lg:mt-0">
+<div class="pb-6 pt-4 px-2">
+<h1 class="text-xl font-serif font-black text-blue-900 dark:text-blue-200">StudyHub</h1>
+<p class="text-xs font-sans Manrope text-slate-500 uppercase tracking-widest">Academic Portal</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 bg-white dark:bg-slate-800 text-blue-700 dark:text-blue-300 rounded-lg shadow-sm font-semibold translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all" href="#">
+<span class="material-symbols-outlined">school</span>
+<span>My Courses</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all" href="#">
+<span class="material-symbols-outlined">auto_stories</span>
+<span>Research Vault</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all" href="#">
+<span class="material-symbols-outlined">calendar_today</span>
+<span>Schedule</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all" href="#">
+<span class="material-symbols-outlined">description</span>
+<span>Faculty Notes</span>
+</a>
+</nav>
+<button class="mt-4 mx-2 py-3 bg-primary text-on-primary rounded font-bold shadow-sm hover:opacity-90 transition-all">
+                New Research
+            </button>
+<div class="pt-6 border-t border-slate-200 dark:border-slate-800 space-y-1">
+<a class="flex items-center gap-3 px-4 py-2 text-slate-500 hover:text-slate-900 transition-all" href="#">
+<span class="material-symbols-outlined">help</span>
+<span>Help Center</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-slate-500 hover:text-slate-900 transition-all" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span>Sign Out</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 flex-1 p-12">
+<!-- Header Section -->
+<section class="mb-16">
+<div class="flex items-center gap-2 text-tertiary mb-4">
+<span class="text-xs font-label uppercase tracking-widest">Dashboard</span>
+<span class="text-xs">/</span>
+<span class="text-xs font-label uppercase tracking-widest text-primary">Overview</span>
+</div>
+<h2 class="font-headline text-5xl font-light text-on-surface tracking-tight mb-2">Bienvenido de nuevo, Dr. Miller</h2>
+<p class="text-on-surface-variant font-body text-lg max-w-2xl">Continúe con su investigación en curso. Tiene 3 revisiones pendientes para el coloquio de invierno.</p>
+</section>
+<!-- Bento Grid Content -->
+<div class="grid grid-cols-12 gap-6">
+<!-- Main Stats Card (Glassmorphism) -->
+<div class="col-span-12 lg:col-span-8 bg-surface-container-lowest glass-panel rounded-xl p-8 border-none shadow-none relative overflow-hidden">
+<div class="absolute top-0 right-0 p-8 opacity-10">
+<span class="material-symbols-outlined text-9xl">analytics</span>
+</div>
+<h3 class="font-headline text-2xl mb-6">Métricas Académicas</h3>
+<div class="grid grid-cols-3 gap-8">
+<div>
+<p class="text-on-surface-variant text-sm font-label uppercase mb-1">Cursos Activos</p>
+<p class="text-4xl font-headline font-medium text-primary">12</p>
+</div>
+<div>
+<p class="text-on-surface-variant text-sm font-label uppercase mb-1">Horas de Investigación</p>
+<p class="text-4xl font-headline font-medium text-primary">156</p>
+</div>
+<div>
+<p class="text-on-surface-variant text-sm font-label uppercase mb-1">Artículos Publicados</p>
+<p class="text-4xl font-headline font-medium text-primary">08</p>
+</div>
+</div>
+<div class="mt-12 h-48 bg-surface-container-low rounded-lg flex items-end p-4 gap-2">
+<!-- Simple Visual Bar Chart -->
+<div class="flex-1 bg-primary-container h-3/4 rounded-t-sm"></div>
+<div class="flex-1 bg-primary h-full rounded-t-sm"></div>
+<div class="flex-1 bg-primary-container h-2/3 rounded-t-sm"></div>
+<div class="flex-1 bg-primary h-5/6 rounded-t-sm"></div>
+<div class="flex-1 bg-primary-container h-1/2 rounded-t-sm"></div>
+<div class="flex-1 bg-primary h-3/4 rounded-t-sm"></div>
+<div class="flex-1 bg-primary-container h-full rounded-t-sm"></div>
+</div>
+</div>
+<!-- Secondary Card -->
+<div class="col-span-12 lg:col-span-4 space-y-6">
+<div class="bg-primary text-on-primary rounded-xl p-8 relative overflow-hidden">
+<div class="relative z-10">
+<h3 class="font-headline text-2xl mb-4">Próximo Evento</h3>
+<p class="font-serif italic text-xl mb-2">Simposio de Glaciología</p>
+<p class="opacity-80 text-sm mb-6">Mañana, 09:00 AM • Aula Magna</p>
+<button class="bg-on-primary text-primary px-4 py-2 font-bold text-sm">Ver Detalles</button>
+</div>
+<div class="absolute bottom-[-20px] right-[-20px] opacity-20">
+<span class="material-symbols-outlined text-8xl">event</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest rounded-xl p-8">
+<h3 class="font-headline text-xl mb-6">Notas Recientes</h3>
+<ul class="space-y-4">
+<li class="flex items-start gap-4 p-3 hover:bg-surface-container-low transition-colors rounded">
+<span class="material-symbols-outlined text-secondary">history_edu</span>
+<div>
+<p class="font-bold text-sm">Análisis de núcleos de hielo</p>
+<p class="text-xs text-on-surface-variant">Actualizado hace 2 horas</p>
+</div>
+</li>
+<li class="flex items-start gap-4 p-3 hover:bg-surface-container-low transition-colors rounded">
+<span class="material-symbols-outlined text-secondary">description</span>
+<div>
+<p class="font-bold text-sm">Teoría de sedimentación</p>
+<p class="text-xs text-on-surface-variant">Actualizado ayer</p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<!-- Large Asymmetric Content -->
+<div class="col-span-12 grid grid-cols-12 gap-6 mt-6">
+<div class="col-span-12 md:col-span-4 bg-surface-container-lowest rounded-xl p-8">
+<h3 class="font-headline text-xl mb-4">Investigadores Colaboradores</h3>
+<div class="flex -space-x-2">
+<img alt="Researcher 1" class="w-12 h-12 rounded-full border-4 border-surface-container-lowest" data-alt="Researcher headshot 1" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCrTthLhzIxBYk83j4A4u7FZ6AzXSQ_s5LaIgrTEvpN_6T7F0Z0lLaLL6-gvAFAsCjATrXFHbV86hpmDEEBkKgyZnbExD7Nzacs5x7Enou-bVzM2aAb0I6xGe5FgNitWYeHhLEKBMqh3k03xNNmP8IlYeXBnEAPE2udV2MhICoHhq6zVzypW35W-Chq2ypYwfAfYZAxjIzkjkFy64sXZAIpC6OJCY5Vwhe1TYS6mj4l7t6Fx7uTejKvpYd9HkBD9WZ8C2kvz2qo3Ntz"/>
+<img alt="Researcher 2" class="w-12 h-12 rounded-full border-4 border-surface-container-lowest" data-alt="Researcher headshot 2" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCa8gz-6cdvJ7htLPlSWTkgQCTEBPWVh6gqQyW3_Kr5JLdtGPctRm7nXDny_J-yt_jRgcIagQ5IJ348KQEKyY_pX6FqihDA8W98Pie-BXthSwRoT77J4ZqsP1xYF5rtCPRBm5AkGoZ-1IjDtL1WCXNhwXHmgZZE6-C7P-bM5a_BIQYKnZlCM85Bp4fC5fjJYr2NaF3FvtdRFJdpsTQmS3gCuU-OSyKJStYteaD_ZR7r04HES1PuhM-ri2V6sE39OVvjhuIaH4kmy1w1"/>
+<img alt="Researcher 3" class="w-12 h-12 rounded-full border-4 border-surface-container-lowest" data-alt="Researcher headshot 3" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBRxJ1dn4w6Hy_eOfffb3KpnKBwd8ZC_XwOUNKinyJmzTAjjBjo8C3ETijaIS1H6fJI_1tuyVFpwOISaO-JIGAMtN6dK3snWpcBDzd_80l9GY8H6OryPVnjvJcgtOOi_VS8Mwg0GzkGsMiiRGOpxD6ogqhVlAwiJe2fxJkS4AlOZN1piDpBzwGoPxnOgrrJaZR7I95xcDzg3gBkutqqHcnj9RIsQuZRv7Dh5gVlrwWYCz9yaG2gJy9Sb73qIOb8M-y6qNkdf7YWnKBl"/>
+<div class="w-12 h-12 rounded-full border-4 border-surface-container-lowest bg-primary-fixed flex items-center justify-center text-on-primary-fixed font-bold text-sm">+5</div>
+</div>
+<p class="mt-4 text-on-surface-variant text-sm">Equipo de estudios atmosféricos activos en el sector norte.</p>
+</div>
+<div class="col-span-12 md:col-span-8 bg-surface-container-lowest rounded-xl p-0 overflow-hidden flex flex-col md:flex-row">
+<div class="md:w-1/2 p-8 flex flex-col justify-center">
+<h3 class="font-headline text-2xl mb-2">Archivo Digital</h3>
+<p class="text-on-surface-variant mb-6">Acceda a más de 50,000 registros históricos de expediciones alpinas digitalizados para su consulta inmediata.</p>
+<a class="text-primary font-bold flex items-center gap-2 group" href="#">
+                                Explorar archivos
+                                <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+</div>
+<div class="md:w-1/2 h-64 md:h-auto bg-cover bg-center" data-alt="Mountain landscape with stars and clear night sky" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA4UmY5NZq0M7Zg6KenbshX-QHUdvbpzD6eA8ruxoVcLzdivGIzEXNWxsRLoOCXuDGhdqhv4AT8i6M2fKk0M4hX54oU-SCiuJsORWj0xD-qXql_ppTnJ2kRqwL369P4yxpSp6yhrGD3vNGHeVkQ7h9PX5dnYSdAsKb-HjPhkrcFU3pUSiCxhjuswMro6wtwGonWtQVa5UIBZ9GC6poaBD3Ap622RDszU11iwQkD6cSjdnhqbtS-5pZRsh82TudQpJz4d0dOGGX8xqEZ');"></div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Floating Action Button - Contextual for Dashboard -->
+<button class="fixed bottom-8 right-8 w-14 h-14 bg-primary text-on-primary rounded-full shadow-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-all z-50">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add</span>
+</button>
+</body></html>

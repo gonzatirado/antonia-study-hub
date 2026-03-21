@@ -1,19 +1,13 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { google } from "@ai-sdk/google";
+import { generateText, streamText, Output } from "ai";
+import { z } from "zod";
+import { structuredSummarySchema } from "./summary-schema";
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
+const model = google("gemini-2.5-flash");
 
-export function getModel(tier: "flash" | "pro" = "flash") {
-  const modelName = tier === "pro" ? "gemini-1.5-pro" : "gemini-1.5-flash";
-  return genAI.getGenerativeModel({ model: modelName });
-}
+// ─── Summary (streaming) ───
 
-export async function generateSummary(
-  content: string,
-  tier: "flash" | "pro" = "flash"
-): Promise<string> {
-  const model = getModel(tier);
-
-  const prompt = `Eres un asistente educativo experto en crear resúmenes de estudio visualmente atractivos y completos.
+export const summarySystemPrompt = `Eres un asistente educativo experto en crear resúmenes de estudio visualmente atractivos y completos.
 
 INSTRUCCIONES:
 - Crea un resumen detallado del siguiente contenido académico
@@ -25,90 +19,141 @@ INSTRUCCIONES:
   - Listas con viñetas para conceptos importantes
   - Tablas comparativas cuando sea útil
   - Bloques de código si hay fórmulas o ejemplos técnicos
-  - Diagramas en formato Mermaid cuando ayude a visualizar relaciones o procesos
   - Notas importantes en blockquotes (> )
   - Separadores (---) entre secciones principales
+- OBLIGATORIO: Incluye al menos 2-3 diagramas Mermaid donde ayuden a visualizar:
+  - Procesos paso a paso → usa flowchart (graph TD)
+  - Líneas temporales → usa timeline
+  - Relaciones entre conceptos → usa mindmap
+  - Jerarquías → usa graph TD con nodos
+  - Comparaciones → usa tablas markdown
+  - Ciclos o secuencias → usa sequenceDiagram
+- Cada diagrama Mermaid debe ir en un bloque de código con \`\`\`mermaid
 - El resumen debe ser de 2-4 páginas de extensión
 - Usa un tono académico pero accesible
-- Incluye una sección final de "Conceptos Clave" como bullet points rápidos para repasar
+- Incluye una sección final de "Conceptos Clave" como bullet points rápidos para repasar`;
 
-CONTENIDO A RESUMIR:
-${content}`;
-
-  const result = await model.generateContent(prompt);
-  return result.response.text();
+export function streamSummary(content: string) {
+  return streamText({
+    model,
+    system: summarySystemPrompt,
+    prompt: `CONTENIDO A RESUMIR:\n${content}`,
+  });
 }
+
+// Non-streaming version for backwards compatibility
+export async function generateSummary(
+  content: string,
+): Promise<string> {
+  const { text } = await generateText({
+    model,
+    system: summarySystemPrompt,
+    prompt: `CONTENIDO A RESUMIR:\n${content}`,
+  });
+  return text;
+}
+
+// ─── Structured Summary (premium template) ───
+
+const structuredSummaryPrompt = `Eres un asistente educativo experto en crear resúmenes de estudio estructurados y visualmente ricos.
+
+INSTRUCCIONES OBLIGATORIAS:
+- Analiza el contenido y genera un resumen estructurado en JSON
+- El título debe ser descriptivo y conciso
+- El overview debe ser 2-3 oraciones que capturen la esencia del contenido
+- Crea entre 3-8 secciones principales, cada una con un emoji relevante
+- Cada sección contiene "blocks" que pueden ser:
+  - "text": párrafo explicativo claro y detallado
+  - "keypoint": punto clave importante (usa highlight: true para los más críticos)
+  - "list": lista de items relacionados
+  - "table": tabla comparativa con headers y rows
+  - "diagram": diagrama Mermaid (usa graph TD para flujos, mindmap para relaciones, timeline para secuencias, sequenceDiagram para interacciones)
+  - "callout": nota especial (variant: "info" para datos, "warning" para precauciones, "tip" para consejos, "example" para ejemplos)
+  - "formula": fórmulas o expresiones técnicas importantes
+- OBLIGATORIO: incluye al menos 2 diagramas Mermaid distribuidos en las secciones
+- OBLIGATORIO: incluye al menos 1 tabla comparativa
+- OBLIGATORIO: incluye al menos 3 keypoints con highlight: true
+- Los keyTakeaways deben ser 5-8 puntos de repaso rápido
+- Evalúa la dificultad del contenido (beginner/intermediate/advanced)
+- Estima el tiempo de lectura en minutos
+- Usa un tono académico pero accesible
+- Todo el contenido debe estar en español`;
+
+export async function generateStructuredSummary(content: string) {
+  const { output } = await generateText({
+    model,
+    output: Output.object({ schema: structuredSummarySchema }),
+    system: structuredSummaryPrompt,
+    prompt: `CONTENIDO A RESUMIR:\n${content}`,
+  });
+  return output!;
+}
+
+// ─── Quiz (structured output) ───
+
+const quizSchema = z.object({
+  questions: z.array(
+    z.object({
+      id: z.string(),
+      question: z.string(),
+      options: z.array(z.string()).length(4),
+      correctAnswer: z.number().min(0).max(3),
+      explanation: z.string(),
+    })
+  ),
+});
+
+export type QuizResult = z.infer<typeof quizSchema>;
 
 export async function generateQuiz(
   content: string,
   numQuestions: number = 5,
-  tier: "flash" | "pro" = "flash"
-): Promise<{
-  questions: Array<{
-    id: string;
-    question: string;
-    options: string[];
-    correctAnswer: number;
-    explanation: string;
-  }>;
-}> {
-  const model = getModel(tier);
-
-  const prompt = `Eres un profesor experto en crear evaluaciones de selección múltiple.
-
-INSTRUCCIONES:
-- Crea exactamente ${numQuestions} preguntas de selección múltiple basadas en el contenido proporcionado
-- Cada pregunta debe tener exactamente 4 opciones (A, B, C, D)
-- Las preguntas deben cubrir diferentes niveles de dificultad (fácil, medio, difícil)
-- Incluye una explicación breve de por qué la respuesta correcta es correcta
-- Responde ÚNICAMENTE con un JSON válido, sin markdown ni texto adicional
-
-FORMATO DE RESPUESTA (JSON):
-{
-  "questions": [
-    {
-      "id": "q1",
-      "question": "Texto de la pregunta",
-      "options": ["Opción A", "Opción B", "Opción C", "Opción D"],
-      "correctAnswer": 0,
-      "explanation": "Explicación de por qué es correcta"
-    }
-  ]
+): Promise<QuizResult> {
+  const { output } = await generateText({
+    model,
+    output: Output.object({ schema: quizSchema }),
+    system: `Eres un profesor experto en crear evaluaciones de selección múltiple.
+Crea exactamente ${numQuestions} preguntas de selección múltiple basadas en el contenido proporcionado.
+Cada pregunta debe tener exactamente 4 opciones (A, B, C, D).
+Las preguntas deben cubrir diferentes niveles de dificultad (fácil, medio, difícil).
+Incluye una explicación breve de por qué la respuesta correcta es correcta.`,
+    prompt: `CONTENIDO:\n${content}`,
+  });
+  return output!;
 }
 
-CONTENIDO:
-${content}`;
+// ─── Exam Prep (structured output) ───
 
-  const result = await model.generateContent(prompt);
-  const text = result.response.text();
+const examPlanSchema = z.object({
+  plan: z.array(
+    z.object({
+      date: z.string(),
+      tasks: z.array(
+        z.object({
+          id: z.string(),
+          type: z.enum(["study", "quiz", "practice", "review"]),
+          title: z.string(),
+          description: z.string(),
+          content: z.string(),
+        })
+      ),
+    })
+  ),
+});
 
-  // Clean potential markdown code blocks from response
-  const cleaned = text.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
-  return JSON.parse(cleaned);
-}
+export type ExamPlanResult = z.infer<typeof examPlanSchema>;
 
 export async function generateExamPlan(
   content: string,
   examDate: string,
   description: string,
-  tier: "flash" | "pro" = "flash"
-): Promise<{
-  plan: Array<{
-    date: string;
-    tasks: Array<{
-      id: string;
-      type: "study" | "quiz" | "practice" | "review";
-      title: string;
-      description: string;
-      content: string;
-    }>;
-  }>;
-}> {
-  const model = getModel(tier);
-
+): Promise<ExamPlanResult> {
   const today = new Date().toISOString().split("T")[0];
 
-  const prompt = `Eres un tutor experto en planificación de estudio para exámenes universitarios.
+  const { output } = await generateText({
+    model,
+    output: Output.object({ schema: examPlanSchema }),
+    system: `Eres un tutor experto en planificación de estudio para exámenes universitarios.
 
 CONTEXTO:
 - Fecha actual: ${today}
@@ -125,32 +170,8 @@ INSTRUCCIONES:
   - "review": Repaso de temas anteriores
 - Distribuye el contenido de manera progresiva (de lo básico a lo complejo)
 - Los últimos 1-2 días deben ser de repaso general
-- Incluye contenido real y útil en cada tarea basado en el material proporcionado
-- Responde ÚNICAMENTE con JSON válido
-
-FORMATO DE RESPUESTA (JSON):
-{
-  "plan": [
-    {
-      "date": "2026-03-16",
-      "tasks": [
-        {
-          "id": "d1t1",
-          "type": "study",
-          "title": "Introducción al tema X",
-          "description": "Estudiar los conceptos fundamentales",
-          "content": "## Contenido en markdown..."
-        }
-      ]
-    }
-  ]
-}
-
-MATERIAL DE ESTUDIO:
-${content}`;
-
-  const result = await model.generateContent(prompt);
-  const text = result.response.text();
-  const cleaned = text.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
-  return JSON.parse(cleaned);
+- Incluye contenido real y útil en cada tarea basado en el material proporcionado`,
+    prompt: `MATERIAL DE ESTUDIO:\n${content}`,
+  });
+  return output!;
 }

@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>StudyHub — Estudia más inteligente</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "secondary-fixed-dim": "#cfbcff",
+                        "on-tertiary-fixed": "#271900",
+                        "primary-fixed-dim": "#00daf8",
+                        "on-secondary-container": "#cfbcff",
+                        "error-container": "#93000a",
+                        "on-error-container": "#ffdad6",
+                        "on-surface-variant": "#bac9cd",
+                        "on-primary-fixed": "#001f25",
+                        "on-secondary": "#3a0092",
+                        "surface-container-lowest": "#0e0e0e",
+                        "tertiary": "#ffdeac",
+                        "tertiary-container": "#ffbb33",
+                        "secondary-container": "#6200ea",
+                        "surface-tint": "#00daf8",
+                        "surface": "#131313",
+                        "surface-container-low": "#1c1b1b",
+                        "outline": "#859397",
+                        "on-background": "#e5e2e1",
+                        "primary": "#a6eeff",
+                        "on-tertiary-fixed-variant": "#5f4100",
+                        "on-primary-fixed-variant": "#004e5a",
+                        "surface-container-high": "#2a2a2a",
+                        "secondary": "#cfbcff",
+                        "surface-variant": "#353534",
+                        "inverse-primary": "#006877",
+                        "on-tertiary-container": "#6e4d00",
+                        "outline-variant": "#3b494c",
+                        "background": "#131313",
+                        "surface-dim": "#131313",
+                        "secondary-fixed": "#e9ddff",
+                        "tertiary-fixed": "#ffdeaa",
+                        "on-primary-container": "#005b69",
+                        "on-surface": "#e5e2e1",
+                        "primary-container": "#00daf8",
+                        "surface-container": "#201f1f",
+                        "inverse-on-surface": "#313030",
+                        "primary-fixed": "#a4eeff",
+                        "tertiary-fixed-dim": "#feba32",
+                        "error": "#ffb4ab",
+                        "on-error": "#690005",
+                        "on-secondary-fixed": "#22005d",
+                        "on-tertiary": "#422c00",
+                        "surface-container-highest": "#353534",
+                        "surface-bright": "#3a3939",
+                        "inverse-surface": "#e5e2e1",
+                        "on-primary": "#00363f",
+                        "on-secondary-fixed-variant": "#5400cc"
+                    },
+                    fontFamily: {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #0e0e0e; }
+        
+        /* Premium Backgrounds */
+        .grid-pattern {
+            background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        /* Glassmorphism */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(0, 218, 248, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Animated Gradients & Effects */
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .animated-gradient-border {
+            position: relative;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .animated-gradient-border::before {
+            content: '';
+            position: absolute;
+            z-index: -2;
+            left: -50%;
+            top: -50%;
+            width: 200%;
+            height: 200%;
+            background-color: transparent;
+            background-repeat: no-repeat;
+            background-size: 50% 50%, 50% 50%;
+            background-position: 0 0, 100% 0, 100% 100%, 0 100%;
+            background-image: linear-gradient(#00daf8, #00daf8), linear-gradient(#6200ea, #6200ea), linear-gradient(#00daf8, #00daf8), linear-gradient(#6200ea, #6200ea);
+            animation: rotate 4s linear infinite;
+        }
+
+        .animated-gradient-border::after {
+            content: '';
+            position: absolute;
+            z-index: -1;
+            left: 2px;
+            top: 2px;
+            width: calc(100% - 4px);
+            height: calc(100% - 4px);
+            background: #131313;
+            border-radius: 22px;
+        }
+
+        /* Beam Sweep */
+        .beam-sweep {
+            position: relative;
+            overflow: hidden;
+        }
+        .beam-sweep::after {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 20%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(30deg);
+            transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+            pointer-events: none;
+        }
+        .beam-sweep:hover::after {
+            left: 130%;
+        }
+
+        /* Section Dividers */
+        .gradient-divider {
+            height: 1px;
+            width: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1) 50%, transparent);
+        }
+
+        /* Orbs */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .text-glow-premium {
+            text-shadow: 0 0 30px rgba(0, 218, 248, 0.4), 0 0 60px rgba(0, 218, 248, 0.2);
+        }
+
+        /* Icon Gradients */
+        .icon-gradient-blue {
+            background: linear-gradient(135deg, #00daf8 0%, #005b69 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="bg-surface-container-lowest text-on-surface selection:bg-primary-container selection:text-on-primary-container antialiased">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-[#0e0e0e]/70 backdrop-blur-xl border-b border-white/5 px-12 py-4 flex justify-between items-center max-w-full mx-auto">
+<div class="text-xl font-bold text-white tracking-tighter flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span>
+        StudyHub
+    </div>
+<div class="hidden md:flex gap-10 items-center">
+<a class="text-white text-sm font-medium border-b border-[#00daf8] pb-1 hover:opacity-80 transition-all duration-300" href="#">Funcionalidades</a>
+<a class="text-gray-400 text-sm hover:text-white transition-colors" href="#">Precios</a>
+<a class="text-gray-400 text-sm hover:text-white transition-colors" href="#">Testimonios</a>
+</div>
+<div class="flex gap-6 items-center">
+<button class="text-gray-400 hover:text-white transition-colors text-sm font-medium">Entrar</button>
+<button class="bg-primary-container text-[#001f25] px-6 py-2 rounded-xl font-bold text-sm hover:shadow-[0_0_20px_rgba(0,218,248,0.4)] transition-all active:scale-95">Empezar ahora</button>
+</div>
+</nav>
+<main>
+<!-- 1. Hero Section -->
+<section class="min-h-screen flex flex-col items-center justify-center px-12 text-center relative overflow-hidden pt-20">
+<!-- Background Elements -->
+<div class="absolute inset-0 grid-pattern opacity-40"></div>
+<div class="orb w-[500px] h-[500px] bg-primary-container/20 top-[-10%] left-[-10%] animate-pulse"></div>
+<div class="orb w-[600px] h-[600px] bg-secondary-container/10 bottom-[-20%] right-[-10%] animation-delay-2000"></div>
+<div class="z-10 max-w-5xl">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] uppercase tracking-[0.2em] text-primary-container mb-8">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-container opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-primary-container"></span>
+</span>
+                Nueva Era de Aprendizaje
+            </div>
+<h1 class="text-6xl md:text-8xl font-black text-white leading-tight tracking-tighter mb-8 text-glow-premium">
+                Estudia más inteligente, <br/>
+<span class="bg-gradient-to-r from-primary-container to-secondary-fixed-dim bg-clip-text text-transparent">no más difícil</span>
+</h1>
+<p class="text-xl md:text-2xl text-on-surface-variant max-w-3xl mx-auto leading-relaxed font-light mb-12">
+                Sube tu material, genera resúmenes visuales con IA, practica con quizzes y prepara tus pruebas con un plan personalizado.
+            </p>
+<div class="flex flex-col md:flex-row gap-6 justify-center items-center">
+<button class="beam-sweep bg-gradient-to-r from-primary-container to-primary-fixed-dim text-[#001f25] px-10 py-5 rounded-xl text-lg font-bold shadow-2xl shadow-primary-container/20 transition-transform hover:scale-105 active:scale-95">
+                    Empezar ahora
+                </button>
+<button class="bg-white/5 backdrop-blur-md border border-white/10 px-10 py-5 rounded-xl text-lg font-medium hover:bg-white/10 transition-colors">
+                    Ver demostración
+                </button>
+</div>
+</div>
+<!-- Visual Anchor -->
+<div class="mt-24 w-full max-w-5xl h-80 rounded-t-[40px] border-x border-t border-white/10 bg-gradient-to-b from-white/5 to-transparent flex items-center justify-center relative group overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-tr from-primary-container/5 via-transparent to-secondary-container/5"></div>
+<div class="relative w-40 h-40">
+<div class="absolute inset-0 bg-primary-container rounded-full blur-[60px] opacity-30 group-hover:opacity-50 transition-opacity"></div>
+<span class="material-symbols-outlined text-9xl text-primary-container relative z-10 drop-shadow-[0_0_20px_rgba(0,218,248,0.5)]" style="font-variation-settings: 'FILL' 1;">psychology</span>
+</div>
+</div>
+</section>
+<div class="gradient-divider"></div>
+<!-- 2. Cómo Funciona -->
+<section class="py-32 px-12 bg-surface-container-lowest relative">
+<div class="orb w-[400px] h-[400px] bg-primary/5 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
+<div class="max-w-7xl mx-auto text-center mb-24 relative z-10">
+<span class="text-primary-container font-mono tracking-[0.3em] text-xs uppercase bg-primary-container/10 px-4 py-1.5 rounded-full">Proceso</span>
+<h2 class="text-5xl font-bold text-white mt-6 tracking-tight">Tu camino al éxito</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-16 max-w-6xl mx-auto relative z-10">
+<div class="relative group">
+<div class="text-[140px] font-black text-white/[0.03] absolute -top-24 -left-12 select-none group-hover:text-primary-container/10 transition-colors">1</div>
+<div class="relative">
+<h3 class="text-2xl font-bold text-white mb-4">Sube tu material</h3>
+<p class="text-on-surface-variant leading-relaxed text-lg font-light">Sube PDFs, apuntes manuscritos o presentaciones. StudyHub entiende cualquier formato.</p>
+</div>
+</div>
+<div class="relative group">
+<div class="text-[140px] font-black text-white/[0.03] absolute -top-24 -left-12 select-none group-hover:text-primary-container/10 transition-colors">2</div>
+<div class="relative">
+<h3 class="text-2xl font-bold text-white mb-4">La IA procesa</h3>
+<p class="text-on-surface-variant leading-relaxed text-lg font-light">Generamos automáticamente resúmenes, bancos de preguntas y un calendario optimizado.</p>
+</div>
+</div>
+<div class="relative group">
+<div class="text-[140px] font-black text-white/[0.03] absolute -top-24 -left-12 select-none group-hover:text-primary-container/10 transition-colors">3</div>
+<div class="relative">
+<h3 class="text-2xl font-bold text-white mb-4">Estudia y aprueba</h3>
+<p class="text-on-surface-variant leading-relaxed text-lg font-light">Enfócate en lo que importa. Material diseñado para la retención máxima de información.</p>
+</div>
+</div>
+</div>
+</section>
+<div class="gradient-divider"></div>
+<!-- 3. Features -->
+<section class="py-32 px-12 bg-surface relative overflow-hidden">
+<div class="absolute top-0 right-0 w-1/3 h-full bg-primary-container/5 blur-[120px]"></div>
+<div class="max-w-7xl mx-auto relative z-10">
+<div class="mb-20">
+<h2 class="text-4xl font-bold tracking-tight text-white mb-4">Potencia tu aprendizaje</h2>
+<p class="text-on-surface-variant text-xl font-light">Herramientas diseñadas para la excelencia académica.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<!-- Resúmenes IA -->
+<div class="glass-card rounded-[32px] p-12 group transition-all duration-500 hover:-translate-y-2">
+<div class="w-16 h-16 rounded-2xl bg-primary-container/10 flex items-center justify-center mb-8 border border-primary-container/20 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-4xl icon-gradient-blue">auto_awesome</span>
+</div>
+<h3 class="text-2xl font-bold text-white mb-4">Resúmenes IA</h3>
+<p class="text-on-surface-variant text-lg leading-relaxed font-light">Convierte textos extensos en resúmenes visuales con diagramas lógicos y conceptos clave destacados.</p>
+</div>
+<!-- Tu Nube -->
+<div class="glass-card rounded-[32px] p-12 group transition-all duration-500 hover:-translate-y-2">
+<div class="w-16 h-16 rounded-2xl bg-secondary-container/10 flex items-center justify-center mb-8 border border-secondary-container/20 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-4xl text-secondary-container">cloud</span>
+</div>
+<h3 class="text-2xl font-bold text-white mb-4">Tu Nube</h3>
+<p class="text-on-surface-variant text-lg leading-relaxed font-light">Un espacio seguro y organizado para todos tus archivos académicos, accesible desde cualquier dispositivo.</p>
+</div>
+<!-- Agenda Inteligente -->
+<div class="glass-card rounded-[32px] p-12 group transition-all duration-500 hover:-translate-y-2">
+<div class="w-16 h-16 rounded-2xl bg-primary-container/10 flex items-center justify-center mb-8 border border-primary-container/20 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-4xl text-primary-container">event_note</span>
+</div>
+<h3 class="text-2xl font-bold text-white mb-4">Agenda Inteligente</h3>
+<p class="text-on-surface-variant text-lg leading-relaxed font-light">Planifica tus sesiones de estudio basándote en tus fechas de examen y la complejidad del contenido.</p>
+</div>
+<!-- Notas -->
+<div class="glass-card rounded-[32px] p-12 group transition-all duration-500 hover:-translate-y-2">
+<div class="w-16 h-16 rounded-2xl bg-secondary-container/10 flex items-center justify-center mb-8 border border-secondary-container/20 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-4xl text-secondary-container">edit_note</span>
+</div>
+<h3 class="text-2xl font-bold text-white mb-4">Notas</h3>
+<p class="text-on-surface-variant text-lg leading-relaxed font-light">Toma apuntes dinámicos vinculados a tu material original para una referencia rápida y eficiente.</p>
+</div>
+</div><div class="mt-16 flex flex-col items-center justify-center gap-4 animate-fade-in">
+<div class="flex flex-wrap justify-center items-center gap-x-6 gap-y-3 px-8 py-4 rounded-full bg-white/[0.02] border border-white/5 backdrop-blur-sm">
+<span class="text-[10px] uppercase tracking-[0.2em] text-primary-container/60 font-bold whitespace-nowrap italic">+5 funciones adicionales</span>
+<div class="h-4 w-px bg-white/10 hidden md:block"></div>
+<div class="flex flex-wrap justify-center gap-x-4 gap-y-2">
+<span class="text-xs text-on-surface-variant/80 font-light hover:text-primary-container transition-colors cursor-default">Pomodoro</span>
+<span class="text-white/10 select-none text-[8px] flex items-center">•</span>
+<span class="text-xs text-on-surface-variant/80 font-light hover:text-primary-container transition-colors cursor-default">Horario semanal</span>
+<span class="text-white/10 select-none text-[8px] flex items-center">•</span>
+<span class="text-xs text-on-surface-variant/80 font-light hover:text-primary-container transition-colors cursor-default">Seguimiento de notas</span>
+<span class="text-white/10 select-none text-[8px] flex items-center">•</span>
+<span class="text-xs text-on-surface-variant/80 font-light hover:text-primary-container transition-colors cursor-default">Gestor de archivos</span>
+<span class="text-white/10 select-none text-[8px] flex items-center">•</span>
+<span class="text-xs text-on-surface-variant/80 font-light hover:text-primary-container transition-colors cursor-default">Dashboard personalizado</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<div class="gradient-divider"></div>
+<!-- 4. Testimonios -->
+<section class="py-32 px-12 bg-surface-container-lowest relative overflow-hidden">
+<div class="orb w-[600px] h-[600px] bg-secondary/5 -bottom-[20%] -left-[10%]"></div>
+<div class="max-w-7xl mx-auto flex flex-col md:flex-row gap-20 items-center relative z-10">
+<div class="md:w-1/3">
+<h2 class="text-5xl font-bold text-white mb-8 tracking-tight">La voz de los estudiantes</h2>
+<p class="text-on-surface-variant text-xl leading-relaxed font-light">Únete a miles de alumnos que ya transformaron su forma de aprender en las mejores universidades del país.</p>
+</div>
+<div class="md:w-2/3 grid grid-cols-1 gap-8">
+<div class="glass-card p-10 rounded-[32px] border-l-4 border-primary-container relative">
+<span class="absolute top-6 right-10 text-6xl text-white/5 font-serif select-none">“</span>
+<p class="text-xl text-white italic mb-8 relative z-10">"Pasé de estudiar 6 horas a 2 y mis notas subieron."</p>
+<div class="flex items-center gap-4">
+<div class="w-14 h-14 rounded-full bg-primary-container/10 border border-primary-container/30 flex items-center justify-center font-bold text-primary-container text-lg shadow-[0_0_15px_rgba(0,218,248,0.2)]">VR</div>
+<div>
+<h4 class="font-bold text-white">Valentina R.</h4>
+<p class="text-on-surface-variant text-sm tracking-wide">Ingeniería Civil, PUC</p>
+</div>
+</div>
+</div>
+<div class="glass-card p-10 rounded-[32px]">
+<p class="text-xl text-white italic mb-8">"Los quizzes me salvaron el semestre."</p>
+<div class="flex items-center gap-4">
+<div class="w-14 h-14 rounded-full bg-secondary-container/10 border border-secondary-container/30 flex items-center justify-center font-bold text-secondary-container text-lg">MC</div>
+<div>
+<h4 class="font-bold text-white">Matías C.</h4>
+<p class="text-on-surface-variant text-sm tracking-wide">Derecho, UCH</p>
+</div>
+</div>
+</div>
+<div class="glass-card p-10 rounded-[32px]">
+<p class="text-xl text-white italic mb-8">"La preparación de pruebas es genial."</p>
+<div class="flex items-center gap-4">
+<div class="w-14 h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center font-bold text-primary-container text-lg">FL</div>
+<div>
+<h4 class="font-bold text-white">Francisca L.</h4>
+<p class="text-on-surface-variant text-sm tracking-wide">Medicina, UDP</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<div class="gradient-divider"></div>
+<!-- 5. Pricing -->
+<section class="py-32 px-12 bg-surface relative overflow-hidden">
+<div class="absolute inset-0 grid-pattern opacity-20"></div>
+<div class="max-w-7xl mx-auto text-center mb-24 relative z-10">
+<h2 class="text-6xl font-black text-white mb-6 tracking-tighter">Planes para todos</h2>
+<p class="text-on-surface-variant text-xl font-light">Sin letras chicas, solo mejores notas.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto relative z-10 items-stretch">
+<!-- Gratis -->
+<div class="glass-card rounded-[32px] p-12 flex flex-col bg-surface-container/30">
+<h3 class="text-xl font-bold text-white mb-2">Gratis</h3>
+<div class="text-5xl font-black text-white mb-10">$0 <span class="text-lg font-light text-on-surface-variant">/siempre</span></div>
+<ul class="space-y-5 mb-12 flex-1">
+<li class="flex items-center gap-4 text-on-surface-variant text-sm"><span class="material-symbols-outlined text-primary-container">check_circle</span> 3 resúmenes/mes</li>
+<li class="flex items-center gap-4 text-on-surface-variant text-sm"><span class="material-symbols-outlined text-primary-container">check_circle</span> 5 quizzes/mes</li>
+<li class="flex items-center gap-4 text-on-surface-variant text-sm"><span class="material-symbols-outlined text-primary-container">check_circle</span> 10 archivos max</li>
+<li class="flex items-center gap-4 text-on-surface-variant text-sm"><span class="material-symbols-outlined text-primary-container">check_circle</span> 50 MB de storage</li>
+</ul>
+<button class="w-full py-5 rounded-2xl border border-white/10 text-white font-bold hover:bg-white/5 transition-all active:scale-95">Elegir Plan</button>
+</div>
+<!-- Pro (Animated) -->
+<div class="animated-gradient-border rounded-[32px] transform md:scale-110 z-20 shadow-[0_0_50px_rgba(0,218,248,0.15)]">
+<div class="h-full rounded-[32px] p-12 flex flex-col relative z-10">
+<div class="absolute -top-5 left-1/2 -translate-x-1/2 bg-primary-container text-[#001f25] text-[10px] font-black px-5 py-1.5 rounded-full uppercase tracking-widest shadow-lg">Más Popular</div>
+<h3 class="text-xl font-bold text-white mb-2">Pro</h3>
+<div class="text-5xl font-black text-white mb-10">$9.990 <span class="text-sm font-light text-on-surface-variant">CLP/mes</span></div>
+<ul class="space-y-5 mb-12 flex-1">
+<li class="flex items-center gap-4 text-white text-sm"><span class="material-symbols-outlined text-primary-container">check_circle</span> 30 resúmenes</li>
+<li class="flex items-center gap-4 text-white text-sm"><span class="material-symbols-outlined text-primary-container">check_circle</span> 50 quizzes</li>
+<li class="flex items-center gap-4 text-white text-sm"><span class="material-symbols-outlined text-primary-container">check_circle</span> 5 prep de prueba</li>
+<li class="flex items-center gap-4 text-white text-sm"><span class="material-symbols-outlined text-primary-container">check_circle</span> Archivos ilimitados</li>
+<li class="flex items-center gap-4 text-white text-sm"><span class="material-symbols-outlined text-primary-container">check_circle</span> 2 GB de storage</li>
+<li class="flex items-center gap-4 text-white text-sm"><span class="material-symbols-outlined text-primary-container">check_circle</span> Exportar a PDF</li>
+</ul>
+<button class="beam-sweep w-full py-5 rounded-2xl bg-primary-container text-[#001f25] font-black text-lg hover:opacity-90 transition-all active:scale-95 shadow-[0_10px_30px_rgba(0,218,248,0.3)]">Mejorar Ahora</button>
+</div>
+</div>
+<!-- Premium -->
+<div class="glass-card rounded-[32px] p-12 flex flex-col bg-surface-container/30">
+<h3 class="text-xl font-bold text-white mb-2">Premium</h3>
+<div class="text-5xl font-black text-white mb-10">$19.990 <span class="text-sm font-light text-on-surface-variant">CLP/mes</span></div>
+<ul class="space-y-5 mb-12 flex-1">
+<li class="flex items-center gap-4 text-on-surface-variant text-sm"><span class="material-symbols-outlined text-primary-container">check_circle</span> 100 resúmenes</li>
+<li class="flex items-center gap-4 text-on-surface-variant text-sm"><span class="material-symbols-outlined text-primary-container">check_circle</span> 150 quizzes</li>
+<li class="flex items-center gap-4 text-on-surface-variant text-sm"><span class="material-symbols-outlined text-primary-container">check_circle</span> 15 prep de prueba</li>
+<li class="flex items-center gap-4 text-on-surface-variant text-sm"><span class="material-symbols-outlined text-primary-container">check_circle</span> Modelo IA superior</li>
+<li class="flex items-center gap-4 text-on-surface-variant text-sm"><span class="material-symbols-outlined text-primary-container">check_circle</span> 10 GB de storage</li>
+<li class="flex items-center gap-4 text-on-surface-variant text-sm"><span class="material-symbols-outlined text-primary-container">check_circle</span> Soporte prioritario</li>
+</ul>
+<button class="w-full py-5 rounded-2xl border border-white/10 text-white font-bold hover:bg-white/5 transition-all active:scale-95">Contactar Ventas</button>
+</div>
+</div>
+</section>
+<!-- 6. Final CTA -->
+<section class="py-48 px-12 bg-[#0e0e0e] relative overflow-hidden">
+<!-- Dramatic Spotlight Effect -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-[radial-gradient(circle_at_center,rgba(0,218,248,0.08)_0%,transparent_60%)] pointer-events-none"></div>
+<div class="orb w-[800px] h-[800px] bg-primary/10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 blur-[150px]"></div>
+<div class="max-w-5xl mx-auto text-center relative z-10">
+<h2 class="text-6xl md:text-8xl font-black text-white mb-12 tracking-tighter leading-[0.9]">Empieza a estudiar mejor hoy</h2>
+<div class="flex flex-col sm:flex-row justify-center gap-8 mt-16">
+<button class="beam-sweep bg-primary-container text-[#001f25] px-14 py-7 rounded-2xl text-2xl font-black shadow-[0_0_50px_rgba(0,218,248,0.25)] hover:scale-105 transition-all active:scale-95">
+                    Crear cuenta gratis
+                </button>
+<button class="bg-transparent border border-white/20 text-white px-14 py-7 rounded-2xl text-2xl font-medium hover:bg-white/5 transition-all backdrop-blur-sm">
+                    Ver planes Pro
+                </button>
+</div>
+</div>
+</section>
+</main>
+<!-- 7. Footer -->
+<footer class="bg-[#0e0e0e] w-full py-20 px-12 border-t border-white/5 font-['Inter']">
+<div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-16">
+<div class="flex flex-col gap-6">
+<div class="text-2xl font-bold text-white tracking-tighter flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-primary-container"></span>
+                StudyHub
+            </div>
+<p class="text-on-surface-variant leading-relaxed max-w-xs text-sm font-light">Plataforma educativa de alto rendimiento potenciada por inteligencia artificial. Redefiniendo el éxito académico.</p>
+</div>
+<div class="flex justify-start md:justify-center gap-12">
+<div class="flex flex-col gap-4">
+<span class="text-white font-bold text-sm">Empresa</span>
+<a class="text-on-surface-variant hover:text-primary-container transition-colors text-sm font-light" href="#">Privacidad</a>
+<a class="text-on-surface-variant hover:text-primary-container transition-colors text-sm font-light" href="#">Términos</a>
+<a class="text-on-surface-variant hover:text-primary-container transition-colors text-sm font-light" href="#">Soporte</a>
+</div>
+<div class="flex flex-col gap-4">
+<span class="text-white font-bold text-sm">Recursos</span>
+<a class="text-on-surface-variant hover:text-primary-container transition-colors text-sm font-light" href="#">Blog</a>
+<a class="text-on-surface-variant hover:text-primary-container transition-colors text-sm font-light" href="#">FAQ</a>
+<a class="text-on-surface-variant hover:text-primary-container transition-colors text-sm font-light" href="#">Contacto</a>
+</div>
+</div>
+<div class="text-left md:text-right flex flex-col items-start md:items-end gap-6">
+<p class="text-white font-medium text-sm tracking-wide">StudyHub © 2026 — Hecho para estudiantes, por estudiantes.</p>
+<div class="flex gap-6">
+<a class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-primary-container/10 hover:border-primary-container transition-all group" href="#">
+<span class="material-symbols-outlined text-xl text-on-surface-variant group-hover:text-primary-container">language</span>
+</a>
+<a class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-primary-container/10 hover:border-primary-container transition-all group" href="#">
+<span class="material-symbols-outlined text-xl text-on-surface-variant group-hover:text-primary-container">alternate_email</span>
+</a>
+</div>
+</div>
+</div>
+</footer>
+</body></html>

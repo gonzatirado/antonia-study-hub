@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Arctic Academy - Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#92ffaf",
+              "on-tertiary-fixed-variant": "#475b5e",
+              "on-primary-fixed-variant": "#006432",
+              "on-tertiary": "#455a5d",
+              "tertiary-fixed-dim": "#bcd3d6",
+              "tertiary-container": "#cae1e4",
+              "on-surface": "#d6e7ff",
+              "outline": "#5c7799",
+              "error": "#ff716c",
+              "secondary-fixed-dim": "#f0c6ff",
+              "secondary-fixed": "#f6d9ff",
+              "on-error": "#490006",
+              "on-secondary-fixed": "#670093",
+              "surface-container-lowest": "#000000",
+              "primary-fixed-dim": "#00ea7d",
+              "on-tertiary-fixed": "#2b3f42",
+              "surface-variant": "#062744",
+              "surface-tint": "#92ffaf",
+              "surface-container-low": "#021426",
+              "tertiary-dim": "#bcd3d6",
+              "surface-bright": "#062e4f",
+              "on-secondary": "#680095",
+              "surface-dim": "#020f1e",
+              "inverse-primary": "#006e37",
+              "tertiary": "#d8eff2",
+              "surface-container": "#041b30",
+              "primary-dim": "#00ea7d",
+              "on-background": "#d6e7ff",
+              "surface": "#020f1e",
+              "on-surface-variant": "#92add1",
+              "primary-fixed": "#1cf987",
+              "secondary": "#e9b3ff",
+              "primary-container": "#1cf987",
+              "surface-container-highest": "#062744",
+              "on-secondary-fixed-variant": "#8d22c0",
+              "on-error-container": "#ff9993",
+              "outline-variant": "#2e4a68",
+              "on-primary": "#006331",
+              "background": "#020f1e",
+              "on-secondary-container": "#d580ff",
+              "on-tertiary-container": "#3d5255",
+              "on-primary-fixed": "#004420",
+              "inverse-surface": "#f8f9ff",
+              "secondary-container": "#40005e",
+              "on-primary-container": "#00592c",
+              "surface-container-high": "#05213a",
+              "secondary-dim": "#d277ff",
+              "error-dim": "#c94947",
+              "inverse-on-surface": "#495668",
+              "error-container": "#8a1a1e",
+              "tertiary-fixed": "#cae1e4"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+        }
+        .aurora-bg {
+            background: radial-gradient(circle at 50% -20%, rgba(146, 255, 175, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(233, 179, 255, 0.1) 0%, transparent 40%),
+                        #020f1e;
+            background-attachment: fixed;
+        }
+        .glass-panel {
+            background: rgba(4, 27, 48, 0.4);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(46, 74, 104, 0.2);
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body aurora-bg min-h-screen">
+<!-- SideNavBar (Desktop) -->
+<aside class="hidden md:flex flex-col py-8 px-4 gap-y-2 bg-[#021426]/90 backdrop-blur-2xl fixed left-0 top-0 h-screen w-64 border-r border-[#92add1]/15 z-50">
+<div class="mb-10 px-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center border border-primary/20">
+<span class="material-symbols-outlined text-primary">science</span>
+</div>
+<div>
+<h2 class="text-[#92ffaf] font-black tracking-tight">Research Station</h2>
+<p class="text-xs text-[#92add1] opacity-70">Active Session</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-[#92ffaf] bg-[#92ffaf]/10 border-r-2 border-[#92ffaf] transition-all duration-200" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-['Inter'] text-sm font-medium tracking-wide">Inicio</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-[#92add1] opacity-70 hover:bg-[#05213a] hover:opacity-100 transition-colors hover:translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined">timer</span>
+<span class="font-['Inter'] text-sm font-medium tracking-wide">Pomodoro</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-[#92add1] opacity-70 hover:bg-[#05213a] hover:opacity-100 transition-colors hover:translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined">calendar_month</span>
+<span class="font-['Inter'] text-sm font-medium tracking-wide">Horario</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-[#92add1] opacity-70 hover:bg-[#05213a] hover:opacity-100 transition-colors hover:translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined">description</span>
+<span class="font-['Inter'] text-sm font-medium tracking-wide">Notas</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-[#92add1] opacity-70 hover:bg-[#05213a] hover:opacity-100 transition-colors hover:translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined">folder_open</span>
+<span class="font-['Inter'] text-sm font-medium tracking-wide">Archivos</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-[#92add1] opacity-70 hover:bg-[#05213a] hover:opacity-100 transition-colors hover:translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined">grade</span>
+<span class="font-['Inter'] text-sm font-medium tracking-wide">Calificaciones</span>
+</a>
+</nav>
+<div class="mt-auto px-4">
+<button class="w-full py-3 px-4 rounded-xl bg-primary-container text-on-primary-container font-bold flex items-center justify-center gap-2 active:scale-95 transition-transform shadow-[0_0_20px_rgba(146,255,175,0.2)]">
+<span class="material-symbols-outlined">add</span>
+<span>New Entry</span>
+</button>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="md:ml-64 pb-20 md:pb-0">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-40 bg-[#020f1e]/80 backdrop-blur-xl h-16 flex justify-between items-center px-6 shadow-[0_0_20px_rgba(146,255,175,0.05)] md:w-[calc(100%-16rem)]">
+<div class="flex items-center gap-4">
+<span class="text-xl font-bold text-[#92ffaf] tracking-tighter">Arctic Academy</span>
+<div class="hidden lg:flex items-center bg-surface-container rounded-full px-4 py-1.5 gap-2 border border-outline-variant/30">
+<span class="material-symbols-outlined text-on-surface-variant text-sm">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm text-on-surface w-48 placeholder:text-on-surface-variant" placeholder="Buscar expedición..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-[#92add1] hover:bg-[#92ffaf]/10 hover:text-[#92ffaf] transition-all duration-300 rounded-full active:scale-95">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 text-[#92add1] hover:bg-[#92ffaf]/10 hover:text-[#92ffaf] transition-all duration-300 rounded-full active:scale-95">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-secondary-container overflow-hidden border border-secondary/30">
+<img alt="User profile avatar" class="w-full h-full object-cover" data-alt="User avatar icon in academic setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDuOrVMFlUaOkNa35n_VMYLQY_BJqc8pq36GEDYjAq4iTFcjmbuZMHaCJKp_DppE-n6BOcTw1ppqaq97XbAEAZaveq2iIbkJeM9aBgLtfL4o3jNzvQ8xvn5QlBV3ViDijItCbK4w_70V1Lgg6oSMwh2IMh2cr47ZjinX2lA2tr01FAw1ssLkPZZhXZyply985QIDorZ1QQFtAZxrcMg3PRPYu0CBg47w7gJb-yT2dhK0T5IjLppJ_CsLlXnFrDBGhsZYcuPZ-KLUaGG"/>
+</div>
+</div>
+</header>
+<!-- Page Content -->
+<div class="pt-24 px-6 max-w-7xl mx-auto space-y-8">
+<!-- Hero Stats Bento -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Large Card -->
+<div class="md:col-span-2 glass-panel rounded-2xl p-8 relative overflow-hidden flex flex-col justify-between min-h-[320px]">
+<div class="absolute top-0 right-0 p-8 opacity-20">
+<span class="material-symbols-outlined text-[120px] text-primary" style="font-variation-settings: 'FILL' 1;">ac_unit</span>
+</div>
+<div>
+<span class="bg-primary/20 text-primary text-[10px] uppercase tracking-widest px-3 py-1 rounded-full font-bold">Resumen de Investigación</span>
+<h1 class="text-4xl md:text-5xl font-black mt-4 leading-tight">Progreso del <span class="text-primary">Semestre Ártico</span></h1>
+<p class="text-on-surface-variant mt-4 max-w-md">Has completado el 74% de tus objetivos de investigación este mes. La aurora intelectual brilla con fuerza.</p>
+</div>
+<div class="mt-8 flex items-end justify-between">
+<div class="space-y-2 w-full max-w-xs">
+<div class="flex justify-between text-sm mb-1">
+<span class="text-on-surface-variant">Estado de Tesis</span>
+<span class="text-primary font-bold">74%</span>
+</div>
+<div class="h-2 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-primary to-secondary w-[74%]"></div>
+</div>
+</div>
+<button class="hidden sm:flex items-center gap-2 text-primary font-bold hover:gap-3 transition-all">
+                            Ver detalles <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Small Focus Card -->
+<div class="glass-panel rounded-2xl p-8 flex flex-col justify-between border-primary/10">
+<div>
+<div class="w-12 h-12 rounded-xl bg-secondary/10 flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-secondary text-3xl">timer</span>
+</div>
+<h3 class="text-xl font-bold">Sesión Pomodoro</h3>
+<p class="text-on-surface-variant text-sm mt-2">Próximo bloque: Análisis Glaciar</p>
+</div>
+<div class="text-center py-4">
+<span class="text-5xl font-black tracking-tighter text-on-surface">25:00</span>
+</div>
+<button class="w-full py-4 bg-secondary text-on-secondary font-black rounded-xl hover:shadow-[0_0_20px_rgba(233,179,255,0.3)] transition-all">
+                        INICIAR FOCUS
+                    </button>
+</div>
+</section>
+<!-- Metrics Grid -->
+<section class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="bg-surface-container rounded-xl p-5 border border-outline-variant/10 hover:border-primary/30 transition-colors">
+<p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Promedio General</p>
+<div class="flex items-center justify-between mt-2">
+<span class="text-3xl font-black text-on-surface">9.4</span>
+<span class="text-primary material-symbols-outlined">trending_up</span>
+</div>
+</div>
+<div class="bg-surface-container rounded-xl p-5 border border-outline-variant/10 hover:border-secondary/30 transition-colors">
+<p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Notas Guardadas</p>
+<div class="flex items-center justify-between mt-2">
+<span class="text-3xl font-black text-on-surface">142</span>
+<span class="text-secondary material-symbols-outlined">description</span>
+</div>
+</div>
+<div class="bg-surface-container rounded-xl p-5 border border-outline-variant/10 hover:border-primary/30 transition-colors">
+<p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Horas de Estudio</p>
+<div class="flex items-center justify-between mt-2">
+<span class="text-3xl font-black text-on-surface">48h</span>
+<span class="text-primary material-symbols-outlined">auto_graph</span>
+</div>
+</div>
+<div class="bg-surface-container rounded-xl p-5 border border-outline-variant/10 hover:border-secondary/30 transition-colors">
+<p class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Tareas Pendientes</p>
+<div class="flex items-center justify-between mt-2">
+<span class="text-3xl font-black text-on-surface">06</span>
+<span class="text-secondary material-symbols-outlined">assignment_late</span>
+</div>
+</div>
+</section>
+<!-- Content Row 2 -->
+<section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Academic Calendar -->
+<div class="lg:col-span-2 glass-panel rounded-2xl overflow-hidden">
+<div class="p-6 flex justify-between items-center border-b border-outline-variant/10">
+<h2 class="text-xl font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">calendar_month</span>
+                            Horario Semanal
+                        </h2>
+<button class="text-sm text-on-surface-variant hover:text-primary transition-colors">Ver calendario completo</button>
+</div>
+<div class="p-0 overflow-x-auto no-scrollbar">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-high/50 text-[10px] uppercase tracking-widest text-on-surface-variant">
+<th class="px-6 py-4 font-bold">Asignatura</th>
+<th class="px-6 py-4 font-bold">Hora</th>
+<th class="px-6 py-4 font-bold">Ubicación</th>
+<th class="px-6 py-4 font-bold">Estado</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/5">
+<tr class="hover:bg-primary/5 transition-colors">
+<td class="px-6 py-5">
+<p class="font-bold">Termodinámica Ártica</p>
+<p class="text-xs text-on-surface-variant">Dr. Frost</p>
+</td>
+<td class="px-6 py-5 text-sm">08:00 - 10:00</td>
+<td class="px-6 py-5 text-sm">Lab Sigma-9</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 bg-primary/10 text-primary text-[10px] font-bold rounded-full">EN VIVO</span>
+</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors">
+<td class="px-6 py-5">
+<p class="font-bold">Cartografía Estelar</p>
+<p class="text-xs text-on-surface-variant">Prof. Lyra</p>
+</td>
+<td class="px-6 py-5 text-sm">11:30 - 13:00</td>
+<td class="px-6 py-5 text-sm">Observatorio</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 bg-surface-container-highest text-on-surface-variant text-[10px] font-bold rounded-full">PENDIENTE</span>
+</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors">
+<td class="px-6 py-5">
+<p class="font-bold">Biología Celular Extrema</p>
+<p class="text-xs text-on-surface-variant">Dra. Borealis</p>
+</td>
+<td class="px-6 py-5 text-sm">15:00 - 17:00</td>
+<td class="px-6 py-5 text-sm">Bio-Dome B</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 bg-surface-container-highest text-on-surface-variant text-[10px] font-bold rounded-full">PENDIENTE</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Recent Files -->
+<div class="glass-panel rounded-2xl p-6">
+<h2 class="text-xl font-bold mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">folder_open</span>
+                        Archivos Recientes
+                    </h2>
+<div class="space-y-4">
+<div class="flex items-center gap-4 p-3 rounded-xl hover:bg-surface-container-highest transition-colors cursor-pointer group">
+<div class="w-12 h-12 rounded-lg bg-error/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-error">picture_as_pdf</span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="font-bold truncate group-hover:text-primary transition-colors">Expedicion_V1.pdf</p>
+<p class="text-xs text-on-surface-variant">Hace 2 horas • 4.2 MB</p>
+</div>
+</div>
+<div class="flex items-center gap-4 p-3 rounded-xl hover:bg-surface-container-highest transition-colors cursor-pointer group">
+<div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">description</span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="font-bold truncate group-hover:text-primary transition-colors">Notas_Aurora.txt</p>
+<p class="text-xs text-on-surface-variant">Ayer • 12 KB</p>
+</div>
+</div>
+<div class="flex items-center gap-4 p-3 rounded-xl hover:bg-surface-container-highest transition-colors cursor-pointer group">
+<div class="w-12 h-12 rounded-lg bg-secondary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary">image</span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="font-bold truncate group-hover:text-primary transition-colors">Muestra_Ice_03.jpg</p>
+<p class="text-xs text-on-surface-variant">Hace 3 días • 1.8 MB</p>
+</div>
+</div>
+</div>
+<button class="w-full mt-6 py-3 border border-outline-variant/30 rounded-xl text-sm font-bold hover:bg-surface-container-highest transition-colors">
+                        Explorar todos los archivos
+                    </button>
+</div>
+</section>
+</div>
+</main>
+<!-- BottomNavBar (Mobile) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full h-16 bg-[#020f1e]/90 backdrop-blur-xl border-t border-outline-variant/20 flex items-center justify-around px-4 z-50">
+<a class="flex flex-col items-center gap-1 text-[#92ffaf]" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="text-[10px] font-bold">Inicio</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-[#92add1]" href="#">
+<span class="material-symbols-outlined">timer</span>
+<span class="text-[10px]">Pomo</span>
+</a>
+<div class="relative -top-6">
+<button class="w-14 h-14 bg-primary text-on-primary rounded-full shadow-lg shadow-primary/30 flex items-center justify-center">
+<span class="material-symbols-outlined text-3xl">add</span>
+</button>
+</div>
+<a class="flex flex-col items-center gap-1 text-[#92add1]" href="#">
+<span class="material-symbols-outlined">description</span>
+<span class="text-[10px]">Notas</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-[#92add1]" href="#">
+<span class="material-symbols-outlined">grade</span>
+<span class="text-[10px]">Notas</span>
+</a>
+</nav>
+<!-- FAB for Desktop (Contextual Suppression Rule ignored for Demo consistency) -->
+<button class="hidden md:flex fixed bottom-8 right-8 w-16 h-16 bg-primary text-on-primary rounded-full shadow-2xl shadow-primary/40 items-center justify-center hover:scale-110 active:scale-95 transition-all z-40">
+<span class="material-symbols-outlined text-3xl">add</span>
+</button>
+<!-- Decorative Aurora Elements -->
+<div class="fixed top-0 left-0 w-full h-full pointer-events-none -z-10 opacity-30 mix-blend-screen overflow-hidden">
+<div class="absolute top-[-10%] left-[-10%] w-[120%] h-[50%] bg-gradient-to-b from-primary/20 via-secondary/10 to-transparent blur-[100px] animate-pulse"></div>
+<div class="absolute top-[20%] right-[-10%] w-[50%] h-[80%] bg-gradient-to-l from-primary/10 to-transparent blur-[80px]"></div>
+</div>
+</body></html>

@@ -75,10 +75,10 @@ export default function SettingsPage() {
               <Badge
                 className={`text-sm px-3 py-1 ${
                   plan === "premium"
-                    ? "bg-gradient-to-r from-warning to-destructive"
+                    ? "bg-gradient-to-r from-warning to-destructive text-foreground"
                     : plan === "pro"
-                    ? "bg-gradient-to-r from-primary to-accent"
-                    : "bg-secondary"
+                    ? "bg-gradient-to-r from-primary to-accent text-foreground"
+                    : "bg-muted text-foreground border border-border"
                 }`}
               >
                 {plan === "free" ? "Gratis" : plan === "pro" ? "Pro" : "Premium"}

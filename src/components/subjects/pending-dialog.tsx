@@ -2,8 +2,14 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import type { PendingType, PendingStatus } from "@/lib/types";
 
 export interface PendingDialogProps {
@@ -74,15 +80,16 @@ export function PendingDialog({ open, onClose, onSave }: PendingDialogProps) {
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="text-xs text-muted-foreground mb-1 block">Tipo</label>
-              <div className="relative">
-                <select value={type} onChange={(e) => setType(e.target.value as PendingType)}
-                  className="w-full bg-muted border border-border rounded-lg px-3 py-2.5 text-sm text-foreground appearance-none focus:outline-none focus:border-ring cursor-pointer">
+              <Select value={type} onValueChange={(v) => setType(v as PendingType)}>
+                <SelectTrigger className="w-full bg-muted border-border text-foreground">
+                  <SelectValue placeholder="Seleccionar tipo" />
+                </SelectTrigger>
+                <SelectContent className="bg-card border-border">
                   {types.map((t) => (
-                    <option key={t.value} value={t.value} className="bg-muted">{t.label}</option>
+                    <SelectItem key={t.value} value={t.value} className="text-foreground">{t.label}</SelectItem>
                   ))}
-                </select>
-                <ChevronRight className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground rotate-90 pointer-events-none" />
-              </div>
+                </SelectContent>
+              </Select>
             </div>
             <div>
               <label className="text-xs text-muted-foreground mb-1 block">Fecha limite *</label>

@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-container-highest": "#e1e3e4",
+              "on-secondary-fixed-variant": "#41484e",
+              "on-error-container": "#93000a",
+              "secondary": "#585f66",
+              "primary-container": "#0070eb",
+              "outline-variant": "#c1c6d7",
+              "on-surface-variant": "#414755",
+              "surface": "#f8f9fa",
+              "secondary-fixed-dim": "#c0c7cf",
+              "secondary-fixed": "#dce3ec",
+              "on-error": "#ffffff",
+              "error": "#ba1a1a",
+              "primary-fixed": "#d8e2ff",
+              "on-secondary-fixed": "#151c22",
+              "tertiary-fixed-dim": "#bfc8d0",
+              "tertiary-container": "#6d767e",
+              "on-surface": "#191c1d",
+              "tertiary": "#545d65",
+              "surface-container": "#edeeef",
+              "on-tertiary": "#ffffff",
+              "on-background": "#191c1d",
+              "outline": "#717786",
+              "primary": "#0058bc",
+              "on-tertiary-fixed-variant": "#3f484f",
+              "on-primary-fixed-variant": "#004493",
+              "tertiary-fixed": "#dbe4ed",
+              "error-container": "#ffdad6",
+              "inverse-primary": "#adc6ff",
+              "surface-bright": "#f8f9fa",
+              "surface-container-high": "#e7e8e9",
+              "surface-dim": "#d9dadb",
+              "inverse-on-surface": "#f0f1f2",
+              "on-secondary": "#ffffff",
+              "surface-container-low": "#f3f4f5",
+              "inverse-surface": "#2e3132",
+              "on-primary-fixed": "#001a41",
+              "surface-tint": "#005bc1",
+              "surface-variant": "#e1e3e4",
+              "secondary-container": "#dce3ec",
+              "on-primary-container": "#fefcff",
+              "on-secondary-container": "#5e656c",
+              "surface-container-lowest": "#ffffff",
+              "on-primary": "#ffffff",
+              "background": "#f8f9fa",
+              "on-tertiary-fixed": "#141d23",
+              "primary-fixed-dim": "#adc6ff",
+              "on-tertiary-container": "#fcfcff"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface antialiased">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full w-64 z-50 bg-[#f3f4f5] dark:bg-slate-950 flex flex-col py-8 px-6 gap-y-4 shadow-[0_20px_40px_rgba(25,28,29,0.05)]">
+<div class="mb-8 px-2">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center text-white">
+<span class="material-symbols-outlined">auto_stories</span>
+</div>
+<div>
+<h1 class="text-lg font-black text-[#191c1d] dark:text-white leading-none">The Curator</h1>
+<p class="text-[0.65rem] font-semibold text-on-surface-variant uppercase tracking-wider mt-1">Intellectual Calm</p>
+</div>
+</div>
+</div>
+<nav class="flex-grow space-y-2">
+<!-- Dashboard (Active) -->
+<a class="flex items-center gap-3 py-3 px-4 bg-white dark:bg-slate-900 text-[#0058bc] font-bold rounded-lg shadow-sm transition-all duration-300" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-[0.75rem] uppercase tracking-wider">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 py-3 px-4 text-[#414755] dark:text-slate-400 hover:text-[#0058bc] hover:bg-white/50 dark:hover:bg-slate-800 hover:translate-x-1 transition-all duration-300 rounded-lg" href="#">
+<span class="material-symbols-outlined">auto_stories</span>
+<span class="text-[0.75rem] uppercase tracking-wider">My Courses</span>
+</a>
+<a class="flex items-center gap-3 py-3 px-4 text-[#414755] dark:text-slate-400 hover:text-[#0058bc] hover:bg-white/50 dark:hover:bg-slate-800 hover:translate-x-1 transition-all duration-300 rounded-lg" href="#">
+<span class="material-symbols-outlined">collections_bookmark</span>
+<span class="text-[0.75rem] uppercase tracking-wider">Curated Library</span>
+</a>
+<a class="flex items-center gap-3 py-3 px-4 text-[#414755] dark:text-slate-400 hover:text-[#0058bc] hover:bg-white/50 dark:hover:bg-slate-800 hover:translate-x-1 transition-all duration-300 rounded-lg" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="text-[0.75rem] uppercase tracking-wider">Progress Metrics</span>
+</a>
+<a class="flex items-center gap-3 py-3 px-4 text-[#414755] dark:text-slate-400 hover:text-[#0058bc] hover:bg-white/50 dark:hover:bg-slate-800 hover:translate-x-1 transition-all duration-300 rounded-lg" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[0.75rem] uppercase tracking-wider">Settings</span>
+</a>
+</nav>
+<div class="mt-auto space-y-4 pt-4">
+<button class="w-full py-3 px-4 bg-gradient-to-br from-primary to-primary-container text-white rounded-lg font-bold text-[0.75rem] uppercase tracking-wider shadow-sm flex items-center justify-center gap-2 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-sm">add</span>
+                Start New Lesson
+            </button>
+<div class="pt-4 border-t border-outline-variant/15 flex flex-col gap-1">
+<a class="flex items-center gap-3 py-2 px-4 text-[#414755] text-[0.75rem] uppercase font-semibold tracking-wider hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-lg">contact_support</span>
+                    Support
+                </a>
+<a class="flex items-center gap-3 py-2 px-4 text-[#414755] text-[0.75rem] uppercase font-semibold tracking-wider hover:text-error transition-colors" href="#">
+<span class="material-symbols-outlined text-lg">logout</span>
+                    Sign Out
+                </a>
+</div>
+</div>
+</aside>
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-40 bg-[#f8f9fa]/85 backdrop-blur-[20px] flex justify-between items-center px-8 h-16 ml-64 max-w-[calc(100%-16rem)]">
+<div class="flex items-center gap-8">
+<span class="text-xl font-bold tracking-tighter text-[#191c1d]">The Luminous Scholar</span>
+<div class="hidden md:flex items-center gap-6">
+<a class="text-[#0058bc] border-b-2 border-[#0058bc] font-semibold text-sm h-16 flex items-center" href="#">Overview</a>
+<a class="text-[#414755] font-medium text-sm h-16 flex items-center hover:bg-[#f3f4f5] px-2 transition-colors" href="#">Curriculum</a>
+<a class="text-[#414755] font-medium text-sm h-16 flex items-center hover:bg-[#f3f4f5] px-2 transition-colors" href="#">Resources</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-on-surface-variant hover:bg-[#f3f4f5] rounded-full transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:bg-[#f3f4f5] rounded-full transition-colors">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant/20">
+<img alt="User profile avatar" data-alt="User profile avatar circle" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAuTJUGDqUTLlVzbmoTGrAvNp4-76MKGPeTFD1BU4oXKXMiYX932xr63pP1jjRoHRHIIx9YiVjUSi-2AIYI1PjVzsidPUReQhh8eUL1QGISbovVfbRCwrifXkCo0ZWX5lAzk48Oulgf_d-0DI_cQDdurNgOFk_kthegWf_Re-wTvIPC2obNwSDghA-ss_8xguPZRJrazlQ6LS-52Enr_t9vikq7ibSeBhxMaOPiVCMBdp4L4P3QjFWcmsGE5Yl7SomtGQv5xh7VoqX"/>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="ml-64 pt-24 pb-12 px-10 max-w-7xl mx-auto">
+<!-- Editorial Header Section -->
+<section class="mb-12">
+<div class="max-w-3xl">
+<h2 class="text-[2.75rem] font-bold tracking-tight text-on-surface leading-tight mb-2">Bienvenido de nuevo, Académico.</h2>
+<p class="text-on-surface-variant body-md leading-relaxed max-w-xl">Continúa tu viaje de conocimiento donde lo dejaste. Tu progreso actual refleja una dedicación excepcional.</p>
+</div>
+</section>
+<!-- Stats Grid (Tonal Layering) -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_20px_40px_rgba(25,28,29,0.05)] border border-outline-variant/10">
+<p class="text-[0.75rem] font-semibold text-on-surface-variant uppercase tracking-wider mb-2">Cursos Activos</p>
+<div class="flex items-end justify-between">
+<span class="text-3xl font-bold text-primary">04</span>
+<span class="material-symbols-outlined text-primary/30">school</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_20px_40px_rgba(25,28,29,0.05)] border border-outline-variant/10">
+<p class="text-[0.75rem] font-semibold text-on-surface-variant uppercase tracking-wider mb-2">Horas de Estudio</p>
+<div class="flex items-end justify-between">
+<span class="text-3xl font-bold text-on-surface">42.5</span>
+<span class="material-symbols-outlined text-on-surface-variant/30">schedule</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_20px_40px_rgba(25,28,29,0.05)] border border-outline-variant/10">
+<p class="text-[0.75rem] font-semibold text-on-surface-variant uppercase tracking-wider mb-2">Certificaciones</p>
+<div class="flex items-end justify-between">
+<span class="text-3xl font-bold text-on-surface">12</span>
+<span class="material-symbols-outlined text-on-surface-variant/30">verified</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0_20px_40px_rgba(25,28,29,0.05)] border border-outline-variant/10">
+<p class="text-[0.75rem] font-semibold text-on-surface-variant uppercase tracking-wider mb-2">Racha Diaria</p>
+<div class="flex items-end justify-between">
+<span class="text-3xl font-bold text-primary">07</span>
+<span class="material-symbols-outlined text-primary/30" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+</div>
+</div>
+</div>
+<!-- Asymmetric Bento Layout -->
+<div class="grid grid-cols-12 gap-8">
+<!-- Continued Learning (Main Column) -->
+<div class="col-span-12 lg:col-span-8 space-y-8">
+<h3 class="text-xl font-bold tracking-tight text-on-surface">Continuar Aprendiendo</h3>
+<div class="bg-surface-container-low rounded-xl overflow-hidden flex flex-col md:flex-row border border-outline-variant/5">
+<div class="w-full md:w-1/3 aspect-video md:aspect-auto relative bg-surface-container-highest">
+<img alt="Curso de Filosofía" class="absolute inset-0 w-full h-full object-cover" data-alt="Abstract classical architecture with soft blue lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRnC7AwDF9BGaNV9YLrXOlY-_i4tnBg2j89W--oJlli7r7H7vnzF2zJuGTk-rT6dIhWjHN83P2IA6yrxA-W40F2BBjcULkayTEylveLNP23LjSeVQHeTfqjXJsFnvpD-_f662-p1o4kiFUj-YfWqKLrMc3W48fZJV_92xzdcCwiYqrsWSK0uk-8Liw5oCXHbyQPG-VHHigeM7HCGjJ9mrRIBRnpNxLWD-_xwURA4CjhONOcjlPkNB0YliLvow8vC2kSUFaqNM3A-zQ"/>
+</div>
+<div class="p-8 flex-1">
+<div class="flex items-center gap-2 mb-4">
+<span class="px-3 py-1 bg-secondary-container text-on-secondary-container text-[0.65rem] font-bold uppercase rounded-full">Filosofía Moderna</span>
+</div>
+<h4 class="text-2xl font-bold text-on-surface mb-3 leading-snug">El Existencialismo en el Siglo XXI</h4>
+<p class="text-on-surface-variant text-sm mb-6 leading-relaxed">Explora las bases del pensamiento existencial y su relevancia en la era digital contemporánea.</p>
+<div class="space-y-4">
+<div class="flex items-center justify-between text-xs font-semibold text-on-surface-variant">
+<span>Progreso del Módulo</span>
+<span>75%</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full w-3/4"></div>
+</div>
+</div>
+<button class="mt-8 px-6 py-3 bg-gradient-to-br from-primary to-primary-container text-white rounded-lg font-bold text-sm shadow-sm hover:opacity-90 transition-opacity">
+                            Continuar Lección
+                        </button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/10 group hover:bg-surface transition-colors cursor-pointer">
+<div class="w-12 h-12 rounded-lg bg-surface-container-low flex items-center justify-center text-primary mb-4">
+<span class="material-symbols-outlined">menu_book</span>
+</div>
+<h5 class="font-bold text-on-surface mb-2">Historia del Arte</h5>
+<p class="text-xs text-on-surface-variant leading-relaxed">De las cavernas al post-impresionismo.</p>
+<div class="mt-4 pt-4 border-t border-outline-variant/10 flex items-center justify-between">
+<span class="text-[0.7rem] font-bold text-on-surface-variant uppercase">Siguiente: Barroco</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/10 group hover:bg-surface transition-colors cursor-pointer">
+<div class="w-12 h-12 rounded-lg bg-surface-container-low flex items-center justify-center text-primary mb-4">
+<span class="material-symbols-outlined">psychology</span>
+</div>
+<h5 class="font-bold text-on-surface mb-2">Neurociencia Cognitiva</h5>
+<p class="text-xs text-on-surface-variant leading-relaxed">Mecanismos de la memoria y el aprendizaje.</p>
+<div class="mt-4 pt-4 border-t border-outline-variant/10 flex items-center justify-between">
+<span class="text-[0.7rem] font-bold text-on-surface-variant uppercase">Siguiente: Plasticidad</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Sidebar Info (Secondary Column) -->
+<div class="col-span-12 lg:col-span-4 space-y-8">
+<div class="bg-surface-container-low p-8 rounded-xl">
+<h3 class="text-sm font-bold uppercase tracking-widest text-on-surface-variant mb-6">Tu Actividad Semanal</h3>
+<div class="space-y-6">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-white flex items-center justify-center border border-outline-variant/10 text-primary">
+<span class="material-symbols-outlined text-sm">edit</span>
+</div>
+<div>
+<p class="text-xs font-bold text-on-surface">Ensayo Final Entregado</p>
+<p class="text-[0.65rem] text-on-surface-variant">Hace 2 horas • Ética Aplicada</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-white flex items-center justify-center border border-outline-variant/10 text-tertiary">
+<span class="material-symbols-outlined text-sm">star</span>
+</div>
+<div>
+<p class="text-xs font-bold text-on-surface">Nueva Insignia: Lector Voraz</p>
+<p class="text-[0.65rem] text-on-surface-variant">Ayer • Biblioteca Curada</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-white flex items-center justify-center border border-outline-variant/10 text-secondary">
+<span class="material-symbols-outlined text-sm">groups</span>
+</div>
+<div>
+<p class="text-xs font-bold text-on-surface">Sesión de Estudio Grupal</p>
+<p class="text-[0.65rem] text-on-surface-variant">Mañana 10:00 AM • Discord</p>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-white border-2 border-primary/10 p-8 rounded-xl shadow-sm relative overflow-hidden">
+<div class="relative z-10">
+<h4 class="text-lg font-bold text-on-surface mb-2">Suscripción Premium</h4>
+<p class="text-xs text-on-surface-variant mb-6 leading-relaxed">Accede a mentorías 1:1 y contenido editorial exclusivo de expertos mundiales.</p>
+<button class="w-full py-3 bg-surface-container-high text-primary font-bold text-[0.75rem] uppercase tracking-wider rounded-lg hover:bg-surface-container-highest transition-colors">
+                            Mejorar Ahora
+                        </button>
+</div>
+<div class="absolute -right-4 -bottom-4 opacity-5 pointer-events-none">
+<span class="material-symbols-outlined text-[8rem]">auto_awesome</span>
+</div>
+</div>
+<div class="bg-surface-container-low p-6 rounded-xl border border-outline-variant/5">
+<h3 class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-4">Próximos Eventos</h3>
+<div class="space-y-4">
+<div class="p-3 bg-white rounded-lg">
+<p class="text-[0.65rem] font-bold text-primary mb-1">15 OCT • 18:00</p>
+<p class="text-xs font-bold text-on-surface">Masterclass: Arquitectura Gótica</p>
+</div>
+<div class="p-3 bg-white/50 rounded-lg">
+<p class="text-[0.65rem] font-bold text-on-surface-variant mb-1">18 OCT • 09:00</p>
+<p class="text-xs font-bold text-on-surface">Simposio de Literatura Rusa</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

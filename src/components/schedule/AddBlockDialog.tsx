@@ -77,13 +77,13 @@ export function AddBlockDialog({
         </DialogHeader>
         <div className="space-y-4 pt-4">
           <div className="space-y-2">
-            <Label className="text-foreground/80">Ramo</Label>
+            <Label className="text-foreground/80">Asignatura</Label>
             <Select
               value={newBlock.subjectId}
               onValueChange={(v) => onNewBlockChange({ ...newBlock, subjectId: v ?? "" })}
             >
               <SelectTrigger className="bg-muted border-border text-foreground">
-                <SelectValue placeholder="Selecciona un ramo" />
+                <SelectValue placeholder="Selecciona una asignatura" />
               </SelectTrigger>
               <SelectContent className="bg-card border-border">
                 {subjects.map((s) => (

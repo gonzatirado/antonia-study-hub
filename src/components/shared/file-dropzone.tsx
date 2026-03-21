@@ -84,8 +84,15 @@ export function FileDropzone({
   accept = {
     "application/pdf": [".pdf"],
     "text/plain": [".txt"],
-    "application/msword": [".doc"],
     "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [".docx"],
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [".xlsx"],
+    "application/vnd.ms-excel": [".xls"],
+    "application/vnd.openxmlformats-officedocument.presentationml.presentation": [".pptx"],
+    "image/png": [".png"],
+    "image/jpeg": [".jpg", ".jpeg"],
+    "image/webp": [".webp"],
+    "image/heic": [".heic"],
+    "text/csv": [".csv"],
   },
   color = "blue",
 }: FileDropzoneProps) {
@@ -139,7 +146,7 @@ export function FileDropzone({
             <Upload className="w-10 h-10 text-muted-foreground" />
             <p className="text-foreground/80 font-medium">Arrastra archivos aqui o haz click</p>
             <p className="text-sm text-muted-foreground">
-              PDF, DOC, TXT - maximo {maxSizeMB} MB ({files.length}/{maxFiles} archivos)
+              PDF, Word, Excel, PowerPoint, imágenes, TXT — máx {maxSizeMB} MB ({files.length}/{maxFiles})
             </p>
           </div>
         )}

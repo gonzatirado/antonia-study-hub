@@ -96,244 +96,20 @@ function DarkDesign() {
 }
 
 /* ─────────────────────────────────────────────
-   MIDNIGHT — Immersive deep-space: dense star field + vivid nebula + shooting stars + aurora
+   MIDNIGHT — Stitch deep midnight sky image
    ───────────────────────────────────────────── */
 function MidnightDesign() {
   return (
-    <>
-      {/* Deep space nebula effect — MORE visible (opacity +30%) with slow animated hue shift */}
-      <div
-        className="pointer-events-none fixed inset-0 z-0"
-        style={{
-          backgroundImage: `
-            radial-gradient(ellipse 60% 50% at 25% 20%, oklch(0.22 0.16 260 / 0.58), transparent 60%),
-            radial-gradient(ellipse 50% 45% at 75% 30%, oklch(0.20 0.14 285 / 0.46), transparent 55%),
-            radial-gradient(ellipse 45% 40% at 50% 60%, oklch(0.18 0.12 240 / 0.33), transparent 50%),
-            radial-gradient(ellipse 55% 35% at 80% 80%, oklch(0.19 0.13 270 / 0.26), transparent 50%),
-            radial-gradient(ellipse 40% 35% at 10% 70%, oklch(0.17 0.11 295 / 0.22), transparent 50%)
-          `,
-          animation: "midnight-nebula-shift 60s ease-in-out infinite",
-        }}
-      />
-      {/* Dot grid overlay for depth */}
-      <DotGridOverlay opacity={0.04} color="oklch(0.60 0.12 260)" spacing={22} />
-      {/* Stars replaced by tsParticles StarfieldEffect with constellation links */}
-      {/* Shooting stars — thin lines that cross periodically */}
-      <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
-        <div className="animate-shooting-star absolute" style={{
-          top: "12%",
-          left: "-10%",
-          width: "80px",
-          height: "1px",
-          background: "linear-gradient(90deg, transparent, oklch(0.90 0.05 250 / 0.8), oklch(0.95 0.02 260 / 0.4), transparent)",
-          borderRadius: "1px",
-          transform: "rotate(-15deg)",
-          filter: "blur(0.3px)",
-        }} />
-        <div className="animate-shooting-star-2 absolute" style={{
-          top: "35%",
-          left: "-10%",
-          width: "60px",
-          height: "1px",
-          background: "linear-gradient(90deg, transparent, oklch(0.85 0.06 270 / 0.7), oklch(0.90 0.03 280 / 0.3), transparent)",
-          borderRadius: "1px",
-          transform: "rotate(-20deg)",
-          filter: "blur(0.3px)",
-        }} />
-      </div>
-      {/* Aurora waves at bottom — MORE prominent */}
-      <div
-        className="pointer-events-none fixed inset-0 z-0 animate-aurora-wave"
-        style={{
-          backgroundImage: `
-            radial-gradient(ellipse 140% 30% at 50% 100%, oklch(0.45 0.28 250 / 0.70), transparent),
-            radial-gradient(ellipse 100% 25% at 30% 92%, oklch(0.40 0.25 280 / 0.60), transparent),
-            radial-gradient(ellipse 80% 20% at 70% 96%, oklch(0.38 0.22 220 / 0.55), transparent),
-            radial-gradient(ellipse 60% 15% at 55% 100%, oklch(0.42 0.24 260 / 0.45), transparent)
-          `,
-        }}
-      />
-      {/* Deep space top gradient — richer */}
-      <div
-        className="pointer-events-none fixed inset-0 z-0"
-        style={{
-          backgroundImage: `
-            radial-gradient(ellipse 70% 60% at 50% 0%, oklch(0.15 0.12 270 / 0.60), transparent)
-          `,
-        }}
-      />
-    </>
+    <StitchBackground src="/themes/fondo-medianoche.png" />
   );
 }
 
 /* ─────────────────────────────────────────────
-   AURORA — Northern lights animated bands + grid overlay + particle glow
+   AURORA — Stitch arctic aurora boreal image
    ───────────────────────────────────────────── */
 function AuroraDesign() {
   return (
-    <>
-      {/* === Subtle grid overlay behind aurora for Draftly-style depth === */}
-      <svg className="pointer-events-none fixed inset-0 z-0 h-full w-full opacity-[0.04]">
-        <defs>
-          <pattern id="aurora-depth-grid" width="40" height="40" patternUnits="userSpaceOnUse">
-            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="oklch(0.70 0.15 160)" strokeWidth="0.4" />
-          </pattern>
-        </defs>
-        <rect width="100%" height="100%" fill="url(#aurora-depth-grid)" />
-      </svg>
-
-      {/* === SVG Aurora Curtains — organic wavy shapes like real northern lights === */}
-      <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
-        <svg className="absolute inset-0 h-full w-full" viewBox="0 0 1440 900" preserveAspectRatio="none">
-          <defs>
-            {/* Main green aurora gradient — bright at bottom edge, fading up */}
-            <linearGradient id="aurora-green" x1="0" y1="1" x2="0" y2="0">
-              <stop offset="0%" stopColor="oklch(0.75 0.35 155)" stopOpacity="0.7" />
-              <stop offset="30%" stopColor="oklch(0.65 0.30 155)" stopOpacity="0.5" />
-              <stop offset="60%" stopColor="oklch(0.50 0.20 165)" stopOpacity="0.25" />
-              <stop offset="85%" stopColor="oklch(0.40 0.15 180)" stopOpacity="0.08" />
-              <stop offset="100%" stopColor="oklch(0.30 0.10 200)" stopOpacity="0" />
-            </linearGradient>
-            {/* Purple/pink aurora gradient */}
-            <linearGradient id="aurora-purple" x1="0" y1="1" x2="0" y2="0">
-              <stop offset="0%" stopColor="oklch(0.60 0.28 290)" stopOpacity="0.5" />
-              <stop offset="35%" stopColor="oklch(0.50 0.25 285)" stopOpacity="0.35" />
-              <stop offset="65%" stopColor="oklch(0.40 0.18 300)" stopOpacity="0.15" />
-              <stop offset="100%" stopColor="oklch(0.30 0.12 310)" stopOpacity="0" />
-            </linearGradient>
-            {/* Teal accent gradient */}
-            <linearGradient id="aurora-teal" x1="0" y1="1" x2="0" y2="0">
-              <stop offset="0%" stopColor="oklch(0.70 0.30 170)" stopOpacity="0.55" />
-              <stop offset="40%" stopColor="oklch(0.55 0.22 175)" stopOpacity="0.3" />
-              <stop offset="100%" stopColor="oklch(0.40 0.15 185)" stopOpacity="0" />
-            </linearGradient>
-            {/* Glow filter for soft edges */}
-            <filter id="aurora-blur">
-              <feGaussianBlur stdDeviation="12" />
-            </filter>
-            <filter id="aurora-blur-lg">
-              <feGaussianBlur stdDeviation="20" />
-            </filter>
-          </defs>
-
-          {/* Curtain 1: Main green — wavy ribbon across the sky */}
-          <g className="animate-aurora-wave" filter="url(#aurora-blur)">
-            <path
-              d="M-50,350 C100,280 200,380 350,300 C500,220 550,350 700,280 C850,210 900,330 1050,260 C1200,190 1300,310 1500,250 L1500,150 C1300,220 1200,100 1050,170 C900,240 850,120 700,190 C550,260 500,130 350,200 C200,270 100,180 -50,220 Z"
-              fill="url(#aurora-green)"
-            />
-          </g>
-
-          {/* Curtain 2: Purple — offset, slightly higher */}
-          <g className="animate-aurora-curtain-2" filter="url(#aurora-blur)">
-            <path
-              d="M-50,300 C150,230 250,320 400,250 C550,180 650,300 800,230 C950,160 1050,280 1200,210 C1350,140 1400,260 1500,200 L1500,100 C1400,160 1350,60 1200,120 C1050,180 950,80 800,140 C650,200 550,100 400,160 C250,220 150,140 -50,190 Z"
-              fill="url(#aurora-purple)"
-            />
-          </g>
-
-          {/* Curtain 3: Teal accent — lower, brighter edge */}
-          <g className="animate-aurora-curtain-3" filter="url(#aurora-blur-lg)">
-            <path
-              d="M-50,420 C100,370 250,440 400,380 C550,320 650,410 800,360 C950,310 1100,400 1250,340 C1400,280 1450,370 1500,330 L1500,250 C1450,290 1400,200 1250,260 C1100,320 950,230 800,280 C650,330 550,240 400,300 C250,360 100,290 -50,340 Z"
-              fill="url(#aurora-teal)"
-            />
-          </g>
-
-          {/* Bright green edge line — the sharp bottom edge of the aurora */}
-          <g className="animate-aurora-wave" filter="url(#aurora-blur)">
-            <path
-              d="M-50,355 C100,285 200,385 350,305 C500,225 550,355 700,285 C850,215 900,335 1050,265 C1200,195 1300,315 1500,255"
-              fill="none"
-              stroke="oklch(0.80 0.35 150)"
-              strokeWidth="3"
-              strokeOpacity="0.6"
-            />
-          </g>
-        </svg>
-      </div>
-      {/* === Bottom glow: ground reflection === */}
-      <div
-        className="pointer-events-none fixed inset-0 z-0"
-        style={{
-          background: `
-            radial-gradient(ellipse 100% 30% at 50% 100%, oklch(0.30 0.18 160 / 0.40), transparent 70%),
-            radial-gradient(ellipse 60% 20% at 30% 95%, oklch(0.25 0.15 280 / 0.25), transparent 60%),
-            radial-gradient(ellipse 50% 25% at 75% 100%, oklch(0.28 0.16 170 / 0.30), transparent 60%)
-          `,
-        }}
-      />
-      {/* === Stars behind the aurora === */}
-      <svg className="pointer-events-none fixed inset-0 z-0 h-full w-full opacity-70">
-        <defs>
-          <radialGradient id="aurora-star">
-            <stop offset="0%" stopColor="white" stopOpacity="1" />
-            <stop offset="100%" stopColor="white" stopOpacity="0" />
-          </radialGradient>
-        </defs>
-        {[
-          [8, 6, 3.0], [22, 3, 2.5], [38, 8, 3.5], [55, 4, 2.8], [72, 7, 3.2],
-          [88, 5, 2.5], [15, 15, 2.0], [45, 12, 2.2], [65, 18, 2.5], [82, 14, 2.0],
-          [5, 50, 2.5], [30, 55, 2.0], [60, 48, 2.8], [85, 52, 2.2], [48, 62, 2.5],
-          [12, 75, 2.0], [35, 78, 2.5], [68, 72, 2.2], [90, 68, 2.8], [25, 88, 2.0],
-          [55, 85, 2.5], [78, 82, 2.2], [42, 95, 2.0], [92, 90, 2.5],
-        ].map(([x, y, r], i) => (
-          <circle key={i} cx={`${x}%`} cy={`${y}%`} r={r} fill="url(#aurora-star)"
-            opacity={0.5 + (i % 4) * 0.1}
-            className="animate-twinkle" style={{ animationDelay: `${i * 0.4}s` }} />
-        ))}
-      </svg>
-
-      {/* === Arctic mountain silhouettes — 3 layers for depth === */}
-      {/* Back layer — farthest mountains, lightest */}
-      <svg
-        className="pointer-events-none fixed bottom-0 left-0 z-0 w-full"
-        style={{ height: "20vh" }}
-        viewBox="0 0 1440 200"
-        preserveAspectRatio="none"
-      >
-        <path
-          d="M0 200 L0 120 L60 95 L110 110 L160 70 L210 100 L270 55 L320 85 L380 40 L430 75 L490 50 L540 80 L600 35 L660 65 L710 45 L770 78 L830 30 L890 60 L940 42 L1000 72 L1060 38 L1110 68 L1170 48 L1220 80 L1280 55 L1330 90 L1380 65 L1440 85 L1440 200 Z"
-          fill="oklch(0.18 0.04 200 / 0.50)"
-        />
-      </svg>
-      {/* Mid layer — medium depth */}
-      <svg
-        className="pointer-events-none fixed bottom-0 left-0 z-0 w-full"
-        style={{ height: "17vh" }}
-        viewBox="0 0 1440 170"
-        preserveAspectRatio="none"
-      >
-        <path
-          d="M0 170 L0 130 L40 115 L80 95 L120 120 L170 72 L220 100 L280 55 L330 88 L390 45 L440 78 L500 35 L550 65 L610 42 L670 75 L720 50 L780 82 L840 38 L900 70 L950 48 L1010 80 L1070 52 L1120 85 L1180 60 L1230 92 L1290 68 L1340 105 L1390 82 L1440 95 L1440 170 Z"
-          fill="oklch(0.14 0.05 210 / 0.65)"
-        />
-      </svg>
-      {/* Front layer — closest mountains, darkest */}
-      <svg
-        className="pointer-events-none fixed bottom-0 left-0 z-0 w-full"
-        style={{ height: "15vh" }}
-        viewBox="0 0 1440 150"
-        preserveAspectRatio="none"
-      >
-        <path
-          d="M0 150 L0 110 L50 88 L100 105 L150 68 L200 92 L260 50 L310 78 L370 42 L420 70 L480 30 L530 58 L590 38 L650 65 L700 45 L760 72 L820 35 L870 62 L930 40 L990 68 L1050 48 L1100 75 L1160 55 L1210 85 L1270 62 L1320 95 L1380 78 L1440 90 L1440 150 Z"
-          fill="oklch(0.10 0.06 215 / 0.80)"
-        />
-      </svg>
-
-      {/* === Frosty ground glow — ice-blue snow reflection === */}
-      <div
-        className="pointer-events-none fixed inset-0 z-0"
-        style={{
-          background: `
-            radial-gradient(ellipse 120% 15% at 50% 100%, oklch(0.85 0.05 200 / 0.20), transparent 70%),
-            radial-gradient(ellipse 80% 10% at 40% 100%, oklch(0.90 0.03 210 / 0.15), transparent 60%),
-            radial-gradient(ellipse 60% 8% at 70% 100%, oklch(0.80 0.06 190 / 0.18), transparent 55%)
-          `,
-        }}
-      />
-    </>
+    <StitchBackground src="/themes/fondo-aurora.png" />
   );
 }
 
@@ -430,6 +206,73 @@ function GoldDesign() {
 }
 
 /* ─────────────────────────────────────────────
+   Shared: Full-screen background image from Stitch
+   ───────────────────────────────────────────── */
+function StitchBackground({ src }: { src: string }) {
+  return (
+    <div
+      className="pointer-events-none fixed inset-0 z-0"
+      style={{
+        backgroundImage: `url(${src})`,
+        backgroundSize: "100% 100%",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    />
+  );
+}
+
+/* ─────────────────────────────────────────────
+   NEON — Stitch cyberpunk urban night image
+   ───────────────────────────────────────────── */
+function NeonDesign() {
+  return (
+    <>
+      <StitchBackground src="/themes/fondo-neon.png" />
+      <DotGridOverlay opacity={0.03} color="oklch(0.65 0.30 340)" spacing={30} />
+    </>
+  );
+}
+
+/* ─────────────────────────────────────────────
+   ALPES — Swiss Alps: mountains, clouds, pines, light sky
+   ───────────────────────────────────────────── */
+/* ─────────────────────────────────────────────
+   ALPES — Stitch Swiss Alps image
+   ───────────────────────────────────────────── */
+function AlpesDesign() {
+  return (
+    <>
+      <StitchBackground src="/themes/fondo-alpes.png" />
+      <DotGridOverlay opacity={0.02} color="oklch(0.50 0.04 230)" spacing={20} />
+    </>
+  );
+}
+
+/* ─────────────────────────────────────────────
+   BOSQUE — Stitch autumn forest image
+   ───────────────────────────────────────────── */
+function BosqueDesign() {
+  return (
+    <>
+      <StitchBackground src="/themes/fondo-bosque.png" />
+      <DotGridOverlay opacity={0.02} color="oklch(0.45 0.12 75)" spacing={22} />
+    </>
+  );
+}
+
+/* ─────────────────────────────────────────────
+   PLAYA — Stitch pixel art beach image
+   ───────────────────────────────────────────── */
+function PlayaDesign() {
+  return (
+    <>
+      <StitchBackground src="/themes/fondo-playa.png" />
+    </>
+  );
+}
+
+/* ─────────────────────────────────────────────
    Noise texture — shared across all themes
    ───────────────────────────────────────────── */
 function NoiseOverlay() {
@@ -452,6 +295,10 @@ const themeDesigns: Record<string, () => React.JSX.Element> = {
   midnight: MidnightDesign,
   aurora: AuroraDesign,
   gold: GoldDesign,
+  neon: NeonDesign,
+  alpes: AlpesDesign,
+  bosque: BosqueDesign,
+  playa: PlayaDesign,
 };
 
 export function ThemeBackground() {

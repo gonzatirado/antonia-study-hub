@@ -91,7 +91,7 @@ export function GradesTab({
                     <span className="text-sm font-semibold text-foreground">
                       {CATEGORY_LABELS[category] || category}
                     </span>
-                    <span className="text-xs text-muted-foreground">({categoryWeight}% del ramo)</span>
+                    <span className="text-xs text-muted-foreground">({categoryWeight}% de la asignatura)</span>
                   </div>
                   <span className={`text-sm font-bold ${categoryAvg >= 4 ? "text-success" : "text-destructive"}`}>
                     {categoryAvg.toFixed(1)}

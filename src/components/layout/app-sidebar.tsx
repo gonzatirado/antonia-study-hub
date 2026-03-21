@@ -46,11 +46,11 @@ import { useRouter } from "next/navigation";
 const mainNav = [
   { title: "Inicio", icon: LayoutDashboard, href: "/dashboard" },
   { title: "Asignaturas", icon: BookOpen, href: "/subjects" },
-  { title: "Notas", icon: BarChart3, href: "/grades" },
+  { title: "Calificaciones", icon: BarChart3, href: "/grades" },
   { title: "Pendientes", icon: ClipboardList, href: "/pendings" },
   { title: "Horario", icon: Calendar, href: "/schedule" },
   { title: "Pomodoro", icon: Timer, href: "/pomodoro" },
-  { title: "Resúmenes IA", icon: FileText, href: "/summaries", badge: "IA" },
+  { title: "Notas y Resúmenes", icon: FileText, href: "/summaries" },
   { title: "Quizzes", icon: Brain, href: "/quizzes", badge: "IA" },
   { title: "Prep. Pruebas", icon: GraduationCap, href: "/exam-prep", badge: "Pro" },
 ];

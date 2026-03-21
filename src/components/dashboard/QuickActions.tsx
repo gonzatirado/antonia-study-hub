@@ -17,7 +17,7 @@ export function QuickActions() {
                 <Plus className="w-6 h-6 text-info" />
               </div>
               <div>
-                <p className="font-medium text-foreground">Agregar ramo</p>
+                <p className="font-medium text-foreground">Agregar asignatura</p>
                 <p className="text-sm text-muted-foreground">Sube material de estudio</p>
               </div>
             </CardContent>

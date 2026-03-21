@@ -1,27 +1,31 @@
 "use client";
 
+import { useMemo } from "react";
 import { motion } from "framer-motion";
 import { MapPin, Trash2 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import type { ScheduleBlock } from "@/lib/types";
 
 const DAYS = [
-  { key: "mon", label: "Lunes" },
-  { key: "tue", label: "Martes" },
-  { key: "wed", label: "Miercoles" },
-  { key: "thu", label: "Jueves" },
-  { key: "fri", label: "Viernes" },
-  { key: "sat", label: "Sabado" },
+  { key: "mon", label: "LUN", fullLabel: "Lunes" },
+  { key: "tue", label: "MAR", fullLabel: "Martes" },
+  { key: "wed", label: "MIE", fullLabel: "Miercoles" },
+  { key: "thu", label: "JUE", fullLabel: "Jueves" },
+  { key: "fri", label: "VIE", fullLabel: "Viernes" },
+  { key: "sat", label: "SAB", fullLabel: "Sabado" },
 ] as const;
 
-const HOURS = Array.from({ length: 15 }, (_, i) => {
+const HOURS = Array.from({ length: 16 }, (_, i) => {
   const hour = i + 7;
   return `${String(hour).padStart(2, "0")}:00`;
 });
 
+const HOUR_HEIGHT = 40; // px per hour slot — compact to avoid scrolling
+
 interface Subject {
   id: string;
   code: string;
+  name: string;
   color: string;
 }
 
@@ -29,6 +33,7 @@ interface ScheduleGridProps {
   blocks: ScheduleBlock[];
   subjects: Subject[];
   onDeleteBlock: (blockId: string) => void;
+  weekDates?: { day: number; isToday: boolean }[];
 }
 
 function getHourPosition(time: string) {
@@ -40,7 +45,12 @@ function getBlockHeight(start: string, end: string) {
   return getHourPosition(end) - getHourPosition(start);
 }
 
-export function ScheduleGrid({ blocks, subjects, onDeleteBlock }: ScheduleGridProps) {
+export function ScheduleGrid({
+  blocks,
+  subjects,
+  onDeleteBlock,
+  weekDates,
+}: ScheduleGridProps) {
   function getBlocksForDay(day: string) {
     return blocks
       .filter((b) => b.day === day)
@@ -51,68 +61,135 @@ export function ScheduleGrid({ blocks, subjects, onDeleteBlock }: ScheduleGridPr
     return subjects.find((s) => s.id === block.subjectId);
   }
 
+  const subjectColors = useMemo(() => {
+    const colorMap = new Map<string, string>();
+    subjects.forEach((s) => {
+      colorMap.set(s.id, s.color);
+    });
+    return colorMap;
+  }, [subjects]);
+
   return (
-    <Card className="bg-card/50 border-border overflow-hidden">
+    <Card className="bg-card/30 border-border/30 overflow-hidden backdrop-blur-xl shadow-2xl rounded-2xl">
       <CardContent className="p-0">
-        <div className="grid grid-cols-[60px_repeat(6,1fr)] min-h-[600px]">
+        <div className="grid grid-cols-[80px_repeat(5,1fr)_0.4fr] min-h-[600px]">
+          {/* Header row */}
+          <div className="p-4 bg-muted/30 border-b border-border/30" />
+          {DAYS.slice(0, 5).map((day, i) => {
+            const dateInfo = weekDates?.[i];
+            const isToday = dateInfo?.isToday ?? false;
+            return (
+              <div
+                key={day.key}
+                className={`p-4 text-center border-l border-b border-border/20 relative ${
+                  isToday ? "bg-primary/5" : "bg-muted/30"
+                }`}
+              >
+                {isToday && (
+                  <div className="absolute top-0 left-0 w-full h-[3px] bg-primary" />
+                )}
+                <p
+                  className={`text-[10px] font-bold uppercase tracking-widest ${
+                    isToday ? "text-primary" : "text-muted-foreground"
+                  }`}
+                >
+                  {isToday ? "Hoy" : "Dia"}
+                </p>
+                <p className="text-xl font-black text-foreground">
+                  {day.label} {dateInfo?.day ?? ""}
+                </p>
+              </div>
+            );
+          })}
+          {/* Weekend column (collapsed) */}
+          <div className="p-4 text-center border-l border-b border-border/20 bg-muted/30 opacity-30">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+              S/D
+            </p>
+            <p className="text-lg font-black text-foreground">
+              {weekDates?.[5]?.day ?? ""}
+            </p>
+          </div>
+
           {/* Time column */}
-          <div className="border-r border-border">
-            <div className="h-12 border-b border-border" />
+          <div className="bg-muted/20">
             {HOURS.map((hour) => (
               <div
                 key={hour}
-                className="h-16 border-b border-border/50 px-2 flex items-start justify-end pt-1"
+                className="flex items-start justify-center pt-2 border-b border-border/10"
+                style={{ height: HOUR_HEIGHT }}
               >
-                <span className="text-xs text-muted-foreground">{hour}</span>
+                <span className="text-[10px] font-bold text-muted-foreground/60">
+                  {hour}
+                </span>
               </div>
             ))}
           </div>
 
-          {/* Day columns */}
-          {DAYS.map((day) => (
-            <div key={day.key} className="border-r border-border/50 last:border-r-0">
-              <div className="h-12 border-b border-border flex items-center justify-center">
-                <span className="text-sm font-medium text-foreground/80">{day.label}</span>
-              </div>
-              <div className="relative">
+          {/* Day columns with blocks */}
+          {DAYS.slice(0, 5).map((day, i) => {
+            const isToday = weekDates?.[i]?.isToday ?? false;
+            return (
+              <div
+                key={day.key}
+                className={`relative border-l border-border/10 ${
+                  isToday ? "bg-primary/[0.02]" : ""
+                }`}
+              >
                 {HOURS.map((hour) => (
-                  <div key={hour} className="h-16 border-b border-border/30" />
+                  <div
+                    key={hour}
+                    className="border-b border-border/10"
+                    style={{ height: HOUR_HEIGHT }}
+                  />
                 ))}
                 {getBlocksForDay(day.key).map((block) => {
                   const subject = getSubjectForBlock(block);
-                  const top = getHourPosition(block.startTime) * 64;
-                  const height = getBlockHeight(block.startTime, block.endTime) * 64;
+                  const top = getHourPosition(block.startTime) * HOUR_HEIGHT;
+                  const height =
+                    getBlockHeight(block.startTime, block.endTime) * HOUR_HEIGHT;
+                  const color = subject?.color || "hsl(var(--primary))";
                   return (
                     <motion.div
                       key={block.id}
-                      initial={{ opacity: 0, scale: 0.9 }}
+                      initial={{ opacity: 0, scale: 0.95 }}
                       animate={{ opacity: 1, scale: 1 }}
-                      className="absolute left-1 right-1 rounded-lg p-2 overflow-hidden cursor-pointer hover:brightness-110 transition-all group"
+                      transition={{ duration: 0.2 }}
+                      className="absolute left-1 right-1 rounded-lg p-3 flex flex-col justify-between cursor-pointer group transition-transform hover:scale-[1.02] shadow-lg"
                       style={{
                         top: `${top}px`,
                         height: `${height}px`,
-                        backgroundColor: subject?.color || "#3B82F6",
-                        opacity: 0.9,
+                        background: "hsl(var(--card) / 0.6)",
+                        backdropFilter: "blur(12px)",
+                        WebkitBackdropFilter: "blur(12px)",
+                        borderLeft: `4px solid ${color}`,
                       }}
                     >
-                      <p className="text-xs font-semibold text-foreground truncate">
-                        {subject?.code}
-                      </p>
-                      <p className="text-[10px] text-white/80 truncate">
-                        {block.startTime} - {block.endTime}
-                      </p>
-                      {block.room && (
-                        <p className="text-[10px] text-white/70 flex items-center gap-0.5 mt-0.5">
-                          <MapPin className="w-2.5 h-2.5" />
-                          {block.room}
+                      <div>
+                        <h3 className="font-bold text-sm text-foreground truncate">
+                          {subject?.name || subject?.code || "Sin materia"}
+                        </h3>
+                        <p className="text-[10px] text-muted-foreground font-medium">
+                          {block.startTime} - {block.endTime}
                         </p>
+                      </div>
+                      {block.room && (
+                        <div
+                          className="flex items-center gap-1.5"
+                          style={{ color }}
+                        >
+                          <MapPin className="w-3 h-3" />
+                          <span className="text-[10px] font-bold tracking-tight">
+                            {block.room}
+                          </span>
+                        </div>
                       )}
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
                           onDeleteBlock(block.id);
                         }}
-                        className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity bg-black/30 rounded p-0.5"
+                        className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity bg-background/50 backdrop-blur rounded p-1"
                       >
                         <Trash2 className="w-3 h-3 text-foreground" />
                       </button>
@@ -120,8 +197,19 @@ export function ScheduleGrid({ blocks, subjects, onDeleteBlock }: ScheduleGridPr
                   );
                 })}
               </div>
-            </div>
-          ))}
+            );
+          })}
+
+          {/* Weekend placeholder column */}
+          <div className="border-l border-border/10 opacity-10">
+            {HOURS.slice(0, 8).map((hour) => (
+              <div
+                key={hour}
+                className="border-b border-border/10"
+                style={{ height: HOUR_HEIGHT }}
+              />
+            ))}
+          </div>
         </div>
       </CardContent>
     </Card>

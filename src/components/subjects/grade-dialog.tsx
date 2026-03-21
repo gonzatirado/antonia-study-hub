@@ -2,8 +2,14 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import type { GradeCategory } from "@/lib/types";
 
 export interface GradeDialogProps {
@@ -73,7 +79,7 @@ export function GradeDialog({ open, onClose, onSave }: GradeDialogProps) {
         onClick={(e) => e.stopPropagation()}
       >
         <h3 className="text-lg font-semibold text-foreground mb-1">Registrar nota</h3>
-        <p className="text-sm text-muted-foreground mb-5">Ej: &quot;Control 1&quot; tipo Control/Quiz, 15% del ramo</p>
+        <p className="text-sm text-muted-foreground mb-5">Ej: &quot;Control 1&quot; tipo Control/Quiz, 15% de la asignatura</p>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-2 gap-3">
             <div className="col-span-2 sm:col-span-1">
@@ -84,18 +90,16 @@ export function GradeDialog({ open, onClose, onSave }: GradeDialogProps) {
             </div>
             <div className="col-span-2 sm:col-span-1">
               <label className="text-xs text-muted-foreground mb-1 block">Tipo</label>
-              <div className="relative">
-                <select
-                  value={category}
-                  onChange={(e) => setCategory(e.target.value as GradeCategory)}
-                  className="w-full bg-muted border border-border rounded-lg px-3 py-2.5 text-sm text-foreground appearance-none focus:outline-none focus:border-ring cursor-pointer"
-                >
+              <Select value={category} onValueChange={(v) => setCategory(v as GradeCategory)}>
+                <SelectTrigger className="w-full bg-muted border-border text-foreground">
+                  <SelectValue placeholder="Seleccionar tipo" />
+                </SelectTrigger>
+                <SelectContent className="bg-card border-border">
                   {categories.map((c) => (
-                    <option key={c.value} value={c.value} className="bg-muted">{c.label}</option>
+                    <SelectItem key={c.value} value={c.value} className="text-foreground">{c.label}</SelectItem>
                   ))}
-                </select>
-                <ChevronRight className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground rotate-90 pointer-events-none" />
-              </div>
+                </SelectContent>
+              </Select>
             </div>
           </div>
 
@@ -119,7 +123,7 @@ export function GradeDialog({ open, onClose, onSave }: GradeDialogProps) {
                 onChange={(e) => setWeight(e.target.value)}
                 placeholder="30"
                 className="w-full bg-muted border border-border rounded-lg px-3 py-2.5 text-sm text-foreground placeholder-muted-foreground focus:outline-none focus:border-ring [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none" />
-              <p className="text-[10px] text-muted-foreground mt-1">% sobre el total del ramo</p>
+              <p className="text-[10px] text-muted-foreground mt-1">% sobre el total de la asignatura</p>
             </div>
           </div>
 

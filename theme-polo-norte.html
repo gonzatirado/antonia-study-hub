@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-secondary-container": "#92ffaf",
+                        "primary-fixed-dim": "#92ffaf",
+                        "on-surface-variant": "#92add1",
+                        "on-error-container": "#ffdad6",
+                        "error-container": "#93000a",
+                        "on-tertiary-fixed": "#00201a",
+                        "secondary-fixed-dim": "#92ffaf",
+                        "surface-container-low": "#021426",
+                        "surface": "#010b1a",
+                        "outline": "#4a5a6e",
+                        "on-tertiary-container": "#00fada",
+                        "inverse-primary": "#006b5a",
+                        "surface-variant": "#1c2a3b",
+                        "surface-container-high": "#05213a",
+                        "secondary": "#92ffaf",
+                        "on-tertiary-fixed-variant": "#005146",
+                        "on-primary-fixed-variant": "#005146",
+                        "primary": "#92ffaf",
+                        "on-background": "#f0f4f8",
+                        "surface-container-lowest": "#010813",
+                        "on-secondary": "#00392f",
+                        "on-primary-fixed": "#00201a",
+                        "surface-tint": "#92ffaf",
+                        "secondary-container": "#005146",
+                        "tertiary-container": "#005146",
+                        "tertiary": "#00fada",
+                        "primary-container": "#92ffaf",
+                        "on-surface": "#f0f4f8",
+                        "on-primary-container": "#00201a",
+                        "tertiary-fixed": "#00fada",
+                        "secondary-fixed": "#afffd1",
+                        "surface-dim": "#010b1a",
+                        "primary-fixed": "#afffd1",
+                        "surface-container": "#041b30",
+                        "inverse-on-surface": "#010b1a",
+                        "background": "#010813",
+                        "outline-variant": "#2d3d4f",
+                        "surface-bright": "#0a2647",
+                        "inverse-surface": "#f0f4f8",
+                        "surface-container-highest": "#0c2d4d",
+                        "on-secondary-fixed-variant": "#006b5a",
+                        "on-primary": "#00392f",
+                        "on-error": "#690005",
+                        "error": "#ffb4ab",
+                        "tertiary-fixed-dim": "#00dda3",
+                        "on-tertiary": "#00392f",
+                        "on-secondary-fixed": "#00201a"
+                    },
+                    fontFamily: {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: { "DEFAULT": "0.5rem", "lg": "0.75rem", "xl": "1rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: radial-gradient(circle at 50% -20%, rgba(146, 255, 175, 0.15) 0%, rgba(138, 43, 226, 0.1) 40%, #010813 100%);
+            background-attachment: fixed;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(4, 27, 48, 0.4);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(146, 255, 175, 0.15);
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+        .glass-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(146, 255, 175, 0.4);
+            box-shadow: 0 15px 45px rgba(146, 255, 175, 0.1);
+        }
+        .btn-3d {
+            transition: all 0.3s ease-out;
+            box-shadow: 0 4px 0 0 rgba(0, 81, 70, 0.8);
+        }
+        .btn-3d:active {
+            transform: translateY(2px);
+            box-shadow: 0 1px 0 0 rgba(0, 81, 70, 0.8);
+        }
+        .sidebar-item-hover {
+            transition: all 0.3s ease-out;
+        }
+        .sidebar-item-hover:hover {
+            transform: translateX(4px);
+            background: rgba(146, 255, 175, 0.05);
+        }
+        .tool-card {
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            background: rgba(4, 27, 48, 0.6);
+            border: 1px solid rgba(146, 255, 175, 0.05);
+        }
+        .tool-card:hover {
+            transform: translateY(-8px);
+            background: rgba(146, 255, 175, 0.1);
+            border-color: rgba(146, 255, 175, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+        .aurora-glow {
+            filter: drop-shadow(0 0 12px rgba(146, 255, 175, 0.6));
+        }
+        .aurora-text {
+            color: #92ffaf;
+            text-shadow: 0 0 10px rgba(146, 255, 175, 0.3);
+        }
+    </style>
+</head>
+<body class="text-on-surface selection:bg-primary/30 min-h-screen">
+<!-- SideNavBar -->
+<aside class="h-screen w-64 fixed left-0 top-0 border-r border-[#92add1]/10 bg-[#021426]/95 backdrop-blur-2xl flex flex-col p-6 justify-between z-50 font-['Inter'] antialiased tracking-tight text-sm font-semibold uppercase">
+<div class="space-y-8">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-primary-container flex items-center justify-center aurora-glow">
+<span class="material-symbols-outlined text-on-primary-container text-xl" data-icon="school">school</span>
+</div>
+<div>
+<h1 class="text-xl font-black tracking-tighter aurora-text">StudyHub</h1>
+<p class="text-[10px] uppercase tracking-widest text-[#92add1]/60">Elite Academic Portal</p>
+</div>
+</div>
+<nav class="space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-[#92ffaf] bg-[#041b30] rounded-lg border-l-4 border-[#92ffaf] shadow-[inset_0_0_15px_rgba(146,255,175,0.1)] sidebar-item-hover" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span>Inicio</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#92add1] hover:text-[#92ffaf] transition-colors sidebar-item-hover" href="#">
+<span class="material-symbols-outlined" data-icon="timer">timer</span>
+<span>Pomodoro</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#92add1] hover:text-[#92ffaf] transition-colors sidebar-item-hover" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_today">calendar_today</span>
+<span>Horario</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#92add1] hover:text-[#92ffaf] transition-colors sidebar-item-hover" href="#">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+<span>Notas</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#92add1] hover:text-[#92ffaf] transition-colors sidebar-item-hover" href="#">
+<span class="material-symbols-outlined" data-icon="folder_open">folder_open</span>
+<span>Archivos</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#92add1] hover:text-[#92ffaf] transition-colors sidebar-item-hover" href="#">
+<span class="material-symbols-outlined" data-icon="grade">grade</span>
+<span>Calificaciones</span>
+</a>
+</nav>
+<button class="w-full bg-primary-container text-on-primary-container py-3 rounded-xl font-black text-xs uppercase tracking-widest hover:brightness-110 transition-all shadow-lg shadow-primary/20 btn-3d">
+            Nueva Sesión
+        </button>
+</div>
+<div class="space-y-6">
+<div class="space-y-2">
+<label class="text-[10px] uppercase tracking-widest text-[#92add1]/60 px-2 font-bold">Temas</label>
+<select class="w-full bg-[#05213a] border-none text-xs rounded-lg text-[#92add1] focus:ring-1 focus:ring-primary/50">
+<option selected="">Arctic Aurora</option>
+<option>Neón</option>
+<option>Alpes Suizos</option>
+<option>Claro</option>
+<option>Oscuro</option>
+<option>Beige</option>
+<option>Medianoche</option>
+</select>
+</div>
+<div class="pt-4 border-t border-[#92add1]/10 space-y-2">
+<div class="flex items-center gap-3 px-2 py-2">
+<div class="relative">
+<img alt="Usuario" class="w-10 h-10 rounded-full border border-primary/30" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAh_ZAZc_07m_M6ufdGVKAPTZyiE9gnVm7BKfOYHeFgEX8jsmenzVDxTL3o1yB4FkkKDIS0QODDeKzeFeN5IbWk9Xwm414UWWWJjQZWb5e_Xzp7MzgpUdkrxIcKZC7mykvJxNaDB95vOgcvtOsHuPz9L8Pa8T3dxBQhmCs58TFD1c2X64lJ03SDFLuYk0deGbmYjFtoysn7cL_oZQKcNJmg7eiq3VBNwv6Tyr1jz4e3Aquz5MZwSbX6s9YJnR4k0nk_oVvWcRlA6hwR"/>
+<div class="absolute bottom-0 right-0 w-3 h-3 bg-[#92ffaf] border-2 border-surface-container-lowest rounded-full aurora-glow"></div>
+</div>
+<div class="overflow-hidden">
+<p class="text-sm font-bold truncate text-white">Marcos</p>
+<p class="text-[10px] text-[#92add1] truncate">Elite Student</p>
+</div>
+</div>
+<a class="flex items-center gap-3 px-4 py-2 text-red-400/80 hover:text-red-400 transition-colors text-[10px] hover:bg-red-400/5 rounded-lg" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="logout">logout</span>
+<span>Cerrar Sesión</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- TopAppBar -->
+<header class="fixed top-0 right-0 w-[calc(100%-16rem)] h-16 z-40 bg-[#020f1e]/40 backdrop-blur-xl flex items-center justify-between px-10 border-b border-[#92add1]/15 font-['Inter'] text-[11px] font-bold uppercase tracking-[0.15em]">
+<div class="flex items-center gap-8">
+<a class="text-[#92ffaf] border-b-2 border-[#92ffaf] pb-1 cursor-pointer" href="#">Dashboard</a>
+<a class="text-[#92add1] hover:text-white transition-colors cursor-pointer" href="#">Recursos</a>
+<a class="text-[#92add1] hover:text-white transition-colors cursor-pointer" href="#">Comunidad</a>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative group">
+<input class="bg-[#041b30]/60 border border-[#92add1]/10 text-[10px] py-1.5 px-4 rounded-full w-48 focus:w-64 transition-all focus:ring-1 focus:ring-primary/30 text-white placeholder-[#92add1]/40" placeholder="BUSCAR..." type="text"/>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-sm text-[#92add1]/60" data-icon="search">search</span>
+</div>
+<div class="flex items-center gap-4 text-[#92add1]">
+<span class="material-symbols-outlined cursor-pointer hover:text-[#92ffaf] transition-colors" data-icon="notifications">notifications</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-[#92ffaf] transition-colors" data-icon="settings">settings</span>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-64 pt-24 px-12 pb-12 min-h-screen">
+<!-- Saludo Section -->
+<header class="mb-12">
+<h2 class="text-5xl font-black tracking-tighter mb-2 text-white drop-shadow-sm">¡Hola, Marcos!</h2>
+<div class="flex items-center gap-2 text-[#92ffaf]/80 font-medium">
+<span class="material-symbols-outlined text-sm" data-icon="calendar_month">calendar_month</span>
+<span class="text-xs uppercase tracking-[0.2em]">Lunes, 15 de marzo de 2026</span>
+</div>
+</header>
+<!-- Bento Grid: Quick Summary -->
+<div class="grid grid-cols-12 gap-6 mb-12">
+<!-- Proximas Tareas (Bento Item) -->
+<section class="col-span-12 lg:col-span-5 glass-card p-8 rounded-2xl flex flex-col justify-between min-h-[260px]">
+<div>
+<div class="flex items-center justify-between mb-8">
+<h3 class="text-[10px] font-bold uppercase tracking-[0.3em] text-[#92add1]">Próximas Tareas</h3>
+<span class="material-symbols-outlined text-[#92ffaf] aurora-glow" data-icon="pending_actions">pending_actions</span>
+</div>
+<div class="space-y-6">
+<div class="flex items-center gap-4 group cursor-pointer">
+<div class="w-1.5 h-10 bg-error shadow-[0_0_10px_rgba(255,180,171,0.4)] rounded-full group-hover:scale-y-125 transition-transform"></div>
+<div>
+<p class="text-base font-bold text-white">Cálculo II</p>
+<p class="text-xs text-[#92add1]">Examen en 3 días</p>
+</div>
+</div>
+<div class="flex items-center gap-4 group cursor-pointer">
+<div class="w-1.5 h-10 bg-tertiary-container shadow-[0_0_10px_rgba(0,173,143,0.4)] rounded-full group-hover:scale-y-125 transition-transform"></div>
+<div>
+<p class="text-base font-bold text-white">Entrega Proyecto IA</p>
+<p class="text-xs text-[#92add1]">Mañana</p>
+</div>
+</div>
+</div>
+</div>
+<button class="mt-8 text-xs text-[#92ffaf] font-black flex items-center gap-2 hover:translate-x-2 transition-transform tracking-widest">
+                VER TODAS <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</section>
+<!-- Pomodoro Rapido (Bento Item) -->
+<section class="col-span-12 md:col-span-6 lg:col-span-3 glass-card p-8 rounded-2xl flex flex-col items-center justify-center text-center gap-6 border-l-2 border-l-[#92ffaf]/30">
+<div class="relative aurora-glow">
+<svg class="w-36 h-36 -rotate-90">
+<circle class="text-white/5" cx="72" cy="72" fill="transparent" r="68" stroke="currentColor" stroke-width="6"></circle>
+<circle class="text-[#92ffaf]" cx="72" cy="72" fill="transparent" r="68" stroke="currentColor" stroke-dasharray="427" stroke-dashoffset="106" stroke-linecap="round" stroke-width="6"></circle>
+</svg>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="text-3xl font-black font-headline tracking-tighter text-white">25:00</span>
+</div>
+</div>
+<div>
+<h3 class="text-[10px] font-bold uppercase tracking-[0.2em] mb-4 text-[#92add1]">Pomodoro Rápido</h3>
+<button class="bg-primary-container text-on-primary-container px-8 py-2.5 rounded-full font-black text-[10px] uppercase tracking-widest hover:scale-105 active:scale-95 transition-all btn-3d">
+                    Iniciar Sesión
+                </button>
+</div>
+</section>
+<!-- Notas Recientes (Bento Item) -->
+<section class="col-span-12 md:col-span-6 lg:col-span-4 glass-card p-8 rounded-2xl bg-gradient-to-br from-[#05213a] to-[#010b1a]">
+<h3 class="text-[10px] font-bold uppercase tracking-[0.3em] text-[#92add1] mb-8">Notas Recientes</h3>
+<div class="space-y-4">
+<div class="p-5 bg-white/5 rounded-xl border border-white/5 hover:border-[#92ffaf]/40 transition-all duration-300 cursor-pointer hover:-translate-y-1 hover:shadow-2xl">
+<p class="text-sm font-bold mb-1 text-white">Apuntes de Álgebra</p>
+<p class="text-[10px] text-[#92add1] uppercase tracking-widest font-medium">Editado hace 2h</p>
+</div>
+<div class="p-5 bg-white/5 rounded-xl border border-white/5 hover:border-[#92ffaf]/40 transition-all duration-300 cursor-pointer hover:-translate-y-1 hover:shadow-2xl">
+<p class="text-sm font-bold mb-1 text-white">Resumen Teoría de Redes</p>
+<p class="text-[10px] text-[#92add1] uppercase tracking-widest font-medium">Editado ayer</p>
+</div>
+</div>
+</section>
+</div>
+<!-- Estadisticas Section -->
+<h3 class="text-[10px] font-bold uppercase tracking-[0.4em] text-[#92add1] mb-8">Métricas de Rendimiento</h3>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+<div class="glass-card p-6 rounded-2xl flex items-center gap-6">
+<div class="w-14 h-14 bg-[#92ffaf]/10 rounded-xl flex items-center justify-center aurora-glow">
+<span class="material-symbols-outlined text-[#92ffaf] text-2xl" data-icon="query_stats">query_stats</span>
+</div>
+<div>
+<p class="text-[10px] uppercase font-bold text-[#92add1] tracking-widest">Horas de estudio</p>
+<div class="flex items-baseline gap-2">
+<p class="text-2xl font-black text-white">12h <span class="text-sm font-medium text-[#92add1]">esta semana</span></p>
+<span class="text-[11px] text-[#92ffaf] font-black">+15%</span>
+</div>
+</div>
+</div>
+<div class="glass-card p-6 rounded-2xl flex items-center gap-6">
+<div class="w-14 h-14 bg-tertiary-container/10 rounded-xl flex items-center justify-center aurora-glow">
+<span class="material-symbols-outlined text-[#92ffaf] text-2xl" data-icon="local_fire_department" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+</div>
+<div>
+<p class="text-[10px] uppercase font-bold text-[#92add1] tracking-widest">Racha actual</p>
+<p class="text-2xl font-black text-white">5 días seguidos <span class="text-lg">🌌</span></p>
+</div>
+</div>
+<div class="glass-card p-6 rounded-2xl flex items-center gap-6">
+<div class="w-14 h-14 bg-[#92add1]/10 rounded-xl flex items-center justify-center">
+<span class="material-symbols-outlined text-[#92add1] text-2xl" data-icon="cloud_done">cloud_done</span>
+</div>
+<div>
+<p class="text-[10px] uppercase font-bold text-[#92add1] tracking-widest">Almacenamiento</p>
+<p class="text-2xl font-black text-white">45 archivos <span class="text-xs font-medium text-[#92add1]">(2GB usados)</span></p>
+</div>
+</div>
+</div>
+<!-- Acceso Rapido Herramientas -->
+<h3 class="text-[10px] font-bold uppercase tracking-[0.4em] text-[#92add1] mb-8">Herramientas</h3>
+<div class="flex flex-wrap gap-6">
+<div class="flex-1 min-w-[150px] tool-card p-8 rounded-2xl flex flex-col items-center justify-center gap-4 cursor-pointer group">
+<span class="material-symbols-outlined text-4xl text-[#92ffaf] group-hover:scale-125 transition-transform aurora-glow" data-icon="timer">timer</span>
+<span class="text-[10px] font-black uppercase tracking-[0.2em] text-white">Pomodoro</span>
+</div>
+<div class="flex-1 min-w-[150px] tool-card p-8 rounded-2xl flex flex-col items-center justify-center gap-4 cursor-pointer group">
+<span class="material-symbols-outlined text-4xl text-[#92ffaf] group-hover:scale-125 transition-transform aurora-glow" data-icon="calendar_today">calendar_today</span>
+<span class="text-[10px] font-black uppercase tracking-[0.2em] text-white">Horario</span>
+</div>
+<div class="flex-1 min-w-[150px] tool-card p-8 rounded-2xl flex flex-col items-center justify-center gap-4 cursor-pointer group">
+<span class="material-symbols-outlined text-4xl text-[#92ffaf] group-hover:scale-125 transition-transform aurora-glow" data-icon="description">description</span>
+<span class="text-[10px] font-black uppercase tracking-[0.2em] text-white">Notas</span>
+</div>
+<div class="flex-1 min-w-[150px] tool-card p-8 rounded-2xl flex flex-col items-center justify-center gap-4 cursor-pointer group">
+<span class="material-symbols-outlined text-4xl text-[#92ffaf] group-hover:scale-125 transition-transform aurora-glow" data-icon="folder_open">folder_open</span>
+<span class="text-[10px] font-black uppercase tracking-[0.2em] text-white">Archivos</span>
+</div>
+<div class="flex-1 min-w-[150px] tool-card p-8 rounded-2xl flex flex-col items-center justify-center gap-4 cursor-pointer group">
+<span class="material-symbols-outlined text-4xl text-[#92ffaf] group-hover:scale-125 transition-transform aurora-glow" data-icon="grade">grade</span>
+<span class="text-[10px] font-black uppercase tracking-[0.2em] text-white">Calificaciones</span>
+</div>
+</div>
+</main>
+</body></html>

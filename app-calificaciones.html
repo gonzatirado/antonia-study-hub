@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Academic Luminary - Calificaciones</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "inverse-surface": "#e5e2e1",
+              "on-tertiary": "#422c00",
+              "on-background": "#e5e2e1",
+              "secondary-container": "#6200ea",
+              "on-tertiary-container": "#6e4d00",
+              "on-surface-variant": "#bac9cd",
+              "on-secondary": "#3a0092",
+              "surface-container-lowest": "#0e0e0e",
+              "surface-container": "#201f1f",
+              "primary-fixed-dim": "#00daf8",
+              "outline-variant": "#3b494c",
+              "tertiary-fixed-dim": "#feba32",
+              "tertiary-fixed": "#ffdeaa",
+              "on-secondary-container": "#cfbcff",
+              "on-error": "#690005",
+              "secondary-fixed-dim": "#cfbcff",
+              "secondary": "#cfbcff",
+              "on-error-container": "#ffdad6",
+              "error": "#ffb4ab",
+              "surface-bright": "#3a3939",
+              "surface-dim": "#131313",
+              "on-surface": "#e5e2e1",
+              "secondary-fixed": "#e9ddff",
+              "on-tertiary-fixed-variant": "#5f4100",
+              "tertiary": "#ffdeac",
+              "surface-container-high": "#2a2a2a",
+              "surface-tint": "#00daf8",
+              "outline": "#859397",
+              "surface-variant": "#353534",
+              "on-primary-fixed": "#001f25",
+              "on-primary": "#00363f",
+              "inverse-on-surface": "#313030",
+              "primary": "#a6eeff",
+              "surface-container-low": "#1c1b1b",
+              "surface-container-highest": "#353534",
+              "background": "#131313",
+              "on-secondary-fixed-variant": "#5400cc",
+              "primary-fixed": "#a4eeff",
+              "on-primary-container": "#005b69",
+              "on-secondary-fixed": "#22005d",
+              "inverse-primary": "#006877",
+              "error-container": "#93000a",
+              "primary-container": "#00daf8",
+              "tertiary-container": "#ffbb33",
+              "on-primary-fixed-variant": "#004e5a",
+              "surface": "#131313",
+              "on-tertiary-fixed": "#271900"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0e0e0e;
+        }
+        .glass-header {
+            border-top: 1px solid rgba(0, 218, 248, 0.2);
+        }
+    </style>
+</head>
+<body class="text-on-surface">
+<!-- TopNavBar (Shared Component) -->
+<nav class="fixed top-0 w-full z-50 bg-[#131313]/60 backdrop-blur-xl border-b border-[#00daf8]/15 shadow-[0_10_30px_rgba(0,0,0,0.5)] flex justify-between items-center px-12 h-16 w-full">
+<div class="text-xl font-bold tracking-tighter text-[#00daf8]">The Academic Luminary</div>
+<div class="flex items-center gap-6">
+<span class="material-symbols-outlined text-slate-100 cursor-pointer hover:text-[#00daf8] transition-colors duration-300">notifications</span>
+<div class="flex items-center gap-2 cursor-pointer hover:text-[#00daf8] transition-colors duration-300">
+<span class="material-symbols-outlined text-slate-100">account_circle</span>
+</div>
+</div>
+</nav>
+<!-- SideNavBar (Shared Component) -->
+<aside class="fixed left-0 top-0 h-full w-64 z-40 bg-[#131313] flex flex-col py-8 gap-6 h-full border-r border-[#201f1f]">
+<div class="px-8 mt-16 mb-4">
+<h1 class="text-lg font-black text-[#00daf8]">Luminary Portal</h1>
+<p class="font-['Inter'] uppercase tracking-widest text-[10px] font-semibold text-slate-500">Elite Academic Tier</p>
+</div>
+<nav class="flex flex-col flex-grow">
+<a class="flex items-center gap-4 px-8 py-4 text-slate-500 hover:bg-[#201f1f] hover:text-slate-200 transition-all font-['Inter'] uppercase tracking-widest text-[10px] font-semibold active:translate-x-1 transition-transform" href="#">
+<span class="material-symbols-outlined">dashboard</span> Dashboard
+            </a>
+<a class="flex items-center gap-4 px-8 py-4 text-slate-500 hover:bg-[#201f1f] hover:text-slate-200 transition-all font-['Inter'] uppercase tracking-widest text-[10px] font-semibold active:translate-x-1 transition-transform" href="#">
+<span class="material-symbols-outlined">timer</span> Pomodoro
+            </a>
+<a class="flex items-center gap-4 px-8 py-4 text-slate-500 hover:bg-[#201f1f] hover:text-slate-200 transition-all font-['Inter'] uppercase tracking-widest text-[10px] font-semibold active:translate-x-1 transition-transform" href="#">
+<span class="material-symbols-outlined">calendar_month</span> Schedule
+            </a>
+<a class="flex items-center gap-4 px-8 py-4 text-slate-500 hover:bg-[#201f1f] hover:text-slate-200 transition-all font-['Inter'] uppercase tracking-widest text-[10px] font-semibold active:translate-x-1 transition-transform" href="#">
+<span class="material-symbols-outlined">description</span> Notes
+            </a>
+<a class="flex items-center gap-4 px-8 py-4 text-slate-500 hover:bg-[#201f1f] hover:text-slate-200 transition-all font-['Inter'] uppercase tracking-widest text-[10px] font-semibold active:translate-x-1 transition-transform" href="#">
+<span class="material-symbols-outlined">folder_open</span> Files
+            </a>
+<!-- Active Tab: Grades (Calificaciones) -->
+<a class="flex items-center gap-4 px-8 py-4 text-[#00daf8] border-r-2 border-[#00daf8] bg-[#00daf8]/5 font-['Inter'] uppercase tracking-widest text-[10px] font-semibold active:translate-x-1 transition-transform" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">grade</span> Grades
+            </a>
+</nav>
+<div class="px-8 mt-auto">
+<button class="w-full py-3 bg-gradient-to-r from-primary-container to-[#00a2b9] text-on-primary-container font-bold rounded-md hover:shadow-[0_0_15px_rgba(0,218,248,0.3)] transition-all">
+                Focus Mode
+            </button>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="ml-64 mt-16 p-12 min-h-screen bg-surface-container-lowest">
+<!-- Header Section -->
+<header class="mb-16 max-w-5xl">
+<p class="font-label text-[10px] uppercase tracking-[0.2em] text-primary-container mb-2">Resumen Académico</p>
+<h2 class="text-5xl font-extrabold tracking-tighter text-on-surface mb-4">Calificaciones</h2>
+<p class="text-on-surface-variant text-lg max-w-2xl leading-relaxed">
+                Visualización detallada de tu rendimiento académico actual. Los datos se actualizan automáticamente según los registros de la facultad.
+            </p>
+</header>
+<!-- Stats Bento Grid Mini -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16 max-w-6xl">
+<div class="bg-surface-container p-6 rounded-xl border-t border-primary/10">
+<p class="text-[10px] uppercase tracking-widest text-on-surface-variant mb-1">Promedio General</p>
+<p class="text-4xl font-bold text-primary-container">4.7</p>
+</div>
+<div class="bg-surface-container p-6 rounded-xl border-t border-primary/10">
+<p class="text-[10px] uppercase tracking-widest text-on-surface-variant mb-1">Materias Aprobadas</p>
+<p class="text-4xl font-bold text-on-surface">2 / 4</p>
+</div>
+<div class="bg-surface-container p-6 rounded-xl border-t border-primary/10">
+<p class="text-[10px] uppercase tracking-widest text-on-surface-variant mb-1">Asistencia Global</p>
+<p class="text-4xl font-bold text-on-surface">84%</p>
+</div>
+</div>
+<!-- Grade Table -->
+<div class="max-w-6xl">
+<div class="w-full overflow-hidden">
+<!-- Table Header -->
+<div class="grid grid-cols-6 px-6 py-4 border-b border-outline-variant/15 text-[10px] uppercase tracking-[0.15em] font-bold text-on-surface-variant">
+<div class="col-span-2">Materia</div>
+<div class="text-center">Notas Parciales</div>
+<div class="text-center">Promedio</div>
+<div class="text-center">Asistencia</div>
+<div class="text-right">Estado</div>
+</div>
+<!-- Row 1: Cálculo II -->
+<div class="grid grid-cols-6 px-6 py-8 items-center border-b border-outline-variant/10 hover:bg-surface-bright/20 transition-all duration-300 group cursor-default">
+<div class="col-span-2">
+<p class="text-xl font-bold text-on-surface group-hover:text-primary-container transition-colors">Cálculo II</p>
+<p class="text-[10px] text-on-surface-variant tracking-wider">MAT-204 • ING. CIVIL</p>
+</div>
+<div class="flex justify-center gap-2">
+<span class="bg-surface-container-highest px-3 py-1 rounded text-sm text-on-surface-variant">4.5</span>
+<span class="bg-surface-container-highest px-3 py-1 rounded text-sm text-on-surface-variant">5.2</span>
+<span class="bg-surface-container-highest px-3 py-1 rounded text-sm text-on-surface-variant">3.8</span>
+</div>
+<div class="text-center">
+<span class="text-xl font-bold text-on-surface">4.5</span>
+</div>
+<div class="text-center">
+<span class="text-sm font-medium text-on-surface-variant">85%</span>
+</div>
+<div class="flex items-center justify-end gap-2">
+<div class="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]"></div>
+<span class="text-xs font-bold uppercase tracking-widest text-green-500">Aprobando</span>
+</div>
+</div>
+<!-- Row 2: Redes de Computadoras -->
+<div class="grid grid-cols-6 px-6 py-8 items-center border-b border-outline-variant/10 hover:bg-surface-bright/20 transition-all duration-300 group cursor-default">
+<div class="col-span-2">
+<p class="text-xl font-bold text-on-surface group-hover:text-primary-container transition-colors">Redes de Computadoras</p>
+<p class="text-[10px] text-on-surface-variant tracking-wider">INF-301 • CIENCIAS COMP.</p>
+</div>
+<div class="flex justify-center gap-2">
+<span class="bg-surface-container-highest px-3 py-1 rounded text-sm text-on-surface-variant">3.2</span>
+<span class="bg-surface-container-highest px-3 py-1 rounded text-sm text-on-surface-variant">3.5</span>
+</div>
+<div class="text-center">
+<span class="text-xl font-bold text-error">3.4</span>
+</div>
+<div class="text-center">
+<span class="text-sm font-medium text-on-surface-variant">72%</span>
+</div>
+<div class="flex items-center justify-end gap-2">
+<div class="w-2 h-2 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.6)]"></div>
+<span class="text-xs font-bold uppercase tracking-widest text-red-500">Reprobando</span>
+</div>
+</div>
+<!-- Row 3: Ética Profesional -->
+<div class="grid grid-cols-6 px-6 py-8 items-center border-b border-outline-variant/10 hover:bg-surface-bright/20 transition-all duration-300 group cursor-default">
+<div class="col-span-2">
+<p class="text-xl font-bold text-on-surface group-hover:text-primary-container transition-colors">Ética Profesional</p>
+<p class="text-[10px] text-on-surface-variant tracking-wider">HUM-102 • GENERAL</p>
+</div>
+<div class="flex justify-center gap-2">
+<span class="bg-surface-container-highest px-3 py-1 rounded text-sm text-on-surface-variant">6.5</span>
+<span class="bg-surface-container-highest px-3 py-1 rounded text-sm text-on-surface-variant">7.0</span>
+</div>
+<div class="text-center">
+<span class="text-xl font-bold text-on-surface">6.8</span>
+</div>
+<div class="text-center">
+<span class="text-sm font-medium text-on-surface-variant">100%</span>
+</div>
+<div class="flex items-center justify-end gap-2">
+<div class="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]"></div>
+<span class="text-xs font-bold uppercase tracking-widest text-green-500">Sobresaliente</span>
+</div>
+</div>
+<!-- Row 4: Arquitectura de Software -->
+<div class="grid grid-cols-6 px-6 py-8 items-center border-b border-outline-variant/10 hover:bg-surface-bright/20 transition-all duration-300 group cursor-default">
+<div class="col-span-2">
+<p class="text-xl font-bold text-on-surface group-hover:text-primary-container transition-colors">Arquitectura de Software</p>
+<p class="text-[10px] text-on-surface-variant tracking-wider">INF-440 • CIENCIAS COMP.</p>
+</div>
+<div class="flex justify-center gap-2">
+<span class="bg-surface-container-highest px-3 py-1 rounded text-sm text-on-surface-variant">4.0</span>
+<span class="bg-surface-container-highest px-3 py-1 rounded text-sm text-on-surface-variant">3.8</span>
+</div>
+<div class="text-center">
+<span class="text-xl font-bold text-tertiary-fixed-dim">3.9</span>
+</div>
+<div class="text-center">
+<span class="text-sm font-medium text-on-surface-variant">78%</span>
+</div>
+<div class="flex items-center justify-end gap-2">
+<div class="w-2 h-2 rounded-full bg-yellow-500 shadow-[0_0_8px_rgba(234,179,8,0.6)]"></div>
+<span class="text-xs font-bold uppercase tracking-widest text-yellow-500">En Riesgo</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Course Detail Teaser (Asymmetric Layout element) -->
+<div class="mt-24 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+<div class="bg-surface-container p-10 rounded-2xl relative overflow-hidden group">
+<div class="absolute -right-10 -top-10 w-40 h-40 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-all"></div>
+<h3 class="text-2xl font-bold mb-4 tracking-tight">Próximas Evaluaciones</h3>
+<div class="space-y-6">
+<div class="flex items-start gap-4">
+<div class="bg-[#1c1b1b] p-3 rounded-lg text-primary-container">
+<span class="material-symbols-outlined">event</span>
+</div>
+<div>
+<p class="font-bold text-on-surface">Examen Final: Redes</p>
+<p class="text-sm text-on-surface-variant">22 de Junio • 14:30 hrs</p>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<div class="bg-[#1c1b1b] p-3 rounded-lg text-primary-container">
+<span class="material-symbols-outlined">event</span>
+</div>
+<div>
+<p class="font-bold text-on-surface">Control 3: Cálculo II</p>
+<p class="text-sm text-on-surface-variant">25 de Junio • 08:15 hrs</p>
+</div>
+</div>
+</div>
+</div>
+<div class="pl-0 lg:pl-12">
+<p class="text-primary-container font-label uppercase tracking-widest text-xs mb-4">Análisis Predictivo</p>
+<h4 class="text-3xl font-bold tracking-tight mb-6">Optimización de Estudio</h4>
+<p class="text-on-surface-variant leading-relaxed mb-8">
+                    Basado en tus notas actuales de <span class="text-on-surface font-semibold">Redes de Computadoras</span>, necesitas un <span class="text-primary font-bold">5.1</span> en el examen final para aprobar la materia con el promedio mínimo requerido (4.0).
+                </p>
+<div class="flex gap-4">
+<button class="px-6 py-2 bg-surface-container-highest text-on-surface border border-outline-variant/20 rounded-md hover:bg-surface-bright transition-colors">Ver Simulador</button>
+<button class="px-6 py-2 text-primary-container font-bold flex items-center gap-2 hover:gap-3 transition-all">
+                        Agendar Tutoría <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Visual Accent Element -->
+<div class="fixed bottom-0 right-0 p-12 pointer-events-none opacity-20">
+<div class="w-96 h-96 bg-primary rounded-full blur-[160px]"></div>
+</div>
+</body></html>

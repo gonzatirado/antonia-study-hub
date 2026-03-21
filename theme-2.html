@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>StudyHub - Panel de Control Académico</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary-fixed": "#ffdad2",
+              "on-tertiary-fixed-variant": "#504700",
+              "inverse-surface": "#353023",
+              "inverse-on-surface": "#faf0dc",
+              "on-surface-variant": "#51443a",
+              "secondary-fixed": "#ffdbce",
+              "on-background": "#1f1b10",
+              "surface-container-low": "#fdf3df",
+              "surface": "#fff8f0",
+              "on-tertiary-container": "#484000",
+              "tertiary-fixed": "#f9e450",
+              "background": "#fff8f0",
+              "secondary": "#75584d",
+              "error": "#ba1a1a",
+              "on-primary": "#ffffff",
+              "on-secondary-container": "#795c51",
+              "on-surface": "#1f1b10",
+              "primary-container": "#624640",
+              "surface-dim": "#e3d9c6",
+              "surface-container-high": "#f1e7d4",
+              "primary": "#49302a",
+              "primary-fixed-dim": "#e5beb5",
+              "surface-tint": "#755750",
+              "on-tertiary": "#ffffff",
+              "outline-variant": "#d6c3b6",
+              "on-secondary": "#ffffff",
+              "on-primary-fixed": "#2b1611",
+              "on-error": "#ffffff",
+              "tertiary": "#6a5f00",
+              "on-error-container": "#93000a",
+              "surface-container-highest": "#ebe1cf",
+              "error-container": "#ffdad6",
+              "secondary-fixed-dim": "#e4beb2",
+              "outline": "#847469",
+              "inverse-primary": "#e5beb5",
+              "surface-container": "#f7edda",
+              "tertiary-container": "#bfad15",
+              "surface-bright": "#fff8f0",
+              "secondary-container": "#fed7ca",
+              "on-tertiary-fixed": "#201c00",
+              "tertiary-fixed-dim": "#dbc835",
+              "on-primary-fixed-variant": "#5c403a",
+              "on-primary-container": "#dcb5ad",
+              "surface-container-lowest": "#ffffff",
+              "on-secondary-fixed": "#2b160f",
+              "surface-variant": "#ebe1cf",
+              "on-secondary-fixed-variant": "#5b4137"
+            },
+            fontFamily: {
+              "headline": ["Newsreader", "serif"],
+              "body": ["Newsreader", "serif"],
+              "label": ["Public Sans", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>.material-symbols-outlined {
+    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+    vertical-align: middle
+    }
+.bg-library {
+    background-image: linear-gradient(to bottom, rgba(255, 248, 240, 0.85), rgba(255, 248, 240, 0.95)), url(https://lh3.googleusercontent.com/aida-public/AB6AXuAvsGWRmuZO0rlVCceC9w3qq_KIvYPz8VvrMRNkRevuRBm3bCmHClQ8ZR_YSGaiVVwhD8OCqZTIgMedyeBHSuZPU1qcaGcEBcD0fibX3MN8IPgqNpp8Wv2N_4wX47SkAg8TgxtX-O3qmAyBVRFd2hKUyqjJw1V_VocHSjNUGzV5yfg4enBWjoTzwfMBJ5n6T2uUTEkcsxa85O47owzaJsLLbeMU6VXOgNoG7dRsnVGEbLZDYTWTmFD-kx71f1YarKqcWfZlfsimNRN2);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed
+    }</style>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-secondary-container">
+<!-- SideNavBar -->
+<aside class="h-screen w-64 fixed left-0 top-0 z-50 bg-slate-100 flex flex-col p-4 space-y-2 border-r border-outline-variant/20 shadow-none overflow-y-auto">
+<div class="mb-8 px-2">
+<h1 class="text-xl font-headline font-black text-blue-900">StudyHub</h1>
+<p class="text-xs font-label uppercase tracking-widest text-secondary/60">Portal Académico</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 bg-white text-blue-700 rounded-lg shadow-sm font-semibold group transition-all translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-500 hover:bg-slate-200 transition-all group" href="#">
+<span class="material-symbols-outlined" data-icon="school">school</span>
+<span class="font-label">Mis Cursos</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-500 hover:bg-slate-200 transition-all group" href="#">
+<span class="material-symbols-outlined" data-icon="auto_stories">auto_stories</span>
+<span class="font-label">Bóveda de Investigación</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-500 hover:bg-slate-200 transition-all group" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_today">calendar_today</span>
+<span class="font-label">Horario</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-500 hover:bg-slate-200 transition-all group" href="#">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+<span class="font-label">Notas de Facultad</span>
+</a>
+</nav>
+<div class="pt-4 border-t border-outline-variant/20">
+<button class="w-full py-3 bg-primary text-on-primary font-label text-sm font-bold rounded-sm hover:brightness-110 transition-all mb-4">
+                Nueva Investigación
+            </button>
+<div class="space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-slate-500 hover:bg-slate-200 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span class="font-label">Centro de Ayuda</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-500 hover:bg-slate-200 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="font-label">Cerrar Sesión</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 min-h-screen bg-library">
+<!-- TopAppBar -->
+<header class="sticky top-0 w-full z-40 bg-slate-50/70 backdrop-blur-xl flex justify-between items-center px-8 h-16 shadow-sm">
+<div class="flex items-center gap-8">
+<span class="text-2xl font-headline font-bold text-blue-800">StudyHub</span>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-slate-600 hover:text-blue-600 font-label text-sm transition-colors" href="#">Librería</a>
+<a class="text-slate-600 hover:text-blue-600 font-label text-sm transition-colors" href="#">Archivo</a>
+<a class="text-blue-700 font-bold border-b-2 border-blue-700 pb-1 font-label text-sm" href="#">Coloquio</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden lg:block">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-slate-400 text-sm" data-icon="search">search</span>
+<input class="pl-10 pr-4 py-1.5 bg-white/50 border-none rounded-full text-sm font-label focus:ring-1 focus:ring-blue-700 w-64" placeholder="Buscar en el archivo..." type="text"/>
+</div>
+<button class="p-2 text-slate-600 hover:bg-slate-200/50 rounded-full transition-colors scale-95">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 text-slate-600 hover:bg-slate-200/50 rounded-full transition-colors scale-95">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<div class="h-8 w-8 rounded-full bg-primary overflow-hidden border border-outline-variant/30">
+<img alt="Avatar de usuario" class="w-full h-full object-cover" data-alt="Retrato de un hombre joven profesional" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCBj8V7Wp3yI6nk2MpfNEC4ImNB_mcdco1YYKbfOcmz1SDvRIhniDDuQWE3lefTBuotV7_jsEqs_Z1ktB-uuMASBd3-U_1E4F6xcsaSgf07fvAf_XVXacBnDXxNvIqyIVJaDxE3rhfTjBDTOSA9G05DdX7rWd_eltYI7LuH5B3aKpG1-Xnkyp11HQOmVs1Fi-pATO_hwHcsarmE-YkJUjTZCWw-bcJ6cRZoqp6eO19cn32eHucqDhtdXLxQQvgfnwGBDacxN9NbKYNP"/>
+</div>
+</div>
+</header>
+<div class="p-12 max-w-7xl mx-auto">
+<!-- Hero Heading -->
+<div class="mb-12">
+<h2 class="text-5xl font-headline text-on-surface mb-2 italic">Bienvenido, Curador.</h2>
+<p class="font-label text-secondary tracking-wide text-sm">Martes, 24 de Octubre de 2023 | Período de Investigación de Otoño</p>
+</div>
+<!-- Dashboard Bento Grid -->
+<div class="grid grid-cols-12 gap-8 items-start">
+<!-- Left Column: Tasks & Stats -->
+<div class="col-span-12 lg:col-span-8 grid grid-cols-2 gap-8">
+<!-- Pomodoro Rápido -->
+<section class="col-span-2 md:col-span-1 bg-surface-container-highest p-8 rounded-lg shadow-sm relative overflow-hidden group">
+<div class="relative z-10">
+<h3 class="font-label text-xs font-bold uppercase tracking-widest text-secondary mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="timer">timer</span>
+                                Pomodoro Rápido
+                            </h3>
+<div class="text-center py-4">
+<span class="text-6xl font-headline font-light text-primary tabular-nums">25:00</span>
+<div class="flex justify-center gap-4 mt-6">
+<button class="px-6 py-2 bg-primary text-on-primary text-xs font-label font-bold rounded-sm">INICIAR</button>
+<button class="px-6 py-2 bg-surface-container-low text-primary text-xs font-label font-bold rounded-sm">RESET</button>
+</div>
+</div>
+</div>
+<div class="absolute -right-4 -bottom-4 opacity-5 pointer-events-none group-hover:scale-110 transition-transform duration-700">
+<span class="material-symbols-outlined text-[120px]" data-icon="hourglass_empty">hourglass_empty</span>
+</div>
+</section>
+<!-- Métricas de Rendimiento -->
+<section class="col-span-2 md:col-span-1 bg-surface-container-low p-8 rounded-lg border-l-4 border-primary">
+<h3 class="font-label text-xs font-bold uppercase tracking-widest text-secondary mb-6">Métricas de Rendimiento</h3>
+<div class="space-y-6">
+<div>
+<div class="flex justify-between text-xs font-label mb-2">
+<span>Tesis Doctoral</span>
+<span>68%</span>
+</div>
+<div class="h-1 bg-surface-dim rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[68%]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-xs font-label mb-2">
+<span>Crítica Literaria</span>
+<span>42%</span>
+</div>
+<div class="h-1 bg-surface-dim rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-[42%]"></div>
+</div>
+</div>
+<div class="pt-2 grid grid-cols-2 gap-4">
+<div class="bg-surface p-3 text-center">
+<p class="text-xl font-headline text-primary">12h</p>
+<p class="text-[10px] font-label text-secondary uppercase">Esta Semana</p>
+</div>
+<div class="bg-surface p-3 text-center">
+<p class="text-xl font-headline text-primary">85%</p>
+<p class="text-[10px] font-label text-secondary uppercase">Eficiencia</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Tareas Críticas -->
+<section class="col-span-2 bg-white p-8 rounded-lg shadow-sm border border-outline-variant/10">
+<div class="flex justify-between items-center mb-8">
+<h3 class="font-label text-xs font-bold uppercase tracking-widest text-secondary">Tareas Críticas</h3>
+<span class="text-[10px] font-label text-tertiary bg-tertiary-container/20 px-2 py-0.5 rounded">3 Pendientes</span>
+</div>
+<div class="space-y-4">
+<div class="flex items-start gap-4 p-4 hover:bg-surface-container-low transition-colors group cursor-pointer border-b border-outline-variant/5">
+<div class="mt-1 h-5 w-5 border border-outline rounded-sm flex items-center justify-center group-hover:bg-primary/10"></div>
+<div class="flex-1">
+<h4 class="font-headline text-lg leading-tight">Revisar bibliografía sobre Estructuralismo</h4>
+<p class="font-label text-xs text-secondary mt-1 flex items-center gap-2">
+<span class="material-symbols-outlined text-[14px]" data-icon="event">event</span> Hoy, 17:00
+                                    </p>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary" data-icon="more_vert">more_vert</span>
+</div>
+<div class="flex items-start gap-4 p-4 hover:bg-surface-container-low transition-colors group cursor-pointer border-b border-outline-variant/5">
+<div class="mt-1 h-5 w-5 border border-outline rounded-sm flex items-center justify-center"></div>
+<div class="flex-1">
+<h4 class="font-headline text-lg leading-tight">Borrador de Introducción: Capítulo 3</h4>
+<p class="font-label text-xs text-secondary mt-1 flex items-center gap-2">
+<span class="material-symbols-outlined text-[14px]" data-icon="history">history</span> Mañana
+                                    </p>
+</div>
+<span class="material-symbols-outlined text-outline" data-icon="more_vert">more_vert</span>
+</div>
+<div class="flex items-start gap-4 p-4 hover:bg-surface-container-low transition-colors group cursor-pointer">
+<div class="mt-1 h-5 w-5 border border-outline rounded-sm flex items-center justify-center"></div>
+<div class="flex-1">
+<h4 class="font-headline text-lg leading-tight">Contactar con Archivo Nacional</h4>
+<p class="font-label text-xs text-secondary mt-1 flex items-center gap-2">
+<span class="material-symbols-outlined text-[14px]" data-icon="flag">flag</span> Prioridad Alta
+                                    </p>
+</div>
+<span class="material-symbols-outlined text-outline" data-icon="more_vert">more_vert</span>
+</div>
+</div>
+<button class="w-full mt-6 py-2 text-xs font-label text-secondary hover:text-primary transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span> Añadir Tarea al Catálogo
+                        </button>
+</section>
+</div>
+<!-- Right Column: Notes & Tools -->
+<div class="col-span-12 lg:col-span-4 space-y-8">
+<!-- Notas Recientes -->
+<section class="bg-surface-dim p-8 rounded-lg relative">
+<h3 class="font-label text-xs font-bold uppercase tracking-widest text-secondary mb-6">Notas Recientes</h3>
+<div class="space-y-6">
+<article class="relative pl-4 border-l border-primary/30">
+<h4 class="font-headline text-xl leading-tight mb-1">Citas de Foucault sobre el Poder</h4>
+<p class="text-on-surface-variant font-body text-sm line-clamp-2 italic">"Donde hay poder, hay resistencia, y no obstante..."</p>
+<span class="text-[10px] font-label text-secondary/60 mt-2 block italic">— Hace 2 horas</span>
+</article>
+<article class="relative pl-4 border-l border-outline-variant">
+<h4 class="font-headline text-xl leading-tight mb-1">Esquema de Marco Teórico</h4>
+<p class="text-on-surface-variant font-body text-sm line-clamp-2">Revisión de autores neomarxistas y su impacto en la educación...</p>
+<span class="text-[10px] font-label text-secondary/60 mt-2 block italic">— Ayer, 18:30</span>
+</article>
+<article class="relative pl-4 border-l border-outline-variant">
+<h4 class="font-headline text-xl leading-tight mb-1">Notas del Seminario V</h4>
+<p class="text-on-surface-variant font-body text-sm line-clamp-2">Comentarios del Dr. Silva sobre la fenomenología del espacio...</p>
+<span class="text-[10px] font-label text-secondary/60 mt-2 block italic">— 20 Oct, 2023</span>
+</article>
+</div>
+<div class="mt-8">
+<button class="text-primary font-label text-[10px] font-bold tracking-widest uppercase flex items-center gap-2 hover:gap-4 transition-all">
+                                VER TODA LA BÓVEDA <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</section>
+<!-- Herramientas -->
+<section class="bg-surface-container-highest p-8 rounded-lg">
+<h3 class="font-label text-xs font-bold uppercase tracking-widest text-secondary mb-6">Herramientas</h3>
+<div class="grid grid-cols-2 gap-3">
+<button class="bg-surface hover:bg-surface-bright p-4 rounded-sm transition-colors text-left group">
+<span class="material-symbols-outlined text-secondary group-hover:text-primary mb-2" data-icon="auto_awesome">auto_awesome</span>
+<p class="text-xs font-label font-bold">Generador APA</p>
+</button>
+<button class="bg-surface hover:bg-surface-bright p-4 rounded-sm transition-colors text-left group">
+<span class="material-symbols-outlined text-secondary group-hover:text-primary mb-2" data-icon="translate">translate</span>
+<p class="text-xs font-label font-bold">Traductor Académico</p>
+</button>
+<button class="bg-surface hover:bg-surface-bright p-4 rounded-sm transition-colors text-left group">
+<span class="material-symbols-outlined text-secondary group-hover:text-primary mb-2" data-icon="database">database</span>
+<p class="text-xs font-label font-bold">Bases de Datos</p>
+</button>
+<button class="bg-surface hover:bg-surface-bright p-4 rounded-sm transition-colors text-left group">
+<span class="material-symbols-outlined text-secondary group-hover:text-primary mb-2" data-icon="ink_highlighter">ink_highlighter</span>
+<p class="text-xs font-label font-bold">Resaltador OCR</p>
+</button>
+</div>
+</section>
+<!-- Margin Note / Folio Decorator -->
+<div class="p-6 border border-outline-variant/30 italic text-secondary text-sm">
+<p class="font-body">"La lectura es para la mente lo que el ejercicio es para el cuerpo."</p>
+<p class="font-label text-[10px] uppercase mt-2 font-bold tracking-tighter">— Joseph Addison, Folio 1711</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer / Folio Scroller -->
+<footer class="mt-20 px-12 pb-12">
+<div class="bg-surface-dim p-10 rounded-lg overflow-hidden relative">
+<div class="flex justify-between items-end mb-8">
+<div>
+<h3 class="font-headline text-3xl italic">Publicaciones Recomendadas</h3>
+<p class="font-label text-xs text-secondary">Basado en tu actividad de investigación reciente</p>
+</div>
+<div class="flex gap-2">
+<button class="p-2 border border-outline-variant rounded-full hover:bg-surface transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="chevron_left">chevron_left</span>
+</button>
+<button class="p-2 border border-outline-variant rounded-full hover:bg-surface transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+<div class="flex gap-8 overflow-x-auto pb-4 no-scrollbar">
+<div class="min-w-[300px] bg-surface p-6 rounded-md shadow-sm">
+<span class="text-[10px] font-label text-tertiary font-bold uppercase tracking-widest">CIENCIA SOCIAL</span>
+<h4 class="font-headline text-xl mt-2 mb-4">La Evolución del Espacio Urbano en el Siglo XXI</h4>
+<div class="flex items-center gap-2 mt-auto">
+<img alt="Autor" class="w-6 h-6 rounded-full grayscale" data-alt="Retrato artístico en blanco y negro de una mujer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA4OKpu7ox7vlyFTRoCrirEJzcd5GZsYdWFvs0bqH1MYKuc6KuI7OQytCym2y0s4hpqMop7vuWEEN9e8vSHBqRr_axLLgYHMz9riCxzi2W_ulpqwOz6q67dgVspJRKP7om03q-YnM4JrcpfIWyJfgtHMjdaGqT168d2bSgGZyIfXilICbO61bpoxHHzSQhKnO2j9WquTxf3rV4fpspJ-YE8CCIeK4J_DwoNLU0TcH83yfdAqfcrD82YvnKPKAsdpfjNIgjrtKnzQj_q"/>
+<span class="text-[10px] font-label text-secondary">Dra. Elena Vance</span>
+</div>
+</div>
+<div class="min-w-[300px] bg-surface p-6 rounded-md shadow-sm">
+<span class="text-[10px] font-label text-tertiary font-bold uppercase tracking-widest">FILOSOFÍA</span>
+<h4 class="font-headline text-xl mt-2 mb-4">Metafísica del Tiempo: Una Revisión Neoclásica</h4>
+<div class="flex items-center gap-2 mt-auto">
+<img alt="Autor" class="w-6 h-6 rounded-full grayscale" data-alt="Retrato de un hombre con barba" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCz0WzGogaXcdkyn7lqt5dBL2nTagAidpt8X9DJeIDBS2P5R-flfMAz8WQpMQEQT4WGK8do0YhD96UJN9Q8jwtvHcUadyQKWNG1KDWr47QEElHwLauuzWqpyYyzIm8FI6RcGfBUC7i6SBrqN_0Wlme93dtXUB5wkdmylYHS7etqxd2dYBKdDSm8DCnmtc34khXQGG-9905Z2v8TomAPsH8C5JFRI81MrfpgexGnuX-hMaVr5IeGQ8kpJdJPcGL-z4d9Up2Q_vR4Amy-"/>
+<span class="text-[10px] font-label text-secondary">Prof. Julian Thorne</span>
+</div>
+</div>
+<div class="min-w-[300px] bg-surface p-6 rounded-md shadow-sm">
+<span class="text-[10px] font-label text-tertiary font-bold uppercase tracking-widest">LITERATURA</span>
+<h4 class="font-headline text-xl mt-2 mb-4">El Realismo Mágico en la Era Digital</h4>
+<div class="flex items-center gap-2 mt-auto">
+<img alt="Autor" class="w-6 h-6 rounded-full grayscale" data-alt="Retrato de una mujer joven sonriendo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_KjBWDKvJOettbbfL_IBz04E6uXtkpFKr4bltjWPjJoY2Vz72igwMAGOt3-Av6H1jt5qtXY2ArHi2rl4dTu0r2rvv3n2NwwpLW7S_E-KKIv_bVYkUQhhP3X0yIvLUV_nK5l2oGz5aDAIOJJobOvrTQaSpccB45f2_xgdT5ujIB9Gi8TAwE_2RGlKebluOwWs-9w3k6xuT_-2TP5nS397wQNSewZLX3CbqRLtcRBpgENXItiS5gWkStk5UFE_f0CmGAKs6fT3gVnFC"/>
+<span class="text-[10px] font-label text-secondary">Mtr. Sofía Reyes</span>
+</div>
+</div>
+</div>
+</div>
+</footer>
+</main>
+</body></html>

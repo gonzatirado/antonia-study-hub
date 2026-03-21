@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;family=Newsreader:ital,wght@0,400;0,700;1,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "outline": "#859397",
+              "secondary-fixed-dim": "#9acfdc",
+              "surface-container-highest": "#353534",
+              "error-container": "#93000a",
+              "on-error-container": "#ffdad6",
+              "tertiary": "#ffdeac",
+              "on-secondary-fixed-variant": "#124e58",
+              "on-secondary-fixed": "#001f25",
+              "surface-variant": "#353534",
+              "on-primary-container": "#005b69",
+              "surface-container-lowest": "#0e0e0e",
+              "on-primary-fixed-variant": "#004e5a",
+              "tertiary-fixed-dim": "#feba32",
+              "on-tertiary-fixed": "#271900",
+              "secondary-container": "#15505b",
+              "surface-bright": "#3a3939",
+              "tertiary-container": "#ffbb33",
+              "surface-container": "#201f1f",
+              "inverse-primary": "#006877",
+              "background": "#131313",
+              "secondary": "#9acfdc",
+              "tertiary-fixed": "#ffdeaa",
+              "on-tertiary-container": "#6e4d00",
+              "surface": "#131313",
+              "surface-container-low": "#1c1b1b",
+              "on-background": "#e5e2e1",
+              "secondary-fixed": "#b6ebf8",
+              "on-surface-variant": "#bac9cd",
+              "inverse-on-surface": "#313030",
+              "inverse-surface": "#e5e2e1",
+              "on-tertiary-fixed-variant": "#5f4100",
+              "primary-fixed": "#a4eeff",
+              "on-error": "#690005",
+              "on-secondary": "#00363f",
+              "on-primary-fixed": "#001f25",
+              "surface-tint": "#00daf8",
+              "outline-variant": "#3b494c",
+              "on-tertiary": "#422c00",
+              "primary-fixed-dim": "#00daf8",
+              "primary": "#a6eeff",
+              "surface-container-high": "#2a2a2a",
+              "surface-dim": "#131313",
+              "primary-container": "#00daf8",
+              "on-surface": "#e5e2e1",
+              "on-secondary-container": "#8cc1cd",
+              "on-primary": "#00363f",
+              "error": "#ffb4ab"
+            },
+            fontFamily: {
+              "headline": ["Manrope", "sans-serif"],
+              "body": ["Inter", "sans-serif"],
+              "label": ["Inter", "sans-serif"],
+              "serif": ["Newsreader", "serif"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .lume-glow {
+        box-shadow: 0 0 8px #00daf8;
+      }
+      .glass-panel {
+        background: rgba(32, 31, 31, 0.7);
+        backdrop-filter: blur(20px);
+      }
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-primary-container selection:text-on-primary-container overflow-hidden">
+<!-- SideNavBar Anchor -->
+<aside class="h-screen w-64 fixed left-0 top-0 z-50 bg-slate-100 dark:bg-slate-900 flex flex-col p-4 space-y-2 font-sans Manrope medium tracking-tight shadow-none border-r border-outline-variant/10">
+<div class="mb-8 px-2 flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-primary-container flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">school</span>
+</div>
+<div>
+<h1 class="text-xl font-serif font-black text-blue-900 dark:text-blue-200 leading-none">StudyHub</h1>
+<p class="text-[10px] uppercase tracking-widest text-slate-500 dark:text-slate-400 mt-1">Academic Portal</p>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 bg-white dark:bg-slate-800 text-blue-700 dark:text-blue-300 rounded-lg shadow-sm font-semibold translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-200 transition-all" href="#">
+<span class="material-symbols-outlined">school</span>
+<span>My Courses</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-200 transition-all" href="#">
+<span class="material-symbols-outlined">auto_stories</span>
+<span>Research Vault</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-200 transition-all" href="#">
+<span class="material-symbols-outlined">calendar_today</span>
+<span>Schedule</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-200 transition-all" href="#">
+<span class="material-symbols-outlined">description</span>
+<span>Faculty Notes</span>
+</a>
+</nav>
+<button class="mt-4 mx-2 py-3 px-4 bg-primary-container text-on-primary-container rounded-xl font-bold flex items-center justify-center gap-2 hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined">add</span>
+            New Research
+        </button>
+<div class="pt-4 mt-auto border-t border-outline-variant/10 space-y-1">
+<a class="flex items-center gap-3 px-4 py-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 transition-all text-sm" href="#">
+<span class="material-symbols-outlined text-lg">help</span>
+<span>Help Center</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 transition-all text-sm" href="#">
+<span class="material-symbols-outlined text-lg">logout</span>
+<span>Sign Out</span>
+</a>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="ml-64 min-h-screen flex flex-col relative bg-surface-container-lowest">
+<!-- TopAppBar Anchor -->
+<header class="sticky top-0 w-full z-40 bg-slate-50/70 dark:bg-slate-950/70 backdrop-blur-xl shadow-sm dark:shadow-none flex justify-between items-center px-8 h-16 w-full">
+<div class="flex items-center gap-8">
+<span class="text-2xl font-serif font-bold text-blue-800 dark:text-blue-300">StudyHub</span>
+<nav class="hidden md:flex items-center gap-6 text-sm font-medium">
+<a class="text-slate-600 dark:text-slate-400 hover:text-blue-600 transition-colors" href="#">Library</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-blue-600 transition-colors" href="#">Archive</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-blue-600 transition-colors" href="#">Colloquium</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden lg:block">
+<input class="bg-surface-container-high border-none rounded-full py-2 pl-10 pr-4 text-sm w-64 focus:ring-1 focus:ring-primary placeholder:text-outline" placeholder="Buscar en el santuario..." type="text"/>
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-lg">search</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 rounded-full hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-colors text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 rounded-full hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-colors text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-surface-container overflow-hidden ml-2 border border-outline-variant/20">
+<img alt="User profile avatar" class="w-full h-full object-cover" data-alt="Close up portrait of a student user" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVtXye67_AZ0s8BLR7qlv1NxHCcOVAH4kz6rXgovG1ubTNZLYEyjAf4DKrrA8Zv9ILUkifTzIYBJuH-F2YIEuHJdieGDBOiFrsyb_6TuL1qCL8B-_IJB9eGhSspXABVhcZg21MAnfMwXrZPDE4taEjmaUZ3DyiLE2WBuPVBI_yJ7z0KiSB4jUtMjs7rYl88RIirlpivUi1g4KoLFZN8H_LJIrwB17b2cFQKv8Lj3iGGJa7kDQqhdmAOGEP1Oyk6if8j2GtAEQ7BmiX"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Content Area -->
+<div class="flex-1 p-8 overflow-y-auto no-scrollbar space-y-8 relative">
+<!-- Hero Illustration Background (Conceptual Sanctuary) -->
+<div class="absolute top-0 left-0 w-full h-[500px] opacity-10 pointer-events-none overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-b from-primary/20 to-transparent"></div>
+<div class="grid grid-cols-12 gap-4 h-full p-8">
+<div class="col-span-4 border-l border-primary/30 h-full"></div>
+<div class="col-span-8 border-r border-primary/30 h-1/2 mt-20"></div>
+</div>
+</div>
+<div class="relative z-10 flex flex-col lg:flex-row gap-8">
+<!-- Left Column: Tasks & Progress -->
+<div class="flex-1 space-y-8">
+<section>
+<div class="flex items-end justify-between mb-6">
+<div>
+<h2 class="text-4xl font-headline font-extrabold tracking-tight text-on-surface mb-2">Santuario Digital</h2>
+<p class="text-on-surface-variant font-body">Tu espacio de enfoque y alto rendimiento.</p>
+</div>
+<div class="text-right">
+<span class="text-xs font-label uppercase tracking-widest text-primary mb-1 block">Productividad Hoy</span>
+<div class="flex items-center gap-2 text-2xl font-headline font-bold">
+<span>84%</span>
+<div class="w-2 h-2 rounded-full bg-primary lume-glow"></div>
+</div>
+</div>
+</div>
+<!-- Bento Grid: Top Row -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Pomodoro Rápido -->
+<div class="md:col-span-2 glass-panel p-6 rounded-xl border-b border-transparent hover:border-primary/20 transition-all group">
+<div class="flex justify-between items-start mb-12">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">timer</span>
+<h3 class="text-lg font-headline font-bold">Pomodoro Rápido</h3>
+</div>
+<span class="px-3 py-1 bg-surface-bright rounded-full text-xs font-label text-primary">Enfoque Profundo</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="text-6xl font-headline font-black tracking-tighter text-on-surface">25:00</div>
+<div class="flex gap-3">
+<button class="w-14 h-14 rounded-full bg-gradient-to-br from-primary to-primary-container flex items-center justify-center text-on-primary shadow-lg shadow-primary/10 hover:scale-105 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+<button class="w-14 h-14 rounded-full bg-surface-container-highest flex items-center justify-center text-on-surface hover:bg-surface-bright transition-colors">
+<span class="material-symbols-outlined">refresh</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Métricas de Rendimiento Card -->
+<div class="bg-surface-container-high p-6 rounded-xl space-y-6">
+<div class="flex items-center justify-between">
+<h3 class="text-sm font-label font-semibold text-on-surface-variant">Rendimiento</h3>
+<span class="material-symbols-outlined text-primary text-xl">insights</span>
+</div>
+<div class="space-y-4">
+<div class="flex justify-between items-end">
+<span class="text-xs text-outline">Lun</span>
+<div class="w-4 h-12 bg-surface-container rounded-t-sm relative overflow-hidden">
+<div class="absolute bottom-0 w-full h-[60%] bg-primary/40"></div>
+</div>
+</div>
+<div class="flex justify-between items-end">
+<span class="text-xs text-outline">Mar</span>
+<div class="w-4 h-16 bg-surface-container rounded-t-sm relative overflow-hidden">
+<div class="absolute bottom-0 w-full h-[85%] bg-primary"></div>
+</div>
+</div>
+<div class="flex justify-between items-end">
+<span class="text-xs text-outline">Mie</span>
+<div class="w-4 h-14 bg-surface-container rounded-t-sm relative overflow-hidden">
+<div class="absolute bottom-0 w-full h-[70%] bg-primary/70"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Tareas Críticas -->
+<section class="space-y-4">
+<div class="flex items-center justify-between">
+<h3 class="text-xl font-headline font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">priority_high</span>
+                                Tareas Críticas
+                            </h3>
+<button class="text-sm text-primary-container font-medium hover:underline">Ver todas</button>
+</div>
+<div class="space-y-3">
+<div class="bg-surface-container p-4 rounded-lg flex items-center justify-between hover:bg-surface-bright transition-colors cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-6 h-6 rounded border-2 border-primary/30 flex items-center justify-center hover:border-primary transition-colors"></div>
+<div>
+<h4 class="font-medium text-on-surface">Finalizar Tesis: Marco Teórico</h4>
+<p class="text-xs text-on-surface-variant">Prioridad Máxima • 14:00h</p>
+</div>
+</div>
+<div class="flex -space-x-2">
+<div class="w-6 h-6 rounded-full bg-tertiary-container flex items-center justify-center text-[10px] font-bold text-on-tertiary">JD</div>
+<div class="w-6 h-6 rounded-full bg-secondary-container flex items-center justify-center text-[10px] font-bold text-on-secondary">RS</div>
+</div>
+</div>
+<div class="bg-surface-container p-4 rounded-lg flex items-center justify-between hover:bg-surface-bright transition-colors cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-6 h-6 rounded border-2 border-primary/30 flex items-center justify-center"></div>
+<div>
+<h4 class="font-medium text-on-surface">Revisión de Literatura Académica</h4>
+<p class="text-xs text-on-surface-variant">Investigación • Mañana</p>
+</div>
+</div>
+<span class="text-xs px-2 py-0.5 bg-outline-variant/20 rounded text-outline">Urgente</span>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column: Notes & Tools -->
+<div class="w-full lg:w-80 space-y-8">
+<!-- Notas Recientes -->
+<section class="bg-surface-container-low p-6 rounded-xl space-y-6">
+<div class="flex items-center justify-between">
+<h3 class="font-headline font-bold">Notas Recientes</h3>
+<button class="p-1 text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined">add_circle</span></button>
+</div>
+<div class="space-y-4">
+<div class="p-3 bg-surface-container rounded-lg border-l-4 border-tertiary-container">
+<p class="text-sm font-semibold mb-1 truncate">Hipótesis de Redes Neuronales</p>
+<p class="text-xs text-outline line-clamp-2">Exploración sobre la arquitectura transformer en modelos de lenguaje pequeños...</p>
+</div>
+<div class="p-3 bg-surface-container rounded-lg border-l-4 border-secondary-container">
+<p class="text-sm font-semibold mb-1 truncate">Citas: Capítulo 3</p>
+<p class="text-xs text-outline line-clamp-2">Verificar fuentes de Miller et al. (2023) sobre ergonomía cognitiva.</p>
+</div>
+</div>
+</section>
+<!-- Herramientas Section -->
+<section class="space-y-4">
+<h3 class="text-xs font-label uppercase tracking-widest text-outline">Herramientas</h3>
+<div class="grid grid-cols-2 gap-3">
+<button class="flex flex-col items-center justify-center p-4 bg-surface-container-high rounded-lg hover:bg-surface-bright transition-all group">
+<span class="material-symbols-outlined text-primary mb-2 group-hover:scale-110 transition-transform">translate</span>
+<span class="text-xs font-medium">Traductor</span>
+</button>
+<button class="flex flex-col items-center justify-center p-4 bg-surface-container-high rounded-lg hover:bg-surface-bright transition-all group">
+<span class="material-symbols-outlined text-primary mb-2 group-hover:scale-110 transition-transform">calculate</span>
+<span class="text-xs font-medium">Ecuaciones</span>
+</button>
+<button class="flex flex-col items-center justify-center p-4 bg-surface-container-high rounded-lg hover:bg-surface-bright transition-all group">
+<span class="material-symbols-outlined text-primary mb-2 group-hover:scale-110 transition-transform">auto_awesome</span>
+<span class="text-xs font-medium">Asistente AI</span>
+</button>
+<button class="flex flex-col items-center justify-center p-4 bg-surface-container-high rounded-lg hover:bg-surface-bright transition-all group">
+<span class="material-symbols-outlined text-primary mb-2 group-hover:scale-110 transition-transform">cloud_upload</span>
+<span class="text-xs font-medium">Sincronizar</span>
+</button>
+</div>
+</section>
+<!-- User Progress Card -->
+<div class="p-6 bg-gradient-to-br from-primary/10 to-primary-container/5 rounded-xl border border-primary/20">
+<h4 class="text-sm font-headline font-bold mb-4">Meta Semanal</h4>
+<div class="w-full bg-surface-container-highest h-2 rounded-full mb-2 overflow-hidden">
+<div class="bg-primary h-full w-[65%] rounded-full"></div>
+</div>
+<div class="flex justify-between items-center text-[10px] font-label font-bold text-outline">
+<span>26 HORAS LOGRADAS</span>
+<span>40 HORAS META</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Contextual FAB (Only on Dashboard) -->
+<button class="fixed bottom-8 right-8 w-16 h-16 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95 transition-all z-50">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">add</span>
+</button>
+</body></html>

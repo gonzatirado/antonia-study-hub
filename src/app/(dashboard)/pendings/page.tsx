@@ -4,8 +4,15 @@ import { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import {
   ClipboardList, Plus, Loader2, Trash2, Check, Calendar,
-  AlertCircle, ChevronRight,
+  AlertCircle,
 } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useAppStore } from "@/lib/store";
@@ -243,15 +250,16 @@ function PendingDialogGlobal({ subjects, onClose, onSave }: {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="text-xs text-muted-foreground mb-1 block">Asignatura *</label>
-            <div className="relative">
-              <select value={subjectId} onChange={(e) => setSubjectId(e.target.value)}
-                className="w-full bg-muted border border-border rounded-lg px-3 py-2.5 text-sm text-foreground appearance-none focus:outline-none focus:border-ring cursor-pointer">
+            <Select value={subjectId} onValueChange={(v) => setSubjectId(v as string)}>
+              <SelectTrigger className="w-full bg-muted border-border text-foreground">
+                <SelectValue placeholder="Seleccionar asignatura" />
+              </SelectTrigger>
+              <SelectContent className="bg-card border-border">
                 {subjects.map((s) => (
-                  <option key={s.id} value={s.id} className="bg-muted">{s.name}</option>
+                  <SelectItem key={s.id} value={s.id} className="text-foreground">{s.name}</SelectItem>
                 ))}
-              </select>
-              <ChevronRight className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground rotate-90 pointer-events-none" />
-            </div>
+              </SelectContent>
+            </Select>
           </div>
 
           <div>
@@ -271,15 +279,16 @@ function PendingDialogGlobal({ subjects, onClose, onSave }: {
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="text-xs text-muted-foreground mb-1 block">Tipo</label>
-              <div className="relative">
-                <select value={type} onChange={(e) => setType(e.target.value as PendingType)}
-                  className="w-full bg-muted border border-border rounded-lg px-3 py-2.5 text-sm text-foreground appearance-none focus:outline-none focus:border-ring cursor-pointer">
+              <Select value={type} onValueChange={(v) => setType(v as PendingType)}>
+                <SelectTrigger className="w-full bg-muted border-border text-foreground">
+                  <SelectValue placeholder="Seleccionar tipo" />
+                </SelectTrigger>
+                <SelectContent className="bg-card border-border">
                   {types.map((t) => (
-                    <option key={t.value} value={t.value} className="bg-muted">{t.label}</option>
+                    <SelectItem key={t.value} value={t.value} className="text-foreground">{t.label}</SelectItem>
                   ))}
-                </select>
-                <ChevronRight className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground rotate-90 pointer-events-none" />
-              </div>
+                </SelectContent>
+              </Select>
             </div>
             <div>
               <label className="text-xs text-muted-foreground mb-1 block">Fecha límite *</label>

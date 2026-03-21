@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>StudyHub - The Living Sanctuary</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-secondary-fixed-variant": "#76330d",
+                        "on-secondary-fixed": "#351000",
+                        "surface-variant": "#263a10",
+                        "on-primary-fixed-variant": "#005236",
+                        "surface-container-lowest": "#061100",
+                        "on-primary-container": "#31c98f",
+                        "tertiary-fixed-dim": "#98da27",
+                        "secondary-container": "#76330d",
+                        "on-tertiary-fixed": "#121f00",
+                        "surface-bright": "#2a3f14",
+                        "surface-container": "#112400",
+                        "tertiary-container": "#314c00",
+                        "inverse-primary": "#006c49",
+                        "secondary-fixed-dim": "#ffb693",
+                        "outline": "#89938d",
+                        "on-error-container": "#ffdad6",
+                        "error-container": "#93000a",
+                        "surface-container-highest": "#263a10",
+                        "tertiary": "#98da27",
+                        "on-primary-fixed": "#002113",
+                        "on-secondary": "#561f00",
+                        "on-error": "#690005",
+                        "primary-fixed-dim": "#4edea3",
+                        "surface-tint": "#4edea3",
+                        "outline-variant": "#404944",
+                        "on-tertiary": "#213600",
+                        "primary": "#4edea3",
+                        "surface-container-high": "#1b2f06",
+                        "surface-dim": "#091700",
+                        "on-secondary-container": "#fc9e6f",
+                        "primary-container": "#004f34",
+                        "on-surface": "#d0ecb0",
+                        "on-primary": "#003824",
+                        "error": "#ffb4ab",
+                        "surface": "#091700",
+                        "on-tertiary-container": "#84c402",
+                        "tertiary-fixed": "#b2f746",
+                        "secondary": "#ffb693",
+                        "background": "#091700",
+                        "surface-container-low": "#0e2000",
+                        "on-background": "#d0ecb0",
+                        "on-surface-variant": "#bfc9c3",
+                        "secondary-fixed": "#ffdbcc",
+                        "inverse-on-surface": "#21360c",
+                        "inverse-surface": "#d0ecb0",
+                        "on-tertiary-fixed-variant": "#334f00",
+                        "primary-fixed": "#6ffbbe"
+                    },
+                    fontFamily: {
+                        "headline": ["Noto Serif"],
+                        "body": ["Manrope"],
+                        "label": ["Manrope"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>body {
+    font-family: "Manrope", sans-serif
+    }
+.font-serif {
+    font-family: "Noto Serif", serif
+    }
+.material-symbols-outlined {
+    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24
+    }
+.bg-forest-illustration {
+    background-image: linear-gradient(to bottom, rgba(9, 23, 0, 0.8), rgba(9, 23, 0, 0.95)), url(https://lh3.googleusercontent.com/aida-public/AB6AXuBm_qZxZYCObmXow7RZ38YOLvkwnjS_ih9pm_Ql1iigCafcAKr12x6wZaBQVQ5KxX3V2i8U7eON-rN06NiGpK6SxAHNJDy6K_vIDcQW6zNsVx3phOeDZldXc0ecoKhYM3CzBdNd0ohB37Xm8c9ikCTEFOFfZo0eRBPOkFQz5e3tV1Pz5v3gYgtRi3plcBcvdQj3qFlUwZLwSlTCKlK1rAKBHnsRnK_Nhkra_N-i_-KVjrQ0M7GUU6_eeABILfMsaV3g49KDLpkgDbOF);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed
+    }
+.canopy-overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 40%;
+    height: 40%;
+    background: radial-gradient(circle at top right, rgba(152, 218, 39, 0.05), transparent 70%);
+    pointer-events: none;
+    z-index: 1
+    }</style>
+</head>
+<body class="bg-surface text-on-surface selection:bg-primary/30 min-h-screen flex">
+<!-- SideNavBar (Authority: JSON & Design System) -->
+<aside class="h-screen w-64 fixed left-0 top-0 z-50 bg-slate-100 dark:bg-slate-900 flex flex-col p-4 space-y-2 font-sans tracking-tight">
+<div class="mb-8 px-2">
+<h1 class="text-xl font-serif font-black text-blue-900 dark:text-blue-200">StudyHub</h1>
+<p class="text-xs text-slate-500 dark:text-slate-400 font-medium">Academic Portal</p>
+</div>
+<nav class="flex-1 space-y-1">
+<!-- Active State: Dashboard -->
+<a class="flex items-center gap-3 px-4 py-3 bg-white dark:bg-slate-800 text-blue-700 dark:text-blue-300 rounded-lg shadow-sm font-semibold translate-x-1 duration-200 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-200 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="school">school</span>
+<span>My Courses</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-200 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="auto_stories">auto_stories</span>
+<span>Research Vault</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-200 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_today">calendar_today</span>
+<span>Schedule</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-200 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+<span>Faculty Notes</span>
+</a>
+</nav>
+<button class="mt-4 mb-8 bg-blue-700 hover:bg-blue-800 text-white py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-900/20">
+<span class="material-symbols-outlined text-sm">add</span>
+            New Research
+        </button>
+<div class="border-t border-slate-200 dark:border-slate-800 pt-4 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span>Help Center</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span>Sign Out</span>
+</a>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="flex-1 ml-64 bg-forest-illustration min-h-screen relative overflow-hidden">
+<div class="canopy-overlay"></div>
+<!-- TopAppBar (Authority: JSON) -->
+<header class="sticky top-0 w-full z-40 bg-slate-50/70 dark:bg-slate-950/70 backdrop-blur-xl shadow-sm dark:shadow-none flex justify-between items-center px-8 h-16">
+<div class="flex items-center gap-8">
+<span class="text-2xl font-serif font-bold text-blue-800 dark:text-blue-300">StudyHub</span>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-slate-600 dark:text-slate-400 hover:text-blue-600 transition-colors" href="#">Library</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-blue-600 transition-colors" href="#">Archive</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-blue-600 transition-colors" href="#">Colloquium</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative group">
+<span class="absolute inset-y-0 left-3 flex items-center text-slate-400">
+<span class="material-symbols-outlined text-lg">search</span>
+</span>
+<input class="bg-slate-200/50 dark:bg-slate-800/50 border-none rounded-full py-1.5 pl-10 pr-4 text-sm focus:ring-2 focus:ring-blue-500/50 w-64 transition-all" placeholder="Search..." type="text"/>
+</div>
+<button class="p-2 rounded-full hover:bg-slate-200/50 dark:hover:bg-slate-800/50 text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 rounded-full hover:bg-slate-200/50 dark:hover:bg-slate-800/50 text-slate-600 dark:text-slate-400">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<img alt="User profile avatar" class="w-8 h-8 rounded-full border border-blue-500/30" data-alt="Close up professional headshot of a student" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBau_M38kYPT65i-DcKJrbymR4dfSoMC3rKJPqVuiZqhlKCadGLYpcnYADmAqM-q-K_a2CzPwX_e39Rl2SWDy2cVfsn45OLcqbBKzfBwFdwjJwN_ozbuHvB88U9wApLCIvSi8rUXP45FzHpa1bkAqeGlNAUm1LZh9KQV7_FFoXmIizwltSbAg908t6NCk3-vvOiTpU_kuN4F4_zZ8wyw9aMMuSVwDJhuUoQBZTUzNQLvwCps-sKuub9p7lX9xmqUyW7gqCbinx3DI1r"/>
+</div>
+</header>
+<!-- Content Area -->
+<div class="p-12 relative z-10">
+<!-- Hero Heading (Asymmetric) -->
+<div class="mb-16 max-w-4xl">
+<h2 class="text-5xl font-serif font-bold text-on-surface leading-tight tracking-tight mb-4">
+                    Tu Santuario de <span class="text-primary italic">Productividad</span>
+</h2>
+<p class="text-lg text-on-surface-variant font-body max-w-xl">
+                    Bienvenido de nuevo. El bosque está en calma, perfecto para profundizar en tus investigaciones.
+                </p>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-12 gap-6">
+<!-- Pomodoro Rápido (Large Bento Item) -->
+<div class="col-span-12 md:col-span-8 bg-surface-container-low rounded-xl p-8 flex flex-col justify-between relative overflow-hidden">
+<div class="relative z-10">
+<div class="flex justify-between items-start mb-12">
+<div>
+<h3 class="text-2xl font-serif font-bold text-on-surface mb-1">Pomodoro Rápido</h3>
+<p class="text-sm text-on-surface-variant">Ciclo de Enfoque Profundo</p>
+</div>
+<span class="material-symbols-outlined text-primary text-4xl" style="font-variation-settings: 'FILL' 1;">timer</span>
+</div>
+<div class="flex items-center gap-12">
+<div class="relative w-48 h-48 flex items-center justify-center">
+<svg class="absolute w-full h-full transform -rotate-90">
+<circle class="text-surface-container-highest" cx="96" cy="96" fill="transparent" r="88" stroke="currentColor" stroke-width="8"></circle>
+<circle class="text-primary" cx="96" cy="96" fill="transparent" r="88" stroke="currentColor" stroke-dasharray="552.92" stroke-dashoffset="138" stroke-width="8"></circle>
+</svg>
+<span class="text-5xl font-bold text-on-surface">25:00</span>
+</div>
+<div class="space-y-4 flex-1">
+<button class="w-full bg-gradient-to-br from-primary to-primary-container text-on-primary py-4 rounded-full font-bold text-lg shadow-lg hover:scale-95 transition-transform">
+                                    Iniciar Sesión
+                                </button>
+<div class="grid grid-cols-2 gap-3">
+<button class="bg-surface-container-highest text-on-surface py-2 rounded-full text-sm font-semibold hover:bg-primary/20 transition-colors">Descanso Corto</button>
+<button class="bg-surface-container-highest text-on-surface py-2 rounded-full text-sm font-semibold hover:bg-primary/20 transition-colors">Descanso Largo</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Decorative leaf mask -->
+<div class="absolute -bottom-10 -right-10 opacity-10 text-primary">
+<span class="material-symbols-outlined text-[200px]">eco</span>
+</div>
+</div>
+<!-- Tareas Críticas (Tall Bento Item) -->
+<div class="col-span-12 md:col-span-4 bg-surface-container rounded-xl p-8 flex flex-col">
+<h3 class="text-xl font-serif font-bold text-on-surface mb-6">Tareas Críticas</h3>
+<div class="space-y-6 flex-1">
+<div class="flex gap-4 items-start">
+<div class="w-6 h-6 rounded border-2 border-primary mt-1 flex-shrink-0"></div>
+<div>
+<p class="text-on-surface font-semibold leading-tight">Revisar bibliografía de Tesis</p>
+<p class="text-xs text-secondary-fixed-dim mt-1">Vence hoy, 18:00</p>
+</div>
+</div>
+<div class="flex gap-4 items-start opacity-70">
+<div class="w-6 h-6 rounded border-2 border-outline mt-1 flex-shrink-0"></div>
+<div>
+<p class="text-on-surface font-semibold leading-tight">Preparar presentación Colloquium</p>
+<p class="text-xs text-on-surface-variant mt-1">Mañana</p>
+</div>
+</div>
+<div class="flex gap-4 items-start opacity-70">
+<div class="w-6 h-6 rounded border-2 border-outline mt-1 flex-shrink-0"></div>
+<div>
+<p class="text-on-surface font-semibold leading-tight">Enviar resumen de Facultad</p>
+<p class="text-xs text-on-surface-variant mt-1">Jueves</p>
+</div>
+</div>
+</div>
+<button class="mt-8 text-primary font-bold flex items-center gap-2 hover:underline">
+                        Ver todas las tareas <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+<!-- Notas Recientes (Masonry Horizontal) -->
+<div class="col-span-12 md:col-span-6 bg-surface-container-low rounded-xl p-8 relative overflow-hidden">
+<div class="flex justify-between items-center mb-6">
+<h3 class="text-xl font-serif font-bold text-on-surface">Notas Recientes</h3>
+<span class="material-symbols-outlined text-on-surface-variant">edit_note</span>
+</div>
+<div class="space-y-4">
+<div class="bg-surface-container-high/40 p-4 rounded-xl backdrop-blur-sm border-l-4 border-primary">
+<p class="text-xs text-tertiary font-bold mb-1 uppercase tracking-widest">Investigación</p>
+<h4 class="text-on-surface font-bold mb-2">Impacto de la luz filtrada en el diseño</h4>
+<p class="text-sm text-on-surface-variant line-clamp-2 italic">"...el concepto de 'Dappled Light' sugiere una conexión más profunda con el entorno digital..."</p>
+</div>
+<div class="bg-surface-container-high/40 p-4 rounded-xl backdrop-blur-sm">
+<p class="text-xs text-on-secondary-container font-bold mb-1 uppercase tracking-widest">Seminario</p>
+<h4 class="text-on-surface font-bold mb-2">Apuntes sobre Fenomenología</h4>
+<p class="text-sm text-on-surface-variant line-clamp-2 italic">Resumen de la sesión del lunes sobre la percepción del espacio habitado.</p>
+</div>
+</div>
+</div>
+<!-- Métricas de Rendimiento (Horizontal Card) -->
+<div class="col-span-12 md:col-span-6 bg-surface-container rounded-xl p-8">
+<h3 class="text-xl font-serif font-bold text-on-surface mb-6">Métricas de Rendimiento</h3>
+<div class="grid grid-cols-3 gap-4">
+<div class="text-center p-4 bg-surface-container-low rounded-xl">
+<p class="text-3xl font-bold text-primary">84%</p>
+<p class="text-xs text-on-surface-variant mt-1">Eficiencia</p>
+</div>
+<div class="text-center p-4 bg-surface-container-low rounded-xl">
+<p class="text-3xl font-bold text-tertiary">12h</p>
+<p class="text-xs text-on-surface-variant mt-1">Enfoque Sem.</p>
+</div>
+<div class="text-center p-4 bg-surface-container-low rounded-xl">
+<p class="text-3xl font-bold text-secondary">+5</p>
+<p class="text-xs text-on-surface-variant mt-1">Racha Días</p>
+</div>
+</div>
+<div class="mt-8">
+<div class="h-2 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[70%] rounded-full"></div>
+</div>
+<p class="text-xs text-on-surface-variant mt-2 text-right">Meta semanal: 20h de estudio</p>
+</div>
+</div>
+<!-- Herramientas (Bottom Row) -->
+<div class="col-span-12 grid grid-cols-2 md:grid-cols-4 gap-6">
+<div class="bg-surface-container-high/30 backdrop-blur-md p-6 rounded-xl flex items-center gap-4 hover:bg-surface-container-high transition-colors cursor-pointer group">
+<div class="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<div>
+<p class="text-on-surface font-bold">Resumen IA</p>
+<p class="text-xs text-on-surface-variant">Procesar PDF</p>
+</div>
+</div>
+<div class="bg-surface-container-high/30 backdrop-blur-md p-6 rounded-xl flex items-center gap-4 hover:bg-surface-container-high transition-colors cursor-pointer group">
+<div class="w-12 h-12 rounded-full bg-secondary-container/30 flex items-center justify-center text-secondary group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined" data-icon="psychology">psychology</span>
+</div>
+<div>
+<p class="text-on-surface font-bold">Mapa Mental</p>
+<p class="text-xs text-on-surface-variant">Visualizar ideas</p>
+</div>
+</div>
+<div class="bg-surface-container-high/30 backdrop-blur-md p-6 rounded-xl flex items-center gap-4 hover:bg-surface-container-high transition-colors cursor-pointer group">
+<div class="w-12 h-12 rounded-full bg-tertiary-container/30 flex items-center justify-center text-tertiary group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined" data-icon="cloud_download">cloud_download</span>
+</div>
+<div>
+<p class="text-on-surface font-bold">Exportar</p>
+<p class="text-xs text-on-surface-variant">Formatos APA</p>
+</div>
+</div>
+<div class="bg-surface-container-high/30 backdrop-blur-md p-6 rounded-xl flex items-center gap-4 hover:bg-surface-container-high transition-colors cursor-pointer group">
+<div class="w-12 h-12 rounded-full bg-surface-container-highest flex items-center justify-center text-on-surface group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined" data-icon="share">share</span>
+</div>
+<div>
+<p class="text-on-surface font-bold">Colaborar</p>
+<p class="text-xs text-on-surface-variant">Invitar equipo</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Subtle Forest Foreground elements -->
+<div class="fixed bottom-0 right-0 w-1/3 h-1/3 pointer-events-none z-20 opacity-20 transform translate-x-1/4 translate-y-1/4">
+<svg viewbox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+<path d="M44.7,-76.4C58.1,-69.2,69.2,-58.1,77.3,-44.7C85.4,-31.3,90.5,-15.7,89.7,-0.5C88.8,14.7,82.1,29.4,73.4,42.2C64.7,55.1,54.1,66,41.2,73.7C28.3,81.3,13.1,85.6,-2.4,89.8C-17.9,93.9,-35.8,97.9,-51.2,92C-66.6,86,-79.6,70.1,-87.3,53C-95,35.9,-97.5,17.9,-95.6,0.1C-93.7,-17.7,-87.5,-35.3,-76.9,-49.6C-66.3,-63.9,-51.3,-74.8,-35.9,-80.7C-20.5,-86.6,-4.8,-87.5,10.6,-83C26,-78.5,31.3,-83.6,44.7,-76.4Z" fill="#4edea3" transform="translate(100 100)"></path>
+</svg>
+</div>
+</main>
+</body></html>

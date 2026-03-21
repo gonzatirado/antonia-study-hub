@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-secondary-container": "#cfbcff",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-primary": "#00363f",
+                        "background": "#131313",
+                        "on-tertiary-fixed": "#271900",
+                        "primary-fixed-dim": "#00daf8",
+                        "on-tertiary-container": "#6e4d00",
+                        "surface-container-low": "#1c1b1b",
+                        "inverse-surface": "#e5e2e1",
+                        "on-primary-fixed": "#001f25",
+                        "surface-tint": "#00daf8",
+                        "surface-variant": "#353534",
+                        "secondary-container": "#6200ea",
+                        "on-primary-container": "#005b69",
+                        "surface-bright": "#3a3939",
+                        "surface-container-high": "#2a2a2a",
+                        "surface-dim": "#131313",
+                        "inverse-on-surface": "#313030",
+                        "on-secondary": "#3a0092",
+                        "tertiary-fixed": "#ffdeaa",
+                        "error-container": "#93000a",
+                        "inverse-primary": "#006877",
+                        "primary": "#a6eeff",
+                        "on-tertiary-fixed-variant": "#5f4100",
+                        "on-primary-fixed-variant": "#004e5a",
+                        "tertiary-fixed-dim": "#feba32",
+                        "tertiary-container": "#ffbb33",
+                        "on-surface": "#e5e2e1",
+                        "tertiary": "#ffdeac",
+                        "surface-container": "#201f1f",
+                        "on-tertiary": "#422c00",
+                        "on-background": "#e5e2e1",
+                        "outline": "#859397",
+                        "on-surface-variant": "#bac9cd",
+                        "surface": "#131313",
+                        "secondary-fixed-dim": "#cfbcff",
+                        "secondary-fixed": "#e9ddff",
+                        "on-error": "#690005",
+                        "error": "#ffb4ab",
+                        "primary-fixed": "#a4eeff",
+                        "on-secondary-fixed": "#22005d",
+                        "surface-container-highest": "#353534",
+                        "on-secondary-fixed-variant": "#5400cc",
+                        "on-error-container": "#ffdad6",
+                        "secondary": "#cfbcff",
+                        "primary-container": "#00daf8",
+                        "outline-variant": "#3b494c"
+                    },
+                    fontFamily: {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #0e0e0e;
+            background-image: radial-gradient(circle at 50% -20%, #00363f 0%, #0e0e0e 70%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(19, 19, 19, 0.7);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(0, 218, 248, 0.1);
+        }
+        .input-volume {
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body class="font-body text-on-surface antialiased">
+<!-- Top Navigation (Suppressed/Minimal for transactional screen) -->
+<header class="fixed top-0 w-full z-50 flex justify-center items-center h-20 px-12">
+<div class="text-xl font-bold tracking-tighter text-primary-container font-headline">
+            Obsidian Scholar
+        </div>
+</header>
+<main class="flex-grow flex items-center justify-center px-6 py-24">
+<div class="w-full max-w-md">
+<div class="text-center mb-10">
+<h1 class="text-4xl font-extrabold tracking-tighter text-on-surface mb-3 font-headline">
+                    Comienza tu jornada
+                </h1>
+<p class="text-on-surface-variant font-medium tracking-wide text-sm uppercase opacity-70">
+                    Únete a la élite académica
+                </p>
+</div>
+<div class="glass-panel p-10 rounded-xl shadow-2xl space-y-6">
+<form class="space-y-5">
+<!-- Name Field -->
+<div class="space-y-2">
+<label class="block text-xs font-bold tracking-widest text-on-surface-variant uppercase ml-1">Nombre completo</label>
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary-container transition-colors">person</span>
+<input class="w-full bg-surface-container-low border-none rounded-lg py-4 pl-12 pr-4 text-on-surface placeholder:text-outline/50 focus:ring-1 focus:ring-primary-container/50 input-volume transition-all" placeholder="Escribe tu nombre" type="text"/>
+</div>
+</div>
+<!-- Email Field -->
+<div class="space-y-2">
+<label class="block text-xs font-bold tracking-widest text-on-surface-variant uppercase ml-1">Email</label>
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary-container transition-colors">mail</span>
+<input class="w-full bg-surface-container-low border-none rounded-lg py-4 pl-12 pr-4 text-on-surface placeholder:text-outline/50 focus:ring-1 focus:ring-primary-container/50 input-volume transition-all" placeholder="nombre@scholar.edu" type="email"/>
+</div>
+</div>
+<!-- Password Field -->
+<div class="space-y-2">
+<label class="block text-xs font-bold tracking-widest text-on-surface-variant uppercase ml-1">Contraseña</label>
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary-container transition-colors">lock</span>
+<input class="w-full bg-surface-container-low border-none rounded-lg py-4 pl-12 pr-4 text-on-surface placeholder:text-outline/50 focus:ring-1 focus:ring-primary-container/50 input-volume transition-all" placeholder="••••••••" type="password"/>
+</div>
+</div>
+<!-- Confirm Password Field -->
+<div class="space-y-2">
+<label class="block text-xs font-bold tracking-widest text-on-surface-variant uppercase ml-1">Confirmar contraseña</label>
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary-container transition-colors">shield</span>
+<input class="w-full bg-surface-container-low border-none rounded-lg py-4 pl-12 pr-4 text-on-surface placeholder:text-outline/50 focus:ring-1 focus:ring-primary-container/50 input-volume transition-all" placeholder="••••••••" type="password"/>
+</div>
+</div>
+<button class="w-full py-4 bg-gradient-to-r from-primary-container to-on-primary-container text-on-primary font-bold rounded-lg shadow-[0px_0px_20px_rgba(0,218,248,0.3)] hover:brightness-110 active:scale-[0.98] transition-all mt-4" type="submit">
+                        Crear cuenta
+                    </button>
+</form>
+<div class="relative py-4">
+<div class="absolute inset-0 flex items-center">
+<div class="w-full border-t border-outline-variant/30"></div>
+</div>
+<div class="relative flex justify-center">
+<span class="bg-transparent px-4 text-xs font-bold tracking-widest text-on-surface-variant uppercase backdrop-blur-md">o continúa con</span>
+</div>
+</div>
+<div class="flex justify-center">
+<button class="w-full flex items-center justify-center gap-3 py-3 bg-surface-container-highest border border-outline-variant/20 rounded-lg text-on-surface font-medium hover:bg-surface-bright transition-all active:scale-[0.98]">
+<img alt="" class="w-5 h-5" data-alt="Google colorful G logo icon" src="https://lh3.googleusercontent.com/aida-public/AB6AXuADxnZ91W0VSKlcLPElDwLoXCpb_UeSz0o7hz2DV673YqZT85tf25UGw_jF-DSxhYVPM8IRhRiEtDQPLgBsLPIuQzBglb4dZexd_xruVGuC-24BkoBPawJLyXgPVD1iWvZ-fFsomqxupSBBhSYoCkUvWBBko4f-8G0cTWCKHg8OWTB6VGHdzDT1URifvMQ0QZdg-pBFnX_qINGdyQ8PhBN65XrhqwIHZuKIsqwmuCYhVPxm2yPBak0ENr9I-ytFuKftStP5PN7A2dU3"/>
+<span>Google</span>
+</button>
+</div>
+</div>
+<div class="mt-8 text-center">
+<p class="text-on-surface-variant text-sm">
+                    ¿Ya tienes cuenta? 
+                    <a class="text-primary-container font-bold hover:underline underline-offset-4 ml-1 transition-all" href="#">Inicia sesión</a>
+</p>
+</div>
+</div>
+</main>
+<footer class="py-8 text-center">
+<p class="text-[10px] text-outline tracking-widest uppercase opacity-40">
+            © 2024 Obsidian Scholar • Protocolo de Acceso Elite
+        </p>
+</footer>
+</body></html>

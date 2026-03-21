@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>StudyHub - Gestión de Notas</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "tertiary-container": "#ffbb33",
+              "on-primary-fixed": "#001f25",
+              "secondary-fixed-dim": "#cfbcff",
+              "secondary-fixed": "#e9ddff",
+              "on-background": "#e5e2e1",
+              "primary-fixed-dim": "#00daf8",
+              "primary-fixed": "#a4eeff",
+              "surface-container-lowest": "#0e0e0e",
+              "tertiary": "#ffdeac",
+              "surface-variant": "#353534",
+              "error": "#ffb4ab",
+              "surface-container": "#201f1f",
+              "secondary": "#cfbcff",
+              "inverse-primary": "#006877",
+              "error-container": "#93000a",
+              "on-secondary": "#3a0092",
+              "surface-tint": "#00daf8",
+              "surface-container-highest": "#353534",
+              "on-surface-variant": "#bac9cd",
+              "surface-bright": "#3a3939",
+              "surface-container-high": "#2a2a2a",
+              "on-error-container": "#ffdad6",
+              "surface-dim": "#131313",
+              "surface": "#131313",
+              "on-secondary-container": "#cfbcff",
+              "on-secondary-fixed": "#22005d",
+              "secondary-container": "#6200ea",
+              "on-primary": "#00363f",
+              "primary-container": "#00daf8",
+              "on-surface": "#e5e2e1",
+              "background": "#131313",
+              "outline-variant": "#3b494c",
+              "on-primary-fixed-variant": "#004e5a",
+              "primary": "#a6eeff",
+              "outline": "#859397",
+              "on-secondary-fixed-variant": "#5400cc",
+              "on-tertiary": "#422c00",
+              "surface-container-low": "#1c1b1b",
+              "on-error": "#690005",
+              "tertiary-fixed-dim": "#feba32",
+              "on-primary-container": "#005b69",
+              "inverse-on-surface": "#313030",
+              "inverse-surface": "#e5e2e1",
+              "tertiary-fixed": "#ffdeaa",
+              "on-tertiary-fixed-variant": "#5f4100",
+              "on-tertiary-container": "#6e4d00",
+              "on-tertiary-fixed": "#271900"
+            },
+            fontFamily: {
+              "headline": ["Inter"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        .glass-panel {
+            background: rgba(19, 19, 19, 0.6);
+            backdrop-filter: blur(20px);
+        }
+    </style>
+</head>
+<body class="bg-surface-container-lowest text-on-surface selection:bg-primary-container/30">
+<div class="flex min-h-screen overflow-hidden">
+<!-- SideNavBar Anchor -->
+<aside class="hidden md:flex flex-col h-full w-64 fixed left-0 top-0 bg-[#0e0e0e] py-8 space-y-6 z-50">
+<div class="px-8 mb-4">
+<div class="flex items-center space-x-3 mb-8">
+<div class="w-10 h-10 rounded-full bg-surface-container overflow-hidden border border-outline-variant/20">
+<img alt="User" data-alt="Professional academic profile avatar photo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDyGB4kCsXY06N5QXJpCX1-DopdkVt_SsS7GO_08To2JLYLg6JOiURf-h_w8xQRFjDgD5TRtj5P1It6Cna5WUGDzckTHaptWWLuhv-nNzbjzfprFEU5Iv7pcHEDangPtHU8m0RL2NsT6g4OTWRwVydMK6WqSKwuczXSd6GbZHQe-YkIttMAXYN7kfkRNw9ESGGnZWTyzSnQ1E0Ia3kx3KszvzGo__HMYM6JWfCmwnyaRmWaiAhrtNMh6H2PM9jyibbw92jPliG_hFfN"/>
+</div>
+<div>
+<div class="text-[#00daf8] font-headline font-bold text-sm tracking-tight">The Luminary</div>
+<div class="text-slate-500 text-[10px] uppercase tracking-widest font-semibold">Senior Scholar</div>
+</div>
+</div>
+<button class="w-full py-3 bg-gradient-to-r from-primary-container to-primary-container/80 text-on-primary-container font-headline font-bold rounded-lg flex items-center justify-center space-x-2 transition-all hover:shadow-[0px_0px_15px_rgba(0,218,248,0.2)] active:scale-95">
+<span class="material-symbols-outlined text-sm">add</span>
+<span>New Entry</span>
+</button>
+</div>
+<nav class="flex-1 space-y-1">
+<div class="flex items-center px-8 py-3 text-slate-500 font-['Inter'] text-sm tracking-wide uppercase font-semibold hover:bg-[#131313] hover:text-slate-200 transition-all cursor-pointer">
+<span class="material-symbols-outlined mr-4">dashboard</span> Dashboard
+                </div>
+<div class="flex items-center px-8 py-3 text-[#00daf8] border-r-2 border-[#00daf8] bg-gradient-to-r from-[#00daf8]/10 to-transparent font-['Inter'] text-sm tracking-wide uppercase font-semibold cursor-pointer">
+<span class="material-symbols-outlined mr-4">menu_book</span> Library
+                </div>
+<div class="flex items-center px-8 py-3 text-slate-500 font-['Inter'] text-sm tracking-wide uppercase font-semibold hover:bg-[#131313] hover:text-slate-200 transition-all cursor-pointer">
+<span class="material-symbols-outlined mr-4">school</span> Courses
+                </div>
+<div class="flex items-center px-8 py-3 text-slate-500 font-['Inter'] text-sm tracking-wide uppercase font-semibold hover:bg-[#131313] hover:text-slate-200 transition-all cursor-pointer">
+<span class="material-symbols-outlined mr-4">calendar_today</span> Schedule
+                </div>
+<div class="flex items-center px-8 py-3 text-slate-500 font-['Inter'] text-sm tracking-wide uppercase font-semibold hover:bg-[#131313] hover:text-slate-200 transition-all cursor-pointer">
+<span class="material-symbols-outlined mr-4">leaderboard</span> Analytics
+                </div>
+</nav>
+<div class="pt-6 border-t border-outline-variant/10 space-y-1">
+<div class="flex items-center px-8 py-2 text-slate-500 font-['Inter'] text-xs tracking-widest uppercase font-semibold hover:text-slate-200 cursor-pointer">
+<span class="material-symbols-outlined mr-4 text-lg">archive</span> Archive
+                </div>
+<div class="flex items-center px-8 py-2 text-slate-500 font-['Inter'] text-xs tracking-widest uppercase font-semibold hover:text-slate-200 cursor-pointer">
+<span class="material-symbols-outlined mr-4 text-lg">delete</span> Trash
+                </div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-64 flex-1 flex h-screen">
+<!-- Left Panel (30%): Navigation List -->
+<section class="w-[30%] bg-surface flex flex-col border-r border-outline-variant/10">
+<div class="p-8 space-y-6">
+<h1 class="text-3xl font-headline font-extrabold tracking-tighter text-on-surface">Mis Notas</h1>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-lg">search</span>
+<input class="w-full bg-surface-container-low border-none rounded-lg pl-10 py-2.5 text-sm text-on-surface placeholder-slate-500 focus:ring-1 focus:ring-primary-container/50 transition-all" placeholder="Buscador" type="text"/>
+</div>
+<button class="w-full py-2 border border-primary-container/20 text-primary-container text-xs font-headline font-bold uppercase tracking-widest rounded flex items-center justify-center space-x-2 hover:bg-primary-container/5 transition-colors">
+<span class="material-symbols-outlined text-sm">note_add</span>
+<span>Nueva Nota</span>
+</button>
+</div>
+<div class="flex-1 overflow-y-auto px-4 custom-scrollbar">
+<!-- Folder: Cálculo II -->
+<div class="mb-2">
+<div class="flex items-center justify-between p-3 rounded-lg hover:bg-surface-container-high transition-all cursor-pointer group">
+<div class="flex items-center space-x-3">
+<span class="material-symbols-outlined text-outline text-lg group-hover:text-primary-container transition-colors">expand_more</span>
+<span class="material-symbols-outlined text-primary-container/70 text-xl">folder</span>
+<span class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Cálculo II</span>
+</div>
+</div>
+<div class="ml-10 space-y-1 mt-1">
+<div class="p-2.5 rounded-lg bg-primary-container/10 border-l-2 border-primary-container transition-all cursor-pointer">
+<div class="text-sm font-medium text-on-surface">Resumen Certamen 1</div>
+<div class="text-[10px] text-slate-500 mt-0.5">Editado hace 2h</div>
+</div>
+<div class="p-2.5 rounded-lg hover:bg-surface-container transition-all cursor-pointer group">
+<div class="text-sm font-medium text-on-surface-variant group-hover:text-on-surface">Apuntes Clase 05</div>
+<div class="text-[10px] text-slate-500 mt-0.5">24 Oct, 2023</div>
+</div>
+</div>
+</div>
+<!-- Folder: Redes de Computadoras -->
+<div class="mb-2">
+<div class="flex items-center justify-between p-3 rounded-lg hover:bg-surface-container-high transition-all cursor-pointer group">
+<div class="flex items-center space-x-3">
+<span class="material-symbols-outlined text-outline text-lg group-hover:text-primary-container transition-colors">chevron_right</span>
+<span class="material-symbols-outlined text-primary-container/70 text-xl">folder</span>
+<span class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Redes de Computadoras</span>
+</div>
+</div>
+</div>
+<!-- Folder: Ética Profesional -->
+<div class="mb-2">
+<div class="flex items-center justify-between p-3 rounded-lg hover:bg-surface-container-high transition-all cursor-pointer group">
+<div class="flex items-center space-x-3">
+<span class="material-symbols-outlined text-outline text-lg group-hover:text-primary-container transition-colors">chevron_right</span>
+<span class="material-symbols-outlined text-primary-container/70 text-xl">folder</span>
+<span class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Ética Profesional</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Right Panel (70%): Note Preview -->
+<section class="w-[70%] bg-surface-container-lowest overflow-y-auto px-16 py-12 custom-scrollbar">
+<header class="mb-12">
+<div class="flex items-center space-x-4 mb-6">
+<span class="px-3 py-1 bg-primary-container/10 text-primary-container text-[10px] font-bold uppercase tracking-widest rounded-full border border-primary-container/20">Cálculo II</span>
+<span class="text-slate-500 text-[10px] uppercase tracking-widest font-medium">Última edición: 24 de Octubre, 2023</span>
+</div>
+<h2 class="text-5xl font-headline font-extrabold tracking-tight text-on-surface mb-4">Resumen Certamen 1</h2>
+<div class="w-16 h-1 bg-primary-container/30 rounded-full"></div>
+</header>
+<article class="prose prose-invert max-w-none text-on-surface-variant space-y-8">
+<div class="space-y-4">
+<h3 class="text-2xl font-headline font-bold text-on-surface flex items-center space-x-2">
+<span class="w-1.5 h-6 bg-primary-container rounded-full"></span>
+<span>Integrales Impropias</span>
+</h3>
+<p class="leading-relaxed text-lg text-slate-400">
+                            Las integrales impropias son una extensión del concepto de la integral definida para funciones que tienen discontinuidades infinitas o para intervalos de integración no acotados.
+                        </p>
+</div>
+<div class="bg-surface-container-low p-8 rounded-xl border-l-4 border-primary-container/40">
+<h4 class="text-sm uppercase tracking-[0.2em] font-bold text-primary mb-4">Conceptos Clave</h4>
+<ul class="space-y-3 list-none p-0">
+<li class="flex items-start space-x-3">
+<span class="material-symbols-outlined text-primary-container text-lg mt-0.5">check_circle</span>
+<span><strong>Convergencia:</strong> Si el límite existe y es un número real finito.</span>
+</li>
+<li class="flex items-start space-x-3">
+<span class="material-symbols-outlined text-primary-container text-lg mt-0.5">check_circle</span>
+<span><strong>Divergencia:</strong> Si el límite no existe o tiende al infinito.</span>
+</li>
+<li class="flex items-start space-x-3">
+<span class="material-symbols-outlined text-primary-container text-lg mt-0.5">check_circle</span>
+<span><strong>Teorema de Comparación:</strong> Utilizado para determinar convergencia sin calcular la integral exacta.</span>
+</li>
+</ul>
+</div>
+<div class="space-y-4">
+<h3 class="text-2xl font-headline font-bold text-on-surface flex items-center space-x-2">
+<span class="w-1.5 h-6 bg-primary-container rounded-full"></span>
+<span>Sucesiones y Series</span>
+</h3>
+<p class="leading-relaxed text-slate-400">
+                            Para las series infinitas, el objetivo principal es determinar si la suma de infinitos términos resulta en un valor finito.
+                        </p>
+<div class="grid grid-cols-2 gap-6 mt-6">
+<div class="p-6 bg-surface-container-high rounded-lg group hover:bg-surface-bright transition-all cursor-default">
+<h5 class="font-bold text-on-surface mb-2">Serie Geométrica</h5>
+<p class="text-sm text-slate-500">Converge si |r| &lt; 1. La suma es a/(1-r).</p>
+</div>
+<div class="p-6 bg-surface-container-high rounded-lg group hover:bg-surface-bright transition-all cursor-default">
+<h5 class="font-bold text-on-surface mb-2">Serie p-test</h5>
+<p class="text-sm text-slate-500">Converge si p &gt; 1, diverge si p ≤ 1.</p>
+</div>
+</div>
+</div>
+<div class="pt-12 border-t border-outline-variant/10">
+<div class="flex items-center space-x-4 text-slate-600 text-xs italic">
+<span class="material-symbols-outlined">info</span>
+<span>Preparado para el examen de la próxima semana. Revisar ejercicios del capítulo 7.</span>
+</div>
+</div>
+</article>
+</section>
+</main>
+</div>
+</body></html>

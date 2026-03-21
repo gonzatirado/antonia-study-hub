@@ -1,273 +1,152 @@
-"use client";
-
-import { motion } from "framer-motion";
 import Link from "next/link";
-import { BookOpen, Brain, FileText, Calendar, Sparkles, ArrowRight, CheckCircle2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { HeroSection } from "@/components/landing/hero-section";
+import { HowItWorksSection } from "@/components/landing/how-it-works-section";
+import { FeaturesSection } from "@/components/landing/features-section";
+import { TestimonialsSection } from "@/components/landing/testimonials-section";
+import { PricingSection } from "@/components/landing/pricing-section";
+import { CtaSection } from "@/components/landing/cta-section";
 
-const features = [
-  {
-    icon: FileText,
-    title: "Resúmenes IA",
-    description: "Sube tus archivos y obtén resúmenes visualmente atractivos con diagramas, colores y estructura clara.",
-    color: "from-blue-500 to-cyan-500",
-  },
-  {
-    icon: Brain,
-    title: "Quizzes Inteligentes",
-    description: "Genera cuestionarios de selección múltiple basados en tu material de estudio.",
-    color: "from-purple-500 to-pink-500",
-  },
-  {
-    icon: Calendar,
-    title: "Preparación de Pruebas",
-    description: "Crea un plan de estudio día a día hasta la fecha de tu examen con contenido personalizado.",
-    color: "from-orange-500 to-red-500",
-  },
-  {
-    icon: BookOpen,
-    title: "Organiza tus Ramos",
-    description: "Sube archivos, organiza por asignatura y accede a todo desde un solo lugar.",
-    color: "from-green-500 to-emerald-500",
-  },
-];
+/* ─── Gradient Divider (server-renderable) ─── */
+function GradientDivider() {
+  return (
+    <div
+      className="h-px w-full"
+      style={{
+        background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.1) 50%, transparent)",
+      }}
+    />
+  );
+}
 
-const plans = [
-  {
-    name: "Gratis",
-    price: "$0",
-    period: "para siempre",
-    features: ["3 resúmenes/mes", "5 quizzes/mes", "10 archivos", "50 MB almacenamiento"],
-    cta: "Empezar gratis",
-    highlighted: false,
-  },
-  {
-    name: "Pro",
-    price: "$4.990",
-    period: "CLP/mes",
-    features: [
-      "30 resúmenes/mes",
-      "50 quizzes/mes",
-      "5 preparaciones de prueba",
-      "200 preguntas de práctica",
-      "Archivos ilimitados",
-      "2 GB almacenamiento",
-      "Exportar a PDF",
-    ],
-    cta: "Comenzar prueba gratuita",
-    highlighted: true,
-  },
-  {
-    name: "Premium",
-    price: "$9.990",
-    period: "CLP/mes",
-    features: [
-      "100 resúmenes/mes",
-      "150 quizzes/mes",
-      "15 preparaciones de prueba",
-      "600 preguntas de práctica",
-      "Modelo IA superior",
-      "10 GB almacenamiento",
-      "Soporte prioritario",
-    ],
-    cta: "Ir Premium",
-    highlighted: false,
-  },
-];
-
-const container = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: { staggerChildren: 0.1 },
-  },
-};
-
-const item = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0 },
-};
-
+/* ─── LANDING PAGE (Server Component) ─── */
 export default function LandingPage() {
   return (
-    <div className="min-h-screen text-foreground">
-      {/* Navbar */}
-      <nav className="fixed top-0 w-full z-50 bg-background/60 backdrop-blur-xl border-b border-foreground/5">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center">
-              <Sparkles className="w-5 h-5 text-foreground" />
-            </div>
-            <span className="text-xl font-bold">StudyHub</span>
-          </div>
-          <div className="flex items-center gap-4">
-            <Link href="/login">
-              <Button variant="ghost" className="text-foreground/80 hover:text-foreground">
-                Iniciar sesión
-              </Button>
-            </Link>
-            <Link href="/login">
-              <Button className="bg-primary hover:bg-primary/90">
-                Registrarse
-              </Button>
-            </Link>
-          </div>
+    <div data-theme="dark" className="min-h-screen overflow-x-hidden bg-background text-foreground">
+      {/* ── Navbar ── */}
+      <nav className="fixed top-0 w-full z-50 bg-background/70 backdrop-blur-xl border-b border-border/30 px-6 md:px-12 py-4 flex justify-between items-center">
+        <Link
+          href="/"
+          className="text-xl font-bold text-foreground tracking-tighter flex items-center gap-2"
+        >
+          <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+          StudyHub
+        </Link>
+
+        <div className="hidden md:flex gap-10 items-center">
+          <Link
+            href="#features"
+            className="text-foreground text-sm font-medium border-b border-primary pb-1 hover:opacity-80 transition-all duration-300"
+          >
+            Funcionalidades
+          </Link>
+          <Link
+            href="#pricing"
+            className="text-muted-foreground text-sm hover:text-foreground transition-colors"
+          >
+            Precios
+          </Link>
+          <Link
+            href="#testimonials"
+            className="text-muted-foreground text-sm hover:text-foreground transition-colors"
+          >
+            Testimonios
+          </Link>
+        </div>
+
+        <div className="flex gap-6 items-center">
+          <Link
+            href="/login"
+            className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium"
+          >
+            Entrar
+          </Link>
+          <Link
+            href="/login"
+            className="bg-primary text-primary-foreground px-6 py-2 rounded-xl font-bold text-sm hover:shadow-[0_0_20px_oklch(0.65_0.25_295_/_0.4)] transition-all active:scale-95"
+          >
+            Empezar ahora
+          </Link>
         </div>
       </nav>
 
-      {/* Hero */}
-      <section className="pt-32 pb-20 px-6">
-        <div className="max-w-7xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm mb-8">
-              <Sparkles className="w-4 h-4" />
-              Potenciado con Inteligencia Artificial
+      <main>
+        {/* 1. Hero */}
+        <HeroSection />
+
+        <GradientDivider />
+
+        {/* 2. How It Works */}
+        <HowItWorksSection />
+
+        <GradientDivider />
+
+        {/* 3. Features */}
+        <FeaturesSection />
+
+        <GradientDivider />
+
+        {/* 4. Testimonials */}
+        <div id="testimonials">
+          <TestimonialsSection />
+        </div>
+
+        <GradientDivider />
+
+        {/* 5. Pricing */}
+        <div id="pricing">
+          <PricingSection />
+        </div>
+
+        {/* 6. Final CTA */}
+        <CtaSection />
+      </main>
+
+      {/* ── Footer ── */}
+      <footer className="bg-background w-full py-20 px-6 md:px-12 border-t border-border/30">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-16">
+          <div className="flex flex-col gap-6">
+            <div className="text-2xl font-bold text-foreground tracking-tighter flex items-center gap-2">
+              <span className="w-2.5 h-2.5 rounded-full bg-primary" />
+              StudyHub
             </div>
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-              Estudia más{" "}
-              <span className="bg-gradient-to-r from-primary via-accent to-pink-400 bg-clip-text text-transparent">
-                inteligente
-              </span>
-              ,{" "}
-              <br className="hidden md:block" />
-              no más difícil
-            </h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-10">
-              Sube tu material, genera resúmenes visuales con IA, practica con quizzes
-              y prepara tus pruebas con un plan personalizado.
+            <p className="text-muted-foreground leading-relaxed max-w-xs text-sm font-light">
+              Plataforma educativa de alto rendimiento potenciada por inteligencia artificial.
+              Redefiniendo el éxito académico.
             </p>
-            <div className="flex items-center justify-center gap-4">
-              <Link href="/login">
-                <Button size="lg" className="bg-primary hover:bg-primary/90 text-lg px-8 py-6">
-                  Empezar gratis
-                  <ArrowRight className="w-5 h-5 ml-2" />
-                </Button>
+          </div>
+
+          <div className="flex justify-start md:justify-center gap-12">
+            <div className="flex flex-col gap-4">
+              <span className="text-foreground font-bold text-sm">Empresa</span>
+              <Link href="#" className="text-muted-foreground hover:text-primary transition-colors text-sm font-light">
+                Privacidad
+              </Link>
+              <Link href="#" className="text-muted-foreground hover:text-primary transition-colors text-sm font-light">
+                Términos
+              </Link>
+              <Link href="#" className="text-muted-foreground hover:text-primary transition-colors text-sm font-light">
+                Soporte
               </Link>
             </div>
-          </motion.div>
-        </div>
-      </section>
+            <div className="flex flex-col gap-4">
+              <span className="text-foreground font-bold text-sm">Recursos</span>
+              <Link href="#" className="text-muted-foreground hover:text-primary transition-colors text-sm font-light">
+                Blog
+              </Link>
+              <Link href="#" className="text-muted-foreground hover:text-primary transition-colors text-sm font-light">
+                FAQ
+              </Link>
+              <Link href="#" className="text-muted-foreground hover:text-primary transition-colors text-sm font-light">
+                Contacto
+              </Link>
+            </div>
+          </div>
 
-      {/* Features */}
-      <section className="py-20 px-6">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            className="text-center mb-16"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Todo lo que necesitas para{" "}
-              <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                aprobar
-              </span>
-            </h2>
-            <p className="text-muted-foreground text-lg">
-              Herramientas diseñadas para maximizar tu rendimiento académico
+          <div className="text-left md:text-right flex flex-col items-start md:items-end gap-6">
+            <p className="text-foreground font-medium text-sm tracking-wide">
+              StudyHub &copy; 2026 — Hecho para estudiantes, por estudiantes.
             </p>
-          </motion.div>
-
-          <motion.div
-            className="grid md:grid-cols-2 gap-6"
-            variants={container}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true }}
-          >
-            {features.map((feature) => (
-              <motion.div
-                key={feature.title}
-                variants={item}
-                whileHover={{ scale: 1.02, y: -4 }}
-                className="group relative p-8 rounded-2xl bg-card/80 backdrop-blur-sm border border-border/50 hover:border-border transition-all duration-300"
-              >
-                <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${feature.color} flex items-center justify-center mb-4`}>
-                  <feature.icon className="w-6 h-6 text-foreground" />
-                </div>
-                <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-                <p className="text-muted-foreground">{feature.description}</p>
-                <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${feature.color} opacity-0 group-hover:opacity-5 transition-opacity duration-300`} />
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Pricing */}
-      <section className="py-20 px-6">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            className="text-center mb-16"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Planes simples y transparentes</h2>
-            <p className="text-muted-foreground text-lg">Elige el plan que se adapte a tu ritmo de estudio</p>
-          </motion.div>
-
-          <motion.div
-            className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto"
-            variants={container}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true }}
-          >
-            {plans.map((plan) => (
-              <motion.div
-                key={plan.name}
-                variants={item}
-                whileHover={{ scale: 1.03, y: -4 }}
-                className={`relative p-8 rounded-2xl border transition-all duration-300 ${
-                  plan.highlighted
-                    ? "bg-gradient-to-b from-primary/10 to-card/80 backdrop-blur-sm border-primary/50 shadow-lg shadow-primary/10"
-                    : "bg-card/80 backdrop-blur-sm border-border/50 hover:border-border"
-                }`}
-              >
-                {plan.highlighted && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-primary to-accent rounded-full text-sm font-medium">
-                    Más popular
-                  </div>
-                )}
-                <div className="mb-6">
-                  <h3 className="text-lg font-medium text-foreground/80 mb-2">{plan.name}</h3>
-                  <div className="flex items-baseline gap-1">
-                    <span className="text-4xl font-bold">{plan.price}</span>
-                    <span className="text-muted-foreground">/{plan.period}</span>
-                  </div>
-                </div>
-                <ul className="space-y-3 mb-8">
-                  {plan.features.map((f) => (
-                    <li key={f} className="flex items-center gap-2 text-foreground/80">
-                      <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0" />
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-                <Button
-                  className={`w-full ${
-                    plan.highlighted
-                      ? "bg-primary hover:bg-primary/90"
-                      : "bg-secondary hover:bg-secondary/80"
-                  }`}
-                >
-                  {plan.cta}
-                </Button>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="py-8 px-6 border-t border-border bg-background/40 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto text-center text-muted-foreground text-sm">
-          StudyHub &copy; {new Date().getFullYear()}. Hecho para estudiantes, por estudiantes.
+          </div>
         </div>
       </footer>
     </div>

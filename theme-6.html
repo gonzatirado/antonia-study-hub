@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Manrope:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "secondary-fixed-dim": "#00ecec",
+              "on-error-container": "#ffb2b9",
+              "error-container": "#a70138",
+              "tertiary": "#8eff71",
+              "on-secondary-fixed": "#004747",
+              "on-secondary-fixed-variant": "#006666",
+              "secondary-container": "#006a6a",
+              "tertiary-fixed-dim": "#2be800",
+              "inverse-primary": "#aa00aa",
+              "surface-container": "#191919",
+              "surface-bright": "#2c2c2c",
+              "surface-container-low": "#131313",
+              "tertiary-fixed": "#2ff801",
+              "on-tertiary-container": "#0b5800",
+              "surface": "#0e0e0e",
+              "secondary": "#00fbfb",
+              "on-surface-variant": "#ababab",
+              "secondary-fixed": "#00fbfb",
+              "primary-fixed": "#ff5af9",
+              "on-tertiary-fixed-variant": "#0d6200",
+              "primary-fixed-dim": "#ff1cfe",
+              "on-tertiary": "#0d6100",
+              "surface-tint": "#ff7cf5",
+              "tertiary-dim": "#2be800",
+              "surface-container-high": "#1f1f1f",
+              "secondary-dim": "#00ecec",
+              "surface-dim": "#0e0e0e",
+              "on-primary": "#580058",
+              "on-surface": "#ffffff",
+              "outline": "#757575",
+              "surface-container-highest": "#262626",
+              "error-dim": "#d73357",
+              "surface-variant": "#262626",
+              "on-primary-fixed-variant": "#540054",
+              "on-primary-container": "#440044",
+              "surface-container-lowest": "#000000",
+              "on-tertiary-fixed": "#064200",
+              "tertiary-container": "#2ff801",
+              "primary-dim": "#ff51fa",
+              "on-background": "#ffffff",
+              "background": "#0e0e0e",
+              "inverse-on-surface": "#555555",
+              "inverse-surface": "#f9f9f9",
+              "outline-variant": "#484848",
+              "on-secondary": "#005c5c",
+              "on-primary-fixed": "#000000",
+              "on-error": "#490013",
+              "primary": "#ff7cf5",
+              "error": "#ff6e84",
+              "on-secondary-container": "#d9fffe",
+              "primary-container": "#ff5af9"
+            },
+            fontFamily: {
+              "headline": ["Space Grotesk"],
+              "body": ["Manrope"],
+              "label": ["Space Grotesk"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>.material-symbols-outlined {
+    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24
+    }
+.neon-glow-primary {
+    box-shadow: 0 0 15px rgba(255, 124, 245, 0.3)
+    }
+.neon-glow-secondary {
+    box-shadow: 0 0 15px rgba(0, 251, 251, 0.3)
+    }
+.bg-cyber-city {
+    background-image: linear-gradient(rgba(14, 14, 14, 0.85), rgba(14, 14, 14, 0.95)), url(https://lh3.googleusercontent.com/aida-public/AB6AXuBnP7pGyUau4CEM8zw_E653xutWvYpgf4ZjOocdL9gBVlv4irGKsUfdeZfX_xlZuXU8bXKqUSrIChHvN0wLjom0F7YC51ik40jZyALyOBef867ZnlGWq6NFFHs3UyCyG8LDGjnjaVOsz9j3EqnE4BPHt6h-s3fcQ2ewCDzVbEE11Eys0rEMI5_Xetx68N5Lh6P2LorcOmu_XDKuhgNGgnd7-Bi2u3HDGnb6XYKuP6HzmSvNqSAXDGuBFIco4CSjn2xH1H43QG5D5b5o);
+    background-size: cover;
+    background-position: center
+    }</style>
+</head>
+<body class="bg-background text-on-surface font-body min-h-screen selection:bg-primary/30">
+<!-- Sidebar Layout -->
+<aside class="h-screen w-64 fixed left-0 top-0 z-50 bg-slate-100 dark:bg-slate-900 flex flex-col p-4 space-y-2 flat no shadows">
+<div class="mb-8 px-4 py-2">
+<h1 class="text-xl font-serif font-black text-blue-900 dark:text-blue-200 uppercase tracking-widest">StudyHub</h1>
+<p class="text-[0.6875rem] font-label text-slate-500 dark:text-slate-400">Academic Portal</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 bg-white dark:bg-slate-800 text-blue-700 dark:text-blue-300 rounded-lg shadow-sm font-semibold translate-x-1 transition-all" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label text-sm uppercase">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all" href="#">
+<span class="material-symbols-outlined">school</span>
+<span class="font-label text-sm uppercase">My Courses</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all" href="#">
+<span class="material-symbols-outlined">auto_stories</span>
+<span class="font-label text-sm uppercase">Research Vault</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all" href="#">
+<span class="material-symbols-outlined">calendar_today</span>
+<span class="font-label text-sm uppercase">Schedule</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all" href="#">
+<span class="material-symbols-outlined">description</span>
+<span class="font-label text-sm uppercase">Faculty Notes</span>
+</a>
+</nav>
+<div class="pt-4 mt-auto border-t border-slate-200 dark:border-slate-800 space-y-1">
+<button class="w-full bg-primary-container text-on-primary py-3 rounded-md font-bold text-xs uppercase tracking-tighter mb-4 hover:opacity-90 transition-opacity">
+                New Research
+            </button>
+<a class="flex items-center gap-3 px-4 py-2 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-label text-xs uppercase">Help Center</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-label text-xs uppercase">Sign Out</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-64 min-h-screen bg-cyber-city relative">
+<!-- TopAppBar -->
+<header class="sticky top-0 w-full z-40 bg-slate-50/70 dark:bg-slate-950/70 backdrop-blur-xl flex justify-between items-center px-8 h-16 shadow-sm dark:shadow-none">
+<div class="flex items-center gap-8">
+<span class="text-2xl font-serif font-bold text-blue-800 dark:text-blue-300">StudyHub</span>
+<nav class="hidden md:flex gap-6">
+<a class="text-slate-600 dark:text-slate-400 hover:text-blue-600 transition-colors uppercase font-label text-xs tracking-widest" href="#">Library</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-blue-600 transition-colors uppercase font-label text-xs tracking-widest" href="#">Archive</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-blue-600 transition-colors uppercase font-label text-xs tracking-widest" href="#">Colloquium</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative group">
+<input class="bg-surface-container-highest border-none rounded-md py-1.5 px-4 text-sm w-48 focus:ring-1 focus:ring-secondary transition-all" placeholder="Search..." type="text"/>
+</div>
+<button class="p-2 rounded-full hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-colors">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-400">notifications</span>
+</button>
+<button class="p-2 rounded-full hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-colors">
+<span class="material-symbols-outlined text-slate-600 dark:text-slate-400">settings</span>
+</button>
+<img class="w-8 h-8 rounded-full border border-primary/30" data-alt="User profile avatar of a student" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCX1DkBNx-Mnj6rNWE8KPdDoqsE-rljYQYwXjcx2_QBVJ6nJUcQuDKklpX2JqSBLURsTVtRwvFhMinbNHtBVaYu1UJTYrilTqIQY_mHjZzplXdJL1gHR0cn7jWAkzkm68_9-r9ppRinuBHKeSdIgwkErHY7H00QWV8WdGxsdcWEWSga9_AHMuwxEEnlgFIc86QGBe3o8wWnH4LnbMAt3-ejTY6JS8L_mdB8KsnXYa8xpmlkn0KTgFbBm24926SFvaGcxg3OZ6-zFPuB"/>
+</div>
+</header>
+<!-- Dashboard Canvas -->
+<div class="p-8 max-w-7xl mx-auto space-y-8">
+<!-- Hero Header -->
+<section class="relative overflow-hidden rounded-xl bg-surface-container-low p-10 border-l-4 border-primary">
+<div class="relative z-10 max-w-2xl">
+<span class="font-label text-[0.6875rem] uppercase tracking-[0.2em] text-secondary mb-4 block">Status: Operativo</span>
+<h2 class="font-headline text-5xl md:text-7xl font-bold tracking-tighter text-on-surface mb-6 leading-none">
+                        CENTRO DE <br/><span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">CONTROL</span>
+</h2>
+<p class="text-on-surface-variant text-lg font-light leading-relaxed max-w-md">
+                        Optimiza tu flujo cognitivo. El sistema está calibrado para máximo rendimiento académico.
+                    </p>
+</div>
+<!-- Decorative Neon Sign -->
+<div class="absolute right-10 top-1/2 -translate-y-1/2 opacity-20 pointer-events-none">
+<span class="material-symbols-outlined text-[12rem] text-primary" style="font-variation-settings: 'FILL' 1;">bolt</span>
+</div>
+</section>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+<!-- Pomodoro Rápido -->
+<div class="md:col-span-4 bg-surface-container rounded-lg p-6 flex flex-col justify-between border-t border-primary/20 neon-glow-primary">
+<div class="flex justify-between items-start mb-8">
+<div>
+<h3 class="font-headline text-xl font-bold uppercase tracking-tight">Pomodoro Rápido</h3>
+<p class="text-[0.6875rem] font-label text-on-surface-variant uppercase">Sincronización de enfoque</p>
+</div>
+<span class="material-symbols-outlined text-primary">timer</span>
+</div>
+<div class="flex flex-col items-center py-4">
+<div class="text-6xl font-headline font-bold text-on-surface tabular-nums">25:00</div>
+<div class="w-full bg-surface-container-highest h-1 mt-4 overflow-hidden rounded-full">
+<div class="bg-primary h-full w-2/3 shadow-[0_0_10px_#ff7cf5]"></div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-3 mt-6">
+<button class="bg-gradient-to-br from-primary to-primary-container text-on-primary py-3 rounded-md font-bold text-xs uppercase tracking-widest hover:brightness-110 transition-all">INICIAR</button>
+<button class="bg-surface-container-highest text-on-surface py-3 rounded-md font-bold text-xs uppercase tracking-widest hover:bg-surface-bright transition-all">RESET</button>
+</div>
+</div>
+<!-- Tareas Críticas -->
+<div class="md:col-span-5 bg-surface-container-low rounded-lg p-6 border-l-2 border-secondary neon-glow-secondary">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-secondary">priority_high</span>
+<h3 class="font-headline text-xl font-bold uppercase tracking-tight">Tareas Críticas</h3>
+</div>
+<div class="space-y-4">
+<div class="flex items-center gap-4 p-4 bg-surface-container rounded group hover:bg-surface-bright transition-all">
+<div class="w-5 h-5 border-2 border-secondary/50 rounded flex items-center justify-center group-hover:border-secondary">
+<span class="material-symbols-outlined text-xs text-secondary opacity-0 group-hover:opacity-100">check</span>
+</div>
+<div class="flex-1">
+<p class="text-sm font-medium">Análisis de Redes Neuronales</p>
+<p class="text-[0.625rem] font-label text-on-surface-variant uppercase">Entrega: 2h restantes</p>
+</div>
+</div>
+<div class="flex items-center gap-4 p-4 bg-surface-container rounded group hover:bg-surface-bright transition-all">
+<div class="w-5 h-5 border-2 border-secondary/50 rounded flex items-center justify-center"></div>
+<div class="flex-1">
+<p class="text-sm font-medium">Revisión de Bibliografía Cuántica</p>
+<p class="text-[0.625rem] font-label text-on-surface-variant uppercase">Prioridad: Alta</p>
+</div>
+</div>
+<div class="flex items-center gap-4 p-4 bg-surface-container rounded group hover:bg-surface-bright transition-all">
+<div class="w-5 h-5 border-2 border-secondary/50 rounded flex items-center justify-center"></div>
+<div class="flex-1">
+<p class="text-sm font-medium">Actualización de Protocolos</p>
+<p class="text-[0.625rem] font-label text-on-surface-variant uppercase">Prioridad: Media</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Métricas de Rendimiento -->
+<div class="md:col-span-3 bg-surface-container rounded-lg p-6 flex flex-col">
+<h3 class="font-headline text-xl font-bold uppercase tracking-tight mb-6">Métricas</h3>
+<div class="flex-1 flex flex-col justify-around">
+<div class="flex items-end gap-2">
+<div class="text-4xl font-headline font-bold text-tertiary">94%</div>
+<div class="text-[0.6875rem] font-label text-on-surface-variant uppercase mb-1">Eficiencia</div>
+</div>
+<div class="space-y-2 mt-4">
+<div class="flex justify-between text-[0.625rem] font-label uppercase text-on-surface-variant">
+<span>Enfoque Diario</span>
+<span>8.5h</span>
+</div>
+<div class="w-full bg-surface-container-highest h-1 rounded-full overflow-hidden">
+<div class="bg-secondary h-full w-[85%]"></div>
+</div>
+</div>
+<div class="space-y-2 mt-4">
+<div class="flex justify-between text-[0.625rem] font-label uppercase text-on-surface-variant">
+<span>Retención</span>
+<span>72%</span>
+</div>
+<div class="w-full bg-surface-container-highest h-1 rounded-full overflow-hidden">
+<div class="bg-tertiary h-full w-[72%]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Notas Recientes -->
+<div class="md:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div class="bg-surface-container-high p-5 rounded-lg border-b-2 border-primary/40 backdrop-blur-md bg-opacity-80">
+<span class="material-symbols-outlined text-primary mb-3">description</span>
+<h4 class="font-bold text-sm mb-2">Teoría de Cuerdas Modernas</h4>
+<p class="text-xs text-on-surface-variant line-clamp-3 leading-relaxed">Apuntes sobre la interconexión de dimensiones y la resonancia armónica en el vacío...</p>
+<div class="mt-4 flex justify-between items-center">
+<span class="text-[0.625rem] font-label text-on-surface-variant uppercase">Editado hace 10m</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</div>
+</div>
+<div class="bg-surface-container-high p-5 rounded-lg border-b-2 border-secondary/40 backdrop-blur-md bg-opacity-80">
+<span class="material-symbols-outlined text-secondary mb-3">description</span>
+<h4 class="font-bold text-sm mb-2">Algoritmos Genéticos V2</h4>
+<p class="text-xs text-on-surface-variant line-clamp-3 leading-relaxed">Optimizando la convergencia en sistemas distribuidos utilizando heurísticas de selección natural...</p>
+<div class="mt-4 flex justify-between items-center">
+<span class="text-[0.625rem] font-label text-on-surface-variant uppercase">Editado ayer</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</div>
+</div>
+</div>
+<!-- Herramientas -->
+<div class="md:col-span-4 bg-surface-container-highest rounded-lg p-6">
+<h3 class="font-headline text-lg font-bold uppercase tracking-tight mb-4">Herramientas</h3>
+<div class="grid grid-cols-2 gap-2">
+<button class="flex items-center gap-2 p-3 bg-surface-container rounded hover:bg-primary/20 hover:text-primary transition-all text-xs font-label uppercase">
+<span class="material-symbols-outlined text-sm">terminal</span>
+                            Consola
+                        </button>
+<button class="flex items-center gap-2 p-3 bg-surface-container rounded hover:bg-secondary/20 hover:text-secondary transition-all text-xs font-label uppercase">
+<span class="material-symbols-outlined text-sm">auto_graph</span>
+                            Gráficos
+                        </button>
+<button class="flex items-center gap-2 p-3 bg-surface-container rounded hover:bg-tertiary/20 hover:text-tertiary transition-all text-xs font-label uppercase">
+<span class="material-symbols-outlined text-sm">translate</span>
+                            Traducir
+                        </button>
+<button class="flex items-center gap-2 p-3 bg-surface-container rounded hover:bg-on-surface-variant/20 transition-all text-xs font-label uppercase">
+<span class="material-symbols-outlined text-sm">more_horiz</span>
+                            Más
+                        </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Floating HUD Element -->
+<div class="fixed bottom-8 right-8 flex flex-col items-center gap-4 z-50">
+<button class="w-14 h-14 bg-gradient-to-br from-primary to-primary-container rounded-lg shadow-[0_0_20px_rgba(255,124,245,0.5)] flex items-center justify-center hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-on-primary text-3xl">add</span>
+</button>
+<div class="bg-surface-container/60 backdrop-blur-md px-4 py-2 rounded-full border border-white/5 text-[0.625rem] font-label uppercase tracking-widest">
+                Latencia: <span class="text-tertiary">12ms</span>
+</div>
+</div>
+</main>
+<!-- Background Illustration Overlay -->
+<div class="fixed inset-0 pointer-events-none z-[-1] opacity-30">
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background"></div>
+<svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<pattern height="40" id="grid" patternunits="userSpaceOnUse" width="40">
+<path d="M 40 0 L 0 0 0 40" fill="none" stroke="#ff7cf5" stroke-opacity="0.1" stroke-width="0.5"></path>
+</pattern>
+</defs>
+<rect fill="url(#grid)" height="100%" width="100%"></rect>
+</svg>
+</div>
+</body></html>

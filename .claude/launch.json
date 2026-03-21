@@ -2,11 +2,11 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "studyhub-dev",
-      "runtimeExecutable": "npx",
-      "runtimeArgs": ["next", "dev", "--turbopack"],
-      "port": 3000,
-      "cwd": "C:\\Users\\gonza\\Documents\\studyhub"
+      "name": "studyhub",
+      "runtimeExecutable": "C:\\Users\\gonza\\Documents\\studyhub\\node_modules\\.bin\\next",
+      "runtimeArgs": ["dev"],
+      "cwd": "C:\\Users\\gonza\\Documents\\studyhub",
+      "port": 3000
     }
   ]
 }

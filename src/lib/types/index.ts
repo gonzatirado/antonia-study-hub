@@ -99,7 +99,7 @@ export interface Grade {
   name: string;
   score: number;
   maxScore: number;
-  weight: number; // % sobre el total del ramo
+  weight: number; // % sobre el total de la asignatura
   category: GradeCategory;
   date: Date;
   createdAt: Date;
