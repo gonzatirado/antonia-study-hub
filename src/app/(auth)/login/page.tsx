@@ -73,8 +73,11 @@ export default function LoginPage() {
       router.push("/dashboard");
     } catch (err: unknown) {
       const firebaseError = err as { code?: string; message?: string };
+      console.error("[Email Login Error]", err);
       Sentry.captureException(err, { extra: { code: firebaseError.code } });
-      setError(getFirebaseErrorMessage(firebaseError.code || "unknown"));
+      setError(firebaseError.code
+        ? getFirebaseErrorMessage(firebaseError.code)
+        : `Error: ${firebaseError.message || String(err)}`);
     } finally {
       setLoading(false);
     }
@@ -89,8 +92,11 @@ export default function LoginPage() {
       router.push("/dashboard");
     } catch (err: unknown) {
       const firebaseError = err as { code?: string; message?: string };
+      console.error("[Google Login Error]", err);
       Sentry.captureException(err, { extra: { code: firebaseError.code } });
-      setError(getFirebaseErrorMessage(firebaseError.code || "unknown"));
+      setError(firebaseError.code
+        ? getFirebaseErrorMessage(firebaseError.code)
+        : `Error: ${firebaseError.message || String(err)}`);
     } finally {
       setGoogleLoading(false);
     }
