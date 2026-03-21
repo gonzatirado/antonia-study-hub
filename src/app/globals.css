@@ -445,10 +445,7 @@
   backdrop-filter: blur(16px) saturate(1.2) !important;
 }
 
-/* Sidebar contrast boost — all themes */
-[class*="bg-sidebar"] {
-  backdrop-filter: blur(24px) !important;
-}
+/* Sidebar contrast — no backdrop-filter to avoid breaking fixed positioning */
 
 /* ============================================
    SCROLLBAR STYLING
