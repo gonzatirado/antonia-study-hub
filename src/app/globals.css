@@ -448,9 +448,23 @@
 /* Sidebar contrast — no backdrop-filter to avoid breaking fixed positioning */
 
 /* Text contrast for content over theme backgrounds */
-[data-slot="sidebar-inset"] > main > * {
-  text-shadow: 0 1px 3px oklch(from var(--background) l c h / 0.5);
+/* Light themes: white shadow behind dark text */
+:root [data-slot="sidebar-inset"] > main > *,
+[data-theme="light"] [data-slot="sidebar-inset"] > main > *,
+[data-theme="gold"] [data-slot="sidebar-inset"] > main > *,
+[data-theme="alpes"] [data-slot="sidebar-inset"] > main > *,
+[data-theme="playa"] [data-slot="sidebar-inset"] > main > * {
+  text-shadow: 0 1px 4px oklch(1 0 0 / 0.7), 0 0 8px oklch(1 0 0 / 0.4);
 }
+/* Dark themes: dark shadow behind light text */
+[data-theme="dark"] [data-slot="sidebar-inset"] > main > *,
+[data-theme="midnight"] [data-slot="sidebar-inset"] > main > *,
+[data-theme="aurora"] [data-slot="sidebar-inset"] > main > *,
+[data-theme="neon"] [data-slot="sidebar-inset"] > main > *,
+[data-theme="bosque"] [data-slot="sidebar-inset"] > main > * {
+  text-shadow: 0 1px 4px oklch(0 0 0 / 0.6), 0 0 8px oklch(0 0 0 / 0.3);
+}
+/* No shadow inside cards — text is already on solid bg */
 [data-slot="sidebar-inset"] > main [class*="bg-card"] *,
 [data-slot="sidebar-inset"] > main [class*="bg-muted"] * {
   text-shadow: none;
