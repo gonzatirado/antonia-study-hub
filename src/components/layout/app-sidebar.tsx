@@ -151,37 +151,50 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="p-4">
+      <SidebarFooter className="p-3 border-t border-border/30">
         <DropdownMenu>
           <DropdownMenuTrigger
-            render={<button className="w-full flex items-center gap-3 p-2 rounded-lg hover:bg-muted/50 transition-colors" />}
+            render={<button className="w-full flex items-center gap-3 p-2.5 rounded-xl hover:bg-muted/50 transition-colors" />}
           >
-              <Avatar className="w-8 h-8">
+              <Avatar className="w-9 h-9">
                 <AvatarImage src={user?.photoURL || undefined} />
-                <AvatarFallback className="bg-gradient-to-br from-primary to-accent text-primary-foreground text-sm">
+                <AvatarFallback className="bg-gradient-to-br from-primary to-accent text-primary-foreground text-sm font-bold">
                   {user?.displayName?.charAt(0) || "U"}
                 </AvatarFallback>
               </Avatar>
-              <div className="flex-1 text-left">
-                <p className="text-sm font-medium text-foreground truncate">
+              <div className="flex-1 text-left min-w-0">
+                <p className="text-sm font-semibold text-foreground truncate">
                   {user?.displayName || "Usuario"}
                 </p>
-                <p className="text-xs text-muted-foreground truncate">
-                  {user?.email || ""}
+                <p className="text-[10px] font-medium text-primary truncate">
+                  Plan Gratis
                 </p>
               </div>
-              <ChevronsUpDown className="w-4 h-4 text-muted-foreground" />
+              <ChevronsUpDown className="w-4 h-4 text-muted-foreground shrink-0" />
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-56 bg-card border-border">
-            <DropdownMenuItem render={<Link href="/settings" className="text-secondary-foreground" />}>
-                <Settings className="w-4 h-4 mr-2" />
-                Configuración
-            </DropdownMenuItem>
-            <DropdownMenuSeparator className="bg-border" />
-            <DropdownMenuItem onClick={handleSignOut} className="text-destructive">
-              <LogOut className="w-4 h-4 mr-2" />
-              Cerrar sesión
-            </DropdownMenuItem>
+          <DropdownMenuContent align="start" side="top" className="w-64 bg-card border-border mb-2">
+            {/* Profile header in dropdown */}
+            <div className="px-3 py-3 border-b border-border/50">
+              <p className="text-sm font-semibold text-foreground truncate">{user?.displayName || "Usuario"}</p>
+              <p className="text-xs text-muted-foreground truncate">{user?.email || ""}</p>
+            </div>
+            <div className="py-1">
+              <DropdownMenuItem render={<Link href="/settings" className="text-secondary-foreground" />}>
+                  <Settings className="w-4 h-4 mr-2" />
+                  Ajustes
+              </DropdownMenuItem>
+              <DropdownMenuItem render={<Link href="/settings" className="text-secondary-foreground" />}>
+                  <GraduationCap className="w-4 h-4 mr-2" />
+                  Mejorar plan
+              </DropdownMenuItem>
+            </div>
+            <DropdownMenuSeparator className="bg-border/50" />
+            <div className="py-1">
+              <DropdownMenuItem onClick={handleSignOut} className="text-destructive">
+                <LogOut className="w-4 h-4 mr-2" />
+                Cerrar sesión
+              </DropdownMenuItem>
+            </div>
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarFooter>
