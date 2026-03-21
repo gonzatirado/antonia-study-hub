@@ -214,7 +214,7 @@ function StitchBackground({ src }: { src: string }) {
       className="pointer-events-none fixed inset-0 z-0"
       style={{
         backgroundImage: `url(${src})`,
-        backgroundSize: "100% 100%",
+        backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
       }}
