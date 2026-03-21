@@ -447,6 +447,15 @@
 
 /* Sidebar contrast — no backdrop-filter to avoid breaking fixed positioning */
 
+/* Text contrast for content over theme backgrounds */
+[data-slot="sidebar-inset"] > main > * {
+  text-shadow: 0 1px 3px oklch(from var(--background) l c h / 0.5);
+}
+[data-slot="sidebar-inset"] > main [class*="bg-card"] *,
+[data-slot="sidebar-inset"] > main [class*="bg-muted"] * {
+  text-shadow: none;
+}
+
 /* ============================================
    SCROLLBAR STYLING
    ============================================ */
