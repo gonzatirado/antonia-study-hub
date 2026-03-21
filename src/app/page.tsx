@@ -91,12 +91,12 @@ export default function LandingPage() {
             </div>
             <div className="flex flex-col gap-4">
               <span className="text-foreground font-bold text-sm">Recursos</span>
-              <Link href="/blog" className="text-muted-foreground hover:text-primary transition-colors text-sm font-light">
-                Blog
-              </Link>
-              <Link href="/faq" className="text-muted-foreground hover:text-primary transition-colors text-sm font-light">
-                FAQ
-              </Link>
+              <span className="text-muted-foreground/50 text-sm font-light cursor-default">
+                Blog (próximamente)
+              </span>
+              <span className="text-muted-foreground/50 text-sm font-light cursor-default">
+                FAQ (próximamente)
+              </span>
               <Link href="mailto:contacto@studyhub.cl" className="text-muted-foreground hover:text-primary transition-colors text-sm font-light">
                 Contacto
               </Link>
