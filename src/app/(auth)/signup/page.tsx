@@ -52,17 +52,17 @@ export default function SignupPage() {
       case "auth/email-already-in-use":
         return "Ya existe una cuenta con este email.";
       case "auth/invalid-email":
-        return "El email no es v\u00e1lido.";
+        return "El email no es válido.";
       case "auth/weak-password":
-        return "La contrase\u00f1a es demasiado d\u00e9bil. Usa al menos 6 caracteres.";
+        return "La contraseña es demasiado débil. Usa al menos 6 caracteres.";
       case "auth/operation-not-allowed":
-        return "El registro con email est\u00e1 deshabilitado. Contacta al administrador.";
+        return "El registro con email está deshabilitado. Contacta al administrador.";
       case "auth/too-many-requests":
         return "Demasiados intentos. Espera un momento e intenta de nuevo.";
       case "auth/popup-closed-by-user":
-        return "Cerraste la ventana de inicio de sesi\u00f3n.";
+        return "Cerraste la ventana de inicio de sesión.";
       case "auth/popup-blocked":
-        return "El navegador bloque\u00f3 la ventana emergente. Permite popups para este sitio.";
+        return "El navegador bloqueó la ventana emergente. Permite popups para este sitio.";
       case "auth/unauthorized-domain":
         return "Dominio no autorizado. Agrega este dominio en Firebase Console.";
       default:
@@ -133,7 +133,7 @@ export default function SignupPage() {
             <div>
               <CardTitle className="text-2xl text-foreground">Comienza tu jornada</CardTitle>
               <CardDescription className="text-muted-foreground mt-2">
-                \u00danete a la \u00e9lite acad\u00e9mica
+                Únete a la élite académica
               </CardDescription>
             </div>
           </CardHeader>
@@ -181,7 +181,7 @@ export default function SignupPage() {
               {/* Password Field */}
               <div className="space-y-2">
                 <Label htmlFor="password" className="text-xs font-bold tracking-widest text-muted-foreground uppercase">
-                  Contrase\u00f1a
+                  Contraseña
                 </Label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -209,7 +209,7 @@ export default function SignupPage() {
               {/* Confirm Password Field */}
               <div className="space-y-2">
                 <Label htmlFor="confirmPassword" className="text-xs font-bold tracking-widest text-muted-foreground uppercase">
-                  Confirmar contrase\u00f1a
+                  Confirmar contraseña
                 </Label>
                 <div className="relative">
                   <Shield className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -254,7 +254,7 @@ export default function SignupPage() {
               </div>
               <div className="relative flex justify-center">
                 <span className="bg-card px-4 text-xs font-bold tracking-widest text-muted-foreground uppercase">
-                  o contin\u00faa con
+                  o continúa con
                 </span>
               </div>
             </div>
@@ -287,12 +287,12 @@ export default function SignupPage() {
 
             {/* Login Link */}
             <p className="text-muted-foreground text-sm text-center pt-2">
-              \u00bfYa tienes cuenta?{" "}
+              ¿Ya tienes cuenta?{" "}
               <Link
                 href="/login"
                 className="text-primary font-bold hover:underline underline-offset-4 transition-all"
               >
-                Inicia sesi\u00f3n
+                Inicia sesión
               </Link>
             </p>
           </CardContent>

@@ -38,21 +38,21 @@ export default function LoginPage() {
   function getFirebaseErrorMessage(code: string): string {
     switch (code) {
       case "auth/invalid-email":
-        return "El email no es v\u00e1lido.";
+        return "El email no es válido.";
       case "auth/user-disabled":
         return "Esta cuenta ha sido deshabilitada.";
       case "auth/user-not-found":
         return "No existe una cuenta con este email.";
       case "auth/wrong-password":
-        return "Contrase\u00f1a incorrecta.";
+        return "Contraseña incorrecta.";
       case "auth/invalid-credential":
-        return "Email o contrase\u00f1a incorrectos.";
+        return "Email o contraseña incorrectos.";
       case "auth/too-many-requests":
         return "Demasiados intentos. Espera un momento e intenta de nuevo.";
       case "auth/popup-closed-by-user":
-        return "Cerraste la ventana de inicio de sesi\u00f3n.";
+        return "Cerraste la ventana de inicio de sesión.";
       case "auth/popup-blocked":
-        return "El navegador bloque\u00f3 la ventana emergente. Permite popups para este sitio.";
+        return "El navegador bloqueó la ventana emergente. Permite popups para este sitio.";
       case "auth/unauthorized-domain":
         return "Dominio no autorizado. Agrega este dominio en Firebase Console.";
       default:
@@ -63,7 +63,7 @@ export default function LoginPage() {
   async function handleEmailLogin(e: React.FormEvent) {
     e.preventDefault();
     if (!email.trim()) { setError("El email es obligatorio."); return; }
-    if (!password) { setError("La contrase\u00f1a es obligatoria."); return; }
+    if (!password) { setError("La contraseña es obligatoria."); return; }
 
     try {
       setLoading(true);
@@ -213,7 +213,7 @@ export default function LoginPage() {
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
                     tabIndex={0}
-                    aria-label={showPassword ? "Ocultar contrase\u00f1a" : "Mostrar contrase\u00f1a"}
+                    aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
                   >
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
