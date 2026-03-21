@@ -138,7 +138,7 @@ export default function GradesPage() {
   const { approved, total } = countApproved();
 
   return (
-    <div className="space-y-10 w-full">
+    <div className="space-y-10">
       {/* Header */}
       <header>
         <p className="text-[10px] uppercase tracking-[0.2em] text-primary mb-2 font-semibold">
