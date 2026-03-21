@@ -86,7 +86,7 @@ export function GradeDialogGlobal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-background/60 backdrop-blur-sm overflow-y-auto py-8"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm overflow-y-auto py-8"
       onClick={onClose}
     >
       <motion.div
