@@ -1,7 +1,7 @@
 "use client";
 
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { SnowEffect } from "./snow-effect";
 import { StarfieldEffect } from "./starfield-effect";
 
@@ -209,15 +209,27 @@ function GoldDesign() {
    Shared: Full-screen background image from Stitch
    ───────────────────────────────────────────── */
 function StitchBackground({ src }: { src: string }) {
+  const imgRef = useRef<HTMLImageElement>(null);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    // Preload full image to avoid blurry cached version
+    const img = new Image();
+    img.src = src;
+    img.onload = () => setLoaded(true);
+    // If already cached at full res, mark loaded immediately
+    if (img.complete && img.naturalWidth > 0) setLoaded(true);
+  }, [src]);
+
   return (
     <div
-      className="pointer-events-none fixed inset-0 z-0"
+      className="pointer-events-none fixed inset-0 z-0 transition-opacity duration-500"
       style={{
-        backgroundImage: `url(${src})`,
+        backgroundImage: loaded ? `url(${src})` : "none",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
-        imageRendering: "pixelated",
+        opacity: loaded ? 1 : 0,
       }}
     />
   );
