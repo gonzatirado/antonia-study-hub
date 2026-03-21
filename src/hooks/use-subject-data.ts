@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { useAppStore } from "@/lib/store";
 import { getSubjects, updateSubjectDoc } from "@/lib/firebase/subjects";
 import { getFirebaseStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "@/lib/firebase/config";
-import { getGradesBySubject, addGrade, deleteGrade } from "@/lib/firebase/grades";
+import { getGradesBySubject, addGrade, updateGrade, deleteGrade } from "@/lib/firebase/grades";
 import { getPendingsBySubject, addPending, updatePending, deletePending } from "@/lib/firebase/pendings";
 import type {
   Subject, SubjectFile, Folder, Grade, GradeCategory,
@@ -382,6 +382,21 @@ export function useSubjectData(subjectId: string) {
     }
   }
 
+  async function handleEditGrade(gradeId: string, data: {
+    name: string; score: number; maxScore: number;
+    weight: number; category: GradeCategory; date: Date;
+  }) {
+    if (!user?.uid) return;
+    try {
+      await updateGrade(user.uid, gradeId, data);
+      setGrades(prev => prev.map((g) => g.id === gradeId ? { ...g, ...data } : g));
+      toast.success("Nota actualizada");
+    } catch (err) {
+      Sentry.captureException(err);
+      toast.error("Error al editar la nota. Inténtalo de nuevo.");
+    }
+  }
+
   async function handleDeleteGrade(gradeId: string) {
     if (!user?.uid) return;
     try {
@@ -452,7 +467,7 @@ export function useSubjectData(subjectId: string) {
     // Grade derived data
     gradesByCategory, totalWeightUsed, weightedAverage,
     // Grade operations
-    handleSaveGrade, handleDeleteGrade,
+    handleSaveGrade, handleEditGrade, handleDeleteGrade,
     // Pendings state
     pendings, loadingPendings,
     showPendingDialog, setShowPendingDialog,

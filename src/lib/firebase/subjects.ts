@@ -19,12 +19,27 @@ function subjectsRef(userId: string) {
 export async function getSubjects(userId: string): Promise<Subject[]> {
   const q = query(subjectsRef(userId), orderBy('createdAt', 'desc'));
   const snap = await getDocs(q);
-  return snap.docs.map((d) => ({
-    ...d.data(),
-    id: d.id,
-    createdAt: d.data().createdAt?.toDate?.() || new Date(),
-    updatedAt: d.data().updatedAt?.toDate?.() || new Date(),
-  })) as Subject[];
+  return snap.docs.map((d) => {
+    const data = d.data();
+    // Convert Firestore Timestamps in nested files array
+    const files = (data.files || []).map((f: Record<string, unknown>) => ({
+      ...f,
+      uploadedAt: (f.uploadedAt as { toDate?: () => Date })?.toDate?.() || (f.uploadedAt ? new Date(f.uploadedAt as string) : new Date()),
+    }));
+    // Convert Firestore Timestamps in nested folders array
+    const folders = (data.folders || []).map((f: Record<string, unknown>) => ({
+      ...f,
+      createdAt: (f.createdAt as { toDate?: () => Date })?.toDate?.() || (f.createdAt ? new Date(f.createdAt as string) : new Date()),
+    }));
+    return {
+      ...data,
+      id: d.id,
+      files,
+      folders,
+      createdAt: data.createdAt?.toDate?.() || new Date(),
+      updatedAt: data.updatedAt?.toDate?.() || new Date(),
+    };
+  }) as Subject[];
 }
 
 export async function createSubject(

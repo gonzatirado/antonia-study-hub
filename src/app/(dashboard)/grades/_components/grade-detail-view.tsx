@@ -1,19 +1,22 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useState } from "react";
 import {
   ChevronLeft,
   BookOpen,
   Calculator,
   Weight,
   Trash2,
+  Pencil,
   CheckCircle2,
   AlertTriangle,
   XCircle,
 } from "lucide-react";
 import { CATEGORY_LABELS } from "@/lib/utils/grade-helpers";
 import type { Grade, GradeCategory, Subject } from "@/lib/types";
-import { deleteGrade } from "@/lib/firebase/grades";
+import { deleteGrade, updateGrade } from "@/lib/firebase/grades";
+import { GradeDialog } from "@/components/subjects/grade-dialog";
 import {
   gradeTextClass,
   gradeDotClass,
@@ -51,6 +54,8 @@ export function GradeDetailView({
   onBack,
   setGrades,
 }: GradeDetailViewProps) {
+  const [editingGrade, setEditingGrade] = useState<Grade | null>(null);
+
   return (
     <div className="space-y-8 max-w-5xl">
       {/* Detail Header */}
@@ -187,6 +192,13 @@ export function GradeDetailView({
                               {grade.score}
                             </span>
                             <button
+                              onClick={() => setEditingGrade(grade)}
+                              className="opacity-0 group-hover:opacity-100 p-1 rounded-md hover:bg-primary/10 text-muted-foreground hover:text-primary transition-all"
+                              title="Editar"
+                            >
+                              <Pencil className="w-3.5 h-3.5" />
+                            </button>
+                            <button
                               onClick={() => {
                                 if (!userId) return;
                                 deleteGrade(userId, grade.id).then(() =>
@@ -196,6 +208,7 @@ export function GradeDetailView({
                                 );
                               }}
                               className="opacity-0 group-hover:opacity-100 p-1 rounded-md hover:bg-destructive/20 text-muted-foreground hover:text-destructive transition-all"
+                              title="Eliminar"
                             >
                               <Trash2 className="w-3.5 h-3.5" />
                             </button>
@@ -300,6 +313,21 @@ export function GradeDetailView({
           </motion.div>
         </aside>
       </div>
+
+      {/* Edit Grade Dialog */}
+      <GradeDialog
+        open={!!editingGrade}
+        onClose={() => setEditingGrade(null)}
+        editingGrade={editingGrade}
+        onSave={async (data) => {
+          if (!userId || !editingGrade) return;
+          await updateGrade(userId, editingGrade.id, data);
+          setGrades((prev) =>
+            prev.map((g) => g.id === editingGrade.id ? { ...g, ...data } : g)
+          );
+          setEditingGrade(null);
+        }}
+      />
     </div>
   );
 }

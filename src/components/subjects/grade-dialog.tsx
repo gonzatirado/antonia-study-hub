@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import type { GradeCategory } from "@/lib/types";
+import type { Grade, GradeCategory } from "@/lib/types";
 
 export interface GradeDialogProps {
   open: boolean;
@@ -23,9 +23,10 @@ export interface GradeDialogProps {
     category: GradeCategory;
     date: Date;
   }) => void;
+  editingGrade?: Grade | null;
 }
 
-export function GradeDialog({ open, onClose, onSave }: GradeDialogProps) {
+export function GradeDialog({ open, onClose, onSave, editingGrade }: GradeDialogProps) {
   const [name, setName] = useState("");
   const [score, setScore] = useState("");
   const [maxScore, setMaxScore] = useState("7.0");
@@ -33,17 +34,26 @@ export function GradeDialog({ open, onClose, onSave }: GradeDialogProps) {
   const [category, setCategory] = useState<GradeCategory>("control");
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
 
-  // BUG 16: Reset form state when dialog opens
   useEffect(() => {
     if (open) {
-      setName("");
-      setScore("");
-      setMaxScore("7.0");
-      setWeight("");
-      setCategory("control");
-      setDate(new Date().toISOString().split("T")[0]);
+      if (editingGrade) {
+        setName(editingGrade.name);
+        setScore(String(editingGrade.score));
+        setMaxScore(String(editingGrade.maxScore));
+        setWeight(String(editingGrade.weight));
+        setCategory(editingGrade.category);
+        const d = new Date(editingGrade.date);
+        setDate(d.toISOString().split("T")[0]);
+      } else {
+        setName("");
+        setScore("");
+        setMaxScore("7.0");
+        setWeight("");
+        setCategory("control");
+        setDate(new Date().toISOString().split("T")[0]);
+      }
     }
-  }, [open]);
+  }, [open, editingGrade]);
 
   if (!open) return null;
 
@@ -70,16 +80,22 @@ export function GradeDialog({ open, onClose, onSave }: GradeDialogProps) {
     { value: "otro", label: "Otro" },
   ];
 
+  const isEditing = !!editingGrade;
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/60 backdrop-blur-sm" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/60 backdrop-blur-sm overflow-y-auto py-8" onClick={onClose}>
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="bg-card border border-border rounded-2xl p-6 w-full max-w-md mx-4"
+        className="bg-card border border-border rounded-2xl p-6 w-full max-w-md mx-4 my-auto"
         onClick={(e) => e.stopPropagation()}
       >
-        <h3 className="text-lg font-semibold text-foreground mb-1">Registrar nota</h3>
-        <p className="text-sm text-muted-foreground mb-5">Ej: &quot;Control 1&quot; tipo Control/Quiz, 15% de la asignatura</p>
+        <h3 className="text-lg font-semibold text-foreground mb-1">
+          {isEditing ? "Editar nota" : "Registrar nota"}
+        </h3>
+        <p className="text-sm text-muted-foreground mb-5">
+          {isEditing ? "Modifica los datos de la evaluación" : 'Ej: "Control 1" tipo Control/Quiz, 15% de la asignatura'}
+        </p>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-2 gap-3">
             <div className="col-span-2 sm:col-span-1">
@@ -135,7 +151,9 @@ export function GradeDialog({ open, onClose, onSave }: GradeDialogProps) {
 
           <div className="flex justify-end gap-2 pt-2">
             <Button type="button" variant="ghost" onClick={onClose} className="text-muted-foreground">Cancelar</Button>
-            <Button type="submit" className="bg-primary hover:bg-primary/90 text-foreground">Registrar nota</Button>
+            <Button type="submit" className="bg-primary hover:bg-primary/90 text-foreground">
+              {isEditing ? "Guardar cambios" : "Registrar nota"}
+            </Button>
           </div>
         </form>
       </motion.div>

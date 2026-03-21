@@ -53,11 +53,11 @@ export function PendingDialog({ open, onClose, onSave }: PendingDialogProps) {
   ];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/60 backdrop-blur-sm" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/60 backdrop-blur-sm overflow-y-auto py-8" onClick={onClose}>
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="bg-card border border-border rounded-2xl p-6 w-full max-w-md mx-4"
+        className="bg-card border border-border rounded-2xl p-6 w-full max-w-md mx-4 my-auto"
         onClick={(e) => e.stopPropagation()}
       >
         <h3 className="text-lg font-semibold text-foreground mb-4">Nuevo pendiente</h3>

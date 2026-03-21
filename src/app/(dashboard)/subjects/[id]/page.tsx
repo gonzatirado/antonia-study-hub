@@ -30,7 +30,7 @@ export default function SubjectDetailPage() {
     grades, loadingGrades,
     showGradeDialog, setShowGradeDialog,
     gradesByCategory, totalWeightUsed, weightedAverage,
-    handleSaveGrade, handleDeleteGrade,
+    handleSaveGrade, handleEditGrade, handleDeleteGrade,
     // Pendings
     pendings, loadingPendings,
     showPendingDialog, setShowPendingDialog,
@@ -111,6 +111,7 @@ export default function SubjectDetailPage() {
           onSetShowGradeDialog={setShowGradeDialog}
           onDeleteGrade={handleDeleteGrade}
           onSaveGrade={handleSaveGrade}
+          onEditGrade={handleEditGrade}
         />
       )}
 

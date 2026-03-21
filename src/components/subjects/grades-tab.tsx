@@ -1,7 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
-import { Loader2, Plus, BarChart3, Trash2 } from "lucide-react";
+import { Loader2, Plus, BarChart3, Trash2, Pencil } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { GradeDialog } from "@/components/subjects/grade-dialog";
 import type { Grade, GradeCategory } from "@/lib/types";
@@ -16,6 +17,14 @@ export interface GradesTabProps {
   onSetShowGradeDialog: (show: boolean) => void;
   onDeleteGrade: (gradeId: string) => void;
   onSaveGrade: (data: {
+    name: string;
+    score: number;
+    maxScore: number;
+    weight: number;
+    category: GradeCategory;
+    date: Date;
+  }) => void;
+  onEditGrade?: (gradeId: string, data: {
     name: string;
     score: number;
     maxScore: number;
@@ -44,7 +53,10 @@ export function GradesTab({
   onSetShowGradeDialog,
   onDeleteGrade,
   onSaveGrade,
+  onEditGrade,
 }: GradesTabProps) {
+  const [editingGrade, setEditingGrade] = useState<Grade | null>(null);
+
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
       <div className="flex items-center justify-between">
@@ -77,7 +89,7 @@ export function GradesTab({
         <div className="text-center py-16 border border-dashed border-border rounded-xl">
           <BarChart3 className="w-10 h-10 text-muted-foreground/60 mx-auto mb-3" />
           <p className="text-muted-foreground font-medium">Sin notas registradas</p>
-          <p className="text-xs text-muted-foreground mt-1">Registra una evaluacion para comenzar</p>
+          <p className="text-xs text-muted-foreground mt-1">Registra una evaluación para comenzar</p>
         </div>
       ) : (
         <div className="space-y-4">
@@ -107,13 +119,21 @@ export function GradesTab({
                           {" · "}{grade.weight}%
                         </p>
                       </div>
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-2">
                         <span className={`text-lg font-bold ${(grade.maxScore === 0 ? 0 : grade.score / grade.maxScore * 7) >= 4 ? "text-success" : "text-destructive"}`}>
                           {grade.score}
                         </span>
                         <button
+                          onClick={() => setEditingGrade(grade)}
+                          className="opacity-0 group-hover:opacity-100 p-1 rounded-md hover:bg-primary/10 text-muted-foreground hover:text-primary transition-all"
+                          title="Editar"
+                        >
+                          <Pencil className="w-3.5 h-3.5" />
+                        </button>
+                        <button
                           onClick={() => onDeleteGrade(grade.id)}
                           className="opacity-0 group-hover:opacity-100 p-1 rounded-md hover:bg-destructive/20 text-muted-foreground hover:text-destructive transition-all"
+                          title="Eliminar"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                         </button>
@@ -127,11 +147,19 @@ export function GradesTab({
         </div>
       )}
 
-      {/* Grade Dialog */}
+      {/* Grade Dialog — new or edit */}
       <GradeDialog
-        open={showGradeDialog}
-        onClose={() => onSetShowGradeDialog(false)}
-        onSave={onSaveGrade}
+        open={showGradeDialog || !!editingGrade}
+        onClose={() => { onSetShowGradeDialog(false); setEditingGrade(null); }}
+        editingGrade={editingGrade}
+        onSave={(data) => {
+          if (editingGrade && onEditGrade) {
+            onEditGrade(editingGrade.id, data);
+            setEditingGrade(null);
+          } else {
+            onSaveGrade(data);
+          }
+        }}
       />
     </motion.div>
   );

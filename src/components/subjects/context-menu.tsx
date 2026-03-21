@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export interface ContextMenuItem {
   label: string;
@@ -18,9 +18,18 @@ export interface ContextMenuProps {
 
 export function ContextMenu({ anchorRef, open, onClose, items }: ContextMenuProps) {
   const menuRef = useRef<HTMLDivElement>(null);
+  const [openUp, setOpenUp] = useState(false);
 
   useEffect(() => {
     if (!open) return;
+    // Detect if menu would overflow viewport bottom
+    if (anchorRef.current) {
+      const rect = anchorRef.current.getBoundingClientRect();
+      const menuHeight = items.length * 40 + 8; // approx height
+      const spaceBelow = window.innerHeight - rect.bottom;
+      setOpenUp(spaceBelow < menuHeight);
+    }
+
     function handleClick(e: MouseEvent) {
       if (
         menuRef.current && !menuRef.current.contains(e.target as Node) &&
@@ -38,7 +47,7 @@ export function ContextMenu({ anchorRef, open, onClose, items }: ContextMenuProp
       document.removeEventListener("mousedown", handleClick);
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [open, onClose, anchorRef]);
+  }, [open, onClose, anchorRef, items.length]);
 
   if (!open) return null;
 
@@ -46,7 +55,9 @@ export function ContextMenu({ anchorRef, open, onClose, items }: ContextMenuProp
     <div
       ref={menuRef}
       role="menu"
-      className="absolute right-0 top-8 z-50 min-w-[180px] bg-card border border-border rounded-lg shadow-xl py-1 animate-in fade-in-0 zoom-in-95"
+      className={`absolute right-0 z-50 min-w-[180px] bg-card border border-border rounded-lg shadow-xl py-1 animate-in fade-in-0 zoom-in-95 ${
+        openUp ? "bottom-8" : "top-8"
+      }`}
     >
       {items.map((itm) => (
         <button
