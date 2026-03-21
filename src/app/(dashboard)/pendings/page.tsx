@@ -100,7 +100,7 @@ export default function PendingsPage() {
       </div>
 
       {filtered.length === 0 ? (
-        <div className="text-center py-20 border border-border rounded-xl bg-card/60 backdrop-blur-xl shadow-sm">
+        <div className="text-center py-20 border border-dashed border-border/40 rounded-xl">
           <ClipboardList className="w-12 h-12 text-muted-foreground/60 mx-auto mb-3" />
           <p className="text-muted-foreground font-medium">
             {filter === "completed" ? "Sin pendientes completados" : "Sin pendientes activos"}
@@ -237,11 +237,11 @@ function PendingDialogGlobal({ subjects, onClose, onSave }: {
   ];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm overflow-y-auto py-8" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md py-8" onClick={onClose}>
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="bg-card border border-border rounded-2xl p-6 w-full max-w-md mx-4 my-auto"
+        className="bg-card border border-border rounded-2xl p-6 w-full max-w-md mx-4 max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         <h3 className="text-lg font-semibold text-foreground mb-4">Nuevo pendiente</h3>

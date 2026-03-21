@@ -210,7 +210,7 @@ export default function GradesPage() {
 
       {/* Subject Table / Empty State */}
       {grades.length === 0 ? (
-        <div className="text-center py-20 border border-border rounded-xl bg-card/60 backdrop-blur-xl shadow-sm">
+        <div className="text-center py-20 border border-dashed border-border/40 rounded-xl">
           <BarChart3 className="w-12 h-12 text-muted-foreground/60 mx-auto mb-3" />
           <p className="text-muted-foreground font-medium">Sin notas registradas</p>
           <p className="text-sm text-muted-foreground mt-1">
