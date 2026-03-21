@@ -447,36 +447,41 @@
 
 /* Sidebar contrast — no backdrop-filter to avoid breaking fixed positioning */
 
-/* Text contrast for content over theme backgrounds */
-/* Light themes: white shadow behind dark text — all descendants */
-:root [data-slot="sidebar-inset"] > main h1,
-:root [data-slot="sidebar-inset"] > main h2,
-:root [data-slot="sidebar-inset"] > main h3,
-:root [data-slot="sidebar-inset"] > main p,
-:root [data-slot="sidebar-inset"] > main span,
-:root [data-slot="sidebar-inset"] > main label,
-:root [data-slot="sidebar-inset"] > main button,
-[data-theme="light"] [data-slot="sidebar-inset"] > main *,
-[data-theme="gold"] [data-slot="sidebar-inset"] > main *,
-[data-theme="alpes"] [data-slot="sidebar-inset"] > main *,
-[data-theme="playa"] [data-slot="sidebar-inset"] > main * {
+/* Text contrast for content over theme wallpapers.
+   Only applied via .page-header class — NOT globally.
+   This prevents blurry text inside cards/tables. */
+
+/* Light themes: white glow behind dark text */
+[data-theme="light"] .page-header,
+[data-theme="light"] .page-header *,
+[data-theme="gold"] .page-header,
+[data-theme="gold"] .page-header *,
+[data-theme="alpes"] .page-header,
+[data-theme="alpes"] .page-header *,
+[data-theme="playa"] .page-header,
+[data-theme="playa"] .page-header *,
+:root .page-header,
+:root .page-header * {
   text-shadow: 0 1px 6px oklch(1 0 0 / 0.85), 0 0 12px oklch(1 0 0 / 0.5);
 }
-/* Dark themes: dark shadow behind light text — all descendants */
-[data-theme="dark"] [data-slot="sidebar-inset"] > main *,
-[data-theme="midnight"] [data-slot="sidebar-inset"] > main *,
-[data-theme="aurora"] [data-slot="sidebar-inset"] > main *,
-[data-theme="neon"] [data-slot="sidebar-inset"] > main *,
-[data-theme="bosque"] [data-slot="sidebar-inset"] > main * {
+
+/* Dark themes: dark glow behind light text */
+[data-theme="dark"] .page-header,
+[data-theme="dark"] .page-header *,
+[data-theme="midnight"] .page-header,
+[data-theme="midnight"] .page-header *,
+[data-theme="aurora"] .page-header,
+[data-theme="aurora"] .page-header *,
+[data-theme="neon"] .page-header,
+[data-theme="neon"] .page-header *,
+[data-theme="bosque"] .page-header,
+[data-theme="bosque"] .page-header * {
   text-shadow: 0 1px 6px oklch(0 0 0 / 0.8), 0 0 12px oklch(0 0 0 / 0.5);
 }
-/* No shadow inside cards, modals, inputs — text is already on solid bg */
-[data-slot="sidebar-inset"] > main [class*="bg-card"] *,
-[data-slot="sidebar-inset"] > main [class*="bg-muted"] *,
-[data-slot="sidebar-inset"] > main input,
-[data-slot="sidebar-inset"] > main textarea,
-[data-slot="sidebar-inset"] > main select,
-.fixed[class*="bg-black"] * {
+
+/* Never shadow inside buttons with backgrounds */
+.page-header button,
+.page-header .bg-primary {
   text-shadow: none;
 }
 

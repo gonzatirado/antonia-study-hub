@@ -142,7 +142,7 @@ export default function DashboardPage() {
   return (
     <div className="space-y-10">
       {/* ── Greeting Header ── */}
-      <motion.header initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
+      <motion.header initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="page-header">
         <h1 className="text-4xl font-black tracking-tight text-foreground">
           Hola, {firstName}!
         </h1>

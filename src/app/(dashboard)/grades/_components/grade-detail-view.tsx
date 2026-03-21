@@ -59,7 +59,7 @@ export function GradeDetailView({
   return (
     <div className="space-y-8 max-w-5xl">
       {/* Detail Header */}
-      <header>
+      <header className="page-header">
         <div className="flex items-center gap-3 mb-4">
           <button
             onClick={onBack}

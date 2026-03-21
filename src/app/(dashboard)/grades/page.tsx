@@ -140,7 +140,7 @@ export default function GradesPage() {
   return (
     <div className="space-y-10">
       {/* Header */}
-      <header>
+      <header className="page-header">
         <p className="text-[10px] uppercase tracking-[0.2em] text-primary mb-2 font-semibold">
           Resumen Académico
         </p>

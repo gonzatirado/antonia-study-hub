@@ -86,7 +86,7 @@ export default function ExamPrepPage() {
     const subject = subjects.find((s) => s.id === selectedSubject);
     return (
       <div className="space-y-6">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between page-header">
           <div>
             <h1 className="text-2xl font-bold text-foreground">Plan de Estudio</h1>
             <p className="text-muted-foreground mt-1">
@@ -152,7 +152,7 @@ export default function ExamPrepPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between page-header">
         <div>
           <h1 className="text-2xl font-bold text-foreground">Preparacion de Pruebas</h1>
           <p className="text-muted-foreground mt-1">Crea un plan de estudio personalizado hasta tu examen</p>

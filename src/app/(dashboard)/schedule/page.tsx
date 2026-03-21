@@ -208,7 +208,7 @@ export default function SchedulePage() {
   return (
     <div className="space-y-8">
       {/* Page Header */}
-      <header className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+      <header className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between page-header">
         <div>
           <h1 className="text-4xl font-extrabold tracking-tight text-foreground">
             {viewMode === "weekly" ? "Horario Semanal" : "Calendario Mensual"}

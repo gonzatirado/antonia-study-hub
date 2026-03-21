@@ -71,7 +71,7 @@ export default function PendingsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between page-header">
         <div>
           <h1 className="text-2xl font-bold text-foreground">Pendientes</h1>
           <p className="text-sm text-muted-foreground mt-1">Tareas, pruebas y entregas</p>

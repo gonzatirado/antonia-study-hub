@@ -19,7 +19,7 @@ export function SubjectHeader({ subject, weightedAverage, onBack }: SubjectHeade
         <ArrowLeft className="w-4 h-4" /> Asignaturas
       </button>
 
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-4 page-header">
         <div
           className="w-12 h-12 rounded-xl flex items-center justify-center text-xl"
           style={{ backgroundColor: subject.color + "20" }}

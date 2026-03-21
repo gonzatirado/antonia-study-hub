@@ -350,7 +350,7 @@ export default function SummariesPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between page-header">
         <div>
           <h1 className="text-2xl font-bold text-foreground">
             Notas y Resúmenes
