@@ -95,10 +95,10 @@ export function MonthlyCalendar({
   }
 
   return (
-    <Card className="bg-card/30 border-border/30 overflow-hidden backdrop-blur-xl shadow-2xl rounded-2xl">
+    <Card className="bg-card/80 border-border overflow-hidden backdrop-blur-xl shadow-2xl rounded-2xl">
       <CardContent className="p-0">
         {/* Day headers */}
-        <div className="grid grid-cols-7 bg-muted/20 border-b border-border/20">
+        <div className="grid grid-cols-7 bg-muted/30 border-b border-border/30">
           {DAY_NAMES.map((name) => (
             <div
               key={name}
@@ -114,13 +114,15 @@ export function MonthlyCalendar({
           {calendarDays.map((date, i) => {
             const inMonth = isSameMonth(date, currentDate);
             const today = isToday(date);
-            const dots = getDotsForDate(date);
+            // Classes (recurring blocks) are NOT shown in monthly view
+            // Only events (future feature) will show here
+            const dots: string[] = [];
 
             return (
               <div
                 key={i}
                 className={`
-                  min-h-[70px] p-2 border-b border-r border-border/10 transition-all cursor-pointer group
+                  min-h-[70px] p-2 border-b border-r border-border/30 transition-all cursor-pointer group
                   ${!inMonth ? "opacity-30" : "hover:bg-muted/30"}
                   ${today ? "bg-muted/40 ring-1 ring-inset ring-primary/20" : ""}
                 `}

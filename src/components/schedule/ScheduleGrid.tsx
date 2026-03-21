@@ -70,7 +70,7 @@ export function ScheduleGrid({
   }, [subjects]);
 
   return (
-    <Card className="bg-card/30 border-border/30 overflow-hidden backdrop-blur-xl shadow-2xl rounded-2xl">
+    <Card className="bg-card/80 border-border overflow-hidden backdrop-blur-xl shadow-2xl rounded-2xl">
       <CardContent className="p-0">
         <div className="grid grid-cols-[80px_repeat(5,1fr)_0.4fr] min-h-[600px]">
           {/* Header row */}
