@@ -217,6 +217,7 @@ function StitchBackground({ src }: { src: string }) {
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
+        imageRendering: "pixelated",
       }}
     />
   );
