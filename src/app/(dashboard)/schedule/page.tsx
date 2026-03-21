@@ -30,7 +30,7 @@ import {
   addScheduleBlock,
   deleteScheduleBlock,
 } from "@/lib/firebase/schedule";
-import { getSubjects } from "@/lib/firebase/subjects";
+import { useEnsureSubjects } from "@/hooks/use-ensure-subjects";
 import type { ScheduleBlock } from "@/lib/types";
 import { AddBlockDialog, type NewBlockForm } from "@/components/schedule/AddBlockDialog";
 import { ScheduleGrid } from "@/components/schedule/ScheduleGrid";
@@ -59,21 +59,14 @@ const DAY_KEY_TO_JS: Record<string, number> = {
 };
 
 export default function SchedulePage() {
-  const { user, subjects, setSubjects } = useAppStore();
+  const { user } = useAppStore();
+  const subjects = useEnsureSubjects();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [blocks, setBlocks] = useState<ScheduleBlock[]>([]);
   const [loading, setLoading] = useState(true);
   const [newBlock, setNewBlock] = useState<NewBlockForm>(INITIAL_BLOCK_FORM);
   const [viewMode, setViewMode] = useState<ViewMode>("weekly");
   const [currentDate, setCurrentDate] = useState(() => new Date());
-
-  // Load subjects from Firestore if not already loaded
-  useEffect(() => {
-    if (!user?.uid || subjects.length > 0) return;
-    getSubjects(user.uid)
-      .then(setSubjects)
-      .catch((err) => Sentry.captureException(err));
-  }, [user?.uid, subjects.length]);
 
   // Load blocks from Firestore
   useEffect(() => {

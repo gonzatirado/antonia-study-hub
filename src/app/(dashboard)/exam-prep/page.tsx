@@ -19,6 +19,7 @@ import {
 import { useAppStore } from "@/lib/store";
 import { FileDropzone } from "@/components/shared/file-dropzone";
 import { extractTextFromFiles } from "@/lib/utils/extract-text";
+import { getAuthHeaders } from "@/lib/firebase/get-auth-token";
 
 interface StudyDay {
   date: string;
@@ -56,15 +57,14 @@ export default function ExamPrepPage() {
         }
       }
 
+      const authHeaders = await getAuthHeaders();
       const res = await fetch("/api/ai/exam-prep", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...authHeaders },
         body: JSON.stringify({
           content,
           examDate,
           description,
-          tier: "flash",
-          userId: user?.uid,
         }),
       });
 

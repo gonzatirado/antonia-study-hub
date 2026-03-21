@@ -11,14 +11,7 @@ export const item = {
   show: { opacity: 1, y: 0 },
 };
 
-export function formatDateSpanish(date: Date): string {
-  const days = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
-  const months = [
-    "enero", "febrero", "marzo", "abril", "mayo", "junio",
-    "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre",
-  ];
-  return `${days[date.getDay()]} ${date.getDate()} de ${months[date.getMonth()]}, ${date.getFullYear()}`;
-}
+export { formatDateSpanish } from "@/lib/utils/date-helpers";
 
 export function daysUntil(date: Date): number {
   const now = new Date();

@@ -22,7 +22,7 @@ const steps = [
 
 export function HowItWorksSection() {
   return (
-    <section className="py-32 px-6 md:px-12 bg-background relative">
+    <section className="py-32 px-6 md:px-12 bg-white/[0.02] relative">
       {/* Center orb */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full bg-primary/5 blur-[80px] pointer-events-none" />
 
@@ -53,7 +53,7 @@ export function HowItWorksSection() {
               transition={{ delay: i * 0.15, duration: 0.5, ease: [0.25, 0.4, 0.25, 1] }}
             >
               {/* Large background number */}
-              <div className="text-[140px] font-black text-white/[0.03] absolute -top-24 -left-12 select-none group-hover:text-primary/10 transition-colors duration-500">
+              <div className="text-[140px] font-black text-white/[0.03] absolute -top-24 -left-12 select-none group-hover:text-primary/10 transition-colors duration-500" aria-hidden="true">
                 {step.number}
               </div>
               <div className="relative">

@@ -40,8 +40,10 @@ export default function SignupPage() {
   function validateForm(): string | null {
     if (!name.trim()) return "El nombre es obligatorio.";
     if (!email.trim()) return "El email es obligatorio.";
-    if (password.length < 6) return "La contrase\u00f1a debe tener al menos 6 caracteres.";
-    if (password !== confirmPassword) return "Las contrase\u00f1as no coinciden.";
+    if (password.length < 8) return "La contraseña debe tener al menos 8 caracteres.";
+    if (!/[A-Z]/.test(password)) return "La contraseña debe incluir al menos una mayúscula.";
+    if (!/[0-9]/.test(password)) return "La contraseña debe incluir al menos un número.";
+    if (password !== confirmPassword) return "Las contraseñas no coinciden.";
     return null;
   }
 
@@ -196,7 +198,8 @@ export default function SignupPage() {
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-                    tabIndex={-1}
+                    tabIndex={0}
+                    aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
                   >
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
@@ -223,7 +226,8 @@ export default function SignupPage() {
                     type="button"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-                    tabIndex={-1}
+                    tabIndex={0}
+                    aria-label={showConfirmPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
                   >
                     {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>

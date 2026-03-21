@@ -25,7 +25,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import * as Sentry from "@sentry/nextjs";
 import { useAppStore } from "@/lib/store";
-import { getSubjects, createSubject, deleteSubject } from "@/lib/firebase/subjects";
+import { useEnsureSubjects } from "@/hooks/use-ensure-subjects";
+import { createSubject, deleteSubject } from "@/lib/firebase/subjects";
 import Link from "next/link";
 
 const COLORS = [
@@ -55,9 +56,10 @@ function formatStorageSize(bytes: number): string {
 }
 
 export default function SubjectsPage() {
-  const { user, subjects, setSubjects, addSubject, removeSubject } = useAppStore();
+  const { user, addSubject, removeSubject } = useAppStore();
+  const subjects = useEnsureSubjects();
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [loadingSubjects, setLoadingSubjects] = useState(true);
+  const loadingSubjects = subjects.length === 0 && !user?.uid;
   const [creating, setCreating] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
@@ -67,16 +69,6 @@ export default function SubjectsPage() {
     professor: "",
     color: COLORS[0],
   });
-
-  // Load subjects from Firestore
-  useEffect(() => {
-    if (!user?.uid) return;
-    setLoadingSubjects(true);
-    getSubjects(user.uid)
-      .then((data) => setSubjects(data))
-      .catch((err) => Sentry.captureException(err))
-      .finally(() => setLoadingSubjects(false));
-  }, [user?.uid, setSubjects]);
 
   async function handleCreate() {
     if (!newSubject.name || !newSubject.code || !user?.uid) return;

@@ -44,7 +44,7 @@ export function HeroSection() {
         }}
       />
 
-      <FloatingOrbs />
+      <FloatingOrbs aria-hidden="true" />
 
       <motion.div
         style={{ opacity: heroOpacity, scale: heroScale }}
@@ -104,9 +104,10 @@ export function HeroSection() {
               <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
             </span>
             {/* Beam sweep effect */}
-            <div className="absolute inset-0 overflow-hidden rounded-xl">
+            <div className="absolute inset-0 overflow-hidden rounded-xl" aria-hidden="true">
               <div
                 className="absolute inset-0 animate-beam-sweep"
+                aria-hidden="true"
                 style={{
                   background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)",
                   width: "30%",

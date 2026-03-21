@@ -25,7 +25,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useAppStore } from "@/lib/store";
-import { getSubjects } from "@/lib/firebase/subjects";
+import { useEnsureSubjects } from "@/hooks/use-ensure-subjects";
 
 type PomodoroState = "work" | "shortBreak" | "longBreak";
 
@@ -65,7 +65,8 @@ function playBeep() {
 }
 
 export default function PomodoroPage() {
-  const { user, subjects, setSubjects } = useAppStore();
+  const { user } = useAppStore();
+  const subjects = useEnsureSubjects();
   const [state, setState] = useState<PomodoroState>("work");
   const [timeLeft, setTimeLeft] = useState(DURATIONS.work);
   const [running, setRunning] = useState(false);
@@ -73,13 +74,6 @@ export default function PomodoroPage() {
   const [selectedSubject, setSelectedSubject] = useState("");
   const [history, setHistory] = useState<CompletedSession[]>([]);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
-
-  // Load subjects if needed
-  useEffect(() => {
-    if (user && subjects.length === 0) {
-      getSubjects(user.uid).then(setSubjects).catch(() => { /* subjects load silently fails */ });
-    }
-  }, [user, subjects.length, setSubjects]);
 
   const switchState = useCallback((currentState: PomodoroState, currentSession: number) => {
     playBeep();

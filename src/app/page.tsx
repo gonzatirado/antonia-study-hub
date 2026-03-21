@@ -5,6 +5,8 @@ import { FeaturesSection } from "@/components/landing/features-section";
 import { TestimonialsSection } from "@/components/landing/testimonials-section";
 import { PricingSection } from "@/components/landing/pricing-section";
 import { CtaSection } from "@/components/landing/cta-section";
+import { NavBar } from "@/components/landing/nav-bar";
+import { LandingThemeForce } from "@/components/landing/landing-theme-force";
 
 /* ─── Gradient Divider (server-renderable) ─── */
 function GradientDivider() {
@@ -12,7 +14,7 @@ function GradientDivider() {
     <div
       className="h-px w-full"
       style={{
-        background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.1) 50%, transparent)",
+        background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.25) 50%, transparent)",
       }}
     />
   );
@@ -22,54 +24,13 @@ function GradientDivider() {
 export default function LandingPage() {
   return (
     <div data-theme="dark" className="min-h-screen overflow-x-hidden bg-background text-foreground">
+      <LandingThemeForce />
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:bg-primary focus:text-primary-foreground focus:px-4 focus:py-2 focus:rounded-lg">Saltar al contenido</a>
+
       {/* ── Navbar ── */}
-      <nav className="fixed top-0 w-full z-50 bg-background/70 backdrop-blur-xl border-b border-border/30 px-6 md:px-12 py-4 flex justify-between items-center">
-        <Link
-          href="/"
-          className="text-xl font-bold text-foreground tracking-tighter flex items-center gap-2"
-        >
-          <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-          StudyHub
-        </Link>
+      <NavBar />
 
-        <div className="hidden md:flex gap-10 items-center">
-          <Link
-            href="#features"
-            className="text-foreground text-sm font-medium border-b border-primary pb-1 hover:opacity-80 transition-all duration-300"
-          >
-            Funcionalidades
-          </Link>
-          <Link
-            href="#pricing"
-            className="text-muted-foreground text-sm hover:text-foreground transition-colors"
-          >
-            Precios
-          </Link>
-          <Link
-            href="#testimonials"
-            className="text-muted-foreground text-sm hover:text-foreground transition-colors"
-          >
-            Testimonios
-          </Link>
-        </div>
-
-        <div className="flex gap-6 items-center">
-          <Link
-            href="/login"
-            className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium"
-          >
-            Entrar
-          </Link>
-          <Link
-            href="/login"
-            className="bg-primary text-primary-foreground px-6 py-2 rounded-xl font-bold text-sm hover:shadow-[0_0_20px_oklch(0.65_0.25_295_/_0.4)] transition-all active:scale-95"
-          >
-            Empezar ahora
-          </Link>
-        </div>
-      </nav>
-
-      <main>
+      <main id="main-content">
         {/* 1. Hero */}
         <HeroSection />
 
@@ -118,25 +79,25 @@ export default function LandingPage() {
           <div className="flex justify-start md:justify-center gap-12">
             <div className="flex flex-col gap-4">
               <span className="text-foreground font-bold text-sm">Empresa</span>
-              <Link href="#" className="text-muted-foreground hover:text-primary transition-colors text-sm font-light">
+              <Link href="/privacy" className="text-muted-foreground hover:text-primary transition-colors text-sm font-light">
                 Privacidad
               </Link>
-              <Link href="#" className="text-muted-foreground hover:text-primary transition-colors text-sm font-light">
+              <Link href="/terms" className="text-muted-foreground hover:text-primary transition-colors text-sm font-light">
                 Términos
               </Link>
-              <Link href="#" className="text-muted-foreground hover:text-primary transition-colors text-sm font-light">
+              <Link href="mailto:soporte@studyhub.cl" className="text-muted-foreground hover:text-primary transition-colors text-sm font-light">
                 Soporte
               </Link>
             </div>
             <div className="flex flex-col gap-4">
               <span className="text-foreground font-bold text-sm">Recursos</span>
-              <Link href="#" className="text-muted-foreground hover:text-primary transition-colors text-sm font-light">
+              <Link href="/blog" className="text-muted-foreground hover:text-primary transition-colors text-sm font-light">
                 Blog
               </Link>
-              <Link href="#" className="text-muted-foreground hover:text-primary transition-colors text-sm font-light">
+              <Link href="/faq" className="text-muted-foreground hover:text-primary transition-colors text-sm font-light">
                 FAQ
               </Link>
-              <Link href="#" className="text-muted-foreground hover:text-primary transition-colors text-sm font-light">
+              <Link href="mailto:contacto@studyhub.cl" className="text-muted-foreground hover:text-primary transition-colors text-sm font-light">
                 Contacto
               </Link>
             </div>

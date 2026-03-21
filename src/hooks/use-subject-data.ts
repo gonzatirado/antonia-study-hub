@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo, useRef } from "react";
 import * as Sentry from "@sentry/nextjs";
+import { toast } from "sonner";
 import { useAppStore } from "@/lib/store";
 import { getSubjects, updateSubjectDoc } from "@/lib/firebase/subjects";
 import { getFirebaseStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "@/lib/firebase/config";
@@ -35,6 +36,11 @@ function detectFileType(mimeType: string, fileName: string): SubjectFile["type"]
   if (["png", "jpg", "jpeg", "gif", "webp", "svg", "bmp"].includes(ext)) return "image";
 
   return "other";
+}
+
+function getDescendantIds(folders: Folder[], parentId: string): string[] {
+  const children = folders.filter((f) => f.parentId === parentId);
+  return children.flatMap((c) => [c.id, ...getDescendantIds(folders, c.id)]);
 }
 
 export function useSubjectData(subjectId: string) {
@@ -166,12 +172,12 @@ export function useSubjectData(subjectId: string) {
     const newFilesSize = Array.from(fileList).reduce((sum, f) => sum + f.size, 0);
 
     if (planLimits.max_files !== -1 && totalFiles + fileList.length > planLimits.max_files) {
-      alert(`Has alcanzado el límite de archivos de tu plan (${planLimits.max_files}). Mejora tu plan para subir más.`);
+      toast.error(`Has alcanzado el límite de archivos de tu plan (${planLimits.max_files}). Mejora tu plan para subir más.`);
       e.target.value = "";
       return;
     }
     if (totalStorageBytes + newFilesSize > planLimits.max_storage_mb * 1024 * 1024) {
-      alert(`Has alcanzado el límite de almacenamiento de tu plan (${planLimits.max_storage_mb} MB). Mejora tu plan para más espacio.`);
+      toast.error(`Has alcanzado el límite de almacenamiento de tu plan (${planLimits.max_storage_mb} MB). Mejora tu plan para más espacio.`);
       e.target.value = "";
       return;
     }
@@ -199,7 +205,7 @@ export function useSubjectData(subjectId: string) {
       setSubjects(subjects.map((s) => s.id === subjectId ? updated : s));
     } catch (err) {
       Sentry.captureException(err);
-      alert("Error al subir archivos. Verifica tu conexión e inténtalo de nuevo.");
+      toast.error("Error al subir archivos. Verifica tu conexión e inténtalo de nuevo.");
     } finally { setUploading(false); e.target.value = ""; }
   }
 
@@ -216,7 +222,7 @@ export function useSubjectData(subjectId: string) {
       setSubjects(subjects.map((s) => s.id === subjectId ? updated : s));
     } catch (err) {
       Sentry.captureException(err);
-      alert("Error al eliminar el archivo. Inténtalo de nuevo.");
+      toast.error("Error al eliminar el archivo. Inténtalo de nuevo.");
     }
   }
 
@@ -238,18 +244,14 @@ export function useSubjectData(subjectId: string) {
       setShowNewFolder(false);
     } catch (err) {
       Sentry.captureException(err);
-      alert("Error al crear la carpeta. Inténtalo de nuevo.");
+      toast.error("Error al crear la carpeta. Inténtalo de nuevo.");
     }
   }
 
   async function handleDeleteFolder(folderId: string) {
     if (!user?.uid || !subject) return;
     try {
-      function getDescendantIds(parentId: string): string[] {
-        const children = subject!.folders.filter((f) => f.parentId === parentId);
-        return children.flatMap((c) => [c.id, ...getDescendantIds(c.id)]);
-      }
-      const toDelete = [folderId, ...getDescendantIds(folderId)];
+      const toDelete = [folderId, ...getDescendantIds(subject.folders, folderId)];
       const updatedFolders = subject.folders.filter((f) => !toDelete.includes(f.id));
       const updatedFiles = subject.files.map((f) =>
         f.folderId && toDelete.includes(f.folderId)
@@ -262,7 +264,7 @@ export function useSubjectData(subjectId: string) {
       setSubjects(subjects.map((s) => s.id === subjectId ? updated : s));
     } catch (err) {
       Sentry.captureException(err);
-      alert("Error al eliminar la carpeta. Inténtalo de nuevo.");
+      toast.error("Error al eliminar la carpeta. Inténtalo de nuevo.");
     }
   }
 
@@ -279,7 +281,7 @@ export function useSubjectData(subjectId: string) {
       setMovingFile(null);
     } catch (err) {
       Sentry.captureException(err);
-      alert("Error al mover el archivo. Inténtalo de nuevo.");
+      toast.error("Error al mover el archivo. Inténtalo de nuevo.");
     }
   }
 
@@ -295,7 +297,7 @@ export function useSubjectData(subjectId: string) {
       setSubjects(subjects.map((s) => s.id === subjectId ? updated : s));
     } catch (err) {
       Sentry.captureException(err);
-      alert("Error al mover el archivo. Inténtalo de nuevo.");
+      toast.error("Error al mover el archivo. Inténtalo de nuevo.");
     }
   }
 
@@ -304,11 +306,7 @@ export function useSubjectData(subjectId: string) {
     // Prevent moving into itself
     if (folderId === targetFolderId) return;
     // Prevent circular reference: target cannot be a descendant of the folder being moved
-    function getDescendantIds(parentId: string): string[] {
-      const children = subject!.folders.filter((f) => f.parentId === parentId);
-      return children.flatMap((c) => [c.id, ...getDescendantIds(c.id)]);
-    }
-    const descendants = getDescendantIds(folderId);
+    const descendants = getDescendantIds(subject.folders, folderId);
     if (targetFolderId !== null && descendants.includes(targetFolderId)) return;
 
     try {
@@ -321,7 +319,7 @@ export function useSubjectData(subjectId: string) {
       setSubjects(subjects.map((s) => s.id === subjectId ? updated : s));
     } catch (err) {
       Sentry.captureException(err);
-      alert("Error al mover la carpeta. Inténtalo de nuevo.");
+      toast.error("Error al mover la carpeta. Inténtalo de nuevo.");
     }
   }
 
@@ -337,7 +335,7 @@ export function useSubjectData(subjectId: string) {
       setShowGradeDialog(false);
     } catch (err) {
       Sentry.captureException(err);
-      alert("Error al guardar la nota. Inténtalo de nuevo.");
+      toast.error("Error al guardar la nota. Inténtalo de nuevo.");
     }
   }
 
@@ -348,7 +346,7 @@ export function useSubjectData(subjectId: string) {
       setGrades(prev => prev.filter((g) => g.id !== gradeId));
     } catch (err) {
       Sentry.captureException(err);
-      alert("Error al eliminar la nota. Inténtalo de nuevo.");
+      toast.error("Error al eliminar la nota. Inténtalo de nuevo.");
     }
   }
 
@@ -364,7 +362,7 @@ export function useSubjectData(subjectId: string) {
       setShowPendingDialog(false);
     } catch (err) {
       Sentry.captureException(err);
-      alert("Error al guardar el pendiente. Inténtalo de nuevo.");
+      toast.error("Error al guardar el pendiente. Inténtalo de nuevo.");
     }
   }
 
@@ -375,7 +373,7 @@ export function useSubjectData(subjectId: string) {
       setPendings(prev => prev.map((p) => p.id === pendingId ? { ...p, status: newStatus } : p));
     } catch (err) {
       Sentry.captureException(err);
-      alert("Error al actualizar el estado. Inténtalo de nuevo.");
+      toast.error("Error al actualizar el estado. Inténtalo de nuevo.");
     }
   }
 
@@ -386,7 +384,7 @@ export function useSubjectData(subjectId: string) {
       setPendings(prev => prev.filter((p) => p.id !== pendingId));
     } catch (err) {
       Sentry.captureException(err);
-      alert("Error al eliminar el pendiente. Inténtalo de nuevo.");
+      toast.error("Error al eliminar el pendiente. Inténtalo de nuevo.");
     }
   }
 

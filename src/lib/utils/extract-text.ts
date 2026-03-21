@@ -1,4 +1,5 @@
 import * as Sentry from "@sentry/nextjs";
+import { getAuthHeaders } from "@/lib/firebase/get-auth-token";
 
 const SUPPORTED_TYPES = new Set([
   // PDF
@@ -63,8 +64,10 @@ export async function extractTextFromFiles(files: File[]): Promise<string> {
     formData.append("file", file);
 
     try {
+      const authHeaders = await getAuthHeaders();
       const res = await fetch("/api/extract-text", {
         method: "POST",
+        headers: authHeaders,
         body: formData,
       });
 

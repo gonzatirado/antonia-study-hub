@@ -43,7 +43,7 @@ const stagger = {
 
 export function TestimonialsSection() {
   return (
-    <section className="py-32 px-6 md:px-12 bg-background relative overflow-hidden">
+    <section className="py-32 px-6 md:px-12 bg-white/[0.02] relative overflow-hidden">
       {/* Ambient orb */}
       <div className="absolute -bottom-[20%] -left-[10%] w-[600px] h-[600px] rounded-full bg-accent/5 blur-[80px] pointer-events-none" />
 

@@ -16,7 +16,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useAppStore } from "@/lib/store";
-import { getSubjects } from "@/lib/firebase/subjects";
+import { useEnsureSubjects } from "@/hooks/use-ensure-subjects";
 import { getAllPendings, addPending, updatePending, deletePending } from "@/lib/firebase/pendings";
 import * as Sentry from "@sentry/nextjs";
 import type { Pending, PendingType, PendingStatus, Subject } from "@/lib/types";
@@ -26,7 +26,8 @@ const PENDING_LABELS: Record<string, string> = {
 };
 
 export default function PendingsPage() {
-  const { user, subjects, setSubjects } = useAppStore();
+  const { user } = useAppStore();
+  const subjects = useEnsureSubjects();
   const [pendings, setPendings] = useState<Pending[]>([]);
   const [loading, setLoading] = useState(true);
   const [showDialog, setShowDialog] = useState(false);
@@ -34,14 +35,11 @@ export default function PendingsPage() {
 
   useEffect(() => {
     if (!user?.uid) return;
-    Promise.all([
-      subjects.length === 0 ? getSubjects(user.uid).then((s) => { setSubjects(s); return s; }) : Promise.resolve(subjects),
-      getAllPendings(user.uid),
-    ])
-      .then(([, p]) => setPendings(p))
+    getAllPendings(user.uid)
+      .then((p) => setPendings(p))
       .catch((err) => Sentry.captureException(err))
       .finally(() => setLoading(false));
-  }, [user?.uid, subjects.length]);
+  }, [user?.uid]);
 
   const filtered = useMemo(() => {
     if (filter === "active") return pendings.filter((p) => p.status !== "completed");

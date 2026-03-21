@@ -2,14 +2,41 @@ import { NextRequest, NextResponse } from "next/server";
 import * as Sentry from "@sentry/nextjs";
 import { google } from "@ai-sdk/google";
 import { generateText } from "ai";
+import { verifyAuthToken } from "@/lib/firebase/admin";
+import { validateOrigin } from "@/lib/utils/csrf";
+
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
 
 export async function POST(request: NextRequest) {
   try {
+    // Verify authentication server-side
+    const authResult = await verifyAuthToken(request);
+    if (!authResult.authenticated) {
+      return NextResponse.json(
+        { error: "No autorizado. Inicia sesión para continuar." },
+        { status: 401 }
+      );
+    }
+
+    if (!validateOrigin(request)) {
+      return NextResponse.json(
+        { error: "Invalid request origin" },
+        { status: 403 }
+      );
+    }
+
     const formData = await request.formData();
     const file = formData.get("file") as File | null;
 
     if (!file) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
+    }
+
+    if (file.size > MAX_FILE_SIZE) {
+      return NextResponse.json(
+        { error: `Archivo demasiado grande. Máximo ${MAX_FILE_SIZE / (1024 * 1024)} MB.` },
+        { status: 400 }
+      );
     }
 
     const buffer = Buffer.from(await file.arrayBuffer());
@@ -39,8 +66,7 @@ export async function POST(request: NextRequest) {
       mime === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
       ext === "docx"
     ) {
-      // eslint-disable-next-line @typescript-eslint/no-require-imports
-      const mammoth = require("mammoth");
+      const mammoth = await import("mammoth");
       const result = await mammoth.extractRawText({ buffer });
       text = result.value;
     }
@@ -51,8 +77,7 @@ export async function POST(request: NextRequest) {
       mime === "application/vnd.ms-excel" ||
       ext === "xlsx" || ext === "xls"
     ) {
-      // eslint-disable-next-line @typescript-eslint/no-require-imports
-      const XLSX = require("xlsx");
+      const XLSX = await import("xlsx");
       const workbook = XLSX.read(buffer, { type: "buffer" });
       const sheets: string[] = [];
       for (const sheetName of workbook.SheetNames) {
@@ -69,8 +94,7 @@ export async function POST(request: NextRequest) {
       ext === "pptx"
     ) {
       // Extract text from PPTX using xlsx's zip reader (PPTX is a ZIP)
-      // eslint-disable-next-line @typescript-eslint/no-require-imports
-      const JSZip = require("jszip") as typeof import("jszip");
+      const JSZip = await import("jszip");
       let zip;
       try {
         zip = await JSZip.loadAsync(buffer);
@@ -150,9 +174,8 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error("[extract-text] Error:", error);
     Sentry.captureException(error);
-    const message = error instanceof Error ? error.message : "Error desconocido";
     return NextResponse.json(
-      { error: `Error al procesar el archivo: ${message}` },
+      { error: "Error al procesar el archivo. Intenta con otro formato." },
       { status: 500 }
     );
   }

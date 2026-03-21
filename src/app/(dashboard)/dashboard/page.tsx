@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import * as Sentry from "@sentry/nextjs";
 import Link from "next/link";
@@ -22,16 +22,16 @@ import {
   Play,
 } from "lucide-react";
 import { useAppStore } from "@/lib/store";
-import { getSubjects } from "@/lib/firebase/subjects";
 import { getAllGrades } from "@/lib/firebase/grades";
 import { getAllPendings } from "@/lib/firebase/pendings";
 import type { Subject, Grade, Pending } from "@/lib/types";
+import { useEnsureSubjects } from "@/hooks/use-ensure-subjects";
 import { DashboardSkeleton } from "@/components/dashboard";
 import { container, item, formatDateSpanish, daysUntil, formatDueLabel } from "@/components/dashboard/utils";
 
 export default function DashboardPage() {
   const { user } = useAppStore();
-  const [subjects, setSubjects] = useState<Subject[]>([]);
+  const subjects = useEnsureSubjects();
   const [grades, setGrades] = useState<Grade[]>([]);
   const [pendings, setPendings] = useState<Pending[]>([]);
   const [loading, setLoading] = useState(true);
@@ -42,13 +42,11 @@ export default function DashboardPage() {
 
     async function load() {
       try {
-        const [subs, grs, pends] = await Promise.all([
-          getSubjects(user!.uid),
+        const [grs, pends] = await Promise.all([
           getAllGrades(user!.uid),
           getAllPendings(user!.uid),
         ]);
         if (cancelled) return;
-        setSubjects(subs);
         setGrades(grs);
         setPendings(pends);
       } catch (err) {

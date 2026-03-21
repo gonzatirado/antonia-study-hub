@@ -4,18 +4,26 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Loader2 } from "lucide-react";
+import { Loader2, Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import * as Sentry from "@sentry/nextjs";
-import { signInWithGoogle, onAuthChange } from "@/lib/firebase/auth";
+import { signInWithGoogle, signInWithEmail, onAuthChange } from "@/lib/firebase/auth";
 import { useAppStore } from "@/lib/store";
 
 export default function LoginPage() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const setUser = useAppStore((s) => s.setUser);
+
+  const isLoading = loading || googleLoading;
 
   // Redirect if already logged in
   useEffect(() => {
@@ -27,9 +35,54 @@ export default function LoginPage() {
     return () => unsubscribe();
   }, [router]);
 
-  async function handleGoogleLogin() {
+  function getFirebaseErrorMessage(code: string): string {
+    switch (code) {
+      case "auth/invalid-email":
+        return "El email no es v\u00e1lido.";
+      case "auth/user-disabled":
+        return "Esta cuenta ha sido deshabilitada.";
+      case "auth/user-not-found":
+        return "No existe una cuenta con este email.";
+      case "auth/wrong-password":
+        return "Contrase\u00f1a incorrecta.";
+      case "auth/invalid-credential":
+        return "Email o contrase\u00f1a incorrectos.";
+      case "auth/too-many-requests":
+        return "Demasiados intentos. Espera un momento e intenta de nuevo.";
+      case "auth/popup-closed-by-user":
+        return "Cerraste la ventana de inicio de sesi\u00f3n.";
+      case "auth/popup-blocked":
+        return "El navegador bloque\u00f3 la ventana emergente. Permite popups para este sitio.";
+      case "auth/unauthorized-domain":
+        return "Dominio no autorizado. Agrega este dominio en Firebase Console.";
+      default:
+        return `Error inesperado: ${code}`;
+    }
+  }
+
+  async function handleEmailLogin(e: React.FormEvent) {
+    e.preventDefault();
+    if (!email.trim()) { setError("El email es obligatorio."); return; }
+    if (!password) { setError("La contrase\u00f1a es obligatoria."); return; }
+
     try {
       setLoading(true);
+      setError(null);
+      const user = await signInWithEmail(email, password);
+      setUser(user);
+      router.push("/dashboard");
+    } catch (err: unknown) {
+      const firebaseError = err as { code?: string; message?: string };
+      Sentry.captureException(err, { extra: { code: firebaseError.code } });
+      setError(getFirebaseErrorMessage(firebaseError.code || "unknown"));
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function handleGoogleLogin() {
+    try {
+      setGoogleLoading(true);
       setError(null);
       const user = await signInWithGoogle();
       setUser(user);
@@ -37,18 +90,9 @@ export default function LoginPage() {
     } catch (err: unknown) {
       const firebaseError = err as { code?: string; message?: string };
       Sentry.captureException(err, { extra: { code: firebaseError.code } });
-
-      if (firebaseError.code === "auth/popup-closed-by-user") {
-        setError("Cerraste la ventana de inicio de sesion.");
-      } else if (firebaseError.code === "auth/popup-blocked") {
-        setError("El navegador bloqueo la ventana emergente. Permite popups para este sitio.");
-      } else if (firebaseError.code === "auth/unauthorized-domain") {
-        setError("Dominio no autorizado. Agrega 'localhost' en Firebase Console > Authentication > Dominios autorizados.");
-      } else {
-        setError(`Error: ${firebaseError.code || firebaseError.message || "Desconocido"}`);
-      }
+      setError(getFirebaseErrorMessage(firebaseError.code || "unknown"));
     } finally {
-      setLoading(false);
+      setGoogleLoading(false);
     }
   }
 
@@ -123,15 +167,77 @@ export default function LoginPage() {
                 Bienvenido de nuevo
               </h2>
               <p className="text-muted-foreground text-sm">
-                Inicia sesion para continuar tu jornada.
+                Inicia sesi&oacute;n para continuar tu jornada.
               </p>
             </div>
+
+            {/* Email/Password Form */}
+            <form onSubmit={handleEmailLogin} className="space-y-4">
+              {/* Email Field */}
+              <div className="space-y-2">
+                <Label htmlFor="email" className="text-xs font-bold tracking-widest text-muted-foreground uppercase">
+                  Email
+                </Label>
+                <div className="relative">
+                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="nombre@universidad.edu"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    disabled={isLoading}
+                    className="h-12 pl-10 bg-muted/50 border-border/50 text-foreground placeholder:text-muted-foreground/50"
+                  />
+                </div>
+              </div>
+
+              {/* Password Field */}
+              <div className="space-y-2">
+                <Label htmlFor="password" className="text-xs font-bold tracking-widest text-muted-foreground uppercase">
+                  Contrase&ntilde;a
+                </Label>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <Input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    disabled={isLoading}
+                    className="h-12 pl-10 pr-10 bg-muted/50 border-border/50 text-foreground placeholder:text-muted-foreground/50"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                    tabIndex={0}
+                    aria-label={showPassword ? "Ocultar contrase\u00f1a" : "Mostrar contrase\u00f1a"}
+                  >
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+              </div>
+
+              {/* Submit Button */}
+              <Button
+                type="submit"
+                disabled={isLoading}
+                className="w-full h-12 bg-gradient-to-r from-primary to-accent text-foreground font-bold shadow-lg hover:brightness-110 transition-all mt-2"
+              >
+                {loading ? (
+                  <Loader2 className="w-5 h-5 animate-spin mr-2" />
+                ) : null}
+                Iniciar sesi&oacute;n
+              </Button>
+            </form>
 
             {/* Divider */}
             <div className="relative flex items-center py-2">
               <div className="flex-grow border-t border-border/20" />
               <span className="mx-4 text-[10px] uppercase tracking-widest text-muted-foreground font-bold shrink-0">
-                Continua con
+                o contin&uacute;a con
               </span>
               <div className="flex-grow border-t border-border/20" />
             </div>
@@ -139,12 +245,12 @@ export default function LoginPage() {
             {/* Google Sign-In Button */}
             <Button
               onClick={handleGoogleLogin}
-              disabled={loading}
+              disabled={isLoading}
               variant="outline"
               size="lg"
               className="w-full h-14 gap-3 rounded-lg border-border/10 bg-secondary hover:bg-muted transition-colors text-base font-semibold"
             >
-              {loading ? (
+              {googleLoading ? (
                 <Loader2 className="size-5 animate-spin" />
               ) : (
                 <FcGoogle className="size-5" />
@@ -200,11 +306,11 @@ export default function LoginPage() {
         {/* Footer */}
         <div className="mt-auto pt-8 flex gap-6 opacity-40 hover:opacity-100 transition-opacity">
           <span className="text-[9px] uppercase tracking-widest font-bold text-muted-foreground">
-            &copy; 2025 StudyHub
+            &copy; 2026 StudyHub
           </span>
           <span className="text-[9px] text-muted-foreground">&bull;</span>
           <span className="text-[9px] uppercase tracking-widest font-bold text-muted-foreground">
-            Digital Sanctuary
+            Plataforma Educativa IA
           </span>
         </div>
       </section>

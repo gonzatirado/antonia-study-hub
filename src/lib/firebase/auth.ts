@@ -6,6 +6,7 @@ import {
   setDoc,
   serverTimestamp,
   signInWithPopup,
+  signInWithEmailAndPassword,
   GoogleAuthProvider,
   signOut,
   onAuthStateChanged,
@@ -17,8 +18,20 @@ import type { User } from '@/lib/types';
 
 const googleProvider = new GoogleAuthProvider();
 
+/** Set the __session cookie so proxy.ts can gate protected routes server-side. */
+async function setSessionCookie(firebaseUser: FirebaseUser): Promise<void> {
+  const token = await firebaseUser.getIdToken();
+  document.cookie = `__session=${token}; path=/; max-age=3600; SameSite=Lax`;
+}
+
+/** Clear the __session cookie on sign-out. */
+function clearSessionCookie(): void {
+  document.cookie = '__session=; path=/; max-age=0';
+}
+
 export async function signInWithGoogle(): Promise<User> {
   const result = await signInWithPopup(getFirebaseAuth(), googleProvider);
+  await setSessionCookie(result.user);
   const user = await getOrCreateUser(result.user);
   return user;
 }
@@ -31,11 +44,24 @@ export async function signUpWithEmail(
   const auth = getFirebaseAuth();
   const result = await createUserWithEmailAndPassword(auth, email, password);
   await updateProfile(result.user, { displayName });
+  await setSessionCookie(result.user);
   const user = await getOrCreateUser(result.user);
   return { ...user, displayName };
 }
 
+export async function signInWithEmail(
+  email: string,
+  password: string
+): Promise<User> {
+  const auth = getFirebaseAuth();
+  const result = await signInWithEmailAndPassword(auth, email, password);
+  await setSessionCookie(result.user);
+  const user = await getOrCreateUser(result.user);
+  return user;
+}
+
 export async function signOutUser(): Promise<void> {
+  clearSessionCookie();
   await signOut(getFirebaseAuth());
 }
 

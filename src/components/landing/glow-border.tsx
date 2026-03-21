@@ -45,7 +45,7 @@ export function GlowBorder({
           animation: active ? "glow-spin 4s linear infinite" : "none",
         }}
       />
-      <div className={cn("relative rounded-2xl", className)} style={{ background: "#06060b" }}>
+      <div className={cn("relative rounded-2xl", className)} style={{ background: "var(--card)" }}>
         {children}
       </div>
     </div>

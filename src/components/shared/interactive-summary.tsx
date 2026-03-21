@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useMemo } from "react";
+import DOMPurify from "dompurify";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { motion, AnimatePresence } from "framer-motion";
@@ -55,7 +56,8 @@ function MermaidBlock({ code }: { code: string }) {
       </pre>
     );
   }
-  if (!svg) {
+  const cleanSvg = DOMPurify.sanitize(svg, { USE_PROFILES: { svg: true } });
+  if (!cleanSvg) {
     return (
       <div className="flex items-center justify-center py-8">
         <div className="w-6 h-6 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
@@ -65,7 +67,7 @@ function MermaidBlock({ code }: { code: string }) {
   return (
     <div
       className="my-6 flex justify-center rounded-xl bg-gradient-to-b from-muted/30 to-muted/10 border border-border/50 p-6 overflow-x-auto"
-      dangerouslySetInnerHTML={{ __html: svg }}
+      dangerouslySetInnerHTML={{ __html: cleanSvg }}
     />
   );
 }

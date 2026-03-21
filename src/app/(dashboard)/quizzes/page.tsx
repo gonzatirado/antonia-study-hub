@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useAppStore } from "@/lib/store";
 import { extractTextFromFiles } from "@/lib/utils/extract-text";
+import { getAuthHeaders } from "@/lib/firebase/get-auth-token";
 import { QuizGenerator } from "@/components/quizzes/quiz-generator";
 import { QuizPlayer } from "@/components/quizzes/quiz-player";
 import { QuizResults } from "@/components/quizzes/quiz-results";
@@ -40,10 +41,11 @@ export default function QuizzesPage() {
         return;
       }
 
+      const authHeaders = await getAuthHeaders();
       const res = await fetch("/api/ai/quiz", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ content: text, numQuestions: 5, tier: "flash", userId: user?.uid }),
+        headers: { "Content-Type": "application/json", ...authHeaders },
+        body: JSON.stringify({ content: text, numQuestions: 5 }),
       });
 
       if (!res.ok) {

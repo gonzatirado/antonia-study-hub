@@ -66,7 +66,7 @@ export function AppSidebar() {
 
   async function handleSignOut() {
     await signOutUser();
-    router.push("/");
+    router.push("/login");
   }
 
   return (

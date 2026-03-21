@@ -38,9 +38,9 @@ export class ErrorBoundary extends Component<Props, State> {
         <Card className="bg-card/50 border-destructive/20 m-6">
           <CardContent className="p-12 text-center">
             <AlertCircle className="w-12 h-12 text-destructive mx-auto mb-4" />
-            <h2 className="text-xl font-semibold text-foreground mb-2">Algo salio mal</h2>
+            <h2 className="text-xl font-semibold text-foreground mb-2">Algo salió mal</h2>
             <p className="text-muted-foreground mb-6 max-w-md mx-auto">
-              Ocurrio un error inesperado. Intenta recargar la pagina.
+              Ocurrió un error inesperado. Intenta recargar la página.
             </p>
             <Button
               onClick={() => {

@@ -1,8 +1,8 @@
 "use client";
 
-export function FloatingOrbs() {
+export function FloatingOrbs(props: React.ComponentProps<"div">) {
   return (
-    <div className="pointer-events-none absolute inset-0 overflow-hidden">
+    <div className="pointer-events-none absolute inset-0 overflow-hidden" {...props}>
       {/* Primary orb — top right */}
       <div
         className="absolute -top-32 -right-32 w-[500px] h-[500px] rounded-full animate-pulse-glow"
