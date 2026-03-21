@@ -8,6 +8,8 @@ import {
   CalendarPlus,
   Clock,
   CheckCircle2,
+  X,
+  MapPin,
 } from "lucide-react";
 import {
   format,
@@ -23,6 +25,7 @@ import {
   getDay,
 } from "date-fns";
 import { es } from "date-fns/locale";
+import { motion } from "framer-motion";
 import * as Sentry from "@sentry/nextjs";
 import { useAppStore } from "@/lib/store";
 import {
@@ -67,6 +70,7 @@ export default function SchedulePage() {
   const [newBlock, setNewBlock] = useState<NewBlockForm>(INITIAL_BLOCK_FORM);
   const [viewMode, setViewMode] = useState<ViewMode>("weekly");
   const [currentDate, setCurrentDate] = useState(() => new Date());
+  const [selectedDay, setSelectedDay] = useState<{ date: Date; blocks: ScheduleBlock[] } | null>(null);
 
   // Load blocks from Firestore
   useEffect(() => {
@@ -287,6 +291,7 @@ export default function SchedulePage() {
               blocks={blocks}
               subjects={subjects}
               currentDate={currentDate}
+              onDayClick={(date, dayBlocks) => setSelectedDay({ date, blocks: dayBlocks })}
             />
           )}
 
@@ -294,25 +299,7 @@ export default function SchedulePage() {
             <ScheduleEmptyState hasSubjects={subjects.length > 0} />
           )}
 
-          {/* Subject legend */}
-          {legend.length > 0 && (
-            <div className="flex items-center gap-6 justify-center py-4">
-              {legend.map((s) => (
-                <div key={s.id} className="flex items-center gap-2">
-                  <div
-                    className="w-3 h-3 rounded-full"
-                    style={{
-                      backgroundColor: s.color,
-                      boxShadow: `0 0 8px ${s.color}`,
-                    }}
-                  />
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-                    {s.code}
-                  </span>
-                </div>
-              ))}
-            </div>
-          )}
+          {/* Subject legend removed — clutters monthly view */}
 
           {/* Stats bento grid */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
@@ -407,6 +394,74 @@ export default function SchedulePage() {
             </div>
           </div>
         </>
+      )}
+      {/* Day detail panel */}
+      {selectedDay && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-background/60 backdrop-blur-sm"
+          onClick={() => setSelectedDay(null)}
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-card border border-border rounded-2xl p-6 w-full max-w-md mx-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-foreground">
+                {format(selectedDay.date, "EEEE d 'de' MMMM", { locale: es })}
+              </h3>
+              <button onClick={() => setSelectedDay(null)} className="text-muted-foreground hover:text-foreground">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {selectedDay.blocks.length === 0 ? (
+              <p className="text-sm text-muted-foreground py-4">Sin clases este día</p>
+            ) : (
+              <div className="space-y-2 mb-4">
+                {selectedDay.blocks.map((block) => {
+                  const subject = subjects.find((s) => s.id === block.subjectId);
+                  return (
+                    <div
+                      key={block.id}
+                      className="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-muted/50 border border-border/50"
+                    >
+                      <div
+                        className="w-2.5 h-2.5 rounded-full shrink-0"
+                        style={{ backgroundColor: subject?.color || "#8b5cf6" }}
+                      />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-foreground truncate">
+                          {subject?.name || "Sin asignatura"}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {block.startTime} - {block.endTime}
+                          {block.room && (
+                            <span className="ml-2 inline-flex items-center gap-0.5">
+                              <MapPin className="w-3 h-3" /> {block.room}
+                            </span>
+                          )}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+
+            <Button
+              onClick={() => {
+                setSelectedDay(null);
+                setDialogOpen(true);
+              }}
+              variant="outline"
+              className="w-full text-sm"
+            >
+              <CalendarPlus className="w-4 h-4 mr-1" /> Agregar bloque
+            </Button>
+          </motion.div>
+        </div>
       )}
     </div>
   );

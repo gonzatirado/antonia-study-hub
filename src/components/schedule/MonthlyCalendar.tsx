@@ -12,7 +12,6 @@ import {
   getDay,
   format,
 } from "date-fns";
-import { es } from "date-fns/locale";
 import { Card, CardContent } from "@/components/ui/card";
 import type { ScheduleBlock } from "@/lib/types";
 
@@ -33,7 +32,7 @@ const DAY_KEY_MAP: Record<number, ScheduleBlock["day"] | null> = {
   4: "thu",
   5: "fri",
   6: "sat",
-  0: null, // Sunday
+  0: null,
 };
 
 interface Subject {
@@ -47,20 +46,21 @@ interface MonthlyCalendarProps {
   blocks: ScheduleBlock[];
   subjects: Subject[];
   currentDate: Date;
+  onDayClick?: (date: Date, dayBlocks: ScheduleBlock[]) => void;
 }
 
 export function MonthlyCalendar({
   blocks,
   subjects,
   currentDate,
+  onDayClick,
 }: MonthlyCalendarProps) {
-  const subjectColorMap = useMemo(() => {
-    const map = new Map<string, string>();
-    subjects.forEach((s) => map.set(s.id, s.color));
+  const subjectMap = useMemo(() => {
+    const map = new Map<string, Subject>();
+    subjects.forEach((s) => map.set(s.id, s));
     return map;
   }, [subjects]);
 
-  // Build blocks-per-weekday lookup
   const blocksByDay = useMemo(() => {
     const map = new Map<string, ScheduleBlock[]>();
     for (const b of blocks) {
@@ -71,7 +71,6 @@ export function MonthlyCalendar({
     return map;
   }, [blocks]);
 
-  // Generate calendar grid dates (Mon-start weeks)
   const calendarDays = useMemo(() => {
     const monthStart = startOfMonth(currentDate);
     const monthEnd = endOfMonth(currentDate);
@@ -80,24 +79,18 @@ export function MonthlyCalendar({
     return eachDayOfInterval({ start: gridStart, end: gridEnd });
   }, [currentDate]);
 
-  // Get unique subject dots for a given weekday number
-  function getDotsForDate(date: Date): string[] {
-    if (!isSameMonth(date, currentDate)) return [];
-    const jsDay = getDay(date); // 0=Sun..6=Sat
+  function getBlocksForDate(date: Date): ScheduleBlock[] {
+    const jsDay = getDay(date);
     const dayKey = DAY_KEY_MAP[jsDay];
     if (!dayKey) return [];
-    const dayBlocks = blocksByDay.get(dayKey) ?? [];
-    // Unique subjects for that day
-    const uniqueSubjectIds = [...new Set(dayBlocks.map((b) => b.subjectId))];
-    return uniqueSubjectIds
-      .map((id) => subjectColorMap.get(id))
-      .filter((c): c is string => !!c);
+    return (blocksByDay.get(dayKey) ?? []).sort((a, b) =>
+      a.startTime.localeCompare(b.startTime)
+    );
   }
 
   return (
     <Card className="bg-card/80 border-border overflow-hidden backdrop-blur-xl shadow-2xl rounded-2xl">
       <CardContent className="p-0">
-        {/* Day headers */}
         <div className="grid grid-cols-7 bg-muted/30 border-b border-border/30">
           {DAY_NAMES.map((name) => (
             <div
@@ -109,21 +102,22 @@ export function MonthlyCalendar({
           ))}
         </div>
 
-        {/* Calendar grid */}
         <div className="grid grid-cols-7">
           {calendarDays.map((date, i) => {
             const inMonth = isSameMonth(date, currentDate);
             const today = isToday(date);
-            // Classes (recurring blocks) are NOT shown in monthly view
-            // Only events (future feature) will show here
-            const dots: string[] = [];
+            const dayBlocks = inMonth ? getBlocksForDate(date) : [];
+            const hasClasses = dayBlocks.length > 0;
 
             return (
               <div
                 key={i}
+                onClick={() => {
+                  if (inMonth && onDayClick) onDayClick(date, dayBlocks);
+                }}
                 className={`
-                  min-h-[70px] p-2 border-b border-r border-border/30 transition-all cursor-pointer group
-                  ${!inMonth ? "opacity-30" : "hover:bg-muted/30"}
+                  min-h-[80px] p-2 border-b border-r border-border/30 transition-all cursor-pointer group
+                  ${!inMonth ? "opacity-30 cursor-default" : "hover:bg-primary/5"}
                   ${today ? "bg-muted/40 ring-1 ring-inset ring-primary/20" : ""}
                 `}
               >
@@ -137,7 +131,7 @@ export function MonthlyCalendar({
                         : "text-muted-foreground/50"
                     }`}
                   >
-                    {format(date, "dd")}
+                    {format(date, "d")}
                   </span>
                   {today && (
                     <span className="text-[8px] bg-primary text-primary-foreground px-1.5 py-0.5 rounded uppercase font-black">
@@ -145,18 +139,31 @@ export function MonthlyCalendar({
                     </span>
                   )}
                 </div>
-                {dots.length > 0 && (
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    {dots.map((color, j) => (
-                      <div
-                        key={j}
-                        className="w-2.5 h-2.5 rounded-full"
-                        style={{
-                          backgroundColor: color,
-                          boxShadow: `0 0 8px ${color}`,
-                        }}
-                      />
-                    ))}
+                {/* Show compact class indicators */}
+                {hasClasses && inMonth && (
+                  <div className="mt-1 space-y-0.5">
+                    {dayBlocks.slice(0, 2).map((block) => {
+                      const subject = subjectMap.get(block.subjectId);
+                      return (
+                        <div
+                          key={block.id}
+                          className="flex items-center gap-1 truncate"
+                        >
+                          <div
+                            className="w-1.5 h-1.5 rounded-full shrink-0"
+                            style={{ backgroundColor: subject?.color || "#8b5cf6" }}
+                          />
+                          <span className="text-[9px] text-muted-foreground truncate">
+                            {block.startTime} {subject?.code || ""}
+                          </span>
+                        </div>
+                      );
+                    })}
+                    {dayBlocks.length > 2 && (
+                      <span className="text-[9px] text-muted-foreground">
+                        +{dayBlocks.length - 2} más
+                      </span>
+                    )}
                   </div>
                 )}
               </div>
