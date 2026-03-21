@@ -81,7 +81,7 @@ export function ScheduleGrid({
             return (
               <div
                 key={day.key}
-                className={`p-4 text-center border-l border-b border-border/20 relative ${
+                className={`p-4 text-center border-l border-b border-border/30 relative ${
                   isToday ? "bg-primary/5" : "bg-muted/30"
                 }`}
               >
@@ -102,7 +102,7 @@ export function ScheduleGrid({
             );
           })}
           {/* Weekend column (collapsed) */}
-          <div className="p-4 text-center border-l border-b border-border/20 bg-muted/30 opacity-30">
+          <div className="p-4 text-center border-l border-b border-border/30 bg-muted/30 opacity-30">
             <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
               S/D
             </p>
@@ -116,10 +116,10 @@ export function ScheduleGrid({
             {HOURS.map((hour) => (
               <div
                 key={hour}
-                className="flex items-start justify-center pt-2 border-b border-border/10"
+                className="flex items-start justify-center pt-2 border-b border-border/30"
                 style={{ height: HOUR_HEIGHT }}
               >
-                <span className="text-[10px] font-bold text-muted-foreground/60">
+                <span className="text-[10px] font-bold text-muted-foreground">
                   {hour}
                 </span>
               </div>
@@ -132,14 +132,14 @@ export function ScheduleGrid({
             return (
               <div
                 key={day.key}
-                className={`relative border-l border-border/10 ${
+                className={`relative border-l border-border/30 ${
                   isToday ? "bg-primary/[0.02]" : ""
                 }`}
               >
                 {HOURS.map((hour) => (
                   <div
                     key={hour}
-                    className="border-b border-border/10"
+                    className="border-b border-border/30"
                     style={{ height: HOUR_HEIGHT }}
                   />
                 ))}
@@ -201,7 +201,7 @@ export function ScheduleGrid({
           })}
 
           {/* Weekend placeholder column */}
-          <div className="border-l border-border/10 opacity-10">
+          <div className="border-l border-border/30 opacity-10">
             {HOURS.slice(0, 8).map((hour) => (
               <div
                 key={hour}

@@ -31,7 +31,7 @@ export function GradeDialogGlobal({
   onClose,
   onSave,
 }: GradeDialogGlobalProps) {
-  const [subjectId, setSubjectId] = useState(subjects[0]?.id || "");
+  const [subjectId, setSubjectId] = useState("");
   const [name, setName] = useState("");
   const [score, setScore] = useState("");
   const [maxScore, setMaxScore] = useState("7.0");
@@ -109,11 +109,14 @@ export function GradeDialogGlobal({
               <SelectContent className="bg-card border-border">
                 {subjects.map((s) => (
                   <SelectItem key={s.id} value={s.id} className="text-foreground">
-                    {s.name}
+                    {s.code} — {s.name}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
+            {subjectId && !subjects.some((s) => s.id === subjectId) && (
+              <p className="text-xs text-destructive mt-1">Asignatura no encontrada</p>
+            )}
           </div>
 
           <div className="grid grid-cols-2 gap-3">

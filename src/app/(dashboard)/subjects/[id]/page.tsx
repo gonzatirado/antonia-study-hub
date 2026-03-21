@@ -58,7 +58,7 @@ export default function SubjectDetailPage() {
   }
 
   return (
-    <div className="space-y-6 max-w-5xl">
+    <div className="space-y-6 w-full">
       <SubjectHeader
         subject={subject}
         weightedAverage={weightedAverage}

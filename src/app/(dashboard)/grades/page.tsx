@@ -138,7 +138,7 @@ export default function GradesPage() {
   const { approved, total } = countApproved();
 
   return (
-    <div className="space-y-10 max-w-5xl">
+    <div className="space-y-10 w-full">
       {/* Header */}
       <header>
         <p className="text-[10px] uppercase tracking-[0.2em] text-primary mb-2 font-semibold">
@@ -210,7 +210,7 @@ export default function GradesPage() {
 
       {/* Subject Table / Empty State */}
       {grades.length === 0 ? (
-        <div className="text-center py-20 border border-dashed border-border rounded-xl">
+        <div className="text-center py-20 border border-border rounded-xl bg-card/60 backdrop-blur-xl shadow-sm">
           <BarChart3 className="w-12 h-12 text-muted-foreground/60 mx-auto mb-3" />
           <p className="text-muted-foreground font-medium">Sin notas registradas</p>
           <p className="text-sm text-muted-foreground mt-1">
@@ -226,9 +226,9 @@ export default function GradesPage() {
         >
           {/* Table Header */}
           <div className="grid grid-cols-12 px-6 py-4 border-b border-border/30 text-[10px] uppercase tracking-[0.15em] font-bold text-muted-foreground">
-            <div className="col-span-4">Materia</div>
+            <div className="col-span-3">Materia</div>
             <div className="col-span-3 text-center">Notas Parciales</div>
-            <div className="col-span-1 text-center">Promedio</div>
+            <div className="col-span-2 text-center">Promedio</div>
             <div className="col-span-2 text-center">Tendencia</div>
             <div className="col-span-2 text-right">Estado</div>
           </div>
@@ -249,11 +249,11 @@ export default function GradesPage() {
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.05 + idx * 0.03 }}
-                className="grid grid-cols-12 px-6 py-6 items-center border-b border-border/10 hover:bg-muted/10 transition-all duration-300 cursor-pointer group"
+                className="grid grid-cols-12 px-6 py-6 items-center border-b border-border/30 hover:bg-muted/10 transition-all duration-300 cursor-pointer group"
                 onClick={() => setSelectedSubjectId(subjectId)}
               >
                 {/* Subject Name */}
-                <div className="col-span-4">
+                <div className="col-span-3">
                   <div className="flex items-center gap-3">
                     <div
                       className="w-3 h-3 rounded-full shrink-0"
@@ -288,7 +288,7 @@ export default function GradesPage() {
                 </div>
 
                 {/* Average */}
-                <div className="col-span-1 text-center">
+                <div className="col-span-2 text-center">
                   <span className={`text-xl font-bold ${gradeTextClass(avg)}`}>
                     {avg.toFixed(1)}
                   </span>

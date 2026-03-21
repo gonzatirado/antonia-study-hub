@@ -70,7 +70,7 @@ export default function PendingsPage() {
   }
 
   return (
-    <div className="space-y-6 max-w-4xl">
+    <div className="space-y-6 w-full">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground">Pendientes</h1>
@@ -100,7 +100,7 @@ export default function PendingsPage() {
       </div>
 
       {filtered.length === 0 ? (
-        <div className="text-center py-20 border border-dashed border-border rounded-xl">
+        <div className="text-center py-20 border border-border rounded-xl bg-card/60 backdrop-blur-xl shadow-sm">
           <ClipboardList className="w-12 h-12 text-muted-foreground/60 mx-auto mb-3" />
           <p className="text-muted-foreground font-medium">
             {filter === "completed" ? "Sin pendientes completados" : "Sin pendientes activos"}
@@ -135,10 +135,10 @@ export default function PendingsPage() {
                         key={pending.id}
                         className={`group flex items-center gap-3 px-4 py-3 rounded-xl border transition-all ${
                           isCompleted
-                            ? "bg-card/30 border-border/50 opacity-60"
+                            ? "bg-card/30 border-border opacity-60"
                             : isOverdue
-                            ? "bg-destructive/20 border-destructive/20"
-                            : "bg-card/50 border-border hover:border-muted-foreground/30"
+                            ? "bg-destructive/20 border-destructive/30"
+                            : "bg-card/50 border-border hover:border-muted-foreground/50"
                         }`}
                       >
                         <button
@@ -210,7 +210,7 @@ function PendingDialogGlobal({ subjects, onClose, onSave }: {
   onClose: () => void;
   onSave: (data: { subjectId: string; title: string; description?: string; type: PendingType; dueDate: Date; status: PendingStatus }) => void;
 }) {
-  const [subjectId, setSubjectId] = useState(subjects[0]?.id || "");
+  const [subjectId, setSubjectId] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [type, setType] = useState<PendingType>("tarea");
@@ -254,7 +254,7 @@ function PendingDialogGlobal({ subjects, onClose, onSave }: {
               </SelectTrigger>
               <SelectContent className="bg-card border-border">
                 {subjects.map((s) => (
-                  <SelectItem key={s.id} value={s.id} className="text-foreground">{s.name}</SelectItem>
+                  <SelectItem key={s.id} value={s.id} className="text-foreground">{s.code} — {s.name}</SelectItem>
                 ))}
               </SelectContent>
             </Select>

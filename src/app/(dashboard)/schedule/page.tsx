@@ -317,7 +317,7 @@ export default function SchedulePage() {
           {/* Stats bento grid */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             {/* Next class */}
-            <div className="col-span-1 md:col-span-2 bg-card/30 backdrop-blur-xl p-6 rounded-2xl border border-border/20 flex items-center justify-between">
+            <div className="col-span-1 md:col-span-2 bg-card/60 backdrop-blur-xl p-6 rounded-2xl border border-border/40 flex items-center justify-between">
               <div>
                 <p className="text-[10px] font-bold uppercase tracking-widest text-primary mb-2">
                   Proxima Clase
@@ -348,7 +348,7 @@ export default function SchedulePage() {
             </div>
 
             {/* Weekly hours */}
-            <div className="bg-card/30 backdrop-blur-xl p-6 rounded-2xl border border-border/20">
+            <div className="bg-card/60 backdrop-blur-xl p-6 rounded-2xl border border-border/40">
               <p className="text-[10px] font-bold uppercase tracking-widest text-amber-400 mb-2">
                 Horas Semanales
               </p>
@@ -374,7 +374,7 @@ export default function SchedulePage() {
             </div>
 
             {/* Total blocks */}
-            <div className="bg-card/30 backdrop-blur-xl p-6 rounded-2xl border border-border/20">
+            <div className="bg-card/60 backdrop-blur-xl p-6 rounded-2xl border border-border/40">
               <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-400 mb-2">
                 Bloques Activos
               </p>
