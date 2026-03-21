@@ -441,7 +441,7 @@
    GLASS CARD CONTRAST BOOST — ALL THEMES
    ============================================ */
 [class*="bg-card/"] {
-  background-color: oklch(from var(--card) l c h / 0.72) !important;
+  background-color: oklch(from var(--card) l c h / 0.85) !important;
   backdrop-filter: blur(16px) saturate(1.2) !important;
 }
 
