@@ -20,10 +20,12 @@ function detectFileType(mimeType: string, fileName: string): SubjectFile["type"]
   // MIME-based detection
   if (mimeType === "application/pdf") return "pdf";
   if (
-    mimeType === "application/msword" ||
-    mimeType === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
     mimeType === "application/vnd.ms-excel" ||
     mimeType === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+  ) return "excel";
+  if (
+    mimeType === "application/msword" ||
+    mimeType === "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
   ) return "doc";
   if (mimeType === "text/html" || mimeType === "text/plain") return "text";
   if (mimeType.startsWith("image/")) return "image";
@@ -31,8 +33,9 @@ function detectFileType(mimeType: string, fileName: string): SubjectFile["type"]
   // Extension-based fallback
   const ext = fileName.split(".").pop()?.toLowerCase() ?? "";
   if (ext === "pdf") return "pdf";
-  if (["doc", "docx", "xls", "xlsx", "ppt", "pptx"].includes(ext)) return "doc";
-  if (["txt", "html", "htm", "csv", "md"].includes(ext)) return "text";
+  if (["xls", "xlsx", "csv"].includes(ext)) return "excel";
+  if (["doc", "docx", "ppt", "pptx"].includes(ext)) return "doc";
+  if (["txt", "html", "htm", "md"].includes(ext)) return "text";
   if (["png", "jpg", "jpeg", "gif", "webp", "svg", "bmp"].includes(ext)) return "image";
 
   return "other";
@@ -203,6 +206,11 @@ export function useSubjectData(subjectId: string) {
       const updated = { ...subject, files: updatedFiles };
       setSubject(updated);
       setSubjects(subjects.map((s) => s.id === subjectId ? updated : s));
+      toast.success(
+        newFiles.length === 1
+          ? `"${newFiles[0].name}" subido correctamente`
+          : `${newFiles.length} archivos subidos correctamente`
+      );
     } catch (err) {
       Sentry.captureException(err);
       toast.error("Error al subir archivos. Verifica tu conexión e inténtalo de nuevo.");
@@ -323,6 +331,41 @@ export function useSubjectData(subjectId: string) {
     }
   }
 
+  // === RENAME OPERATIONS ===
+  async function handleRenameFile(fileId: string, newName: string) {
+    if (!newName.trim() || !user?.uid || !subject) return;
+    try {
+      const updatedFiles = subject.files.map((f) =>
+        f.id === fileId ? { ...f, name: newName.trim() } : f
+      );
+      await updateSubjectDoc(user.uid, subjectId, { files: updatedFiles });
+      const updated = { ...subject, files: updatedFiles };
+      setSubject(updated);
+      setSubjects(subjects.map((s) => s.id === subjectId ? updated : s));
+      toast.success("Archivo renombrado");
+    } catch (err) {
+      Sentry.captureException(err);
+      toast.error("Error al renombrar el archivo.");
+    }
+  }
+
+  async function handleRenameFolder(folderId: string, newName: string) {
+    if (!newName.trim() || !user?.uid || !subject) return;
+    try {
+      const updatedFolders = subject.folders.map((f) =>
+        f.id === folderId ? { ...f, name: newName.trim() } : f
+      );
+      await updateSubjectDoc(user.uid, subjectId, { folders: updatedFolders });
+      const updated = { ...subject, folders: updatedFolders };
+      setSubject(updated);
+      setSubjects(subjects.map((s) => s.id === subjectId ? updated : s));
+      toast.success("Carpeta renombrada");
+    } catch (err) {
+      Sentry.captureException(err);
+      toast.error("Error al renombrar la carpeta.");
+    }
+  }
+
   // === GRADE OPERATIONS ===
   async function handleSaveGrade(data: {
     name: string; score: number; maxScore: number;
@@ -401,6 +444,7 @@ export function useSubjectData(subjectId: string) {
     // File operations
     handleFileUpload, handleDeleteFile,
     handleCreateFolder, handleDeleteFolder, handleMoveFile,
+    handleRenameFile, handleRenameFolder,
     moveFileToFolder, moveFolderToFolder,
     // Grades state
     grades, loadingGrades,

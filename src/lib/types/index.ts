@@ -67,7 +67,7 @@ export interface SubjectFile {
   id: string;
   name: string;
   url: string;
-  type: 'pdf' | 'doc' | 'image' | 'text' | 'other';
+  type: 'pdf' | 'doc' | 'excel' | 'image' | 'text' | 'other';
   size: number; // bytes
   folderId: string | null; // null = root level
   uploadedAt: Date;

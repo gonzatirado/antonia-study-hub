@@ -25,6 +25,7 @@ export default function SubjectDetailPage() {
     breadcrumb, currentFolders, currentFiles,
     handleFileUpload, handleDeleteFile,
     handleCreateFolder, handleDeleteFolder, handleMoveFile,
+    handleRenameFile, handleRenameFolder,
     // Grades
     grades, loadingGrades,
     showGradeDialog, setShowGradeDialog,
@@ -94,6 +95,8 @@ export default function SubjectDetailPage() {
           onDeleteFolder={handleDeleteFolder}
           onDeleteFile={handleDeleteFile}
           onMoveFile={handleMoveFile}
+          onRenameFile={handleRenameFile}
+          onRenameFolder={handleRenameFolder}
         />
       )}
 

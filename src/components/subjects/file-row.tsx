@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { MoreVertical, Move, Eye, Download, Trash2 } from "lucide-react";
+import { MoreVertical, Move, Eye, Download, Trash2, Pencil } from "lucide-react";
 import { formatDate } from "@/lib/utils/date-helpers";
 import type { SubjectFile } from "@/lib/types";
 import { formatSize, getFileIcon, getFileIconBg, getFileIconColor, getTypeBadgeLabel } from "./files-tab-helpers";
@@ -12,23 +12,40 @@ export interface FileRowProps {
   movingFile: SubjectFile | null;
   onSetMovingFile: (f: SubjectFile | null) => void;
   onDeleteFile: (f: SubjectFile) => void;
+  onRenameFile: (fileId: string, newName: string) => void;
+  onPreview: (f: SubjectFile) => void;
 }
 
-export function FileRow({ file, movingFile, onSetMovingFile, onDeleteFile }: FileRowProps) {
+export function FileRow({ file, movingFile, onSetMovingFile, onDeleteFile, onRenameFile, onPreview }: FileRowProps) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [renaming, setRenaming] = useState(false);
+  const [renameName, setRenameName] = useState(file.name);
   const btnRef = useRef<HTMLButtonElement>(null);
   const Icon = getFileIcon(file.type);
+  const isImage = file.type === "image";
+
+  function submitRename() {
+    if (renameName.trim() && renameName.trim() !== file.name) {
+      onRenameFile(file.id, renameName.trim());
+    }
+    setRenaming(false);
+  }
 
   const menuItems = [
+    {
+      label: "Vista previa",
+      icon: <Eye className="w-4 h-4" />,
+      onClick: () => onPreview(file),
+    },
+    {
+      label: "Renombrar",
+      icon: <Pencil className="w-4 h-4" />,
+      onClick: () => { setRenaming(true); setRenameName(file.name); },
+    },
     {
       label: "Mover a...",
       icon: <Move className="w-4 h-4" />,
       onClick: () => onSetMovingFile(movingFile?.id === file.id ? null : file),
-    },
-    {
-      label: "Ver archivo",
-      icon: <Eye className="w-4 h-4" />,
-      onClick: () => window.open(file.url, "_blank"),
     },
     {
       label: "Descargar",
@@ -57,29 +74,42 @@ export function FileRow({ file, movingFile, onSetMovingFile, onDeleteFile }: Fil
           ? "bg-primary/5"
           : "hover:bg-muted/50"
       }`}
+      onClick={() => onPreview(file)}
     >
       {/* Name col */}
       <div className="col-span-5 flex items-center gap-4">
-        <div
-          className="w-10 h-10 flex items-center justify-center rounded-lg shrink-0"
-          style={{
-            backgroundColor: getFileIconBg(file.type),
-            color: getFileIconColor(file.type),
-          }}
-        >
-          <Icon className="w-5 h-5" />
-        </div>
-        <span className="font-medium text-sm text-foreground truncate">{file.name}</span>
+        {isImage ? (
+          <div className="w-10 h-10 rounded-lg shrink-0 overflow-hidden bg-muted">
+            <img src={file.url} alt={file.name} className="w-full h-full object-cover" loading="lazy" />
+          </div>
+        ) : (
+          <div
+            className="w-10 h-10 flex items-center justify-center rounded-lg shrink-0"
+            style={{ backgroundColor: getFileIconBg(file.type), color: getFileIconColor(file.type) }}
+          >
+            <Icon className="w-5 h-5" />
+          </div>
+        )}
+        {renaming ? (
+          <input
+            autoFocus
+            value={renameName}
+            onChange={(e) => setRenameName(e.target.value)}
+            onBlur={submitRename}
+            onKeyDown={(e) => { if (e.key === "Enter") submitRename(); if (e.key === "Escape") setRenaming(false); }}
+            onClick={(e) => e.stopPropagation()}
+            className="flex-1 bg-muted border border-border rounded px-2 py-1 text-sm text-foreground focus:outline-none focus:border-ring"
+          />
+        ) : (
+          <span className="font-medium text-sm text-foreground truncate">{file.name}</span>
+        )}
       </div>
 
       {/* Type col */}
       <div className="col-span-2">
         <span
           className="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider"
-          style={{
-            backgroundColor: "var(--muted)",
-            color: "var(--muted-foreground)",
-          }}
+          style={{ backgroundColor: "var(--muted)", color: "var(--muted-foreground)" }}
         >
           {getTypeBadgeLabel(file.type)}
         </span>
