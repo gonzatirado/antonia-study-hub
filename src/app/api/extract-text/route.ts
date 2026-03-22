@@ -7,6 +7,9 @@ import { validateOrigin } from "@/lib/utils/csrf";
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
 
+// Gemini PDF extraction can take 15-30s for large files
+export const maxDuration = 60;
+
 export async function POST(request: NextRequest) {
   try {
     // Verify authentication server-side
@@ -172,10 +175,22 @@ export async function POST(request: NextRequest) {
       chars: text.trim().length,
     });
   } catch (error) {
-    console.error("[extract-text] Error:", error);
+    const errMsg = error instanceof Error ? error.message : String(error);
+    const errName = error instanceof Error ? error.name : "UnknownError";
+    console.error("[extract-text] Error:", errName, errMsg, error);
     Sentry.captureException(error);
+
+    // Return specific error info so we can debug
+    const userMessage = errMsg.includes("quota")
+      ? "Límite de API alcanzado. Intenta en unos minutos."
+      : errMsg.includes("timeout") || errMsg.includes("DEADLINE")
+        ? "El archivo tardó demasiado en procesarse. Intenta con uno más pequeño."
+        : errMsg.includes("too large") || errMsg.includes("size")
+          ? "Archivo demasiado grande para procesar."
+          : `Error al procesar el archivo: ${errMsg.slice(0, 150)}`;
+
     return NextResponse.json(
-      { error: "Error al procesar el archivo. Intenta con otro formato." },
+      { error: userMessage },
       { status: 500 }
     );
   }

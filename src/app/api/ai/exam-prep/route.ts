@@ -6,6 +6,8 @@ import { verifyAuthToken } from "@/lib/firebase/admin";
 import { sanitizeAIContent } from "@/lib/utils/sanitize-content";
 import { validateOrigin } from "@/lib/utils/csrf";
 
+export const maxDuration = 60;
+
 export async function POST(request: NextRequest) {
   try {
     // Verify authentication server-side

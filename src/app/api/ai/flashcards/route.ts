@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import * as Sentry from "@sentry/nextjs";
-import { streamSummary, type SummaryMode } from "@/lib/ai/gemini";
+import { generateFlashcards } from "@/lib/ai/gemini";
 import { checkUsageLimit, incrementUsage } from "@/lib/firebase/usage";
 import { verifyAuthToken } from "@/lib/firebase/admin";
 import { sanitizeAIContent } from "@/lib/utils/sanitize-content";
@@ -10,11 +10,10 @@ export const maxDuration = 60;
 
 export async function POST(request: NextRequest) {
   try {
-    // Verify authentication server-side
     const authResult = await verifyAuthToken(request);
     if (!authResult.authenticated) {
       return NextResponse.json(
-        { error: "No autorizado. Inicia sesión para continuar." },
+        { error: "No autorizado. Inicia sesion para continuar." },
         { status: 401 }
       );
     }
@@ -28,8 +27,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { content: rawContent, mode: rawMode } = body;
-    const mode: SummaryMode = rawMode === "extenso" ? "extenso" : "standard";
+    const { content: rawContent, numCards = 15 } = body;
 
     if (!rawContent || typeof rawContent !== "string") {
       return NextResponse.json(
@@ -47,35 +45,34 @@ export async function POST(request: NextRequest) {
 
     const content = sanitizeAIContent(rawContent);
 
-    // Check usage limit for the selected mode
-    const usageAction = mode === "extenso" ? "extenso_summaries" : "summaries";
+    // Check usage limit
     try {
-      const { allowed, used, limit } = await checkUsageLimit(userId, usageAction);
+      const { allowed, used, limit } = await checkUsageLimit(userId, "summaries");
       if (!allowed) {
-        const label = mode === "extenso" ? "resúmenes extensos" : "resúmenes";
         return NextResponse.json(
-          { error: `Límite alcanzado: ${used}/${limit} ${label} usados este mes.` },
+          { error: `Limite alcanzado: ${used}/${limit} generaciones usadas este mes.` },
           { status: 429 }
         );
       }
     } catch (usageErr) {
-      console.warn("[summary] Usage check failed, proceeding anyway:", usageErr);
+      console.warn("[flashcards] Usage check failed, proceeding:", usageErr);
     }
 
-    const result = streamSummary(content, mode);
+    const clampedNum = Math.min(Math.max(numCards, 5), 30);
+    const result = await generateFlashcards(content, clampedNum);
 
-    // Increment usage after starting generation
+    // Increment usage
     const tokensEstimated = Math.ceil(content.length / 4);
-    incrementUsage(userId, usageAction, tokensEstimated).catch((err) =>
+    incrementUsage(userId, "summaries", tokensEstimated).catch((err) =>
       Sentry.captureException(err)
     );
 
-    return result.toTextStreamResponse();
+    return NextResponse.json(result);
   } catch (error) {
-    console.error("[summary] Error:", error);
+    console.error("[flashcards] Error:", error);
     Sentry.captureException(error);
     return NextResponse.json(
-      { error: "Error al generar el resumen. Intenta de nuevo." },
+      { error: "Error al generar flashcards. Intenta de nuevo." },
       { status: 500 }
     );
   }
