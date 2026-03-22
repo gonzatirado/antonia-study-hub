@@ -5,79 +5,177 @@ import { structuredSummarySchema } from "./summary-schema";
 
 const model = google("gemini-2.5-flash");
 
-// ─── Summary (streaming) ───
+// ─── Summary (streaming, adaptive) ───
 
-export const summarySystemPrompt = `Eres un asistente educativo experto en crear resúmenes de estudio visualmente atractivos y completos.
+export type SummaryMode = "standard" | "extenso";
 
-INSTRUCCIONES:
-- Crea un resumen detallado del siguiente contenido académico
-- Usa formato Markdown con buena estructura visual
-- Incluye:
-  - Título principal con emoji relevante
-  - Secciones claras con headers (##, ###)
-  - Puntos clave resaltados en **negrita**
-  - Listas con viñetas para conceptos importantes
-  - Tablas comparativas cuando sea útil
-  - Bloques de código si hay fórmulas o ejemplos técnicos
-  - Notas importantes en blockquotes (> )
-  - Separadores (---) entre secciones principales
-- OBLIGATORIO: Incluye al menos 2-3 diagramas Mermaid donde ayuden a visualizar:
-  - Procesos paso a paso → usa flowchart (graph TD)
-  - Líneas temporales → usa timeline
-  - Relaciones entre conceptos → usa mindmap
-  - Jerarquías → usa graph TD con nodos
-  - Comparaciones → usa tablas markdown
-  - Ciclos o secuencias → usa sequenceDiagram
-- Cada diagrama Mermaid debe ir en un bloque de código con \`\`\`mermaid
-- El resumen debe ser de 2-4 páginas de extensión
-- Usa un tono académico pero accesible
-- Incluye una sección final de "Conceptos Clave" como bullet points rápidos para repasar`;
+type SummaryTier = "compact" | "standard" | "extended";
 
-export function streamSummary(content: string) {
+function getSummaryTier(contentLength: number): SummaryTier {
+  if (contentLength < 3000) return "compact";
+  if (contentLength < 20000) return "standard";
+  return "extended";
+}
+
+function getTargetWords(contentLength: number): number {
+  const inputWords = Math.round(contentLength / 5.5); // avg chars per spanish word
+  return Math.max(100, Math.round(inputWords * 0.45)); // 45% compression
+}
+
+function buildStandardPrompt(contentLength: number): string {
+  const tier = getSummaryTier(contentLength);
+  const target = getTargetWords(contentLength);
+
+  const tierBlock: Record<SummaryTier, string> = {
+    compact: `Maximo ${target} palabras. SIN markmap. SIN mermaid.
+METODO: Extrae los 5-8 datos mas importantes, escribe cada uno como 1 bullet.
+- 3 preguntas de examen al final`,
+
+    standard: `Maximo ${target} palabras de texto.
+- UN markmap al inicio como overview (no cuenta en el limite de palabras)
+- 3-5 secciones con headers (##) para organizar los bullets por tema
+- SIN diagramas Mermaid
+- 5 preguntas de examen al final`,
+
+    extended: `Maximo ${target} palabras de texto.
+- UN markmap al inicio como overview
+- 5-8 secciones con headers (##) organizadas por tema
+- SIN diagramas Mermaid
+- 1 tabla comparativa si aplica
+- 8 preguntas de examen al final`,
+  };
+
+  return `Eres un asistente de estudio. COMPRIME material academico para examen. Be concise.
+
+REGLAS:
+1. Tu texto DEBE tener MENOS palabras que el original. Ratio: 40-50%.
+2. Solo bullets de 1 linea. Sin parrafos.
+3. Solo lo preguntable: definiciones, datos duros, formulas, diferencias.
+4. Sin introducciones, conclusiones, transiciones ni meta-comentarios.
+5. **Negrita** solo para terminos clave.
+6. Espanol.
+
+METODO:
+PASO 1: Identifica los conceptos mas importantes del material.
+PASO 2: Organiza en secciones con headers (## Seccion) — NO una lista plana.
+PASO 3: Dentro de cada seccion, bullets concisos (max 15 palabras por bullet).
+PASO 4: Agrega preguntas de examen al final.
+
+FORMATO MARKMAP (cuando aplique):
+\`\`\`markmap
+# Tema
+## Concepto
+### Detalle
+\`\`\`
+
+${tierBlock[tier]}
+
+SECCION FINAL: ## 🧠 Para el examen
+Preguntas directas sin respuesta.`;
+}
+
+function buildExtensoPrompt(contentLength: number): string {
+  return `Eres un asistente de estudio. Crea un resumen EXTENSO y profundo para preparar examenes.
+
+INCLUYE TODO:
+- UN markmap completo al inicio con todos los conceptos y relaciones
+- Secciones detalladas por tema con explicaciones claras
+- Tablas comparativas cuando haya conceptos comparables
+- 1-2 diagramas Mermaid para procesos (sin HTML en nodos, texto plano corto)
+- Ejemplos concretos del material
+- Conexiones entre conceptos
+- Trucos mnemonicos cuando aplique
+
+FORMATO:
+- **Negrita** para terminos clave
+- Bullets concisos
+- Blockquotes (> ) para formulas o datos clave
+- Espanol
+
+FORMATO MARKMAP:
+\`\`\`markmap
+# Tema
+## Concepto
+### Detalle
+\`\`\`
+
+SECCION FINAL: ## 🧠 Para el examen
+- 10-15 preguntas con respuestas breves (1-2 oraciones)
+- Agrupadas por subtema`;
+}
+
+/** Exported for tests / external use */
+export const summarySystemPrompt = buildStandardPrompt(5000);
+
+export function streamSummary(content: string, mode: SummaryMode = "standard") {
+  const wordCount = content.split(/\s+/).length;
+  const system = mode === "extenso"
+    ? buildExtensoPrompt(content.length)
+    : buildStandardPrompt(content.length);
+  const targetWords = mode === "extenso" ? null : Math.round(wordCount * 0.5);
+  const wordHint = targetWords ? ` (${wordCount} palabras — tu resumen debe tener menos de ${targetWords})` : "";
+
   return streamText({
     model,
-    system: summarySystemPrompt,
-    prompt: `CONTENIDO A RESUMIR:\n${content}`,
+    system,
+    prompt: `CONTENIDO A RESUMIR${wordHint}:\n${content}`,
+    ...(mode === "standard" ? { maxTokens: Math.max(800, Math.round(wordCount * 2)) } : {}),
   });
 }
 
 // Non-streaming version for backwards compatibility
 export async function generateSummary(
   content: string,
+  mode: SummaryMode = "standard",
 ): Promise<string> {
+  const wordCount = content.split(/\s+/).length;
+  const system = mode === "extenso"
+    ? buildExtensoPrompt(content.length)
+    : buildStandardPrompt(content.length);
+  const targetWords = mode === "extenso" ? null : Math.round(wordCount * 0.5);
+  const wordHint = targetWords ? ` (${wordCount} palabras — tu resumen debe tener menos de ${targetWords})` : "";
+
   const { text } = await generateText({
     model,
-    system: summarySystemPrompt,
-    prompt: `CONTENIDO A RESUMIR:\n${content}`,
+    system,
+    prompt: `CONTENIDO A RESUMIR${wordHint}:\n${content}`,
+    ...(mode === "standard" ? { maxTokens: Math.max(800, Math.round(wordCount * 2)) } : {}),
   });
   return text;
 }
 
-// ─── Structured Summary (premium template) ───
+// ─── Structured Summary (premium template — Architectural Prompt v2) ───
+// Co-designed with Gemini 2.5 Flash for optimal structured output.
 
-const structuredSummaryPrompt = `Eres un asistente educativo experto en crear resúmenes de estudio estructurados y visualmente ricos.
+const structuredSummaryPrompt = `# ROLE: SENIOR ACADEMIC ARCHITECT (STEM SPECIALIST)
+Tu mision es deconstruir material academico complejo y reconstruirlo en un objeto JSON de alta fidelidad para la app StudyHub.
 
-INSTRUCCIONES OBLIGATORIAS:
-- Analiza el contenido y genera un resumen estructurado en JSON
-- El título debe ser descriptivo y conciso
-- El overview debe ser 2-3 oraciones que capturen la esencia del contenido
-- Crea entre 3-8 secciones principales, cada una con un emoji relevante
-- Cada sección contiene "blocks" que pueden ser:
-  - "text": párrafo explicativo claro y detallado
-  - "keypoint": punto clave importante (usa highlight: true para los más críticos)
-  - "list": lista de items relacionados
-  - "table": tabla comparativa con headers y rows
-  - "diagram": diagrama Mermaid (usa graph TD para flujos, mindmap para relaciones, timeline para secuencias, sequenceDiagram para interacciones)
-  - "callout": nota especial (variant: "info" para datos, "warning" para precauciones, "tip" para consejos, "example" para ejemplos)
-  - "formula": fórmulas o expresiones técnicas importantes
-- OBLIGATORIO: incluye al menos 2 diagramas Mermaid distribuidos en las secciones
-- OBLIGATORIO: incluye al menos 1 tabla comparativa
-- OBLIGATORIO: incluye al menos 3 keypoints con highlight: true
-- Los keyTakeaways deben ser 5-8 puntos de repaso rápido
-- Evalúa la dificultad del contenido (beginner/intermediate/advanced)
-- Estima el tiempo de lectura en minutos
-- Usa un tono académico pero accesible
-- Todo el contenido debe estar en español`;
+# LOGICA OPERATIVA:
+1. DENSIDAD DINAMICA: Evalua el tamano del input. Si es breve, genera 2-3 secciones. Si es extenso (50+ paginas), expande a 5-8 secciones con tablas y diagramas profundos.
+2. ATOMICIDAD: Cada valor en el JSON debe ser una unidad de informacion autosuficiente. Prefiere la sintesis tecnica sobre la narrativa.
+3. ETIQUETADO: Usa el campo 'label' para categorizar cada seccion: [LAB], [GEO], [CALCULO], [TEORIA], [CONCEPTO], [APLICACION].
+4. ESTRATIFICACION: Organiza secciones en capas: Conceptos Fundamentales -> Desarrollo Tecnico -> Aplicacion Practica.
+
+# REGLAS DE BLOQUES (STRICT — cada type usa campos exclusivos):
+- type "formula": Usa el campo 'content' con delimitadores LaTeX estandar. $$ para bloques dedicados, $ para formulas inline. Ejemplo: content: "$$a^2 + b^2 = c^2$$"
+- type "diagram": Escribe el codigo exclusivamente en el campo 'mermaid'. Usa graph TD o mindmap. PROHIBIDO usar etiquetas HTML, comillas o caracteres especiales dentro de los nodos. Usa 'diagramDescription' para explicar en una linea que muestra el diagrama.
+- type "list": Usa exclusivamente el campo 'items'.
+- type "table": Usa exclusivamente 'headers' y 'rows'. Usala para comparaciones tecnicas.
+- type "text"/"keypoint"/"callout": Usa el campo 'content'.
+- type "callout": Usa variant "tip" para tips de examen, "warning" para errores comunes, "info" para datos clave, "example" para ejemplos.
+- type "keypoint": Usa highlight: true para los conceptos mas criticos (minimo 3 por resumen).
+
+# EXAM QUESTIONS:
+Crea preguntas de escenario de aplicacion real. NO preguntas de si/no.
+Formato: "Dado [contexto X], como aplicaria [ley/concepto Y]?"
+Explica el razonamiento esperado en 'expectedApproach'.
+Genera entre 3-8 preguntas segun la extension del material.
+
+# RESTRICCIONES:
+- Idioma: Espanol tecnico (Chile/Latinoamerica).
+- Concision: 60% mas corto que el original, manteniendo precision del 100%.
+- Sin meta-comentarios. Ve directo al JSON.
+- Tono: Directo, academico, sin adornos.`;
 
 export async function generateStructuredSummary(content: string) {
   const { output } = await generateText({
@@ -118,6 +216,51 @@ Cada pregunta debe tener exactamente 4 opciones (A, B, C, D).
 Las preguntas deben cubrir diferentes niveles de dificultad (fácil, medio, difícil).
 Incluye una explicación breve de por qué la respuesta correcta es correcta.`,
     prompt: `CONTENIDO:\n${content}`,
+  });
+  return output!;
+}
+
+// ─── Flashcards (structured output) ───
+
+const flashcardSchema = z.object({
+  cards: z.array(
+    z.object({
+      id: z.string(),
+      front: z.string().describe("Pregunta, concepto o termino a estudiar"),
+      back: z.string().describe("Respuesta, definicion o explicacion completa"),
+      difficulty: z.enum(["easy", "medium", "hard"]).describe("Dificultad estimada del concepto"),
+      tags: z.array(z.string()).optional().describe("1-3 tags tematicos"),
+    })
+  ),
+});
+
+export type FlashcardResult = z.infer<typeof flashcardSchema>;
+
+export async function generateFlashcards(
+  content: string,
+  numCards: number = 15,
+): Promise<FlashcardResult> {
+  const { output } = await generateText({
+    model,
+    output: Output.object({ schema: flashcardSchema }),
+    system: `Eres un profesor experto en crear flashcards de estudio efectivas.
+
+INSTRUCCIONES:
+- Crea exactamente ${numCards} flashcards basadas en el contenido proporcionado
+- Cada flashcard tiene un FRONT (pregunta/concepto) y un BACK (respuesta/explicacion)
+- El FRONT debe ser conciso: una pregunta directa, un termino, o un concepto clave
+- El BACK debe ser completo pero no excesivo: 1-3 oraciones que respondan claramente
+- Varia los tipos de preguntas:
+  - Definiciones ("Que es X?")
+  - Comparaciones ("Cual es la diferencia entre X e Y?")
+  - Aplicacion ("Cuando se usa X?")
+  - Relaciones ("Como se relaciona X con Y?")
+  - Ejemplos ("Da un ejemplo de X")
+- Distribuye dificultades: ~30% easy, ~50% medium, ~20% hard
+- Asigna 1-3 tags tematicos por card
+- IDs deben ser unicos (usa formato "fc-1", "fc-2", etc.)
+- Todo en espanol`,
+    prompt: `CONTENIDO A CONVERTIR EN FLASHCARDS:\n${content}`,
   });
   return output!;
 }
